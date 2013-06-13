@@ -2,9 +2,8 @@ from ofp.v0x01.types import UBInt8, UBInt16, UBInt32
 from ofp.v0x01.exceptions import OFPException
 
 class GenericStruct():
-    pack_order = None
-
     def __init__(self, **kwargs):
+        self.pack_order = None
         for a in kwargs:
             try:
                 field = getattr(self, a)
@@ -32,7 +31,7 @@ class OFPHeader(GenericStruct):
 
     # Attributes
     version = UBInt8()  # OFP_VERSION
-    type = UBInt8()     # One of the OFPT_ constants.
+    type = UBInt8()     # One of the OFPType
     length = UBInt16()  # Length including this ofp_header.
     xid = UBInt32()     # Transaction id associated with this packet.
                         # Replies use the same id as was in the request
