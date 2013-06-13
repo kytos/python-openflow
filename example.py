@@ -5,7 +5,6 @@ from ofp.v0x01.enums import OFPType
 
 # Without values
 header = OFPHeader()
-
 header.parse('\x07\x20\x00\x00\x00\x00\x00\x00')
 print header.version
 print header.type
