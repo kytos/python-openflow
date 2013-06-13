@@ -1,6 +1,7 @@
 #!/usr/bin/envpython
 
 from ofp.v0x01.structs import OFPHeader
+from ofp.v0x01.enums import OFPType
 
 # Without values
 header = OFPHeader()
@@ -12,7 +13,7 @@ print header.length
 print header.xid
 
 # With values
-header = OFPHeader(version=7, type=32, length=0, xid=0)
+header = OFPHeader(version=7, type=OFPType.OFPT_ERROR, length=0, xid=0)
 print header.version
 print header.type
 print header.length
