@@ -1,5 +1,6 @@
-from ofp.v0x01.types import UBInt8, UBInt16, UBInt32
+from ofp.v0x01.types import UBInt8, UBInt16, UBInt32, Char
 from ofp.v0x01.exceptions import OFPException
+from ofp.v0x01.conts import OFP_MAX_PORT_NAME_LEN
 
 class GenericStruct():
     def __init__(self, **kwargs):
