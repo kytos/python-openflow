@@ -3,9 +3,8 @@ from ofp.v0x01.exceptions import OFPException
 from ofp.v0x01.enums import OFPActionType
 from ofp.v0x01.consts import *
 
-class GenericStruct():
+class GenericStruct(object):
     def __init__(self, **kwargs):
-        self.pack_order = None
         for a in kwargs:
             try:
                 field = getattr(self, a)
@@ -34,6 +33,12 @@ class GenericStruct():
 
 
 class OFPHeader(GenericStruct):
+    def __init__(self, *args, **kwargs):
+        self.version = UBInt8(OFP_VERSION)
+        self.xid = UBInt32(1)
+        self.length = UBInt16(self.get_size())
+        super(OFPHeader, self).__init__(*args, **kwargs)
+
     # TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
     _build_order=('version', 'type', 'length', 'xid')
@@ -251,4 +256,15 @@ class OFPActionVendorHeader(GenericStruct):
                                                       # multiple of 8.
     vendor = UBInt32()                                # Vendor ID,  which takes
                                                       # the same form as in
-                                                      # OFPVendorHeader
+
+
+class OFPPacketIn(GenericStruct):
+    _build_order = ()
+
+    # Attributes
+    header = OFPHeader()
+    buffer_id = UBInt32()
+    total_len = UBInt16()
+    in_port = UBInt16()
+    reason = UBInt8()
+    pad = UBInt8()

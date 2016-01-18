@@ -2,4 +2,4 @@ README
 ------
 
 
-$ export PYTHONPATH=.
+$ export PYTHONPATH=.:$PYTHONPATH

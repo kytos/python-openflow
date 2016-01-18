@@ -1,4 +1,12 @@
-class OFPType(object):
+class GenericEnum(object):
+    def get_name(self, value):
+        for p, v in vars(self.__class__).iteritems():
+            if v == value:
+                return p
+        return "UNKNOWN"
+
+
+class OFPType(GenericEnum):
     """
     Message Type
     """
@@ -44,11 +52,11 @@ class OFPType(object):
     OFPT_QUEUE_GET_CONFIG_REPLY = 21
 
 
-class OFPPortConfig(object):
+class OFPPortConfig(GenericEnum):
     """
     Flags to indicate behavior of the physical port. These flags are used in
     OFPPhyPort to describe the current configuration. They are used in the
-    OFPPortMod message to configure the port’s behavior.
+    OFPPortMod message to configure the port's behavior.
     """
 
     OFPPC_PORT_DOWN = 1 << 0    # Port is administratively down
@@ -60,7 +68,7 @@ class OFPPortConfig(object):
     OFPPC_NO_PACKET_IN = 1 << 6 # Do not send packet-in msgs for port
 
 
-class OFPPortState(object):
+class OFPPortState(GenericEnum):
     """
     Current state of the physical port. These are not configurable from the
     controller.
@@ -78,7 +86,7 @@ class OFPPortState(object):
     OFPPS_STP_MASK = 3 << 8     # Bit mask for OFPPS_STP_* values.
 
 
-class OFPPort(object):
+class OFPPort(GenericEnum):
     """
     Port numbering. Physical ports are numbered starting from 1.
     """
@@ -105,7 +113,7 @@ class OFPPort(object):
 
 
 
-class OFPPortFeatures(object):
+class OFPPortFeatures(GenericEnum):
     """
     Physical ports features.
 
@@ -128,7 +136,7 @@ class OFPPortFeatures(object):
     OFPPF_PAUSE_ASYM = 1 << 11  # Asymmetric pause.
 
 
-class OFPFlowWildcards(object):
+class OFPFlowWildcards(GenericEnum):
     """
     If no wildcards are set, then the ofp_match exactly describes a flow, over
     the entire OpenFlow 12-tuple. On the other extreme, if all the wildcard
@@ -139,7 +147,7 @@ class OFPFlowWildcards(object):
     but with the opposite meaning, since this is being used to indicate which
     bits in the IP address should be treated as "wild". For example, a CIDR
     suffix of "24" means to use a netmask of "255.255.255.0". However, a
-    wildcard mask value of “24” means that the least-significant 24-bits are
+    wildcard mask value of "24" means that the least-significant 24-bits are
     wild, so it forms a netmask of "255.0.0.0".
     """
 
@@ -173,7 +181,7 @@ class OFPFlowWildcards(object):
     OFPFW_ALL = ((1 << 22) - 1)     # Wildcard all fields
 
 
-class OPFActionType(object):
+class OFPActionType(GenericEnum):
     """
     A number of actions may be associated with flows or packets. The currently
     defined action types are:

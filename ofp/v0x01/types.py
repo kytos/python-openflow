@@ -9,7 +9,7 @@ class GenericType():
         return str(self.value)
 
     def build(self):
-        """ pack a value to a binnary buffer."""
+        """ Pack a value into a binary buffer."""
         return pack(self.fmt, self.value)
 
     def parse(self, buff, offset=0):
@@ -49,6 +49,10 @@ class UBInt16(GenericType):
 
 class UBInt32(GenericType):
     fmt = ">I"
+
+
+class UBInt64(GenericType):
+    fmt = ">Q"
 
 
 class Char(GenericType):
