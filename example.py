@@ -6,7 +6,8 @@ from ofp.v0x01.enums import OFPType
 import socket
 import sys
 
-HOST = '200.145.46.203'
+#HOST = '200.145.46.203'
+HOST = "localhost"
 PORT = 6633              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
