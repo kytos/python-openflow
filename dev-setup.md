@@ -15,9 +15,11 @@ After installing Mininet, create a simple topology with an OpenFlow switch and p
 You can use the example.py available in this repository as a reference to use the OpenFlow parser. To run the example.py follow the instructions bellow.
 
 * Inform the IP address to Listen. 
+
 HOST = <IP_Address>
 
 * Informe the port number to Listen.
+
 PORT = <Port_number>
 
 * Set the python path as follow:
