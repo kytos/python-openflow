@@ -16,11 +16,11 @@ You can use the example.py available in this repository as a reference to use th
 
 * Inform the IP address to Listen. 
 
-HOST = <IP_Address>
+HOST = IP_Address
 
-* Informe the port number to Listen.
+* Inform the port number to Listen.
 
-PORT = <Port_number>
+PORT = Port_number
 
 * Set the python path as follow:
 ```
