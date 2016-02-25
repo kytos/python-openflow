@@ -34,6 +34,9 @@ $ sudo mn --controller=remote,ip='127.0.0.1',listenport=6633
 
 ## From raw files
 
+We provide some files with raw packets to be used as input with the parser
+library. To use our raw packet files, please take a look inside `raw` directory.
+
 # Contributing
 
 ## Github issues
