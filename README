@@ -1,5 +1,0 @@
-README
-------
-
-
-$ export PYTHONPATH=.:$PYTHONPATH
