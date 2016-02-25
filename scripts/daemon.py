@@ -2,8 +2,8 @@
 
 import SocketServer
 
-from ofp.v0x01.messages import *
-from ofp.v0x01.enums import OFPType
+from ofp.v0x02.messages import *
+from ofp.v0x02.enums import OFPType
 
 
 class OpenFlowHandler(SocketServer.BaseRequestHandler):
@@ -21,6 +21,18 @@ class OpenFlowHandler(SocketServer.BaseRequestHandler):
             self.header = OFPHeader()
             self.header.parse(raw_header)
             self.show_header()
+        if OFPType().get_name(self.header.type.value) == OFPType.OFPT_HELLO:
+            hello = OFPHELLO(xid = self.header.xid.value)
+            self.request.sendall(hello.build())
+
+#            if header.type.value == OFPType.OFPT_HELLO:
+#                hello = OFPHELLO(xid = header.xid.value)
+#                conn.send(hello.build())
+#            elif header.type.value == OFPType.OFPT_ECHO_REQUEST:
+#                echo = OFPECHOReply()
+#                conn.send(echo.build())
+
+
 
     def show_header(self):
             self.debug("Version %d" % self.header.version.value)

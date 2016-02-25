@@ -1,7 +1,7 @@
-from ofp.v0x01.types import UBInt8, UBInt8Array, UBInt16, UBInt32, Char
-from ofp.v0x01.exceptions import OFPException
-from ofp.v0x01.enums import OFPActionType
-from ofp.v0x01.consts import *
+from ofp.v0x02.types import UBInt8, UBInt8Array, UBInt16, UBInt32, Char
+from ofp.v0x02.exceptions import OFPException
+from ofp.v0x02.enums import OFPActionType
+from ofp.v0x02.consts import *
 
 class GenericStruct(object):
     def __init__(self, **kwargs):
