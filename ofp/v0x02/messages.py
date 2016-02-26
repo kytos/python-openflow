@@ -5,7 +5,8 @@ from ofp.v0x02.types import *
 
 class OFPHELLO(GenericStruct):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(OFPHELLO, self).__init__(*args, **kwargs)
+#        super().__init__(*args, **kwargs)
         self._length = self.get_size()
         _msg_type = OFPType.OFPT_HELLO
         _build_order = ('header', 'x')
