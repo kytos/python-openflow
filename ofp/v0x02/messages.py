@@ -13,7 +13,7 @@ class OFPHELLO(GenericStruct):
         header = OFPHeader(type = _msg_type, length = _length)
         x = UBInt8()
 
-class OFPECHORequest(GenericMessage):
+class OFPECHORequest(GenericStruct):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lenght(self.get_size())
@@ -23,7 +23,7 @@ class OFPECHORequest(GenericMessage):
         header = OFPHeader(type = _msg_type, length = _length)
         x = UBInt8()
 
-class OFPECHOReply(GenericMessage):
+class OFPECHOReply(GenericStruct):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lenght(self.get_size())
