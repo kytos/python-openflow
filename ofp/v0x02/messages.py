@@ -4,14 +4,14 @@ from ofp.v0x02.consts import OFP_VERSION
 from ofp.v0x02.types import *
 
 class OFPHELLO(GenericStruct):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, xid, *args, **kwargs):
         super(OFPHELLO, self).__init__(*args, **kwargs)
-#        super().__init__(*args, **kwargs)
         self._length = self.get_size()
         _msg_type = OFPType.OFPT_HELLO
+        _msg_xid = self.xid
         _build_order = ('header', 'x')
 
-        header = OFPHeader(type = _msg_type, length = _length)
+        header = OFPHeader(type = _msg_type, length = _length, xid = _msg_xid)
         x = UBInt8()
 
 class OFPECHORequest(GenericStruct):

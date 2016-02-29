@@ -9,8 +9,9 @@ class GenericStruct(object):
             try:
                 field = getattr(self, a)
                 field.value = kwargs[a]
-            except AttributeError:
-                raise OFPException("Attribute error: %s" % a)
+            except AttributeError as e:
+                raise OFPException("Attribute error: %s - %s" % (a, e))
+        return 
 
     def build(self):
         hexa = "" 
