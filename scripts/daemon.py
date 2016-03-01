@@ -25,13 +25,6 @@ class OpenFlowHandler(SocketServer.BaseRequestHandler):
             hello = OFPHELLO(xid=self.header.xid.value)
             self.request.sendall(hello.build())
 
-#            if header.type.value == OFPType.OFPT_HELLO:
-#                hello = OFPHELLO(xid = header.xid.value)
-#                conn.send(hello.build())
-#            elif header.type.value == OFPType.OFPT_ECHO_REQUEST:
-#                echo = OFPECHOReply()
-#                conn.send(echo.build())
-
     def show_header(self):
             self.debug("Version %d" % self.header.version.value)
             self.debug("Type: %s" % OFPType().get_name(self.header.type.value))
@@ -42,7 +35,7 @@ class OpenFlowHandler(SocketServer.BaseRequestHandler):
 
     def debug(self, msg):
         print "DEBUG: %s" % msg
-           
+
 if __name__ == "__main__":
     HOST, PORT = "localhost", 6633
 
