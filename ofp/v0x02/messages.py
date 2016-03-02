@@ -6,13 +6,13 @@ from ofp.v0x02.types import *
 class OFPHELLO(GenericStruct):
     def __init__(self, xid, *args, **kwargs):
         super(OFPHELLO, self).__init__(*args, **kwargs)
-        self._length = self.get_size()
-        _msg_type = OFPType.OFPT_HELLO
-        _msg_xid = self.xid
-        _build_order = ('header', 'x')
+        self._build_order = ('header', 'x')
+        self._msg_type = OFPType.OFPT_HELLO
+        self._msg_xid = xid
 
-        header = OFPHeader(type = _msg_type, length = _length, xid = _msg_xid)
-        x = UBInt8()
+        self.x = UBInt8()
+        self.header = OFPHeader(type = self._msg_type, length = 0, xid = self._msg_xid)
+        self._length = self.get_size()
 
 class OFPECHORequest(GenericStruct):
     def __init__(self, *args, **kwargs):
