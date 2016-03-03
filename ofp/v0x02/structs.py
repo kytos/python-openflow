@@ -13,7 +13,7 @@ class GenericStruct(object):
                 raise OFPException("Attribute error: %s - %s" % (a, e))
 
     def build(self):
-        hexa = "" 
+        hexa = ""
         for field in self._build_order:
             hexa += getattr(self, field).build()
         return hexa
@@ -31,7 +31,6 @@ class GenericStruct(object):
             tot += getattr(self, field).get_size()
         return tot
 
-
 class OFPHeader(GenericStruct):
     def __init__(self, *args, **kwargs):
         self.version = UBInt8(OFP_VERSION)
@@ -39,7 +38,7 @@ class OFPHeader(GenericStruct):
         self.length = UBInt16(self.get_size())
         super(OFPHeader, self).__init__(*args, **kwargs)
 
-    # TODO: Remove _build_order attribute. To do that, we need
+# TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
     _build_order=('version', 'type', 'length', 'xid')
 

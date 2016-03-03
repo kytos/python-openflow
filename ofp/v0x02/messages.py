@@ -14,6 +14,10 @@ class OFPHELLO(GenericStruct):
         self.header = OFPHeader(type = self._msg_type, length = 0, xid = self._msg_xid)
         self._length = self.get_size()
 
+        def set_header(header):
+            header.update_lenght(self)
+            self.header = header
+
 class OFPECHORequest(GenericStruct):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

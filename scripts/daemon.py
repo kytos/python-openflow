@@ -22,8 +22,12 @@ class OpenFlowHandler(SocketServer.BaseRequestHandler):
             self.header.parse(raw_header)
             self.show_header()
         if self.header.type.value == OFPType.OFPT_HELLO:
-            hello = OFPHELLO(xid=self.header.xid.value)
-            self.request.sendall(hello.build())
+             hello = OFPHELLO(xid=self.header.xid.value)
+             header = OFPHeader(xid=self.header.xid.value)
+             hello.set_Header(header)
+             self.request.sendall(hello.build())
+#            hello = OFPHELLO(xid=self.header.xid.value)
+#            self.request.sendall(hello.build())
 
     def show_header(self):
             self.debug("Version %d" % self.header.version.value)
