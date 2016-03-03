@@ -31,12 +31,19 @@ class GenericStruct(object):
             tot += getattr(self, field).get_size()
         return tot
 
+
 class OFPHeader(GenericStruct):
     def __init__(self, *args, **kwargs):
         self.version = UBInt8(OFP_VERSION)
         self.xid = UBInt32(1)
         self.length = UBInt16(self.get_size())
         super(OFPHeader, self).__init__(*args, **kwargs)
+
+    def update_length(GenericMessage):
+    '''
+    Introspection implementation here
+    '''
+        pass
 
 # TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
@@ -49,6 +56,7 @@ class OFPHeader(GenericStruct):
     xid = UBInt32()     # Transaction id associated with this packet.
                         # Replies use the same id as was in the request
                         # to facilitate pairing.
+
 
 class OFPPhyPort(GenericStruct):
     """

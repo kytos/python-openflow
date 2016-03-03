@@ -3,7 +3,12 @@ from ofp.v0x02.enums import OFPType
 from ofp.v0x02.consts import OFP_VERSION
 from ofp.v0x02.types import *
 
-class OFPHELLO(GenericStruct):
+class GenericMessage(GenericStruct):
+    def __init__(self, header):
+        self.header = header
+
+
+class OFPHELLO(GenericMessage):
     def __init__(self, xid, *args, **kwargs):
         super(OFPHELLO, self).__init__(*args, **kwargs)
         self._build_order = ('header', 'x')
@@ -14,11 +19,12 @@ class OFPHELLO(GenericStruct):
         self.header = OFPHeader(type = self._msg_type, length = 0, xid = self._msg_xid)
         self._length = self.get_size()
 
-        def set_header(header):
-            header.update_lenght(self)
-            self.header = header
+    def set_header(self):
+        header.update_length(self)
+        self.header = header
 
-class OFPECHORequest(GenericStruct):
+
+class OFPECHORequest(GenericMessage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lenght(self.get_size())
@@ -28,7 +34,8 @@ class OFPECHORequest(GenericStruct):
         header = OFPHeader(type = _msg_type, length = _length)
         x = UBInt8()
 
-class OFPECHOReply(GenericStruct):
+
+class OFPECHOReply(GenericMessage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lenght(self.get_size())
