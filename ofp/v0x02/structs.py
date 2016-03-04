@@ -36,9 +36,6 @@ class OFPHeader(GenericStruct):
         self.length = UBInt16(0)
         self.ofp_type = UBInt8(ofp_type)
 
-    def update_length(GenericMessage):
-        return self.get_size()
-
 # TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
     _build_order=('version', 'type', 'length', 'xid')
