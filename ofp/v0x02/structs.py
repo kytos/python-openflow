@@ -4,14 +4,6 @@ from ofp.v0x02.enums import OFPActionType
 from ofp.v0x02.consts import *
 
 class GenericStruct(object):
-    def __init__(self, **kwargs):
-        for a in kwargs:
-            try:
-                field = getattr(self, a)
-                field.value = kwargs[a]
-            except AttributeError as e:
-                raise OFPException("Attribute error: %s - %s" % (a, e))
-
     def build(self):
         hexa = ""
         for field in self._build_order:
@@ -20,42 +12,36 @@ class GenericStruct(object):
 
     def parse(self, buff):
         begin = 0
-        for field in self._build_order:
+        for field in type(self)._build_order:
             size = getattr(self, field).get_size()
             getattr(self,field).parse(buff, offset=begin)
             begin += size
 
     def get_size(self):
         tot = 0
-        for field in self._build_order:
-            tot += getattr(self, field).get_size()
+        for i in dir(self):
+            """ Needs to check if getattr raises Attribute Error in the case 
+             that there are fields defined only at the GenericStruct and not at 
+             the subclasses """
+            if(i.find("_") != 0 and not callable(getattr(self,i))):
+                each_attribute = getattr(self, i)
+                tot = tot + each_attribute.get_size()  
         return tot
 
 
 class OFPHeader(GenericStruct):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, xid, ofp_type, version = OFP_VERSION ):
         self.version = UBInt8(OFP_VERSION)
-        self.xid = UBInt32(1)
-        self.length = UBInt16(self.get_size())
-        super(OFPHeader, self).__init__(*args, **kwargs)
+        self.xid = UBInt32(xid)
+        self.length = UBInt16(0)
+        self.ofp_type = UBInt8(ofp_type)
 
     def update_length(GenericMessage):
-    '''
-    Introspection implementation here
-    '''
-        pass
+        return self.get_size()
 
 # TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
     _build_order=('version', 'type', 'length', 'xid')
-
-    # Attributes
-    version = UBInt8()  # OFP_VERSION
-    type = UBInt8()     # One of the OFPType
-    length = UBInt16()  # Length including this ofp_header.
-    xid = UBInt32()     # Transaction id associated with this packet.
-                        # Replies use the same id as was in the request
-                        # to facilitate pairing.
 
 
 class OFPPhyPort(GenericStruct):
@@ -269,7 +255,7 @@ class OFPPacketIn(GenericStruct):
     _build_order = ()
 
     # Attributes
-    header = OFPHeader()
+    #header = OFPHeader()
     buffer_id = UBInt32()
     total_len = UBInt16()
     in_port = UBInt16()

@@ -9,38 +9,30 @@ class GenericMessage(GenericStruct):
 
 
 class OFPHELLO(GenericMessage):
-    def __init__(self, xid, *args, **kwargs):
-        super(OFPHELLO, self).__init__(*args, **kwargs)
-        self._build_order = ('header', 'x')
-        self._msg_type = OFPType.OFPT_HELLO
-        self._msg_xid = xid
-
+    def __init__(self, xid):
+        header = OFPHeader(ofp_type = OFPType.OFPT_HELLO, xid)
+        super(OFPHELLO, self).__init__(header)
+        self._build_order = ('header','x')
         self.x = UBInt8()
-        self.header = OFPHeader(type = self._msg_type, length = 0, xid = self._msg_xid)
-        self._length = self.get_size()
-
-    def set_header(self):
-        header.update_length(self)
-        self.header = header
 
 
-class OFPECHORequest(GenericMessage):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.lenght(self.get_size())
-        _msg_type = OFPType.OFPT_ECHO_REQUEST
-        _build_order = ('header', 'x')
-
-        header = OFPHeader(type = _msg_type, length = _length)
-        x = UBInt8()
-
-
-class OFPECHOReply(GenericMessage):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.lenght(self.get_size())
-        _msg_type = OFPType.OFPT_ECHO_REPLY
-        _build_order = ('header', 'x')
-
-        header = OFPHeader(type = _msg_type, length = _length)
-        x = UBInt8()
+#class OFPECHORequest(GenericMessage):
+#    def __init__(self, *args, **kwargs):
+#        super().__init__(*args, **kwargs)
+#        self.lenght(self.get_size())
+#        _msg_type = OFPType.OFPT_ECHO_REQUEST
+#        _build_order = ('header', 'x')
+#
+#        header = OFPHeader(type = _msg_type, length = _length)
+#        x = UBInt8()
+#
+#
+#class OFPECHOReply(GenericMessage):
+#    def __init__(self, *args, **kwargs):
+#        super().__init__(*args, **kwargs)
+#        self.lenght(self.get_size())
+#        _msg_type = OFPType.OFPT_ECHO_REPLY
+#        _build_order = ('header', 'x')
+#
+#        header = OFPHeader(type = _msg_type, length = _length)
+#        x = UBInt8()
