@@ -5,7 +5,17 @@ from ofp.v0x02.consts import *
 
 import collections
 
-class GenericStruct(object):
+class GenericStruct(type):
+
+    @classmethod
+    def __prepare__(self, name, bases):
+        return collections.OrderedDict()
+
+    def __new__(self, name, bases, classdict):
+        classdict['__ordered__'] = [key for key in classdict.keys()
+                                    if key not in
+                                    ('__module__','__qualname__')]
+        return type.__new__(self, name, bases, classdict)
 
     def build(self):
         hexa = ""
@@ -32,7 +42,7 @@ class GenericStruct(object):
         return tot
 
 
-class OFPHeader(GenericStruct, type):
+class OFPHeader(metaclass=GenericStruct):
 
     def __init__(self, xid, ofp_type, version = OFP_VERSION):
         self.version = UBInt8(OFP_VERSION)
@@ -40,15 +50,12 @@ class OFPHeader(GenericStruct, type):
         self.length = UBInt16(0)
         self.ofp_type = UBInt8(ofp_type)
 
-    @classmethod
-    def __prepare__(self, xid, ofp_type):
-        return collections.OrderedDict()
+    def firsr (self):
+        pass
 
-    def __new__(self, xid, ofp_type, classDict):
-        classDict['__ordered__'] = [key for key in classDict.keys()
-                                    if key not in
-                                    ('__module__', '__qualname__')]
-        return type.__new__(self, xid, ofp_type, classDict)
+    def second (self):
+        pass
+
 
 # TODO: Remove _build_order attribute. To do that, we need
     # figure out how get attributes in defined order.
