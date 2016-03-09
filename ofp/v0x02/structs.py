@@ -62,7 +62,7 @@ class OFPHeader(metaclass=GenericStruct):
     _build_order=('version', 'type', 'length', 'xid')
 
 
-class OFPPhyPort(GenericStruct):
+class OFPPhyPort(metaclass=GenericStruct):
     """
     Description of a physical port.
 
