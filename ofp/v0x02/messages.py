@@ -4,7 +4,7 @@ from ofp.v0x02.consts import OFP_VERSION
 from ofp.v0x02.types import *
 
 
-class GenericMessage(GenericStruct):
+class GenericMessage(metaclass=GenericStruct):
     def __init__(self, header):
         self.header = header
 
@@ -12,8 +12,7 @@ class GenericMessage(GenericStruct):
 class OFPHELLO(GenericMessage):
     def __init__(self, xid):
 #        header = OFPHeader(ofp_type = OFPType.OFPT_HELLO, xid)
-        header = OFPHeader(xid,
-                           ofp_type=OFPType.OFPT_HELLO)
+        header = OFPHeader(xid, ofp_type=OFPType.OFPT_HELLO)
         super(OFPHELLO, self).__init__(header)
         self._build_order = ('header','x')
         self.x = UBInt8()
