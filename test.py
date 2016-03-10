@@ -23,6 +23,17 @@ class GenericStruct(metaclass=Test):
                 except KeyError:
                     pass
 
+    def get_size(self):
+        tot = 0
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if _class is OFPHeader:
+                tot += (getattr(self, _attr).get_size())
+            else:
+                tot += (_class(attr).get_size())
+        return tot
+
+
     def build(self):
         hex = b''
         for _attr, _class in self.__ordered__:
