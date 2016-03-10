@@ -31,7 +31,7 @@ class GenericStruct(metaclass=Test):
                 hex += getattr(self, _attr).build()
             elif not callable(attr):
                 hex += _class(attr).build()
-        return hex
+        return hex.rstrip()
 
 class GenericMessage(GenericStruct):
     pass
