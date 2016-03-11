@@ -46,6 +46,24 @@ class GenericStruct(metaclass=Test):
                 print("{} {} {}".format(_attr, attr,_class(attr).build()))
         return hex
 
+    def parse(self, buff):
+        begin = 0
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if _class is OFPHeader:
+                size = (getattr(self, _attr).get_size())
+                getattr(self,_attr).parse(buff, offset=begin)
+            elif not callable(attr):
+                size = (_class(attr).get_size())
+                getattr(self,_attr).parse(buff, offset=begin)
+
+            begin += size
+
+        # for field in type(self)._build_order:
+        #     size = getattr(self, field).get_size()
+        #     getattr(self,field).parse(buff, offset=begin)
+        #     begin += size
+
 class GenericMessage(GenericStruct):
     def __init__(self, header, *args, **kwargs):
         """Receives the header and update the length field in it"""
