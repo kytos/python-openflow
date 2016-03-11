@@ -9,9 +9,9 @@ class Test(type):
         return collections.OrderedDict()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = [(key, type(value)) for key, value in classdict.items()
-                                    if key not in
-                                    ('__init__', '__module__','__qualname__')]
+        classdict['__ordered__'] = [(key, type(value)) for key, value in 
+                            classdict.items() if key not in 
+                            ('__module__','__qualname__')]
         return type.__new__(self, name, bases, classdict)
 
 class GenericStruct(metaclass=Test):
