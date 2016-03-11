@@ -30,7 +30,7 @@ class GenericStruct(metaclass=Test):
             attr = getattr(self, _attr)
             if _class is OFPHeader:
                 tot += (getattr(self, _attr).get_size())
-            else:
+            elif not callable(attr):
                 tot += (_class(attr).get_size())
         return tot
 
@@ -40,27 +40,39 @@ class GenericStruct(metaclass=Test):
             attr = getattr(self, _attr)
             if _class is OFPHeader:
                 hex += getattr(self, _attr).build()
+                print("{} {} {}".format(_attr, attr,getattr(self, _attr).build()))
             elif not callable(attr):
                 hex += _class(attr).build()
-        return hex.rstrip()
+                print("{} {} {}".format(_attr, attr,_class(attr).build()))
+        return hex
 
 class GenericMessage(GenericStruct):
-    pass
+    def __init__(self, header, *args, **kwargs):
+        """Receives the header and update the length field in it"""
+        super().__init__(*args, **kwargs)
+        self.header = header
+        self.header.length = self.get_size()
+        
+    
 
-class OFPHeader(GenericMessage):
+class OFPHeader(GenericStruct):
     version = UBInt8()
     xid = UBInt32()
     length = UBInt16()
     ofp_type = UBInt8()
 
-#    type = UBInt8()
-#    version = UBInt8()
-#    xid = UBInt8()
-
 class OFPHello(GenericMessage):
     header = OFPHeader(version = 1 , xid = 10, ofp_type=0, length=2)
-    x = UBInt8()
+    x = UBInt32()
+
+    def __init__(self, xid = 0, x = 0):
+        header = OFPHeader(version = 1 , xid = xid, ofp_type=2, length=0)
+        self.x = x
+        super(OFPHello, self).__init__(header)
 
 
-hello = OFPHello(x=3)
-print(hello.build()
+
+hello = OFPHello(xid=10,x=3)
+print(hello.get_size())
+print(hello.header.length)
+print(hello.build())

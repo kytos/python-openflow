@@ -1,9 +1,8 @@
 from struct import pack, unpack_from, calcsize
 
 class GenericType():
-    def __init__(self, value = None):
-        if value:
-           self.value = value
+    def __init__(self, value = 0):
+       self.value = value
 
     def __str__(self):
         return str(self.value)
