@@ -1,4 +1,5 @@
-from ofp.v0x02.types import UBInt8
+from ofp.v0x02.types import UBInt8, UBInt16, UBInt32
+from ofp.v0x02.consts import *
 
 import collections
 
@@ -33,7 +34,6 @@ class GenericStruct(metaclass=Test):
                 tot += (_class(attr).get_size())
         return tot
 
-
     def build(self):
         hex = b''
         for _attr, _class in self.__ordered__:
@@ -48,14 +48,19 @@ class GenericMessage(GenericStruct):
     pass
 
 class OFPHeader(GenericMessage):
-    type = UBInt8()
     version = UBInt8()
-    xid = UBInt8()
+    xid = UBInt32()
+    length = UBInt16()
+    ofp_type = UBInt8()
+
+#    type = UBInt8()
+#    version = UBInt8()
+#    xid = UBInt8()
 
 class OFPHello(GenericMessage):
-    header = OFPHeader(type = 2, version = 1 , xid = 10)
+    header = OFPHeader(version = 1 , xid = 10, ofp_type=0, length=2)
     x = UBInt8()
 
 
 hello = OFPHello(x=3)
-print(hello.build())
+print(hello.build()
