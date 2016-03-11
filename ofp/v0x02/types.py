@@ -21,7 +21,7 @@ class GenericType():
 
 
 class UBInt8(GenericType):
-    fmt = ">B"
+    fmt = "!B"
 
 
 class UBInt8Array(GenericType):
@@ -29,7 +29,7 @@ class UBInt8Array(GenericType):
         if value:
             self.value = value
         self.length = length
-        self.fmt = ">%d%c" % (self.length, 'B')
+        self.fmt = "!%d%c" % (self.length, 'B')
 
     def parse(self, buff, offset=0):
         self.value = unpack_from(self.fmt, buff, offset)
@@ -43,15 +43,15 @@ class UBInt8Array(GenericType):
 
 
 class UBInt16(GenericType):
-    fmt = ">H"
+    fmt = "!H"
 
 
 class UBInt32(GenericType):
-    fmt = ">I"
+    fmt = "!I"
 
 
 class UBInt64(GenericType):
-    fmt = ">Q"
+    fmt = "!Q"
 
 
 class Char(GenericType):
@@ -59,4 +59,4 @@ class Char(GenericType):
         if value:
             self.value = value
         self.length = length
-        self.fmt = '>%d%c' % (self.length, 's')
+        self.fmt = '!%d%c' % (self.length, 's')
