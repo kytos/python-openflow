@@ -66,11 +66,10 @@ class GenericStruct(metaclass=MetaStruct):
 
 class OFPHeader(GenericStruct):
     version = UBInt8()
-    xid = UBInt32()
-    length = UBInt16()
     ofp_type = UBInt8()
+    length = UBInt16()
+    xid = UBInt32()
 
-######
 
 class OFPPhyPort(metaclass=GenericStruct):
     """

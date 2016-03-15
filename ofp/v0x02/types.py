@@ -32,6 +32,7 @@ class UBInt8Array(GenericType):
         self.fmt = "!%d%c" % (self.length, 'B')
 
     def parse(self, buff, offset=0):
+        """ Unpack a buff and stores at value property. """
         self.value = unpack_from(self.fmt, buff, offset)
 
     def build(self):
