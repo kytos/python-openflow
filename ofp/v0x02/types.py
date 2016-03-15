@@ -7,11 +7,11 @@ class GenericType():
     def __str__(self):
         return str(self.value)
 
-    def build(self):
+    def pack(self):
         """ Pack a value into a binary buffer."""
         return pack(self.fmt, self.value)
 
-    def parse(self, buff, offset=0):
+    def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at value property. """
         self.value = unpack_from(self.fmt, buff, offset)[0]
 
@@ -31,11 +31,11 @@ class UBInt8Array(GenericType):
         self.length = length
         self.fmt = "!%d%c" % (self.length, 'B')
 
-    def parse(self, buff, offset=0):
+    def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at value property. """
         self.value = unpack_from(self.fmt, buff, offset)
 
-    def build(self):
+    def pack(self):
         """
         Here we need a pointer, self.value is a tuple and is expanded to
         args.

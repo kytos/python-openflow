@@ -36,7 +36,7 @@ class GenericStruct(metaclass=MetaStruct):
                 tot += (_class(attr).get_size())
         return tot
 
-    def build(self):
+    def pack(self):
         hex = b''
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
@@ -50,7 +50,7 @@ class GenericStruct(metaclass=MetaStruct):
                       .format(_attr, attr,_class(attr).build()))
         return hex
 
-    def parse(self, buff):
+    def unpack(self, buff):
         begin = 0
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
@@ -60,7 +60,6 @@ class GenericStruct(metaclass=MetaStruct):
             elif not callable(attr):
                 size = (_class(attr).get_size())
                 getattr(self,_attr).parse(buff, offset=begin)
-
             begin += size
 
 

@@ -21,7 +21,7 @@ class TCPSocketHandler(SocketServer.BaseRequestHandler):
         if raw_header:
             #TODO: Should we instanciate with the raw_header ?
             header = OFPHeader()
-            header.parse(raw_header)
+            header.pack(raw_header)
 
             raw_message = self.request.recv(header.length.value - header_size)
 
@@ -34,7 +34,7 @@ class TCPSocketHandler(SocketServer.BaseRequestHandler):
             self.debug("xid: %d" % header.xid.value)
 
     def debug(self, msg):
-        print "DEBUG: %s" % msg
+        print("DEBUG: %s", msg)
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 6633
