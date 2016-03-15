@@ -5,62 +5,72 @@ from ofp.v0x02.consts import *
 
 import collections
 
-class GenericStruct(type):
-
+class MainClass(type):
     @classmethod
     def __prepare__(self, name, bases):
         return collections.OrderedDict()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = [key for key in classdict.keys()
-                                    if key not in
-                                    ('__module__','__qualname__')]
+        classdict['__ordered__'] = [(key, type(value)) for key, value in
+                            classdict.items() if key not in
+                            ('__module__','__qualname__')]
         return type.__new__(self, name, bases, classdict)
 
-    def build(self):
-        hexa = ""
-        for field in self._build_order:
-            hexa += getattr(self, field).build()
-        return hexa
-
-    def parse(self, buff):
-        begin = 0
-        for field in type(self)._build_order:
-            size = getattr(self, field).get_size()
-            getattr(self,field).parse(buff, offset=begin)
-            begin += size
+class GenericStruct(metaclass=MainClass):
+    def __init__(self, *args, **kwargs):
+        for _attr, _class in self.__ordered__:
+            if not callable(getattr(self, _attr)):
+                # TODO: Validade data
+                try:
+                    setattr(self, _attr, kwargs[_attr])
+                except KeyError:
+                    pass
 
     def get_size(self):
         tot = 0
-        for i in dir(self):
-            """ Needs to check if getattr raises Attribute Error in the case 
-             that there are fields defined only at the GenericStruct and not at 
-             the subclasses """
-            if(i.find("_") != 0 and not callable(getattr(self,i))):
-                each_attribute = getattr(self, i)
-                tot = tot + each_attribute.get_size()  
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if _class is OFPHeader:
+                tot += (getattr(self, _attr).get_size())
+            elif not callable(attr):
+                tot += (_class(attr).get_size())
         return tot
 
+    def build(self):
+        hex = b''
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if _class is OFPHeader:
+                hex += getattr(self, _attr).build()
+                print("{} {} {}".
+                      format(_attr, attr,getattr(self, _attr).build()))
+            elif not callable(attr):
+                hex += _class(attr).build()
+                print("{} {} {}"
+                      .format(_attr, attr,_class(attr).build()))
+        return hex
 
-class OFPHeader(metaclass=GenericStruct):
+    def parse(self, buff):
+        begin = 0
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if _class is OFPHeader:
+                size = (getattr(self, _attr).get_size())
+                getattr(self,_attr).parse(buff, offset=begin)
+            elif not callable(attr):
+                size = (_class(attr).get_size())
+                getattr(self,_attr).parse(buff, offset=begin)
 
-    def __init__(self, xid, ofp_type, version = OFP_VERSION):
-        self.version = UBInt8(OFP_VERSION)
-        self.xid = UBInt32(xid)
-        self.length = UBInt16(0)
-        self.ofp_type = UBInt8(ofp_type)
-
-    def firsr (self):
-        pass
-
-    def second (self):
-        pass
+            begin += size
 
 
-# TODO: Remove _build_order attribute. To do that, we need
-    # figure out how get attributes in defined order.
-    _build_order=('version', 'type', 'length', 'xid')
+class OFPHeader(GenericStruct):
+    version = UBInt8()
+    xid = UBInt32()
+    length = UBInt16()
+    ofp_type = UBInt8()
 
+######
 
 class OFPPhyPort(metaclass=GenericStruct):
     """
