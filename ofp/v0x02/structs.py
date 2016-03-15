@@ -5,7 +5,7 @@ from ofp.v0x02.consts import *
 
 import collections
 
-class MainClass(type):
+class MetaStruct(type):
     @classmethod
     def __prepare__(self, name, bases):
         return collections.OrderedDict()
@@ -16,7 +16,7 @@ class MainClass(type):
                             ('__module__','__qualname__')]
         return type.__new__(self, name, bases, classdict)
 
-class GenericStruct(metaclass=MainClass):
+class GenericStruct(metaclass=MetaStruct):
     def __init__(self, *args, **kwargs):
         for _attr, _class in self.__ordered__:
             if not callable(getattr(self, _attr)):
