@@ -4,21 +4,23 @@ from ofp.v0x02.consts import OFP_VERSION
 from ofp.v0x02.types import *
 
 
-class GenericMessage(metaclass=GenericStruct):
-    def __init__(self, header):
+class GenericMessage(GenericStruct):
+    def __init__(self, header, *args, **kwargs):
+        """Receives the header and update the length field in it"""
+        super().__init__(*args, **kwargs)
         self.header = header
+        self.header.length = self.get_size()
 
 
-class OFPHELLO(GenericMessage):
-    def __init__(self, xid):
-#        header = OFPHeader(ofp_type = OFPType.OFPT_HELLO, xid)
-        header = OFPHeader(xid, ofp_type=OFPType.OFPT_HELLO)
-        super(OFPHELLO, self).__init__(header)
-        self._build_order = ('header','x')
-        self.x = UBInt8()
+class OFPHello(GenericMessage):
+    header = OFPHeader(version = 1 , xid = 10, ofp_type=0, length=2)
+    x = UBInt32()
 
+    def __init__(self, xid = 0, x = 0):
+        header = OFPHeader(version = 1 , xid = xid, ofp_type=2, length=0)
+        self.x = x
+        super(OFPHello, self).__init__(header)
 
-#self, version, type, length, xid, classdict
 
 #class OFPECHORequest(GenericMessage):
 #    def __init__(self, *args, **kwargs):
