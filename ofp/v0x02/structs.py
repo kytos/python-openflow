@@ -56,10 +56,10 @@ class GenericStruct(metaclass=MetaStruct):
             attr = getattr(self, _attr)
             if _class is OFPHeader:
                 size = (getattr(self, _attr).get_size())
-                getattr(self,_attr).parse(buff, offset=begin)
+                getattr(self,_attr).unpack(buff, offset=begin)
             elif not callable(attr):
                 size = (_class(attr).get_size())
-                getattr(self,_attr).parse(buff, offset=begin)
+                getattr(self,_attr).unpack(buff, offset=begin)
             begin += size
 
 
