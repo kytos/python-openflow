@@ -22,11 +22,11 @@ class TCPSocketHandler(socketserver.BaseRequestHandler):
         # self.request is the TCP socket connected to the client
         raw_header = self.request.recv(header_size)
         if raw_header:
-
             #TODO: Should we instanciate with the raw_header ?
             header = OFPHeader()
-            header.pack(raw_header)
+            header.unpack(raw_header)
             raw_message = self.request.recv(header.length.value - header_size)
+            print(header.xid.value)
 
             #TODO: Create thread to handle header + raw_message
 
