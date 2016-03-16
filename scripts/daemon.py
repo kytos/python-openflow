@@ -27,6 +27,7 @@ class TCPSocketHandler(socketserver.BaseRequestHandler):
             header.unpack(raw_header)
             raw_message = self.request.recv(header.length.value - header_size)
             print(header.xid.value)
+            print(header.length.value)
 
             #TODO: Create thread to handle header + raw_message
 
@@ -44,6 +45,8 @@ class OFPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
     allow_reuse_address = True
 
+    def __init__(self, server_address, RequestHandlerClass):
+        socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass)
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 6633
