@@ -41,13 +41,13 @@ class GenericStruct(metaclass=MetaStruct):
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
             if _class is OFPHeader:
-                hex += getattr(self, _attr).build()
+                hex += getattr(self, _attr).pack()
                 print("{} {} {}".
-                      format(_attr, attr,getattr(self, _attr).build()))
+                      format(_attr, attr,getattr(self, _attr).pack()))
             elif not callable(attr):
-                hex += _class(attr).build()
+                hex += _class(attr).pack()
                 print("{} {} {}"
-                      .format(_attr, attr,_class(attr).build()))
+                      .format(_attr, attr,_class(attr).pack()))
         return hex
 
     def unpack(self, buff):
