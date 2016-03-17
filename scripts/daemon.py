@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import socketserver
+import threading
 
 from ofp.v0x02.messages import OFPHeader
 from ofp.v0x02.enums import OFPType
 
 
-class TCPSocketHandler(socketserver.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """
     The request handler class for our controller.
 
@@ -14,8 +15,6 @@ class TCPSocketHandler(socketserver.BaseRequestHandler):
     override the handle() method to implement communication to the
     client.
     """
-    daemon_threads = True
-    allow_reuse_address = True
 
     def handle(self):
         header_size = 8
@@ -41,7 +40,7 @@ class TCPSocketHandler(socketserver.BaseRequestHandler):
         print("DEBUG: %s", msg)
 
 
-class OFPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
     allow_reuse_address = True
 
@@ -52,7 +51,10 @@ if __name__ == "__main__":
     HOST, PORT = "localhost", 6633
 
     # Create the server, binding to localhost on port 6633
-    server = OFPServer((HOST,PORT),TCPSocketHandler)
+    server = ThreadedTCPServer((HOST,PORT),ThreadedTCPRequestHandler)
+    server_thread = threading.Thread(target=server.serve_forever)
+    server_thread.daemon = True
+    server_thread.start()
     #server = socketserver.TCPServer((HOST, PORT), TCPSocketHandler)
 
     # Activate the server; this will keep running until you
