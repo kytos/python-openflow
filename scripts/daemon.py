@@ -1,13 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import socketserver
 import threading
+
+from socketserver import ThreadingMixIn, BaseRequestHandler
+from socketserver import TCPServer as SSTCPServer
 
 from ofp.v0x02.messages import OFPHeader
 from ofp.v0x02.enums import OFPType
+from ofp.v0x02.exceptions import OFPException
 
-
-class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+class OpenFlowHandler(BaseRequestHandler):
     """
     The request handler class for our controller.
 
@@ -17,48 +19,60 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """
 
     def handle(self):
-        header_size = 8
-        # self.request is the TCP socket connected to the client
-        raw_header = self.request.recv(header_size)
-        cur_thread = threading.current_thread()
-        print("  Curr Thread: ",cur_thread)
-        if raw_header:
-            #TODO: Should we instanciate with the raw_header ?
-            header = OFPHeader()
-            header.unpack(raw_header)
-            raw_message = self.request.recv(header.length.value - header_size)
-            print("XID: ", header.xid.value)
+        self.debug("Handling client %s:%s" % (self.client_address[0],
+                                              self.client_address[1]))
 
-            #TODO: Create thread to handle header + raw_message
+        header_size = 8
+
+        try:
+            # self.request is the TCP socket connected to the client
+            raw_header = self.request.recv(header_size)
+            cur_thread = threading.current_thread()
+            if raw_header:
+                #TODO: Should we instanciate with the raw_header ?
+                header = OFPHeader()
+                header.unpack(raw_header)
+                raw_message = self.request.recv(header.length.value - header_size)
+
+                #TODO: Create method to handle header + raw_message
+                #if header.ofp_type == OFPHELLO
+                #    self.handle_hello(header, raw_message)
+                #elif
+
+        except OFPException as e:
+            self.error("Error handling data from %s:%s" % self.client_address)
+
+    def handle_hello(self, header, raw_message):
+        pass
 
     def show_header(self, header):
-            self.debug("Version %d" % header.version.value)
-            self.debug("Type: %s" % OFPType().get_name(header.type.value))
-            self.debug("Length: %d" % header.length.value)
-            self.debug("xid: %d" % header.xid.value)
+        self.debug("Version %d" % header.version.value)
+        self.debug("Type: %s" % OFPType().get_name(header.type.value))
+        self.debug("Length: %d" % header.length.value)
+        self.debug("xid: %d" % header.xid.value)
 
     def debug(self, msg):
-        print("DEBUG: %s", msg)
+        print("DEBUG: %s" % msg)
+
+    def error(self, msg):
+        print("ERROR: %s" % msg)
+
+    def info(self, msg):
+        print("INFO: %s" % msg)
 
 
-class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
-    daemon_threads = True
+class TCPServer(ThreadingMixIn, SSTCPServer):
+    #daemon_threads = True
     allow_reuse_address = True
 
-    def __init__(self, server_address, RequestHandlerClass):
-        socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass)
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 6633
 
     # Create the server, binding to localhost on port 6633
-    server = ThreadedTCPServer((HOST,PORT),ThreadedTCPRequestHandler)
-    server_thread = threading.Thread(target=server.serve_forever)
-    server_thread.daemon = True
-    server_thread.start()
-    #server = socketserver.TCPServer((HOST, PORT), TCPSocketHandler)
-    print("Server loop running in thread:", server_thread.name)
+    server = TCPServer((HOST,PORT), OpenFlowHandler)
 
-    # Activate the server; this will keep running until you
-    # interrupt the program with Ctrl-C
-    server.serve_forever()
+    server_thread = threading.Thread(target = server.serve_forever)
+    server_thread.start()
+    print("Server listing at %s:%s" % (server.server_address[0],
+                                       server.server_address[1]))

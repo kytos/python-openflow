@@ -1,4 +1,6 @@
-from struct import pack, unpack_from, calcsize
+from struct import pack, unpack_from, calcsize, error
+
+from ofp.v0x02.exceptions import OFPException
 
 class GenericType():
     def __init__(self, value = 0):
@@ -13,7 +15,10 @@ class GenericType():
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at value property. """
-        self.value = unpack_from(self.fmt, buff, offset)[0]
+        try:
+            self.value = unpack_from(self.fmt, buff, offset)[0]
+        except error as e:
+            raise OFPException("Error while unpack data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
