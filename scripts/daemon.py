@@ -20,13 +20,14 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         header_size = 8
         # self.request is the TCP socket connected to the client
         raw_header = self.request.recv(header_size)
+        cur_thread = threading.current_thread()
+        print("  Curr Thread: ",cur_thread)
         if raw_header:
             #TODO: Should we instanciate with the raw_header ?
             header = OFPHeader()
             header.unpack(raw_header)
             raw_message = self.request.recv(header.length.value - header_size)
-            print(header.xid.value)
-            print(header.length.value)
+            print("XID: ", header.xid.value)
 
             #TODO: Create thread to handle header + raw_message
 
@@ -56,6 +57,7 @@ if __name__ == "__main__":
     server_thread.daemon = True
     server_thread.start()
     #server = socketserver.TCPServer((HOST, PORT), TCPSocketHandler)
+    print("Server loop running in thread:", server_thread.name)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
