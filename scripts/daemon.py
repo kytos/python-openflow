@@ -5,7 +5,7 @@ import threading
 from socketserver import ThreadingMixIn, BaseRequestHandler
 from socketserver import TCPServer as SSTCPServer
 
-from ofp.v0x02.messages import OFPHeader
+from ofp.v0x02.messages import OFPHeader, OFPHello
 from ofp.v0x02.enums import OFPType
 from ofp.v0x02.exceptions import OFPException
 
@@ -32,18 +32,22 @@ class OpenFlowHandler(BaseRequestHandler):
                 #TODO: Should we instanciate with the raw_header ?
                 header = OFPHeader()
                 header.unpack(raw_header)
-                raw_message = self.request.recv(header.length.value - header_size)
+                raw_message = self.request.recv(header.get_size() - header_size)
 
                 #TODO: Create method to handle header + raw_message
-                #if header.ofp_type == OFPHELLO
-                #    self.handle_hello(header, raw_message)
-                #elif
+                if header.ofp_type == OFPType.OFPT_HELLO:
+                    reply = self.handle_hello(header)
+                    self.request.sendall(reply)
+                else:
+                    print("Couldn't call handle_hello method")
 
         except OFPException as e:
             self.error("Error handling data from %s:%s" % self.client_address)
 
-    def handle_hello(self, header, raw_message):
-        pass
+    def handle_hello(self, header):
+        xid_answer = header.xid.value
+        hello = OFPHello(xid=xid_answer, x=5)
+        return hello
 
     def show_header(self, header):
         self.debug("Version %d" % header.version.value)
