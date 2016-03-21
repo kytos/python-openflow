@@ -41,12 +41,12 @@ class GenericStruct(metaclass=MetaStruct):
             attr = getattr(self, _attr)
             if _class is OFPHeader:
                 hex += getattr(self, _attr).pack()
-                print("{} {} {}".
-                      format(_attr, attr,getattr(self, _attr).pack()))
+                #print("{} {} {}".
+                #      format(_attr, attr,getattr(self, _attr).pack()))
             elif not callable(attr):
                 hex += _class(attr).pack()
-                print("{} {} {}"
-                      .format(_attr, attr,_class(attr).pack()))
+                #print("{} {} {}"
+                #      .format(_attr, attr,_class(attr).pack()))
         return hex
 
     def unpack(self, buff):
