@@ -13,13 +13,25 @@ class GenericMessage(GenericStruct):
 
 
 class OFPHello(GenericMessage):
-    header = OFPHeader(version = 1 , xid = 10, ofp_type=0, length=2)
+    header = OFPHeader(version = 2 , xid = 10, ofp_type=0, length=2)
     x = UBInt32()
 
-    def __init__(self, xid = 0, x = 0):
-        header = OFPHeader(version = 1 , xid = xid, ofp_type=2, length=0)
+    def __init__(self, xid = 0, x = 3):
+        header = OFPHeader(version = 2 , xid = xid, ofp_type=0, length=0)
         self.x = x
         super(OFPHello, self).__init__(header)
+
+
+class OFPFeaturesRequest(GenericMessage):
+    header = OFPHeader(version = 2, xid = 10, ofp_type = 5, lenght=2)
+    x = UBInt32()
+
+    def __init__(self, xid = 0, x = 3):
+        header = OFPHeader(version = 2 , xid = xid, ofp_type=5, length=0)
+        self.x = x
+        super(OFPFeaturesRequest, self).__init__(header)
+
+
 
 
 #class OFPECHORequest(GenericMessage):
