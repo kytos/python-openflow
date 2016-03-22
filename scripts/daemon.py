@@ -37,7 +37,6 @@ class OpenFlowHandler(BaseRequestHandler):
                 #TODO: Create method to handle header + raw_message
                 if (header.ofp_type.value == 0):
                     reply = self.handle_hello(header)
-                    print(header.length.value)
                     self.request.sendall(reply)
                 else:
                     print("Couldn't call handle_hello method")
