@@ -35,7 +35,7 @@ class OpenFlowHandler(BaseRequestHandler):
                 raw_message = self.request.recv(header.get_size() - header_size)
 
                 #TODO: Create method to handle header + raw_message
-                if header.ofp_type == OFPType.OFPT_HELLO:
+                if (header.ofp_type.value == 0):
                     reply = self.handle_hello(header)
                     self.request.sendall(reply)
                 else:
@@ -46,8 +46,10 @@ class OpenFlowHandler(BaseRequestHandler):
 
     def handle_hello(self, header):
         xid_answer = header.xid.value
-        hello = OFPHello(xid=xid_answer, x=5)
-        return hello
+        hello = OFPHello(xid=xid_answer)
+        message = hello.pack()
+        print(message)
+        return message
 
     def show_header(self, header):
         self.debug("Version %d" % header.version.value)
