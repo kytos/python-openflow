@@ -1,4 +1,4 @@
-from ofp.v0x02.types import UBInt8, UBInt8Array, UBInt16, UBInt32, Char
+from ofp.v0x02.of_basic_types import UBInt8, UBInt8Array, UBInt16, UBInt32, Char
 from ofp.v0x02.enums import OFPActionType
 from ofp.v0x02.consts import *
 

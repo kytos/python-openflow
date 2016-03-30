@@ -1,8 +1,7 @@
 from ofp.v0x02.structs import GenericStruct, OFPHeader
 from ofp.v0x02.enums import OFPType
 from ofp.v0x02.consts import OFP_VERSION
-from ofp.v0x02.types import *
-
+from ofp.v0x02.of_basic_types import UBInt32
 
 class GenericMessage(GenericStruct):
     def __init__(self, header, *args, **kwargs):
