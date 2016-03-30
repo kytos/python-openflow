@@ -1,12 +1,5 @@
-class GenericEnum(object):
-    def get_name(self, value):
-        for p, v in vars(self.__class__).iteritems():
-            if v == value:
-                return p
-        return "UNKNOWN"
-
-
-class OFPType(GenericEnum):
+from enum import Enum
+class OFPType(Enum):
     """
     Message Type
     """
@@ -16,7 +9,7 @@ class OFPType(GenericEnum):
     OFPT_ECHO_REQUEST = 2
     OFPT_ECHO_REPLY = 3
     OFPT_VENDOR = 4
-    
+
     # Switch configuration messages
     # Controller/Switch messages
     OFPT_FEATURES_REQUEST = 5
@@ -27,7 +20,7 @@ class OFPType(GenericEnum):
 
     # Async messages
     OFPT_PACKET_IN = 10
-    OFPT_FLOW_REMOVED = 11 
+    OFPT_FLOW_REMOVED = 11
     OFPT_PORT_STATUS = 12
 
     # Controller command messages
@@ -52,7 +45,7 @@ class OFPType(GenericEnum):
     OFPT_QUEUE_GET_CONFIG_REPLY = 21
 
 
-class OFPPortConfig(GenericEnum):
+class OFPPortConfig(Enum):
     """
     Flags to indicate behavior of the physical port. These flags are used in
     OFPPhyPort to describe the current configuration. They are used in the
@@ -68,7 +61,7 @@ class OFPPortConfig(GenericEnum):
     OFPPC_NO_PACKET_IN = 1 << 6 # Do not send packet-in msgs for port
 
 
-class OFPPortState(GenericEnum):
+class OFPPortState(Enum):
     """
     Current state of the physical port. These are not configurable from the
     controller.
@@ -86,7 +79,7 @@ class OFPPortState(GenericEnum):
     OFPPS_STP_MASK = 3 << 8     # Bit mask for OFPPS_STP_* values.
 
 
-class OFPPort(GenericEnum):
+class OFPPort(Enum):
     """
     Port numbering. Physical ports are numbered starting from 1.
     """
@@ -112,8 +105,7 @@ class OFPPort(GenericEnum):
     OFPP_NONE = 0xffff          # Not associated with a physical port
 
 
-
-class OFPPortFeatures(GenericEnum):
+class OFPPortFeatures(Enum):
     """
     Physical ports features.
 
@@ -136,7 +128,7 @@ class OFPPortFeatures(GenericEnum):
     OFPPF_PAUSE_ASYM = 1 << 11  # Asymmetric pause.
 
 
-class OFPFlowWildcards(GenericEnum):
+class OFPFlowWildcards(Enum):
     """
     If no wildcards are set, then the ofp_match exactly describes a flow, over
     the entire OpenFlow 12-tuple. On the other extreme, if all the wildcard
@@ -181,7 +173,7 @@ class OFPFlowWildcards(GenericEnum):
     OFPFW_ALL = ((1 << 22) - 1)     # Wildcard all fields
 
 
-class OFPActionType(GenericEnum):
+class OFPActionType(Enum):
     """
     A number of actions may be associated with flows or packets. The currently
     defined action types are:
