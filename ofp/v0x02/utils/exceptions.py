@@ -1,0 +1,2 @@
+class OFPException(Exception):
+    pass
