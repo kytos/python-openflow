@@ -1,5 +1,29 @@
 import collections
 
+
+class GenericType():
+    def __init__(self, value = 0):
+       self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+    def pack(self):
+        """ Pack a value into a binary buffer."""
+        return pack(self.fmt, self.value)
+
+    def unpack(self, buff, offset=0):
+        """ Unpack a buff and stores at value property. """
+        try:
+            self.value = unpack_from(self.fmt, buff, offset)[0]
+        except error as e:
+            raise OFPException("Error while unpack data from buffer")
+
+    def get_size(self):
+        """ Return the size of type in bytes. """
+        return calcsize(self.fmt)
+
+
 class MetaStruct(type):
     @classmethod
     def __prepare__(self, name, bases):

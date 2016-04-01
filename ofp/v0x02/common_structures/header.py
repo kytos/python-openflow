@@ -1,5 +1,5 @@
-from ofp.v0x02.basic_types import UBInt8, UBInt16, UBInt32
-from ofp.v0x02.common.generic import GenericStruct
+from common.basic_types import UBInt8, UBInt16, UBInt32
+from common.base import GenericStruct
 
 class OFPHeader(GenericStruct):
     version = UBInt8()
