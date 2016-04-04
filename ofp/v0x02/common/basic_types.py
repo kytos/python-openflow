@@ -30,18 +30,17 @@ class UBInt8Array(base.GenericType):
     def unpack(self, buff, offset=0):
         """
         Unpack a buff and stores at value property.
-        Keyword arguments:
-            buff -- Buffer where data is located.
-            offset -- Where data stream begins.
+        :param buff -- Buffer where data is located.
+        :param offset -- Where data stream begins.
         """
-        self.value = unpack_from(self.fmt, buff, offset)
+        self.value = struct.unpack_from(self.fmt, buff, offset)
 
     def pack(self):
         """
         Here we need a pointer, self.value is a tuple and is expanded to
         args.
         """
-        return pack(self.fmt, *self.value)
+        return struct.pack(self.fmt, *self.value)
 
 
 class UBInt16(base.GenericType):
@@ -70,9 +69,14 @@ class UBInt64(base.GenericType):
 
 class Char(base.GenericType):
     """
-
+    Format double char to create a Char basic type.
     """
     def __init__(self, value=None, length=0):
+        """
+        Build a double char type according to the length
+        :param value: the character to be build.
+        :param length: the character size.
+        """
         if value:
             self.value = value
         self.length = length
