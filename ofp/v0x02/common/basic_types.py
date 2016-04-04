@@ -1,9 +1,5 @@
-from struct import pack
-from struct import unpack
-from struct import unpack_from
+import struct
 from common import base
-from common import exceptions
-
 
 # TODO: Refactor unpack methods to return the unpacked object
 #       instead of being an inplace method.
