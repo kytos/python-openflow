@@ -28,20 +28,35 @@ class UBInt8Array(GenericType):
         return pack(self.fmt, *self.value)
 
 
-class UBInt16(GenericType):
+class UBInt16(base.GenericType):
+    """
+    Format character for an Unsigned Short. Class for an 16 bytes
+    Unsigned Integer.
+    """
     fmt = "!H"
 
 
-class UBInt32(GenericType):
+class UBInt32(base.GenericType):
+    """
+    Format character for an Unsigned Int. Class for an 32 bytes
+    Unsigned Integer.
+    """
     fmt = "!I"
 
 
-class UBInt64(GenericType):
+class UBInt64(base.GenericType):
+    """
+    Format character for an Unsigned Long Long. Class for an 64 bytes
+    Unsigned Integer.
+    """
     fmt = "!Q"
 
 
-class Char(GenericType):
-    def __init__(self, value = None, length=0):
+class Char(base.GenericType):
+    """
+
+    """
+    def __init__(self, value=None, length=0):
         if value:
             self.value = value
         self.length = length
