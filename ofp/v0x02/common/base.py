@@ -1,4 +1,21 @@
+"""Contains basic and fundamental classes and constants"""
+
+# System imports
 import collections
+import struct
+
+# Third-party imports
+
+# Local source tree imports
+from common import exceptions
+
+
+# CONSTANTS
+OFP_ETH_ALEN = 6
+OFP_MAX_PORT_NAME_LEN = 16
+OFP_VERSION = 0x02
+
+# CLASSES
 
 
 class GenericType():
@@ -10,18 +27,18 @@ class GenericType():
 
     def pack(self):
         """ Pack a value into a binary buffer."""
-        return pack(self.fmt, self.value)
+        return struct.pack(self.fmt, self.value)
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at value property. """
         try:
-            self.value = unpack_from(self.fmt, buff, offset)[0]
-        except error as e:
-            raise OFPException("Error while unpack data from buffer")
+            self.value = struct.unpack_from(self.fmt, buff, offset)[0]
+        except struct.error:
+            raise exceptions.OFPException("Error while unpack data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
-        return calcsize(self.fmt)
+        return struct.calcsize(self.fmt)
 
 
 class MetaStruct(type):
@@ -50,6 +67,7 @@ class GenericStruct(metaclass=MetaStruct):
         tot = 0
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
+            #TODO: Ciclic reference
             if _class is OFPHeader:
                 tot += (getattr(self, _attr).get_size())
             elif not callable(attr):
@@ -60,6 +78,7 @@ class GenericStruct(metaclass=MetaStruct):
         hex = b''
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
+            #TODO: Ciclic reference
             if _class is OFPHeader:
                 hex += getattr(self, _attr).pack()
                 #print("{} {} {}".
@@ -74,6 +93,7 @@ class GenericStruct(metaclass=MetaStruct):
         begin = 0
         for _attr, _class in self.__ordered__:
             attr = getattr(self, _attr)
+            #TODO: Ciclic reference
             if _class is OFPHeader:
                 size = (getattr(self, _attr).get_size())
                 getattr(self,_attr).unpack(buff, offset=begin)
