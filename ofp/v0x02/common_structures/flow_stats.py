@@ -17,25 +17,43 @@ class OFPMatchType (enum.Enum):
     The "standard" type corresponds to ofp_match and must be supported by all
     OpenFlow switches. Extensions that define other match types may be
     published on the OpenFlow wiki. Support for extensions is optional.
+
+    Enums:
+        OFPMT_STANDARD      # Deprecated in OpenFlow >= 1.2
+        OFPMT_OXM           # OpenFlow Extensible Match (OF >= 1.2)
+
     """
-    OFPMT_STANDARD = 0      # Deprecated in OpenFlow >= 1.2
-    OFPMT_OXM = 1           # OpenFlow Extensible Match (OF >= 1.2)
+    OFPMT_STANDARD = 0
+    OFPMT_OXM = 1
 
 
 class OFPFlowWildCards (enum.Enum):
     """
     Wildcards used to identify flows.
+
+    Enums:
+        OFPFW_IN_PORT           # Switch input port
+        OFPFW_DL_VLAN           # VLAN id
+        OFPFW_DL_VLAN_PCP       # VLAN priority
+        OFPFW_DL_TYPE           # Ethernet Frame Type
+        OFPFW_NW_TOS            # IP ToS (DSCP field, 6 bits)
+        OFPFW_NW_PROTO          # IP Protocol
+        OFPFW_TP_SRC            # TCP/UDP/SCTP source port
+        OFPFW_TP_DST            # TCP/UDP/SCTP destination port
+        OFPFW_MPLS_LABEL        # MPLS label
+        OFPFW_ALL               # MPLS TC
     """
-    OFPFW_IN_PORT = 1 << 0      # Switch input port
-    OFPFW_DL_VLAN = 1 << 1      # VLAN id
-    OFPFW_DL_VLAN_PCP = 1 << 2  # VLAN priority
-    OFPFW_DL_TYPE = 1 << 3      # Ethernet Frame Type
-    OFPFW_NW_TOS = 1 << 4       # IP ToS (DSCP field, 6 bits)
-    OFPFW_NW_PROTO = 1 << 5     # IP Protocol
-    OFPFW_TP_SRC = 1 << 6       # TCP/UDP/SCTP source port
-    OFPFW_TP_DST = 1 << 7       # TCP/UDP/SCTP destination port
-    OFPFW_MPLS_LABEL = 1 << 8   # MPLS label
-    OFPFW_ALL = 1 << 9          # MPLS TC
+
+    OFPFW_IN_PORT = 1 << 0
+    OFPFW_DL_VLAN = 1 << 1
+    OFPFW_DL_VLAN_PCP = 1 << 2
+    OFPFW_DL_TYPE = 1 << 3
+    OFPFW_NW_TOS = 1 << 4
+    OFPFW_NW_PROTO = 1 << 5
+    OFPFW_TP_SRC = 1 << 6
+    OFPFW_TP_DST = 1 << 7
+    OFPFW_MPLS_LABEL = 1 << 8
+    OFPFW_ALL = 1 << 9
 
 
 class OFPVlanID (enum.Enum):
