@@ -1,4 +1,11 @@
+"""Defines basic types to be used in structures and messages."""
+
+# System imports
 import struct
+
+# Third-party imports
+
+# Local source tree imports
 from common import base
 
 # TODO: Refactor unpack methods to return the unpacked object
