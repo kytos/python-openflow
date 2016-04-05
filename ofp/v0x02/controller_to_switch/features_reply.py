@@ -15,9 +15,8 @@ from common_structures import header as of_header
 
 
 class Capabilities(enum.Enum):
-    """Capabilities supported by the datapath
+    """Enumeration of Capabilities supported by the datapath
 
-    Enums:
         OFPC_FLOW_STATS   # Flow statistics
         OFPC_TABLE_STATS  # Table statistics
         OFPC_PORT_STATS   # Port statistics
@@ -46,7 +45,7 @@ class SwitchFeatures(base.GenericStruct):
     The 'OFPT_FEATURES_REPLY' message is an instance of this
     class, despite the strange name.
 
-        :param header:       OFPHeader of the message
+        :param xid:          xid to be used on the message header
         :param datapath_id:  UBInt64 datapath unique ID
                              The lower 48-bits are for MAC address, while
                              the upper 16-bits are implementer-defined
@@ -57,12 +56,8 @@ class SwitchFeatures(base.GenericStruct):
         :param ports:        Port definitions
     """
 
-    header = of_header.OFPHeader(
-        ofp_type=of_header.OFPType.OFPT_FEATURES_REPLY)
-
-    datapath_id = basic_types.UBInt64 # Datapath unique ID. The lower 48-bits
-                                      # are for MAC address, while the upper
-                                      # 16-bits are implementer-defined
+    header = of_header.OFPHeader()
+    datapath_id = basic_types.UBInt64
     n_buffers = basic_types.UBInt32
     n_tables = basic_types.UBInt8
     pad = basic_types.UBInt8Array(length=3) # Align to 64-bits
@@ -82,8 +77,7 @@ class SwitchFeatures(base.GenericStruct):
                             # from the length field in the header
 
     def __init__(self,
-                 header = of_header.OFPHeader(
-                     ofp_type=of_header.OFPType.OFPT_FEATURES_REPLY),
+                 xid=None,
                  datapath_id=None,
                  n_buffers=0,
                  ntables=0,
@@ -91,7 +85,8 @@ class SwitchFeatures(base.GenericStruct):
                  capabilities=0,
                  reserved=0,
                  ports=None):
-        self.header = header
+        self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
+        self.header.xid = xid
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.ntables = ntables
