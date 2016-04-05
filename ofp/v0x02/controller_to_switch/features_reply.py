@@ -8,7 +8,7 @@ import enum
 # Local source tree imports
 from common import base
 from common import basic_types
-from common_structures import header
+from common_structures import header as of_header
 
 
 # Enums
@@ -57,7 +57,9 @@ class SwitchFeatures(base.GenericStruct):
         :param ports:        Port definitions
     """
 
-    header = header.OFPHeader()
+    header = of_header.OFPHeader(
+        ofp_type=of_header.OFPType.OFPT_FEATURES_REPLY)
+
     datapath_id = basic_types.UBInt64 # Datapath unique ID. The lower 48-bits
                                       # are for MAC address, while the upper
                                       # 16-bits are implementer-defined
@@ -80,7 +82,8 @@ class SwitchFeatures(base.GenericStruct):
                             # from the length field in the header
 
     def __init__(self,
-                 header=header,
+                 header = of_header.OFPHeader(
+                     ofp_type=of_header.OFPType.OFPT_FEATURES_REPLY),
                  datapath_id=None,
                  n_buffers=0,
                  ntables=0,
