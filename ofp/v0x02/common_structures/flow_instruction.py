@@ -16,13 +16,22 @@ from common_structures import action
 class OFPInstructionsType (enum.Enum):
     """
     Defines types of instructions.
+    Enums:
+        OFPIT_GOTO_TABLE        # Setup next table in the lookup pipeline
+        OFPIT_WRITE_METADATA    # Setup the metadata for use later in pipeline
+        OFPIT_WRITE_ACTIONS     # Write the action(s) onto the datapath set
+        OFPIT_APPLY_ACTIONS     # Applies the actio(s) immediately
+        OFPIT_CLEAR_ACTIONS     # Clears all actions from the datapath
+        OFPIT_EXPERIMENTER      # Experimenter instruction
+
+
     """
-    OFPIT_GOTO_TABLE = 1        # Setup next table in the lookup pipeline
-    OFPIT_WRITE_METADATA = 2    # Setup the metadata for use later in pipeline
-    OFPIT_WRITE_ACTIONS = 3     # Write the action(s) onto the datapath set
-    OFPIT_APPLY_ACTIONS = 4     # Applies the actio(s) immediately
-    OFPIT_CLEAR_ACTIONS = 5     # Clears all actions from the datapath
-    OFPIT_EXPERIMENTER = 0xFFF  # Experimenter instruction
+    OFPIT_GOTO_TABLE = 1
+    OFPIT_WRITE_METADATA = 2
+    OFPIT_WRITE_ACTIONS = 3
+    OFPIT_APPLY_ACTIONS = 4
+    OFPIT_CLEAR_ACTIONS = 5
+    OFPIT_EXPERIMENTER = 0xFFF
 
 
 # Classes
