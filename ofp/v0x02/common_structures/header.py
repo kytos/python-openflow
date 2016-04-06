@@ -57,9 +57,9 @@ class OFPType(enum.Enum):
 class OFPHeader(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
-    :param ofp_type: Type of  the message
-    :param length: Length of the message, including the header itself
-    :param xid: id of the message
+        :param ofp_type: Type of  the message
+        :param length:   Length of the message, including the header itself
+        :param xid:      id of the message
     """
     version = basic_types.UBInt8()
     ofp_type = basic_types.UBInt8()
