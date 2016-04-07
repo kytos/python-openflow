@@ -7,7 +7,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from foundation import exceptions
+from ofp.v0x02.foundation import exceptions
 
 
 # CONSTANTS
@@ -101,4 +101,3 @@ class GenericStruct(metaclass=MetaStruct):
                 size = (_class(attr).get_size())
                 getattr(self,_attr).unpack(buff, offset=begin)
             begin += size
-

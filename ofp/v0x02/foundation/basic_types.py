@@ -6,7 +6,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from foundation import base
+from ofp.v0x02.foundation import base
 
 # TODO: Refactor unpack methods to return the unpacked object
 #       instead of being an inplace method.

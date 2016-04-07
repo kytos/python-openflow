@@ -1,6 +1,6 @@
 # Development Environment
 
-If you wanna contribute to this project please follow the instructions bellow to
+If you wanna contribute to this project please follow the instructions below to
 setup a development environment.
 
 For more information about this project, and how to install this library, please
@@ -11,6 +11,14 @@ handle daemon to redirect real OpenFlow messages to the library methods (for
 this you can use mininet if you dont have a real OpenFlow Switch).
 
 Alternatively, you can read from raw binary files. It is up to you.
+
+## Running the tests
+
+To run the unit tests, please use the command in the project root folder
+
+```
+$ python -m unittest discover -s tests/ -p "*_test.py"
+```
 
 ## Using Mininet
 
