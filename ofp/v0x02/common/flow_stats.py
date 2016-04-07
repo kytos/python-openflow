@@ -6,8 +6,8 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from common import base
-from common import basic_types
+from foundation import base
+from foundation import basic_types
 
 # Enums
 
