@@ -66,38 +66,46 @@ class GenericStruct(metaclass=MetaStruct):
     def get_size(self):
         tot = 0
         for _attr, _class in self.__ordered__:
-            attr = getattr(self, _attr)
+            #attr = getattr(self, _attr)
             #TODO: Ciclic reference
-            if _class is OFPHeader:
-                tot += (getattr(self, _attr).get_size())
-            elif not callable(attr):
-                tot += (_class(attr).get_size())
+            # if _class is OFPHeader:
+            #     tot += (getattr(self, _attr).get_size())
+            # elif not callable(attr):
+            #     tot += (_class(attr).get_size())
+            tot += (attribute(self, _attr).get_size())
         return tot
 
     def pack(self):
         hex = b''
         for _attr, _class in self.__ordered__:
-            attr = getattr(self, _attr)
+            #attr = getattr(self, _attr)
             #TODO: Ciclic reference
-            if _class is OFPHeader:
-                hex += getattr(self, _attr).pack()
-                #print("{} {} {}".
-                #      format(_attr, attr,getattr(self, _attr).pack()))
-            elif not callable(attr):
-                hex += _class(attr).pack()
-                #print("{} {} {}"
-                #      .format(_attr, attr,_class(attr).pack()))
+            # if _class is OFPHeader:
+            #     hex += getattr(self, _attr).pack()
+            #     #print("{} {} {}".
+            #     #      format(_attr, attr,getattr(self, _attr).pack()))
+            # elif not callable(attr):
+            #     hex += _class(attr).pack()
+            #     #print("{} {} {}"
+            #     #      .format(_attr, attr,_class(attr).pack()))
+            hex += attribute(self, _attr).pack()
         return hex
 
     def unpack(self, buff):
         begin = 0
         for _attr, _class in self.__ordered__:
-            attr = getattr(self, _attr)
+            #attr = getattr(self, _attr)
             #TODO: Ciclic reference
-            if _class is OFPHeader:
-                size = (getattr(self, _attr).get_size())
-                getattr(self,_attr).unpack(buff, offset=begin)
-            elif not callable(attr):
-                size = (_class(attr).get_size())
-                getattr(self,_attr).unpack(buff, offset=begin)
-            begin += size
+            # if _class is OFPHeader:
+            #     size = (getattr(self, _attr).get_size())
+            #     getattr(self,_attr).unpack(buff, offset=begin)
+            # elif not callable(attr):
+            #     size = (_class(attr).get_size())
+            #     getattr(self,_attr).unpack(buff, offset=begin)
+            # begin += size
+            begin += (attribute(self, _attr).get_size())
+            getattr(self,_attr).unpack(buff, offset=begin)
+
+    def attribute(self, _attr):
+        attr = getattr(self, _attr)
+        return _class(attr)
