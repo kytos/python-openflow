@@ -4,10 +4,11 @@ import sys
 # OFP Modules to be tested
 from ofp.v0x02.foundation.base import GenericType
 
-class BaseTest(unittest.TestCase):
+class TestBase(unittest.TestCase):
 
     def test_pack(self):
-        genericType = GenericType()
+        #genericType = GenericType()
+        pass
 
 if __name__ == "__main__":
     unittest.main()

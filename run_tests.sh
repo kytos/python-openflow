@@ -2,8 +2,8 @@
 
 if [ -z "${PYTHONPATH}" ]
 then
-  export PYTHONPATH=.:ofp
+  export PYTHONPATH=.
 else
-  export PYTHONPATH=.:ofp::$PYTHONPATH
+  export PYTHONPATH=.:$PYTHONPATH
 fi
-python3 -m unittest discover -s tests/ -p "*_test.py"
+python3 -m unittest discover -s ofp/v0x02/tests/ -p "test_*.py"
