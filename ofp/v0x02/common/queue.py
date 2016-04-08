@@ -21,7 +21,7 @@ class QueueProperties (enum.Enum):
         OFPQT_MIN_RATE  # Minimum datarate guaranteed
     """
     OFPQT_NONE = 0
-    OFPQT_MIN_RATE = 0
+    OFPQT_MIN_RATE = 1
 
 
 # Classes
