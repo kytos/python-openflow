@@ -1,5 +1,4 @@
 import unittest
-import sys
 
 # OFP Modules to be tested
 from ofp.v0x02.common.flow_instruction import OFPInstructionsType

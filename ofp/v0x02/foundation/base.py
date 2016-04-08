@@ -40,7 +40,6 @@ class GenericType():
         """ Return the size of type in bytes. """
         return struct.calcsize(self.fmt)
 
-
 class MetaStruct(type):
     @classmethod
     def __prepare__(self, name, bases):
@@ -48,8 +47,7 @@ class MetaStruct(type):
 
     def __new__(self, name, bases, classdict):
         classdict['__ordered__'] = [(key, type(value)) for key, value in
-                            classdict.items() if key not in
-                            ('__module__','__qualname__')]
+                            classdict.items() if key[0] != '_']
         return type.__new__(self, name, bases, classdict)
 
 
@@ -72,7 +70,8 @@ class GenericStruct(metaclass=MetaStruct):
             #     tot += (getattr(self, _attr).get_size())
             # elif not callable(attr):
             #     tot += (_class(attr).get_size())
-            tot += (attribute(self, _attr).get_size())
+            #print(_attr)#, '-', getattr(self, _attr))
+            tot += (self._field(_attr).get_size())
         return tot
 
     def pack(self):
@@ -88,7 +87,7 @@ class GenericStruct(metaclass=MetaStruct):
             #     hex += _class(attr).pack()
             #     #print("{} {} {}"
             #     #      .format(_attr, attr,_class(attr).pack()))
-            hex += attribute(self, _attr).pack()
+            hex += _field(self, _attr).pack()
         return hex
 
     def unpack(self, buff):
@@ -103,9 +102,9 @@ class GenericStruct(metaclass=MetaStruct):
             #     size = (_class(attr).get_size())
             #     getattr(self,_attr).unpack(buff, offset=begin)
             # begin += size
-            begin += (attribute(self, _attr).get_size())
+            begin += (_field(self, _attr).get_size())
             getattr(self,_attr).unpack(buff, offset=begin)
 
-    def attribute(self, _attr):
-        attr = getattr(self, _attr)
+    def _field(self, fieldName):
+        attr = getattr(self, fieldName)
         return _class(attr)
