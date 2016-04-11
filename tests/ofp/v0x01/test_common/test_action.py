@@ -9,11 +9,13 @@ from foundation import basic_types
 
 class TestActionHeader(unittest.TestCase):
     def test_get_size(self):
-        action_header = action.ActionHeader()
+        action_header = action.ActionHeader(
+            1, 40, basic_types.UBInt8Array(value=255, length=4))
         self.assertEqual(action_header.get_size(), 8)
 
     def test_pack(self):
-        action_header = action.ActionHeader()
+        action_header = action.ActionHeader(
+            1, 40, basic_types.UBInt8Array(value=255, length=4))
         action_header.pack()
 
     def test_unpack(self):
@@ -21,11 +23,11 @@ class TestActionHeader(unittest.TestCase):
 
 class TestActionOutput(unittest.TestCase):
     def test_get_size(self):
-        action_output = action.ActionOutput()
+        action_output = action.ActionOutput(0, 8, 8080, 64)
         self.assertEqual(action_output.get_size(), 8)
 
     def test_pack(self):
-        action_output = action.ActionOutput()
+        action_output = action.ActionOutput(0, 8, 8080, 64)
         action_output.pack()
 
     def test_unpack(self):
@@ -33,12 +35,13 @@ class TestActionOutput(unittest.TestCase):
 
 class TestActionEnqueue(unittest.TestCase):
     def test_get_size(self):
-        action_enqueue = action.ActionEnqueue()
+        action_enqueue = action.ActionEnqueue(
+            11, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
         self.assertEqual(action_enqueue.get_size(), 16)
 
     def test_pack(self):
         action_enqueue = action.ActionEnqueue(
-            1, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
+            11, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
         action_enqueue.pack()
 
     def test_unpack(self):
@@ -46,11 +49,13 @@ class TestActionEnqueue(unittest.TestCase):
 
 class TestActionVlanVid(unittest.TestCase):
     def test_get_size(self):
-        action_vlan_vid = action.ActionVlanVid()
+        action_vlan_vid = action.ActionVlanVid(
+            1, 8, 1, basic_types.UBInt8Array(value=15, length=2))
         self.assertEqual(action_vlan_vid.get_size(), 8)
 
     def test_pack(self):
-        action_vlan_vid = action.ActionVlanVid()
+        action_vlan_vid = action.ActionVlanVid(
+            1, 8, 1, basic_types.UBInt8Array(value=15, length=2))
         action_vlan_vid.pack()
 
     def test_unpack(self):
@@ -58,11 +63,13 @@ class TestActionVlanVid(unittest.TestCase):
 
 class TestActionVlanPCP(unittest.TestCase):
     def test_get_size(self):
-        action_vlan_pcp = action.ActionVlanPCP()
+        action_vlan_pcp = action.ActionVlanPCP(
+            2, 8, 1, basic_types.UBInt8Array(value=0, length=3))
         self.assertEqual(action_vlan_pcp.get_size(), 8)
 
     def test_pack(self):
-        action_vlan_pcp = action.ActionVlanPCP()
+        action_vlan_pcp = action.ActionVlanPCP(
+            2, 8, 1, basic_types.UBInt8Array(value=0, length=3))
         action_vlan_pcp.pack()
 
     def test_unpack(self):
@@ -70,12 +77,15 @@ class TestActionVlanPCP(unittest.TestCase):
 
 class TestActionDLAddr(unittest.TestCase):
     def test_get_size(self):
-        action_dl_addr = action.ActionDLAddr()
+        action_dl_addr = action.ActionDLAddr(
+            4, 16, basic_types.UBInt8Array(value=255, length=6),
+            basic_types.UBInt8Array(value=511, length=6))
         self.assertEqual(action_dl_addr.get_size(), 16)
 
     def test_pack(self):
-        action_dl_addr = action.ActionDLAddr(1, 16, [16,16,16,16,16,16],
-                                             [32,32,32,32,23,23])
+        action_dl_addr = action.ActionDLAddr(
+            4, 16, basic_types.UBInt8Array(value=255, length=6),
+            basic_types.UBInt8Array(value=511, length=6))
         action_dl_addr.pack()
 
     def test_unpack(self):
@@ -83,11 +93,11 @@ class TestActionDLAddr(unittest.TestCase):
 
 class TestActionNWAddr(unittest.TestCase):
     def test_get_size(self):
-        action_nw_addr = action.ActionNWAddr()
+        action_nw_addr = action.ActionNWAddr(6, 8, 200111222)
         self.assertEqual(action_nw_addr.get_size(), 8)
 
     def test_pack(self):
-        action_nw_addr = action.ActionNWAddr()
+        action_nw_addr = action.ActionNWAddr(6, 8, 200111222)
         action_nw_addr.pack()
 
     def test_unpack(self):
@@ -95,11 +105,13 @@ class TestActionNWAddr(unittest.TestCase):
 
 class TestActionNWTos(unittest.TestCase):
     def test_get_size(self):
-        action_nw_tos = action.ActionNWTos()
+        action_nw_tos = action.ActionNWTos(
+            7, 8, 10, basic_types.UBInt8Array(value=511, length=3))
         self.assertEqual(action_nw_tos.get_size(), 8)
 
     def test_pack(self):
-        action_nw_tos = action.ActionNWTos()
+        action_nw_tos = action.ActionNWTos(
+            7, 8, 10, basic_types.UBInt8Array(value=511, length=3))
         action_nw_tos.pack()
 
     def test_unpack(self):
@@ -107,11 +119,13 @@ class TestActionNWTos(unittest.TestCase):
 
 class TestActionTPPort(unittest.TestCase):
     def test_get_size(self):
-        action_tp_port = action.ActionTPPort()
+        action_tp_port = action.ActionTPPort(
+            9, 8, 8080, basic_types.UBInt8Array(value=0, length=2))
         self.assertEqual(action_tp_port.get_size(), 8)
 
     def test_pack(self):
-        action_tp_port = action.ActionTPPort()
+        action_tp_port = action.ActionTPPort(
+            9, 8, 8080, basic_types.UBInt8Array(value=0, length=2))
         action_tp_port.pack()
 
     def test_unpack(self):
@@ -119,11 +133,11 @@ class TestActionTPPort(unittest.TestCase):
 
 class TestActionVendorHeader(unittest.TestCase):
     def test_get_size(self):
-        action_vendor_header = action.ActionVendorHeader()
+        action_vendor_header = action.ActionVendorHeader(0xffff, 16, 16)
         self.assertEqual(action_vendor_header.get_size(), 8)
 
     def test_pack(self):
-        action_vendor_header = action.ActionVendorHeader(1, 16, 16)
+        action_vendor_header = action.ActionVendorHeader(0xffff, 16, 16)
         action_vendor_header.pack()
 
     def test_unpack(self):
