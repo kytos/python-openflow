@@ -48,6 +48,24 @@ class ActionType(enum.Enum):
 # Classes
 
 
+class ActionHeader(base.GenericStruct):
+    """
+    Defines the Header that is common to all actions.
+
+        :param type -- One of OFPAT_.
+        :param len -- Length of action, including this header.
+        :param pad -- Pad for 64-bit alignment.
+    """
+    type = basic_types.UBInt16()
+    len = basic_types.UBInt16()
+    pad = basic_types.UBInt8Array(length=4)
+
+    def __init__(self, type=None, len=None, pad=None):
+        self.type = type
+        self.len = len
+        self.pad = pad
+
+
 class ActionOutput(base.GenericStruct):
     """Defines the actions output.
 
