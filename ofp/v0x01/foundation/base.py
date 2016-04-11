@@ -7,7 +7,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from ofp.v0x02.foundation import exceptions
+from foundation import exceptions
 
 
 # CONSTANTS

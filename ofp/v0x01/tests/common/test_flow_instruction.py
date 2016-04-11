@@ -1,7 +1,7 @@
 import unittest
 
 # OFP Modules to be tested
-from ofp.v0x02.common.flow_instruction import OFPInstructionsType
+from common.flow_instruction import OFPInstructionsType
 
 class TestFlowInstruction(unittest.TestCase):
 

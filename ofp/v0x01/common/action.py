@@ -6,8 +6,8 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ofp.v0x02.foundation import base
-from ofp.v0x02.foundation import basic_types
+from foundation import base
+from foundation import basic_types
 
 # Enums
 

@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x02.common.header import OFPHeader
+from common.header import OFPHeader
 
 class TestHeader(unittest.TestCase):
     def test_get_size(self):
