@@ -48,6 +48,24 @@ class ActionType(enum.Enum):
 # Classes
 
 
+class ActionHeader(base.GenericStruct):
+    """
+    Defines the Header that is common to all actions.
+
+        :param type -- One of OFPAT_.
+        :param len -- Length of action, including this header.
+        :param pad -- Pad for 64-bit alignment.
+    """
+    type = basic_types.UBInt16()
+    len = basic_types.UBInt16()
+    pad = basic_types.UBInt8Array(length=4)
+
+    def __init__(self, type=None, len=None, pad=None):
+        self.type = type
+        self.len = len
+        self.pad = pad
+
+
 class ActionOutput(base.GenericStruct):
     """Defines the actions output.
 
@@ -61,11 +79,7 @@ class ActionOutput(base.GenericStruct):
     port = basic_types.UBInt16()
     max_len = basic_types.UBInt16()
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 port=None,
-                 max_len=None):
+    def __init__(self, type=None, len=None, port=None, max_len=None):
 
         self.type = type
         self.len = len
@@ -95,11 +109,7 @@ class ActionEnqueue(base.GenericStruct):
     pad = basic_types.UBInt8Array(length=6)
     queue_id = basic_types.UBInt32()
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 port=None,
-                 pad=None,
+    def __init__(self, type=None, len=None, port=None, pad=None,
                  queue_id=None):
 
         self.type = type
@@ -122,11 +132,7 @@ class ActionVlanVid(base.GenericStruct):
     vlan_id = basic_types.UBInt16()
     pad2 = basic_types.UBInt8Array(length=2)
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 vlan_id=None,
-                 pad2=None):
+    def __init__(self, type=None, len=None, vlan_id=None, pad2=None):
 
         self.type = type
         self.len = len
@@ -147,11 +153,7 @@ class ActionVlanPCP(base.GenericStruct):
     vlan_pcp = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 vlan_pcp=None,
-                 pad=None):
+    def __init__(self, type=None, len=None, vlan_pcp=None, pad=None):
 
         self.type = type
         self.len = len
@@ -172,11 +174,7 @@ class ActionDLAddr(base.GenericStruct):
     dl_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 dl_addr=None,
-                 pad=None):
+    def __init__(self, type=None, len=None, dl_addr=None, pad=None):
 
         self.type = type
         self.len = len
@@ -195,10 +193,7 @@ class ActionNWAddr(base.GenericStruct):
     len = basic_types.UBInt16()
     nw_addr = basic_types.UBInt32()
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 nw_addr=None):
+    def __init__(self, type=None, len=None, nw_addr=None):
 
         self.type = type
         self.len = len
@@ -218,11 +213,7 @@ class ActionNWTos(base.GenericStruct):
     nw_tos = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 nw_tos=None,
-                 pad=None):
+    def __init__(self, type=None, len=None, nw_tos=None, pad=None):
 
         self.type = type
         self.len = len
@@ -243,11 +234,7 @@ class ActionTPPort(base.GenericStruct):
     tp_port = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 tp_port=None,
-                 pad=None):
+    def __init__(self, type=None, len=None, tp_port=None, pad=None):
 
         self.type = type
         self.len = len
@@ -268,10 +255,7 @@ class ActionVendorHeader(base.GenericStruct):
     len = basic_types.UBInt16()
     vendor = basic_types.UBInt32()
 
-    def __init__(self,
-                 type=None,
-                 len=None,
-                 vendor=None):
+    def __init__(self, type=None, len=None, vendor=None):
 
         self.type = type
         self.len = len

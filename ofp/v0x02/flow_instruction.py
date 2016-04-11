@@ -40,16 +40,33 @@ class OFPInstructionsType (enum.Enum):
 class OFPInstructionGoToTable (base.GenericStruct):
     """
     WriteMetadata Classe uses this to process pipeline.
+
+        :param type --
+        :param len --
+        :param table_id --
+        :param pad --
     """
     type = basic_types.UBInt16()
     len = basic_types.UBInt16()
     table_id = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
 
+    def __init__(self, type=None, len=None, table_id=None, pad=None):
+        self.type = type
+        self.len = len
+        self.table_id = table_id
+        self.pad = pad
+
 
 class OFPInstructionWriteMetadata (base.GenericStruct):
     """
     Metadata for the next table lookup.
+
+        :param type --
+        :param len --
+        :param pad --
+        :param metadata --
+        :param metadata_mask --
     """
     type = basic_types.UBInt16()
     len = basic_types.UBInt16()
@@ -57,12 +74,31 @@ class OFPInstructionWriteMetadata (base.GenericStruct):
     metadata = basic_types.UBInt64()
     metadata_mask = basic_types.UBInt64
 
+    def __init__(self, type=None, len=None, pad=None, metadata=None,
+                     metada_mask=None):
+        self.type = type
+        self.len = len
+        self.pad = pad
+        self.metadata = metadata
+        self.metadata_mask = metada_mask
+
 
 class OFPInstructionActions (base.GenericStruct):
     """
     List of actions that are applied to the packet packet-in.
+
+        :param type --
+        :param len --
+        :param pad --
+        :param actions --
     """
     type = basic_types.UBInt16()
     len = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=4)
     actions = action.OFPActionStructure()
+
+    def __init__(self, type=None, len=None, pad=None, actions=None):
+        self.type = type
+        self.len = len
+        self.pad = pad
+        self.actions = actions

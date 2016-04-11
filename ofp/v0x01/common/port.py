@@ -192,18 +192,9 @@ class OFPPort(base.GenericStruct):
     curr_speed = basic_types.UBInt32()
     max_speed = basic_types.UBInt32()
 
-    def __init__(self,
-                 port_no=None,
-                 hw_addr=None,
-                 name=None,
-                 config=None,
-                 state=None,
-                 curr=None,
-                 advertised=None,
-                 supported=None,
-                 peer=None,
-                 curr_speed=None,
-                 max_speed=None):
+    def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
+                 state=None, curr=None, advertised=None, supported=None,
+                 peer=None, curr_speed=None, max_speed=None):
 
         self.port_no = port_no
         self.hw_addr = hw_addr
