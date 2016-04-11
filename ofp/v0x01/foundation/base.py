@@ -27,7 +27,7 @@ class GenericType(object):
         self._value = None
 
     def __repr__(self):
-        return str.format("{}({})", (self.__class__, self._value))
+        return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
         return str(self._value)
