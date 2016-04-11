@@ -102,22 +102,10 @@ class OFPMatch (base.GenericStruct):
     tp_src = basic_types.UBInt16()
     tp_dst = basic_types.UBInt16()
 
-    def __init__(self,
-                 wildcards=None,
-                 in_port=None,
-                 dl_src=None,
-                 dl_dst=None,
-                 dl_vlan=None,
-                 dl_vlan_pcp=None,
-                 pad1=None,
-                 dl_type=None,
-                 nw_tos=None,
-                 nw_proto=None,
-                 pad2=None,
-                 nw_src=None,
-                 nw_dst=None,
-                 tp_src=None,
-                 tp_dst=None):
+    def __init__(self, wildcards=None, in_port=None, dl_src=None, dl_dst=None,
+                 dl_vlan=None, dl_vlan_pcp=None, pad1=None, dl_type=None,
+                 nw_tos=None, nw_proto=None, pad2=None, nw_src=None,
+                 nw_dst=None, tp_src=None, tp_dst=None):
 
         self.wildcards = wildcards
         self.in_port = in_port
