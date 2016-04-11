@@ -12,9 +12,8 @@ from foundation import basic_types
 # Enums
 
 
-class ActionType (enum.Enum):
-    """
-    Actions associated with flows and packets.
+class ActionType(enum.Enum):
+    """Actions associated with flows and packets.
 
     Enums:
         OFPAT_OUTPUT            # Output to switch port.
@@ -45,12 +44,12 @@ class ActionType (enum.Enum):
     OFPAT_ENQUEUE = 11
     OFPAT_VENDOR = 0xffff
 
+
 # Classes
 
 
-class ActionOutput (base.GenericStruct):
-    """
-    Class defines the actions output.
+class ActionOutput(base.GenericStruct):
+    """Defines the actions output.
 
         :param type -- OFPAT_OUTPUT.
         :param len -- Length is 8.
@@ -74,7 +73,7 @@ class ActionOutput (base.GenericStruct):
         self.max_len = max_len
 
 
-class ActionEnqueue (base.GenericStruct):
+class ActionEnqueue(base.GenericStruct):
     """
     A switch may support only queues that are tied to specific PCP/TOS bits.
     In that case, we cannot map an arbitrary flow to a specific queue,
@@ -110,9 +109,8 @@ class ActionEnqueue (base.GenericStruct):
         self.queue_id = queue_id
 
 
-class ActionVlanVid (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_VLAN_VID
+class ActionVlanVid(base.GenericStruct):
+    """Action structure for OFPAT_SET_VLAN_VID
 
         :param type --  OFPAT_SET_VLAN_PCP.
         :param len --   Length is 8.
@@ -136,9 +134,8 @@ class ActionVlanVid (base.GenericStruct):
         self.pad2 = pad2
 
 
-class ActionVlanPCP (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_VLAN_PCP.
+class ActionVlanPCP(base.GenericStruct):
+    """Action structure for OFPAT_SET_VLAN_PCP.
 
         :param type -- OFPAT_SET_VLAN_PCP.
         :param len -- Length is 8.
@@ -162,10 +159,8 @@ class ActionVlanPCP (base.GenericStruct):
         self.pad = pad
 
 
-
-class ActionDLAddr (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_DL_SRC/DST.
+class ActionDLAddr(base.GenericStruct):
+    """Action structure for OFPAT_SET_DL_SRC/DST.
 
         :param type -- OFPAT_SET_DL_SRC/DST.
         :param len -- Length is 16.
@@ -174,7 +169,7 @@ class ActionDLAddr (base.GenericStruct):
     """
     type = basic_types.UBInt16()
     len = basic_types.UBInt16()
-    dl_addr = basic_types.UBInt8Array(length=OFP_ETH_ALEN)
+    dl_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
     pad = basic_types.UBInt8Array(length=6)
 
     def __init__(self,
@@ -189,9 +184,8 @@ class ActionDLAddr (base.GenericStruct):
         self.pad = pad
 
 
-class ActionNWAddr (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_NW_SRC/DST.
+class ActionNWAddr(base.GenericStruct):
+    """Action structure for OFPAT_SET_NW_SRC/DST.
 
         :param type -- OFPAT_SET_TW_SRC/DST.
         :param len -- Length is 8.
@@ -211,9 +205,8 @@ class ActionNWAddr (base.GenericStruct):
         self.nw_addr = nw_addr
 
 
-class ActionNWTos (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_NW_TOS.
+class ActionNWTos(base.GenericStruct):
+    """Action structure for OFPAT_SET_NW_TOS.
 
         :param type -- OFPAT_SET_TW_SRC/DST.
         :param len -- Length is 8.
@@ -237,9 +230,8 @@ class ActionNWTos (base.GenericStruct):
         self.pad = pad
 
 
-class ActionTPPort (base.GenericStruct):
-    """
-    Action structure for OFPAT_SET_TP_SRC/DST.
+class ActionTPPort(base.GenericStruct):
+    """Action structure for OFPAT_SET_TP_SRC/DST.
 
         :param type -- OFPAT_SET_TP_SRC/DST.
         :param len -- Length is 8.
@@ -263,9 +255,9 @@ class ActionTPPort (base.GenericStruct):
         self.pad = pad
 
 
-class ActionVendorHeader (base.GenericStruct):
-    """
-    Action header for OFPAT_VENDOR. The rest of the body is vendor-defined.
+class ActionVendorHeader(base.GenericStruct):
+    """Action header for OFPAT_VENDOR.
+    The rest of the body is vendor-defined.
 
         :param type -- OFPAT_VENDOR.
         :param len -- Length is a multiple of 8.
