@@ -5,6 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
 
 from common import action
+from foundation import basic_types
 
 class TestActionHeader(unittest.TestCase):
     def test_get_size(self):
@@ -33,10 +34,11 @@ class TestActionOutput(unittest.TestCase):
 class TestActionEnqueue(unittest.TestCase):
     def test_get_size(self):
         action_enqueue = action.ActionEnqueue()
-        self.assertEqual(action_enqueue.get_size(), 8)
+        self.assertEqual(action_enqueue.get_size(), 16)
 
     def test_pack(self):
-        action_enqueue = action.ActionEnqueue()
+        action_enqueue = action.ActionEnqueue(
+            1, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
         action_enqueue.pack()
 
     def test_unpack(self):
@@ -69,10 +71,11 @@ class TestActionVlanPCP(unittest.TestCase):
 class TestActionDLAddr(unittest.TestCase):
     def test_get_size(self):
         action_dl_addr = action.ActionDLAddr()
-        self.assertEqual(action_dl_addr.get_size(), 8)
+        self.assertEqual(action_dl_addr.get_size(), 16)
 
     def test_pack(self):
-        action_dl_addr = action.ActionDLAddr()
+        action_dl_addr = action.ActionDLAddr(1, 16, [16,16,16,16,16,16],
+                                             [32,32,32,32,23,23])
         action_dl_addr.pack()
 
     def test_unpack(self):
@@ -120,7 +123,7 @@ class TestActionVendorHeader(unittest.TestCase):
         self.assertEqual(action_vendor_header.get_size(), 8)
 
     def test_pack(self):
-        action_vendor_header = action.ActionVendorHeader()
+        action_vendor_header = action.ActionVendorHeader(1, 16, 16)
         action_vendor_header.pack()
 
     def test_unpack(self):
