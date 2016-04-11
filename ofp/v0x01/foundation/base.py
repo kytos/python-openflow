@@ -18,27 +18,62 @@ OFP_VERSION = 0x02
 # CLASSES
 
 
-class GenericType():
-    def __init__(self, value = 0):
-       self.value = value
+class GenericType(object):
+    """This is a generic type Descriptor
+
+    We can't implemment the __get__ method here
+    """
+    def __init__(self):
+        self._value = None
+
+    def __repr__(self):
+        return str.format("{}({})", (self.__class__, self._value))
 
     def __str__(self):
-        return str(self.value)
+        return str(self._value)
+
+    def __set__(self, instance, value):
+        # TODO: Check if value is of the same class
+        self._value = value
+
+    def __delete__(self, instance):
+        # TODO: This is the right delete way? Or should we delete
+        #       the attribute from the instance?
+        del self._value
+
+    def __eq__(self, other):
+        return self._value == other
+
+    def __ne__(self, other):
+        return self._value != other
+
+    def __gt__(self, other):
+        return self._value > other
+
+    def __ge__(self, other):
+        return self._value >= other
+
+    def __lt__(self, other):
+        return self._value <= other
+
+    def __le__(self, other):
+        return self._value <= other
 
     def pack(self):
         """ Pack a value into a binary buffer."""
-        return struct.pack(self.fmt, self.value)
+        return struct.pack(self._fmt, self._value)
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at value property. """
         try:
-            self.value = struct.unpack_from(self.fmt, buff, offset)[0]
+            self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
             raise exceptions.OFPException("Error while unpack data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
-        return struct.calcsize(self.fmt)
+        return struct.calcsize(self._fmt)
+
 
 class MetaStruct(type):
     @classmethod
@@ -51,7 +86,8 @@ class MetaStruct(type):
         return type.__new__(self, name, bases, classdict)
 
 
-class GenericStruct(metaclass=MetaStruct):
+class GenericStruct(object):
+    __metaclass__ = MetaStruct
     def __init__(self, *args, **kwargs):
         for _attr, _class in self.__ordered__:
             if not callable(getattr(self, _attr)):
