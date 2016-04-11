@@ -148,7 +148,7 @@ class OFPPortFeatures(enum.Enum):
 # Classes (Structs)
 
 
-class OFPPort(base.GenericStruct):
+class Port(base.GenericStruct):
     """
     Description of a physical port.
 
