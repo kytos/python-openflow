@@ -2,6 +2,7 @@
 
 # System imports
 import collections
+import enum
 import struct
 
 # Third-party imports
@@ -60,15 +61,22 @@ class GenericType(object):
         return self._value <= other
 
     def pack(self):
-        """ Pack a value into a binary buffer."""
-        return struct.pack(self._fmt, self._value)
+        """Pack the valeu as a binary representation."""
+        if type(self._value.__class__) is enum.EnumMeta:
+            return struct.pack(self._fmt, self._value.value)
+        else:
+            return struct.pack(self._fmt, self._value)
 
     def unpack(self, buff, offset=0):
-        """ Unpack a buff and stores at value property. """
+        """ Unpack a buff and stores at _value property. """
+        #TODO: How to deal with this when the attribute from the
+            # owner class is an element from a enum? How to recover
+            # the enum name/reference ?
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
-            raise exceptions.OFPException("Error while unpack data from buffer")
+            raise exceptions.OFPException("Error while unpacking"
+                                            "data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
@@ -76,6 +84,8 @@ class GenericType(object):
 
 
 class MetaStruct(type):
+    """MetaClass used to force ordered attributes"""
+
     @classmethod
     def __prepare__(self, name, bases):
         return collections.OrderedDict()
@@ -86,8 +96,9 @@ class MetaStruct(type):
         return type.__new__(self, name, bases, classdict)
 
 
-class GenericStruct(object):
-    __metaclass__ = MetaStruct
+class GenericStruct(metaclass=MetaStruct):
+    """Base class for all message classes (structs)"""
+
     def __init__(self, *args, **kwargs):
         for _attr, _class in self.__ordered__:
             if not callable(getattr(self, _attr)):
@@ -100,47 +111,39 @@ class GenericStruct(object):
     def get_size(self):
         tot = 0
         for _attr, _class in self.__ordered__:
-            #attr = getattr(self, _attr)
-            #TODO: Ciclic reference
-            # if _class is OFPHeader:
-            #     tot += (getattr(self, _attr).get_size())
-            # elif not callable(attr):
-            #     tot += (_class(attr).get_size())
-            #print(_attr)#, '-', getattr(self, _attr))
-            tot += (self._field(_attr).get_size())
+            tot += getattr(self, _attr).get_size()
         return tot
 
     def pack(self):
+        """Packs the message as binary.
+
+        This method iters over the class attributes, according to the
+        order of definition, and then converts each attribute to its byte
+        representation using its own pack method.
+            :return: binary representation of the message object
+        """
+
         hex = b''
         for _attr, _class in self.__ordered__:
-            #attr = getattr(self, _attr)
-            #TODO: Ciclic reference
-            # if _class is OFPHeader:
-            #     hex += getattr(self, _attr).pack()
-            #     #print("{} {} {}".
-            #     #      format(_attr, attr,getattr(self, _attr).pack()))
-            # elif not callable(attr):
-            #     hex += _class(attr).pack()
-            #     #print("{} {} {}"
-            #     #      .format(_attr, attr,_class(attr).pack()))
-            hex += _field(self, _attr).pack()
+            print(_attr, _class)
+            hex += getattr(self, _attr).pack()
         return hex
 
     def unpack(self, buff):
+        """Unpack a binary message.
+
+        This method updated the object attributes based on the unpacked
+        data from the buffer binary message. It is an inplace method,
+        and it receives the binary data of the message without the header.
+        There is no return on this method
+
+            :param buff: binary data package to be unpacked
+                         without the first 8 bytes (header)
+        """
         begin = 0
         for _attr, _class in self.__ordered__:
-            #attr = getattr(self, _attr)
-            #TODO: Ciclic reference
-            # if _class is OFPHeader:
-            #     size = (getattr(self, _attr).get_size())
-            #     getattr(self,_attr).unpack(buff, offset=begin)
-            # elif not callable(attr):
-            #     size = (_class(attr).get_size())
-            #     getattr(self,_attr).unpack(buff, offset=begin)
-            # begin += size
-            begin += (_field(self, _attr).get_size())
-            getattr(self,_attr).unpack(buff, offset=begin)
-
-    def _field(self, fieldName):
-        attr = getattr(self, fieldName)
-        return _class(attr)
+            if _attr != "header":
+                attribute = getattr(self, _attr)
+                value = attribute.unpack(buff, offset=begin)
+                setattr(self, _attr, value)
+                begin += attribute.get_size()

@@ -72,6 +72,3 @@ class OFPHeader(base.GenericStruct):
         self.ofp_type = ofp_type
         self.length = length
         self.xid = xid
-
-    def _field(self, fieldName):
-        return getattr(self, fieldName)
