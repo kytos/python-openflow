@@ -15,4 +15,3 @@ class FeaturesRequest(base.GenericStruct):
     def __init__(self, xid=None):
         self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
         self.header.xid = xid
-

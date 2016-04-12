@@ -19,17 +19,23 @@ class Capabilities(enum.Enum):
     """Enumeration of Capabilities supported by the datapath
 
     Enums:
-
-
+        OFPC_FLOW_STATS     # Flow statistics
+        OFPC_TABLE_STATS    # Table statistics
+        OFPC_PORT_STATS     # Port statistics
+        OFPC_STP            # 802.1d spanning tree
+        OFPC_RESERVED       # Reserved, must be zero
+        OFPC_IP_REASM       # Can reassembe IP fragments
+        OFPC_QUEUE_STATS    # Queue statistics
+        OFPC_ARP_MATCH_IP   # Match IP addresses in ARP pkts
     """
-    OFPC_FLOW_STATS = 1 << 0    # Flow statistics
-    OFPC_TABLE_STATS = 1 << 1   # Table statistics
-    OFPC_PORT_STATS = 1 << 2    # Port statistics
-    OFPC_STP = 1 << 3           # 802.1d spanning tree
-    OFPC_RESERVED = 1 << 4      # Reserved, must be zero
-    OFPC_IP_REASM = 1 << 5      # Can reassembe IP fragments
-    OFPC_QUEUE_STATS = 1 << 6   # Queue statistics
-    OFPC_ARP_MATCH_IP = 1 << 7  # Match IP addresses in ARP pkts
+    OFPC_FLOW_STATS = 1 << 0
+    OFPC_TABLE_STATS = 1 << 1
+    OFPC_PORT_STATS = 1 << 2
+    OFPC_STP = 1 << 3
+    OFPC_RESERVED = 1 << 4
+    OFPC_IP_REASM = 1 << 5
+    OFPC_QUEUE_STATS = 1 << 6
+    OFPC_ARP_MATCH_IP = 1 << 7
 
 
 # Classes
@@ -50,7 +56,6 @@ class SwitchFeatures(base.GenericStruct):
         :param n_buffers:    UBInt32 max packets buffered at once
         :param n_tables:     UBInt8 number of tables supported by datapath
         :param capabilities: UBInt32 bitmap support of capabilities
-        :param reserved:     UBInt32
         :param ports:        Port definitions
     """
 
@@ -62,7 +67,6 @@ class SwitchFeatures(base.GenericStruct):
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
-    reserved = basic_types.UBInt32()
 
     # Port info
     # TODO: On the official spec this element acts like a pointer to the first
@@ -75,8 +79,8 @@ class SwitchFeatures(base.GenericStruct):
     ports = port.Port()     # The number of ports is inferred
                             # from the length field in the header
 
-    def __init__(self, xid=None, datapath_id=None, n_buffers=0, ntables=0,
-                 pad=0, capabilities=0, reserved=0, ports=None):
+    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
+                 ntables=None, pad=None, capabilities=None, ports=None):
 
         self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
         self.header.xid = xid
@@ -85,5 +89,4 @@ class SwitchFeatures(base.GenericStruct):
         self.ntables = ntables
         self.pad = pad
         self.capabilities = capabilities
-        self.reserved = reserved
         self.ports = ports
