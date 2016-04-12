@@ -12,11 +12,11 @@ To install them run the following commands:
    ```
    
 If you are working with **bash**, add the following lines on your
-```~/.bash_profile``` to setup ```virtualenvwrapper```:
+```~/.bash_profile``` or ```~/.bashrc``` to setup ```virtualenvwrapper```:
 
    ```shell
-   $ export WORKON_HOME=~/.virtualenvs
-   $ source /usr/local/bin/virtualenvwrapper.sh
+   export WORKON_HOME=~/.virtualenvs
+   source /usr/local/bin/virtualenvwrapper.sh
    ```
 
 If you are using [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) you can
