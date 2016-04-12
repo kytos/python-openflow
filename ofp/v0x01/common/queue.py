@@ -12,7 +12,7 @@ from foundation import basic_types
 # Enums
 
 
-class QueueProperties (enum.Enum):
+class QueueProperties(enum.Enum):
     """
     Describes the queue properties.
 
@@ -27,7 +27,7 @@ class QueueProperties (enum.Enum):
 # Classes
 
 
-class PacketQueue (base.GenericStruct):
+class PacketQueue(base.GenericStruct):
     """
     This class describes a queue.
 
@@ -49,7 +49,7 @@ class PacketQueue (base.GenericStruct):
         self.properties = properties
 
 
-class QueuePropHeader (base.GenericStruct):
+class QueuePropHeader(base.GenericStruct):
     """
     This class describes the header of each queue property.
 
@@ -68,7 +68,7 @@ class QueuePropHeader (base.GenericStruct):
         self.pad = pad
 
 
-class QueuePropMinRate (base.GenericStruct):
+class QueuePropMinRate(base.GenericStruct):
     """
     This class defines the minimum-rate type queue.
 
