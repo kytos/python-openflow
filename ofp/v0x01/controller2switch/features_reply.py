@@ -19,17 +19,23 @@ class Capabilities(enum.Enum):
     """Enumeration of Capabilities supported by the datapath
 
     Enums:
-
-
+        OFPC_FLOW_STATS     # Flow statistics
+        OFPC_TABLE_STATS    # Table statistics
+        OFPC_PORT_STATS     # Port statistics
+        OFPC_STP            # 802.1d spanning tree
+        OFPC_RESERVED       # Reserved, must be zero
+        OFPC_IP_REASM       # Can reassembe IP fragments
+        OFPC_QUEUE_STATS    # Queue statistics
+        OFPC_ARP_MATCH_IP   # Match IP addresses in ARP pkts
     """
-    OFPC_FLOW_STATS = 1 << 0    # Flow statistics
-    OFPC_TABLE_STATS = 1 << 1   # Table statistics
-    OFPC_PORT_STATS = 1 << 2    # Port statistics
-    OFPC_STP = 1 << 3           # 802.1d spanning tree
-    OFPC_RESERVED = 1 << 4      # Reserved, must be zero
-    OFPC_IP_REASM = 1 << 5      # Can reassembe IP fragments
-    OFPC_QUEUE_STATS = 1 << 6   # Queue statistics
-    OFPC_ARP_MATCH_IP = 1 << 7  # Match IP addresses in ARP pkts
+    OFPC_FLOW_STATS = 1 << 0
+    OFPC_TABLE_STATS = 1 << 1
+    OFPC_PORT_STATS = 1 << 2
+    OFPC_STP = 1 << 3
+    OFPC_RESERVED = 1 << 4
+    OFPC_IP_REASM = 1 << 5
+    OFPC_QUEUE_STATS = 1 << 6
+    OFPC_ARP_MATCH_IP = 1 << 7
 
 
 # Classes

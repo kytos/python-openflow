@@ -59,11 +59,9 @@ class SwitchConfig(base.GenericStruct):
     flags = basic_types.UBInt16
     miss_send_len = basic_types.UBInt16
 
-    def __init__(self,
-                 xid=None,
-                 set_message=True,
-                 flags=None,
-                 miss_send_len=0):
+    def __init__(self, xid=None, set_message=True, flags=None,
+                 miss_send_len=None):
+
         if set_message:
             self.header.ofp_type = of_header.OFPType.OFPT_SET_CONFIG
         else:
