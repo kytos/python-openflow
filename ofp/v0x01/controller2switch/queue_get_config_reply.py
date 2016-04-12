@@ -24,3 +24,10 @@ class QueueGetConfigReply(base.GenericStruct):
     port = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
     queue = of_queue.PacketQueue()
+
+    def __init__(self, header=None, port=None, pad=None, queue=None):
+
+        self.header = header
+        self.port = port
+        self.pad = pad
+        self.queue = queue
