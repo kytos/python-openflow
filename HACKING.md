@@ -1,3 +1,7 @@
+
+Before reading this file, please read the [CONTRIBUTE](CONTRIBUTE.md) file, that
+contains the main guidelines of the project.
+
 ## Development Environment setup
 
 This project is based on python (version 3.5).
@@ -51,3 +55,19 @@ bash, then you need to run the ```workon``` command to activate the environment:
 
 See more virtualenvwrapper commands on:
 http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
+
+## TDD (Test Driven Development)
+The tests are run for each implemented version of the protocol. So, to run
+the tests of a specific version use the following command from the project root
+directory:
+
+```shell
+python3 -m unittest discover -s ofp/VERSION/tests/
+```
+
+To run all the tests, from all version, use the following command from the
+project root directory:
+
+```shell
+python3 -m unittest discover
+```

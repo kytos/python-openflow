@@ -5,17 +5,8 @@
 [readme]: https://github.com/github/ofx-parser#readme
 
 If you wanna contribute to this project, below we present some ways in
-which you can contribute.
-
-## Development Environment
-
-This project is based on python (version 3.5).
-
-We recommend that you install python virtualenv so you can install the
-required and recommended python libraries without messing up with your
-system.
-
-
+which you can contribute. Informations about environment setup for developers
+can be found at the [HACKING.md](HACKING.md) file.
 
 ## Create an Issue
 
@@ -86,14 +77,26 @@ what the project maintainer had in mind, or they were already working on it.
 This happens, so our recommendation is to take any feedback you’ve received and
 go forth and pull request again – or create your own open source project.
 
+## Code contribution steps review:
+  - Fork the project & clone locally
+  - Create an upstream remote and sync your local copy before you branch
+  - Branch for each separate piece of work
+  - Do the work, write good commit messages, and follow the project coding style
+  - Push to your origin repository
+  - Create a new PR in GitHub
+  - Respond to any code review feedback
 
-## Running the tests
+## Coding style
 
-To run the unit tests, please use the command in the project root folder
 
-```
-$ python -m unittest discover -s tests/ -p "*_test.py"
-```
+## Tests
+
+This project follows the TDD (Test Driven Development) process.
+Before writing code to contribute, write the tests related to the functionality
+you wish to implement and then write the code to pass this test.
+
+More info about the tests can be found on the
+[HACKING.md](HACKING.md#tdd-test-driven-development) file.
 
 ## From raw files
 
