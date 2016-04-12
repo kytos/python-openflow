@@ -125,7 +125,6 @@ class GenericStruct(metaclass=MetaStruct):
 
         hex = b''
         for _attr, _class in self.__ordered__:
-            print(_attr, _class)
             hex += getattr(self, _attr).pack()
         return hex
 
