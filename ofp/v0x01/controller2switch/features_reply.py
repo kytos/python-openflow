@@ -56,7 +56,6 @@ class SwitchFeatures(base.GenericStruct):
         :param n_buffers:    UBInt32 max packets buffered at once
         :param n_tables:     UBInt8 number of tables supported by datapath
         :param capabilities: UBInt32 bitmap support of capabilities
-        :param reserved:     UBInt32
         :param ports:        Port definitions
     """
 
@@ -68,7 +67,6 @@ class SwitchFeatures(base.GenericStruct):
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
-    reserved = basic_types.UBInt32()
 
     # Port info
     # TODO: On the official spec this element acts like a pointer to the first
@@ -81,8 +79,8 @@ class SwitchFeatures(base.GenericStruct):
     ports = port.Port()     # The number of ports is inferred
                             # from the length field in the header
 
-    def __init__(self, xid=None, datapath_id=None, n_buffers=0, ntables=0,
-                 pad=0, capabilities=0, reserved=0, ports=None):
+    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
+                 ntables=None, pad=None, capabilities=None, ports=None):
 
         self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
         self.header.xid = xid
@@ -91,5 +89,4 @@ class SwitchFeatures(base.GenericStruct):
         self.ntables = ntables
         self.pad = pad
         self.capabilities = capabilities
-        self.reserved = reserved
         self.ports = ports
