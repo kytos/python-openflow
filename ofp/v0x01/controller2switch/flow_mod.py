@@ -33,6 +33,21 @@ class FlowModCommand(enum.Enum):
     OFPFC_DELETE_STRICT = 5
 
 
+class FlowModFlags(enum.Enum):
+    """
+    Types to be used in Flags field
+
+    Enums:
+        OFPFF_SEND_FLOW_REM     # Send flow removed message when flow
+                                  expires or is deleted
+        OFPFF_CHECK_OVERLAP     # Check for overlapping entries first
+        OFPFF_EMERG             # Remark this is for emergency
+    """
+    OFPFF_SEND_FLOW_REM = 1 << 0
+    OFPFF_CHECK_OVERLAP = 1 << 1
+    OFPFF_EMERG = 1 << 2
+
+
 # Classes
 
 
