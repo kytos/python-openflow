@@ -21,3 +21,9 @@ class QueueGetConfigRequest(base.GenericStruct):
     header = of_header.OFPHeader()
     port = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
+
+    def __init__(self, header=None, port=None, pad=None):
+
+        self.header = header
+        self.port = port
+        self.pad = pad
