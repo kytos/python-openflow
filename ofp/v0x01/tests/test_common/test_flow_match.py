@@ -2,11 +2,9 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common import flow_match
-from foundation.base import OFP_ETH_ALEN
-from foundation.basic_types import UBInt8Array
+from ofp.v0x01.common import flow_match
+from ofp.v0x01.foundation.base import OFP_ETH_ALEN
+from ofp.v0x01.foundation.basic_types import UBInt8Array
 
 
 class TestOFPMatch(unittest.TestCase):
@@ -28,5 +26,3 @@ class TestOFPMatch(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

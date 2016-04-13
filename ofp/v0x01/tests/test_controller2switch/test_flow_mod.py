@@ -2,9 +2,7 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from controller2switch import flow_mod
+from ofp.v0x01.controller2switch import flow_mod
 
 
 class TestFlowMod(unittest.TestCase):
@@ -19,5 +17,3 @@ class TestFlowMod(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

@@ -2,11 +2,9 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from controller2switch import port_mod
-from foundation import base
-from foundation import basic_types
+from ofp.v0x01.controller2switch import port_mod
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 class TestPortMod(unittest.TestCase):
@@ -31,5 +29,3 @@ class TestPortMod(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

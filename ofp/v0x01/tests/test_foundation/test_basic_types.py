@@ -2,9 +2,7 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from foundation import basic_types
+from ofp.v0x01.foundation import basic_types
 
 
 class TestUBInt8(unittest.TestCase):
@@ -58,5 +56,3 @@ class TestUBInt32(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

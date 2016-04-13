@@ -2,9 +2,7 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from controller2switch import queue_get_config_reply
+from ofp.v0x01.controller2switch import queue_get_config_reply
 
 
 class TestQueueGetConfigReply(unittest.TestCase):
@@ -18,5 +16,3 @@ class TestQueueGetConfigReply(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

@@ -2,9 +2,7 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from controller2switch import features_request
+from ofp.v0x01.controller2switch import features_request
 
 
 class TestFeaturesRequest(unittest.TestCase):
@@ -19,5 +17,3 @@ class TestFeaturesRequest(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')
