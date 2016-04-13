@@ -87,7 +87,9 @@ go forth and pull request again – or create your own open source project.
   - Respond to any code review feedback
 
 ## Coding style
-
+We follow [PEP8](http://www.python.org/dev/peps/pep-0008/),
+[PEP20](http://www.python.org/dev/peps/pep-0020/) and, as a short resume,
+[The Best of the Best Practices (BOBP) Guide for Python](https://gist.github.com/sloria/7001839)
 
 ## Tests
 
