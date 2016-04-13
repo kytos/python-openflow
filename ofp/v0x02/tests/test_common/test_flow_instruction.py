@@ -6,6 +6,7 @@ import os
 sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x02')
 from common import flow_instruction
 
+
 class TestFlowInstruction(unittest.TestCase):
 
     def test_method(self):
