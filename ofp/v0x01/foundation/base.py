@@ -8,7 +8,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from foundation import exceptions
+from . import exceptions
 
 
 # CONSTANTS
