@@ -3,13 +3,11 @@ import sys
 import os
 
 # OFP Modules to be tested
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common import action
-from common import flow_match
-from foundation import base
-from foundation import basic_types
-from controller2switch import flow_stats
+from ofp.v0x01.common import action
+from ofp.v0x01.common import flow_match
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
+from ofp.v0x01.controller2switch import flow_stats
 
 class TestFlowStats(unittest.TestCase):
     def test_get_size(self):
@@ -42,5 +40,3 @@ class TestFlowStats(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')
