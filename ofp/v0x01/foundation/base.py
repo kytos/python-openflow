@@ -8,7 +8,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from foundation import exceptions
+from . import exceptions
 
 
 # CONSTANTS
@@ -16,6 +16,8 @@ OFP_ETH_ALEN = 6
 OFP_MAX_PORT_NAME_LEN = 16
 OFP_VERSION = 0x01
 OFP_MAX_TABLE_NAME_LEN = 32
+SERIAL_NUM_LEN = 32
+DESC_STR_LEN = 256
 
 # CLASSES
 

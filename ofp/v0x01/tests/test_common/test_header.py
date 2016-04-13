@@ -2,9 +2,7 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common import header
+from ofp.v0x01.common import header
 
 
 class TestHeader(unittest.TestCase):
@@ -19,5 +17,3 @@ class TestHeader(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

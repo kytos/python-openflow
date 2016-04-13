@@ -5,8 +5,8 @@
 # Third-party imports
 
 # Local source tree imports
-from foundation import base
-from foundation import basic_types
+from ..foundation import base
+from ..foundation import basic_types
 
 
 class TableStats(base.GenericStruct):
@@ -26,7 +26,7 @@ class TableStats(base.GenericStruct):
     """
     table_id = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
-    name = basic_types.Char(length=OFP_MAX_TABLE_NAME_LEN)
+    name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
     wildcards = basic_types.UBInt32()
     max_entries = basic_types.UBInt32()
     active_count = basic_types.UBInt32()

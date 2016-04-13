@@ -2,10 +2,8 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common import action
-from foundation import basic_types
+from ofp.v0x01.common import action
+from ofp.v0x01.foundation import basic_types
 
 
 class TestActionHeader(unittest.TestCase):
@@ -152,5 +150,3 @@ class TestActionVendorHeader(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

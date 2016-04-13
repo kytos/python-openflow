@@ -2,10 +2,8 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common.header import OFPHeader
-from controller2switch.stats_reply import StatsReply
+from ofp.v0x01.common.header import OFPHeader
+from ofp.v0x01.controller2switch.stats_reply import StatsReply
 
 class TestStatsReply(unittest.TestCase):
     def test_get_size(self):
@@ -18,5 +16,3 @@ class TestStatsReply(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')

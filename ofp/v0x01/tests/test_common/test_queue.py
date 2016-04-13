@@ -2,10 +2,8 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
-
-from common import queue
-from foundation import basic_types
+from ofp.v0x01.common import queue
+from ofp.v0x01.foundation import basic_types
 
 
 class TestPacketQueue(unittest.TestCase):
@@ -50,5 +48,3 @@ class TestQueuePropMinRate(unittest.TestCase):
 
     def test_unpack(self):
         pass
-
-sys.path.remove(os.path.abspath('.') + '/ofp/v0x01')
