@@ -33,11 +33,11 @@ class TableStats(base.GenericStruct):
     count_lookup = basic_types.UBInt64()
     count_matched = basic_types.UBInt64()
 
-    def __init__(self, table=None, pad=None, name=None, wildcards=None,
+    def __init__(self, table_id=None, pad=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
 
-        self.table = table
+        self.table_id = table_id
         self.pad = pad
         self.name = name
         self.wildcards = wildcards
