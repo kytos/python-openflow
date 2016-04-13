@@ -1,10 +1,7 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.controller2switch import features_reply
 from ofp.v0x01.foundation import basic_types
-
 
 class TestSwitchFeatures(unittest.TestCase):
 

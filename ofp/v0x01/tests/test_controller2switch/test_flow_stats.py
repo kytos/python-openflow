@@ -1,8 +1,5 @@
 import unittest
-import sys
-import os
 
-# OFP Modules to be tested
 from ofp.v0x01.common import action
 from ofp.v0x01.common import flow_match
 from ofp.v0x01.foundation import base

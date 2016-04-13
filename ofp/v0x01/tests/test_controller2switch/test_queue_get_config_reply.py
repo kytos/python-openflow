@@ -1,9 +1,6 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.controller2switch import queue_get_config_reply
-
 
 class TestQueueGetConfigReply(unittest.TestCase):
 

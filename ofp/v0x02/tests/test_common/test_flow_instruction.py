@@ -1,8 +1,5 @@
 import unittest
-import sys
-import os
 
-# OFP Modules to be tested
 from ofp.v0x02.common import flow_instruction
 
 class TestOFPInstructionGoToTable(unittest.TestCase):

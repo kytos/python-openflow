@@ -1,6 +1,4 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.symmetric import hello
 

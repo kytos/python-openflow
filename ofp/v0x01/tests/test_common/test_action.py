@@ -1,10 +1,7 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.common import action
 from ofp.v0x01.foundation import basic_types
-
 
 class TestActionHeader(unittest.TestCase):
 

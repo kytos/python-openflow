@@ -1,9 +1,6 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.common import header
-
 
 class TestHeader(unittest.TestCase):
 

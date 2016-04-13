@@ -1,9 +1,6 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.controller2switch import features_request
-
 
 class TestFeaturesRequest(unittest.TestCase):
 

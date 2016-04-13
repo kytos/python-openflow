@@ -1,9 +1,6 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.foundation import basic_types
-
 
 class TestUBInt8(unittest.TestCase):
 

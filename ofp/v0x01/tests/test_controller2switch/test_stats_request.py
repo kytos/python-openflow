@@ -1,6 +1,4 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.common.header import OFPHeader
 from ofp.v0x01.controller2switch.stats_request import StatsRequest

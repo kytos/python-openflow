@@ -1,6 +1,4 @@
 import unittest
-import sys
-import os
 
 from ofp.v0x01.controller2switch import port_mod
 from ofp.v0x01.foundation import base
