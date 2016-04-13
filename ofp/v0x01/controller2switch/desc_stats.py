@@ -20,11 +20,11 @@ class DescStats(base.GenericStruct):
         :param serial_num -- Serial number
         :param dp_desc -- Human readable description of datapath
     """
-    mfr_desc = basic_types.Char(length=DESC_STR_LEN)
-    hw_desc = basic_types.Char(length=DESC_STR_LEN)
-    sw_desc = basic_types.Char(length=DESC_STR_LEN)
-    serial_num = basic_types.Char(length=SERIAL_NUM_LEN)
-    dp_desc = basic_types.Char(length=DESC_STR_LEN)
+    mfr_desc = basic_types.Char(length=base.DESC_STR_LEN)
+    hw_desc = basic_types.Char(length=base.DESC_STR_LEN)
+    sw_desc = basic_types.Char(length=base.DESC_STR_LEN)
+    serial_num = basic_types.Char(length=base.SERIAL_NUM_LEN)
+    dp_desc = basic_types.Char(length=base.DESC_STR_LEN)
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
