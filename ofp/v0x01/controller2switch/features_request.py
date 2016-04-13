@@ -4,6 +4,7 @@
 from common import header as of_header
 from foundation import base
 
+
 class FeaturesRequest(base.GenericStruct):
     """Features request message.
 

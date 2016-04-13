@@ -63,7 +63,7 @@ class SwitchFeatures(base.GenericStruct):
     datapath_id = basic_types.UBInt64()
     n_buffers = basic_types.UBInt32()
     n_tables = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3) # Align to 64-bits
+    pad = basic_types.UBInt8Array(length=3)  # Align to 64-bits
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
@@ -76,8 +76,8 @@ class SwitchFeatures(base.GenericStruct):
     #       represents a list of ports and then point to an instance of it?
     #       We should consider that in Python all objects acts as C++ pointers
     #       https://goo.gl/p1nzxh
-    ports = port.Port()     # The number of ports is inferred
-                            # from the length field in the header
+    # The number of ports is inferred from the length field in the header
+    ports = port.Port()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  ntables=None, pad=None, capabilities=None, ports=None):

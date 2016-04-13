@@ -87,11 +87,11 @@ class FlowMod(base.GenericStruct):
                  priority=None, buffer_id=None, out_port=None, flags=None,
                  actions=None):
 
-        self.command=command
-        self.idle_timeout=idle_timeout
-        self.hard_timeout=hard_timeout
-        self.priority=priority
-        self.buffer_id=buffer_id
-        self.out_port=out_port
-        self.flags=flags
-        self.actions=actions
+        self.command = command
+        self.idle_timeout = idle_timeout
+        self.hard_timeout = hard_timeout
+        self.priority = priority
+        self.buffer_id = buffer_id
+        self.out_port = out_port
+        self.flags = flags
+        self.actions = actions

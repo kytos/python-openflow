@@ -4,12 +4,14 @@ import os
 
 sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
 
-from controller2switch.queue_get_config_reply import QueueGetConfigReply
+from controller2switch import queue_get_config_reply
+
 
 class TestQueueGetConfigReply(unittest.TestCase):
+
     def test_get_size(self):
-        qgcr = QueueGetConfigReply()
-        self.assertEqual(qgcr.get_size(), 16)
+        queue_get_config_reply_message = queue_get_config_reply.QueueGetConfigReply()
+        self.assertEqual(queue_get_config_reply_message.get_size(), 16)
 
     def test_pack(self):
         pass

@@ -4,6 +4,7 @@
 from common import header as of_header
 from foundation import base
 
+
 class GetConfigRequest(base.GenericStruct):
     """Get Config Request message.
 

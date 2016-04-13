@@ -11,6 +11,7 @@ from foundation import basic_types
 
 # Enums
 
+
 class OFPPortConfig(enum.Enum):
     """Flags to indicate behavior of the physical port.
 
@@ -94,7 +95,7 @@ class OFPPortNo(enum.Enum):
     OFPP_CONTROLLER = 0xfffd
     OFPP_LOCAL = 0xfffe
 
-    #TODO: Strange... it should be ANY instead of NONE.
+    # TODO: Strange... it should be ANY instead of NONE.
     OFPP_NONE = 0xffff
 
 

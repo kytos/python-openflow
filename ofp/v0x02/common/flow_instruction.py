@@ -75,7 +75,7 @@ class OFPInstructionWriteMetadata (base.GenericStruct):
     metadata_mask = basic_types.UBInt64
 
     def __init__(self, type=None, len=None, pad=None, metadata=None,
-                     metada_mask=None):
+                 metada_mask=None):
         self.type = type
         self.len = len
         self.pad = pad

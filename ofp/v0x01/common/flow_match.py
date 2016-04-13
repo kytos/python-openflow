@@ -12,7 +12,7 @@ from foundation import basic_types
 # Enums
 
 
-class OFPFlowWildCards (enum.Enum):
+class OFPFlowWildCards(enum.Enum):
     """
     Wildcards used to identify flows.
 
@@ -35,7 +35,6 @@ class OFPFlowWildCards (enum.Enum):
     OFPFW_NW_PROTO = 1 << 5
     OFPFW_TP_SRC = 1 << 6
     OFPFW_TP_DST = 1 << 7
-
 
     # IP source address wildcard bit count.  0 is exact match, 1 ignores the
     # LSB, 2 ignores the 2 least-significant bits, ..., 32 and higher wildcard
@@ -62,7 +61,7 @@ class OFPFlowWildCards (enum.Enum):
 # Classes (Structs)
 
 
-class OFPMatch (base.GenericStruct):
+class OFPMatch(base.GenericStruct):
     """
     Describes a flow entry. Fields to match against flows
 

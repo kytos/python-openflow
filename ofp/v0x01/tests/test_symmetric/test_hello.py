@@ -4,16 +4,18 @@ import os
 
 sys.path.insert(0, os.path.abspath('.') + '/ofp/v0x01')
 
-from symmetric.hello import OFPHello
+from symmetric import hello
+
 
 class TestHello(unittest.TestCase):
+
     def test_get_size(self):
-        hello = OFPHello(1)
-        self.assertEqual(hello.get_size(), 8)
+        hello_message = hello.OFPHello(1)
+        self.assertEqual(hello_message.get_size(), 8)
 
     def test_pack(self):
-        hello = OFPHello(1)
-        hello.pack()
+        hello_message = hello.OFPHello(1)
+        hello_message.pack()
 
     def test_unpack(self):
         pass

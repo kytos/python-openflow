@@ -27,6 +27,25 @@ class QueueProperties(enum.Enum):
 # Classes
 
 
+class QueuePropHeader(base.GenericStruct):
+    """
+    This class describes the header of each queue property.
+
+        :param property -- One of OFPQT_.
+        :param len -- Length of property, including this header.
+        :param pad -- 64-bit alignment.
+    """
+    property = basic_types.UBInt16()
+    len = basic_types.UBInt16()
+    pad = basic_types.UBInt8Array(length=4)
+
+    def __init__(self, property=None, len=None, pad=None):
+
+        self.property = property
+        self.len = len
+        self.pad = pad
+
+
 class PacketQueue(base.GenericStruct):
     """
     This class describes a queue.
@@ -47,25 +66,6 @@ class PacketQueue(base.GenericStruct):
         self.len = len,
         self.pad = pad,
         self.properties = properties
-
-
-class QueuePropHeader(base.GenericStruct):
-    """
-    This class describes the header of each queue property.
-
-        :param property -- One of OFPQT_.
-        :param len -- Length of property, including this header.
-        :param pad -- 64-bit alignment.
-    """
-    property = basic_types.UBInt16()
-    len = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=4)
-
-    def __init__(self, property=None, len=None, pad=None):
-
-        self.property = property
-        self.len = len
-        self.pad = pad
 
 
 class QueuePropMinRate(base.GenericStruct):

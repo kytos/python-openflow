@@ -69,14 +69,14 @@ class GenericType(object):
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at _value property. """
-        #TODO: How to deal with this when the attribute from the
-            # owner class is an element from a enum? How to recover
-            # the enum name/reference ?
+        # TODO: How to deal with this when the attribute from the
+        #       owner class is an element from a enum? How to recover
+        #       the enum name/reference ?
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
             raise exceptions.OFPException("Error while unpacking"
-                                            "data from buffer")
+                                          "data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
@@ -92,7 +92,7 @@ class MetaStruct(type):
 
     def __new__(self, name, bases, classdict):
         classdict['__ordered__'] = [(key, type(value)) for key, value in
-                            classdict.items() if key[0] != '_']
+                                    classdict.items() if key[0] != '_']
         return type.__new__(self, name, bases, classdict)
 
 
