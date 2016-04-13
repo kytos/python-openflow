@@ -11,13 +11,11 @@ from foundation import basic_types
 class TestActionHeader(unittest.TestCase):
 
     def test_get_size(self):
-        action_header = action.ActionHeader(
-            1, 40, basic_types.UBInt8Array(value=255, length=4))
+        action_header = action.ActionHeader(1, 40, [15, 15, 15, 15])
         self.assertEqual(action_header.get_size(), 8)
 
     def test_pack(self):
-        action_header = action.ActionHeader(
-            1, 40, basic_types.UBInt8Array(value=255, length=4))
+        action_header = action.ActionHeader(1, 40, [15, 15, 15, 15])
         action_header.pack()
 
     def test_unpack(self):
@@ -41,13 +39,11 @@ class TestActionOutput(unittest.TestCase):
 class TestActionEnqueue(unittest.TestCase):
 
     def test_get_size(self):
-        action_enqueue = action.ActionEnqueue(
-            11, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
+        action_enqueue = action.ActionEnqueue(11, 16, 80, [1, 2, 3, 4, 5, 6], 1)
         self.assertEqual(action_enqueue.get_size(), 16)
 
     def test_pack(self):
-        action_enqueue = action.ActionEnqueue(
-            11, 16, 80, basic_types.UBInt8Array(value=255, length=6), 1)
+        action_enqueue = action.ActionEnqueue(11, 16, 80, [1, 2, 3, 4, 5, 6], 1)
         action_enqueue.pack()
 
     def test_unpack(self):
@@ -57,13 +53,11 @@ class TestActionEnqueue(unittest.TestCase):
 class TestActionVlanVid(unittest.TestCase):
 
     def test_get_size(self):
-        action_vlan_vid = action.ActionVlanVid(
-            1, 8, 1, basic_types.UBInt8Array(value=15, length=2))
+        action_vlan_vid = action.ActionVlanVid(1, 8, 1, [20, 20])
         self.assertEqual(action_vlan_vid.get_size(), 8)
 
     def test_pack(self):
-        action_vlan_vid = action.ActionVlanVid(
-            1, 8, 1, basic_types.UBInt8Array(value=15, length=2))
+        action_vlan_vid = action.ActionVlanVid(1, 8, 1, [20, 20])
         action_vlan_vid.pack()
 
     def test_unpack(self):
@@ -73,13 +67,11 @@ class TestActionVlanVid(unittest.TestCase):
 class TestActionVlanPCP(unittest.TestCase):
 
     def test_get_size(self):
-        action_vlan_pcp = action.ActionVlanPCP(
-            2, 8, 1, basic_types.UBInt8Array(value=0, length=3))
+        action_vlan_pcp = action.ActionVlanPCP(2, 8, 1, [10, 10, 10])
         self.assertEqual(action_vlan_pcp.get_size(), 8)
 
     def test_pack(self):
-        action_vlan_pcp = action.ActionVlanPCP(
-            2, 8, 1, basic_types.UBInt8Array(value=0, length=3))
+        action_vlan_pcp = action.ActionVlanPCP(2, 8, 1, [10, 10, 10])
         action_vlan_pcp.pack()
 
     def test_unpack(self):
@@ -90,14 +82,12 @@ class TestActionDLAddr(unittest.TestCase):
 
     def test_get_size(self):
         action_dl_addr = action.ActionDLAddr(
-            4, 16, basic_types.UBInt8Array(value=255, length=6),
-            basic_types.UBInt8Array(value=511, length=6))
+            4, 16, [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6])
         self.assertEqual(action_dl_addr.get_size(), 16)
 
     def test_pack(self):
         action_dl_addr = action.ActionDLAddr(
-            4, 16, basic_types.UBInt8Array(value=255, length=6),
-            basic_types.UBInt8Array(value=511, length=6))
+            4, 16, [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6])
         action_dl_addr.pack()
 
     def test_unpack(self):
@@ -122,12 +112,12 @@ class TestActionNWTos(unittest.TestCase):
 
     def test_get_size(self):
         action_nw_tos = action.ActionNWTos(
-            7, 8, 10, basic_types.UBInt8Array(value=511, length=3))
+            7, 8, 10, [0, 10, 10])
         self.assertEqual(action_nw_tos.get_size(), 8)
 
     def test_pack(self):
         action_nw_tos = action.ActionNWTos(
-            7, 8, 10, basic_types.UBInt8Array(value=511, length=3))
+            7, 8, 10, [0, 10, 10])
         action_nw_tos.pack()
 
     def test_unpack(self):
@@ -138,12 +128,12 @@ class TestActionTPPort(unittest.TestCase):
 
     def test_get_size(self):
         action_tp_port = action.ActionTPPort(
-            9, 8, 8080, basic_types.UBInt8Array(value=0, length=2))
+            9, 8, 8080, [0, 0])
         self.assertEqual(action_tp_port.get_size(), 8)
 
     def test_pack(self):
         action_tp_port = action.ActionTPPort(
-            9, 8, 8080, basic_types.UBInt8Array(value=0, length=2))
+            9, 8, 8080, [12, 12])
         action_tp_port.pack()
 
     def test_unpack(self):

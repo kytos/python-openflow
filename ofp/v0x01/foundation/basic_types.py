@@ -23,7 +23,7 @@ class UBInt8Array(base.GenericType):
     """Creates an Array of Unsigned Integer of 8 bytes."""
     def __init__(self, value=None, length=0):
         if value:
-            self.value = value
+            self._value = value
         self.length = length
         self._fmt = "!%d%c" % (self.length, 'B')
 
@@ -32,14 +32,14 @@ class UBInt8Array(base.GenericType):
             :param buff -- Buffer where data is located.
             :param offset -- Where data stream begins.
         """
-        self.value = struct.unpack_from(self._fmt, buff, offset)
+        self._value = struct.unpack_from(self._fmt, buff, offset)
 
     def pack(self):
         """Pack the object.
 
         Here we need a pointer, self.value is a tuple and is expanded to args.
         """
-        return struct.pack(self._fmt, *self.value)
+        return struct.pack(self._fmt, *self._value)
 
 
 class UBInt16(base.GenericType):

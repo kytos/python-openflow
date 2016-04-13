@@ -24,10 +24,12 @@ class TestUBInt8Array(unittest.TestCase):
 
     def test_get_size(self):
         ubint8_array = basic_types.UBInt8Array(value=255, length=6)
+        ubint8_array._value = [15, 15, 15, 15, 15, 15]
         self.assertEqual(ubint8_array.get_size(), 6)
 
     def test_pack(self):
         ubint8_array = basic_types.UBInt8Array(value=255, length=6)
+        ubint8_array._value = [15, 15, 15, 15, 15, 15]
         ubint8_array.pack()
 
     def test_unpack(self):
