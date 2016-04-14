@@ -1,7 +1,6 @@
 import unittest
 
 from ofp.v0x01.common import queue
-from ofp.v0x01.foundation import basic_types
 
 class TestQueuePropHeader(unittest.TestCase):
 

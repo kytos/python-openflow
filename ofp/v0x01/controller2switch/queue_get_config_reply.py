@@ -22,7 +22,7 @@ class QueueGetConfigReply(base.GenericStruct):
     """
     header = of_header.OFPHeader()
     port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.UBInt8Array(length=6)
     queue = of_queue.PacketQueue()
 
     def __init__(self, header=None, port=None, pad=None, queue=None):

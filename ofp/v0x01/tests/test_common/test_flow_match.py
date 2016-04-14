@@ -2,7 +2,6 @@ import unittest
 
 from ofp.v0x01.common import flow_match
 from ofp.v0x01.foundation.base import OFP_ETH_ALEN
-from ofp.v0x01.foundation.basic_types import UBInt8Array
 
 class TestOFPMatch(unittest.TestCase):
     def test_get_size(self):
