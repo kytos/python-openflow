@@ -17,6 +17,7 @@ class OFPHello(base.GenericStruct):
     """
     header = of_header.OFPHeader()
 
-    def __init__(self, xid=None):
+    def __init__(self, length=8, xid=None):
         self.header.ofp_type = of_header.OFPType.OFPT_HELLO
+        self.header.length = length
         self.header.xid = xid

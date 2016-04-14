@@ -23,5 +23,6 @@ class VendorHeader(base.GenericStruct):
 
     def __init__(self, xid=None, vendor=None):
         self.header.ofp_type = of_header.OFPType.OFPT_ECHO_REQUEST
+        self.header.length = 12
         self.header.xid = xid
         self.vendor = vendor
