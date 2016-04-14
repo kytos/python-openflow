@@ -35,13 +35,17 @@ class TestPacketQueue(unittest.TestCase):
 class TestQueuePropMinRate(unittest.TestCase):
 
     def test_get_size(self):
-        queue_prop_min_rate = queue.QueuePropMinRate(1000, 100000,
-                                                     [0, 0, 0, 0, 0, 0])
+        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
+        queue_prop_min_rate = \
+            queue.QueuePropMinRate(prop_header=queue_prop_header, rate=10000,
+                                   pad=[0, 0, 0, 0, 0, 0])
         self.assertEqual(queue_prop_min_rate.get_size(), 16)
 
     def test_pack(self):
-        queue_prop_min_rate = queue.QueuePropMinRate(1000, 100000,
-                                                     [0, 0, 0, 0, 0, 0])
+        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
+        queue_prop_min_rate = \
+            queue.QueuePropMinRate(prop_header=queue_prop_header, rate=10000,
+                                   pad=[0, 0, 0, 0, 0, 0])
         queue_prop_min_rate.pack()
 
     def test_unpack(self):

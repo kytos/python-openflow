@@ -76,11 +76,11 @@ class QueuePropMinRate(base.GenericStruct):
         :param rate -- In 1/10 of a percent; >1000 -> disabled.
         :param pad -- 64-bit alignmet.
     """
-    prop_reader = QueuePropHeader()
+    prop_header = QueuePropHeader()
     rate = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self, prop_reader=None, rate=None, pad=None):
-        self.prop_reader = prop_reader
+    def __init__(self, prop_header=None, rate=None, pad=None):
+        self.prop_header = prop_header
         self.rate = rate
         self.pad = pad
