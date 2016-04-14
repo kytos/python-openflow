@@ -172,8 +172,6 @@ class Port(base.GenericStruct):
         :param supported -- Features supported by the port.
         :param peer -- Features advertised by peer.
 
-        :param curr_speed -- Current port bitrate in kbps.
-        :param max_speed -- Max port bitrate in kbps.
     """
     _build_order = ('port_no', 'hw_addr', 'name', 'config', 'state', 'curr',
                     'advertised', 'supported', 'peer')
@@ -189,13 +187,13 @@ class Port(base.GenericStruct):
     advertised = basic_types.UBInt32()
     supported = basic_types.UBInt32()
     peer = basic_types.UBInt32()
-
-    curr_speed = basic_types.UBInt32()
-    max_speed = basic_types.UBInt32()
+    # TODO: Move code to version v0x02
+    #curr_speed = basic_types.UBInt32()
+    #max_speed = basic_types.UBInt32()
 
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
-                 peer=None, curr_speed=None, max_speed=None):
+                 peer=None):
 
         self.port_no = port_no
         self.hw_addr = hw_addr
@@ -206,5 +204,6 @@ class Port(base.GenericStruct):
         self.advertised = advertised
         self.supported = supported
         self.peer = peer
-        self.curr_speed = curr_speed
-        self.max_speed = max_speed
+        # TODO: Move code to version v0x02
+        #self.curr_speed = curr_speed
+        #self.max_speed = max_speed

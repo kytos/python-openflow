@@ -79,14 +79,16 @@ class SwitchFeatures(base.GenericStruct):
     # The number of ports is inferred from the length field in the header
     ports = port.Port()
 
-    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
-                 ntables=None, pad=None, capabilities=None, ports=None):
+    def __init__(self, xid=None, datapath_id=None, n_buffers=None,n_tables=None,
+                 pad=None, capabilities=None, actions=None, ports=None):
 
         self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
+        self.header.length = 40
         self.header.xid = xid
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
-        self.ntables = ntables
+        self.n_tables = n_tables
         self.pad = pad
         self.capabilities = capabilities
+        self.actions = actions
         self.ports = ports
