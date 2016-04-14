@@ -76,6 +76,6 @@ class Char(base.GenericType):
             :param length: the character size.
         """
         if value:
-            self.value = value
+            self._value = value
         self.length = length
         self._fmt = '!%d%c' % (self.length, 's')
