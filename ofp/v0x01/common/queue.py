@@ -63,8 +63,8 @@ class PacketQueue(base.GenericStruct):
     def __init__(self, queue_id=None, len=None, pad=None, properties=None):
 
         self.queue_id = queue_id
-        self.len = len,
-        self.pad = pad,
+        self.len._value = len
+        self.pad = pad
         self.properties = properties
 
 
