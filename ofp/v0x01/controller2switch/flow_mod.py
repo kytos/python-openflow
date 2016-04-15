@@ -83,10 +83,13 @@ class FlowMod(base.GenericStruct):
     flags = basic_types.UBInt16()
     actions = action.ActionHeader()
 
-    def __init__(self, command=None, idle_timeout=None, hard_timeout=None,
-                 priority=None, buffer_id=None, out_port=None, flags=None,
-                 actions=None):
+    def __init__(self, header, match, cookie, command=None, idle_timeout=None,
+                 hard_timeout=None, priority=None, buffer_id=None,
+                 out_port=None, flags=None, actions=None):
 
+        self.header = header
+        self.match = match
+        self.cookie = cookie
         self.command = command
         self.idle_timeout = idle_timeout
         self.hard_timeout = hard_timeout

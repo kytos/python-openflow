@@ -41,7 +41,7 @@ class PortMod(base.GenericStruct):
     def __init__(self, header=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None, pad=None):
 
-        self.header = of_header.OFPHeader()
+        self.header = header
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.config = config

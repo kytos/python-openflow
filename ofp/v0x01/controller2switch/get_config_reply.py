@@ -51,8 +51,8 @@ class SwitchConfig(base.GenericStruct):
     """
 
     header = of_header.OFPHeader()
-    flags = basic_types.UBInt16
-    miss_send_len = basic_types.UBInt16
+    flags = basic_types.UBInt16()
+    miss_send_len = basic_types.UBInt16()
 
     def __init__(self, xid=None, set_message=True, flags=None,
                  miss_send_len=None):
