@@ -20,13 +20,14 @@ class StatsRequest(base.GenericStruct):
         :param body -- Body of the request
     """
     header = of_header.OFPHeader()
-    type = basic_types.UBInt16()
+    req_type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
-    body = basic_types.UBInt8Array(length=0)
+    body = None
 
-    def __init__(self, header=None, type=None, flags=None, body=None):
+    def __init__(self, header=None, req_type=None, flags=None, body=None):
 
         self.header = header
-        self.type = type
+        self.req_type = req_type
         self.flags = flags
-        self.body = body
+        if type(body) is list:
+            self.body = basic_types.UBInt8Array(value=body, length=len(body))

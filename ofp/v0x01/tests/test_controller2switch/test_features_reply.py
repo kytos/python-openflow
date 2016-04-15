@@ -18,7 +18,7 @@ class TestSwitchFeatures(unittest.TestCase):
                                           n_tables=1, pad=[0, 0, 0],
                                           capabilities=1, actions=5,
                                           ports=of_port)
-        self.assertEqual(switch_features.get_size(), 32)
+        self.assertEqual(switch_features.get_size(), 80)
 
     def test_pack(self):
         hw_addr = [100, 50, 48, 48, 160, 160]
