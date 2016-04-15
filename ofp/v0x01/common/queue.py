@@ -51,19 +51,19 @@ class PacketQueue(base.GenericStruct):
     This class describes a queue.
 
         :param queue_id -- One of OFPQT_.
-        :param len -- Length of property, including this header.
+        :param length -- Length of property, including this header.
         :param pad --
         :param properties
     """
     queue_id = basic_types.UBInt32()
-    len = basic_types.UBInt16()
+    length = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
     properties = QueuePropHeader()
 
-    def __init__(self, queue_id=None, len=None, pad=None, properties=None):
+    def __init__(self, queue_id=None, length=None, pad=None, properties=None):
 
         self.queue_id = queue_id
-        self.len._value = len
+        self.length = length
         self.pad = pad
         self.properties = properties
 

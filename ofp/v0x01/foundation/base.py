@@ -126,10 +126,10 @@ class GenericStruct(metaclass=MetaStruct):
             :return: binary representation of the message object
         """
 
-        hex = b''
+        message = b''
         for _attr, _class in self.__ordered__:
-            hex += getattr(self, _attr).pack()
-        return hex
+            message += getattr(self, _attr).pack()
+        return message
 
     def unpack(self, buff):
         """Unpack a binary message.
