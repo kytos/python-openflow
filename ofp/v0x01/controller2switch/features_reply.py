@@ -56,6 +56,7 @@ class SwitchFeatures(base.GenericStruct):
         :param n_buffers:    UBInt32 max packets buffered at once
         :param n_tables:     UBInt8 number of tables supported by datapath
         :param capabilities: UBInt32 bitmap support of capabilities
+        :param actions:
         :param ports:        Port definitions
     """
 
