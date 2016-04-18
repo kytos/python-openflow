@@ -65,12 +65,12 @@ class FlowRemoved(base.GenericStruct):
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
 
-    def __init__(self, header=None, match=None, cookie=None, priority=None,
+    def __init__(self, match=None, cookie=None, priority=None,
                  reason=None, pad=None, duration_sec=None, duration_nsec=None,
-                 idle_timeout=None, pad=None, packet_count=None,
+                 idle_timeout=None, pad2=None, packet_count=None,
                  byte_count=None):
 
-        self.header = header
+        self.header.ofp_type = of_header.OFPType.OFPT_FLOW_REMOVED
         self.match = match
         self.cookie = cookie
         self.priority = priority
@@ -78,5 +78,7 @@ class FlowRemoved(base.GenericStruct):
         self.pad = pad
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
+        self.idle_timeout = idle_timeout
+        self.pad2 = pad2
         self.packet_count = packet_count
         self.byte_count = byte_count

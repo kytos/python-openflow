@@ -46,7 +46,7 @@ class OFPError(base.GenericStruct):
     code = basic_types.UBInt16
     data = basic_types.UBInt8Array(length=0)
 
-    def __init__(self, header=None, type=None, code=None, data=None):
+    def __init__(self, type=None, code=None, data=None):
         self.header.ofp_type = of_header.OFPType.OFPT_ERROR
         self.type =type
         self.code = code
