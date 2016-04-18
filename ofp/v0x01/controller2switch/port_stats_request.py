@@ -26,4 +26,3 @@ class PortStatsRequest(base.GenericStruct):
 
         self.port_no = port_no
         self.pad = pad
-

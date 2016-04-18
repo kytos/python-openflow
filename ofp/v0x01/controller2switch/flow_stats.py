@@ -5,10 +5,12 @@
 # Third-party imports
 
 # Local source tree imports
-from ..common import action
-from ..common import flow_match
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import action
+from ofp.v0x01.common import flow_match
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
+
+# Classes
 
 
 class FlowStats(base.GenericStruct):

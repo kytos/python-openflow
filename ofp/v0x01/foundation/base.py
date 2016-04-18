@@ -8,8 +8,10 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from . import exceptions
+from ofp.v0x01.foundation import exceptions
 
+__all__ = ['OFP_ETH_ALEN', 'OFP_MAX_PORT_NAME_LEN', 'OFP_VERSION',
+           'OFP_MAX_TABLE_NAME_LEN', 'SERIAL_NUM_LEN', 'DESC_STR_LEN']
 
 # CONSTANTS
 OFP_ETH_ALEN = 6
@@ -65,10 +67,16 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
-        if type(self._value.__class__) is enum.EnumMeta:
-            return struct.pack(self._fmt, self._value.value)
-        else:
-            return struct.pack(self._fmt, self._value)
+        try:
+            if type(self._value.__class__) is enum.EnumMeta:
+                # Gets the respective value from the Enum
+                return struct.pack(self._fmt, self._value.value)
+            else:
+                return struct.pack(self._fmt, self._value)
+        except struct.error:
+            message = "Value out of the possible range to basic type "
+            message = message + self.__class__.__name__
+            raise exceptions.OFPBadValueException(message)
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at _value property. """

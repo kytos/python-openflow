@@ -6,7 +6,14 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from . import base
+from ofp.v0x01.foudnation import base
+
+__all__ = ['UBInt8',
+           'UBInt8Array',
+           'UBInt16',
+           'UBInt32',
+           'UBInt64',
+           'Char']
 
 # TODO: Refactor unpack methods to return the unpacked object
 #       instead of being an inplace method.

@@ -1,8 +1,10 @@
 """Defines Features Request classes and related items"""
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+
+# Classes
 
 
 class FeaturesRequest(base.GenericStruct):

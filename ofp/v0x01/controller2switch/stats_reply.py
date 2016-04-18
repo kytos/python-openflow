@@ -6,9 +6,9 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 # Enum
@@ -72,7 +72,8 @@ class StatsReply(base.GenericStruct):
     flags = basic_types.UBInt16()
     body = basic_types.UBInt8Array(length=0)
 
-    def __init__(self, header=None, ofpsf_req_type=None, flags=None, body=None):
+    def __init__(self, header=None, ofpsf_req_type=None, flags=None,
+                 body=None):
 
         self.header = header
         self.ofpsf_req_type = ofpsf_req_type

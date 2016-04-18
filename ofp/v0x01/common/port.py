@@ -6,8 +6,8 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 # Enums
 
@@ -146,7 +146,7 @@ class OFPPortFeatures(enum.Enum):
     OFPPF_PAUSE_ASYM = 1 << 15
 
 
-# Classes (Structs)
+# Classes
 
 
 class Port(base.GenericStruct):
@@ -188,8 +188,8 @@ class Port(base.GenericStruct):
     supported = basic_types.UBInt32()
     peer = basic_types.UBInt32()
     # TODO: Move code to version v0x02
-    #curr_speed = basic_types.UBInt32()
-    #max_speed = basic_types.UBInt32()
+    # curr_speed = basic_types.UBInt32()
+    # max_speed = basic_types.UBInt32()
 
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
@@ -205,5 +205,5 @@ class Port(base.GenericStruct):
         self.supported = supported
         self.peer = peer
         # TODO: Move code to version v0x02
-        #self.curr_speed = curr_speed
-        #self.max_speed = max_speed
+        # self.curr_speed = curr_speed
+        # self.max_speed = max_speed

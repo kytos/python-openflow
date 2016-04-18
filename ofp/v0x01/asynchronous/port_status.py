@@ -6,12 +6,13 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..common import port
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.common import port
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 # Enums
+
 
 class PortReason(enum.Enum):
     """
@@ -27,6 +28,8 @@ class PortReason(enum.Enum):
     OFPPR_DELETE = 2
     OFPPR_MODIFY = 3
 
+
+# Classes
 
 class PortStatus(base.GenericStruct):
     """

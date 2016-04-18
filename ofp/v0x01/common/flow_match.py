@@ -6,8 +6,8 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 # Enums
 
@@ -58,7 +58,7 @@ class OFPFlowWildCards(enum.Enum):
     OFPFW_ALL = ((1 << 22) - 1)
 
 
-# Classes (Structs)
+# Classes
 
 
 class OFPMatch(base.GenericStruct):

@@ -6,10 +6,10 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..common import port
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.common import port
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 # Enums
@@ -80,8 +80,9 @@ class SwitchFeatures(base.GenericStruct):
     # The number of ports is inferred from the length field in the header
     ports = port.Port()
 
-    def __init__(self, xid=None, datapath_id=None, n_buffers=None,n_tables=None,
-                 pad=None, capabilities=None, actions=None, ports=None):
+    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
+                 n_tables=None, pad=None, capabilities=None, actions=None,
+                 ports=None):
 
         self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
         self.header.length = 40

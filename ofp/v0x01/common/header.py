@@ -6,8 +6,10 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
+
+# Enums
 
 
 class OFPType(enum.Enum):
@@ -52,6 +54,9 @@ class OFPType(enum.Enum):
     # Controller/Switch message
     OFPT_QUEUE_GET_CONFIG_REQUEST = 20
     OFPT_QUEUE_GET_CONFIG_REPLY = 21
+
+
+# Classes
 
 
 class OFPHeader(base.GenericStruct):
