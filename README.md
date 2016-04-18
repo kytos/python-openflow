@@ -2,7 +2,7 @@
 
 This is a subproject of the #ProjectName project.
 This is the library component, responsible for parsing OpenFlow messages
-to/from L2 switches.
+to/from OpenFlow switches.
 
 ## #SubprojectName structure
 
@@ -15,8 +15,8 @@ and contains the following directory structure:
       on the previous version
     - Each version has its own unittest suit on the *tests* directory
   - **Problem**: basic problem used for candidates selection
-  - **raw**: raw (binary) OpenFlow Messages, dumped from
-    [POX](https://github.com/noxrepo/pox) used for Tests purposes
+  - **raw**: raw (binary) OpenFlow Messages, dumped with
+    [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
 
 ### Incremental code
 
@@ -32,10 +32,6 @@ OpenFlow 1.1.0 Protocol, and the next version follows the same logic.
  - [OpenFlow 1.0.0 Protocol](https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf)
 
 More versions and other technical documents at: https://www.opennetworking.org/sdn-resources/technical-library
-
-## OpenFlow Conformance Certification
-
-See: https://www.opennetworking.org/openflow-conformance-certification
 
 ## Contributing
 
