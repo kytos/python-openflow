@@ -5,9 +5,25 @@ contains the main guidelines of the project.
 
 This project is based on python (version 3.5).
 
-We recommend that you install python `virtualenv` so you can install the
-required and recommended python libraries without messing up with your system.
-To install them run the following commands:
+During the devlopment of the project what you need is to add the ofp folder,
+inside this repository, to your PYTHONPATH environment variable. For that,
+you have to execute the following on the command line (being on this current
+folder):
+
+```shell
+export PYTHONPATH=`pwd`/ofp:$PYTHONPATH
+```
+
+Remember that everytime you start a new shell instance you will have to
+repeat the command above, since this is an environment variable.
+
+### Virtualenv
+
+To make things easier and avoid the need of redo the export all the time,
+we recommend that you install python `virtualenv`. This is not necessary, but
+recommended. With `virtualenv` you can install the required and recommended
+python libraries without messing up with your system. To install them run
+the following commands:
 
    ```shell
    $ sudo apt install python3-pip
@@ -60,7 +76,7 @@ workon ofx-parser
 See more virtualenvwrapper commands on:
 http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
 
-### Virtualenv Extras
+#### Virtualenv Extras
 
 if you want to show the current activated virtualenv on the right side of your
 shell, add the following code to your `~/.virtualenvs/postactivate` file:
