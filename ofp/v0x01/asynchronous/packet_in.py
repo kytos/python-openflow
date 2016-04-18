@@ -1,0 +1,62 @@
+"""When packets are received by the datapath and sent to the controller,
+they use the OFPT_PACKET_IN message"""
+
+# System imports
+import enum
+
+# Third-party imports
+
+# Local source tree imports
+from ..common import header as of_header
+from ..foundation import base
+from ..foundation import basic_types
+
+# Enums
+
+class PacketInReason(enum.Enum):
+    """
+    Why is this packet being sent to the controller?
+
+        OFPR_NO_MATCH   # No matching flow
+        OFPR_ACTION     # Action explicitly output to controller
+
+    """
+    OFPR_NO_MATCH = 1
+    OFPR_ACTION = 2
+
+
+class PacketIn(base.GenericStruct):
+    """
+    Packet received on port (datapath -> controller)
+
+        :param header -- Openflow Header
+        :param buffer_id -- ID assigned by datapath
+        :param total_len -- Full length of frame
+        :param in_port -- Port on which frame was received
+        :param reason -- Reason packet is being sent (one of OFPR_*)
+        :param pad -- Align to 32-bits
+        :param data -- Ethernet frame, halfway through 32-bit word,
+                       so the IP header is 32-bit aligned.  The
+                       amount of data is inferred from the length
+                       field in the header.  Because of padding,
+                       offsetof(struct ofp_packet_in, data) ==
+                       sizeof(struct ofp_packet_in) - 2.
+
+    """
+    header = of_header.OFPHeader()
+    buffer_id = basic_types.UBInt32()
+    total_len = basic_types.UBInt16()
+    in_port = basic_types.UBInt16()
+    reason = basic_types.UBInt8()
+    pad = basic_types.UBInt8()
+    data = basic_types.UBInt8Array(length=0)
+
+    def __init__(self, buffer_id, total_len, in_port, reason, pad, data):
+
+        self.header.ofp_type = of_header.OFPType.OFPT_PACKET_IN
+        self.buffer_id = buffer_id
+        self.total_len = total_len
+        self.in_port = in_port
+        self.reason = reason
+        self.pad = pad
+        self.data = data
