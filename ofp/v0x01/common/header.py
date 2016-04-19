@@ -63,8 +63,8 @@ class OFPHeader(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
         :param ofp_type: Type of  the message
-        :param length:   Length of the message, including the header itself
         :param xid:      id of the message
+        :param length:   Length of the message, including the header itself
     """
     version = basic_types.UBInt8()
     ofp_type = basic_types.UBInt8()
@@ -72,7 +72,7 @@ class OFPHeader(base.GenericStruct):
     xid = basic_types.UBInt32()
 
     def __init__(self,
-                 ofp_type=OFPType.OFPT_HELLO, length=None, xid=None):
+                 ofp_type, xid, length=None):
         self.version = base.OFP_VERSION
         self.ofp_type = ofp_type
         self.length = length
