@@ -6,7 +6,7 @@ import struct
 # Third-party imports
 
 # Local source tree imports
-from ofp.v0x01.foudnation import base
+from ofp.v0x01.foundation import base
 
 __all__ = ['UBInt8',
            'UBInt8Array',
