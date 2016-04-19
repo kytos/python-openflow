@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.common import header as ofp_header
+from ofp.v0x01.common import header as of_header
 
 
 class TestHeader(unittest.TestCase):
@@ -8,35 +8,20 @@ class TestHeader(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestHeader Class instantiating a HELLO header"""
-        self.header = ofp_header.OFPHeader(ofp_header.OFPType.OFPT_HELLO,
-                                           xid=1,
-                                           length=0)
-
-    def test_init_no_ofptype(self):
-        """Tests the constructor without passing ofp_type
-        This shouldn't pass (init fails)"""
-        with self.assertRaises(TypeError):
-            ofp_header.OFPHeader(xid=1, length=0)
-
-    def test_init_no_xid(self):
-        """Tests the constructor without passing the xid.
-        This shouldn't pass (init fails)"""
-        with self.assertRaises(TypeError):
-            ofp_header.OFPHeader(length=0,
-                                 ofp_type=ofp_header.OFPType.OFPT_HELLO)
-
-    def test_init_no_length(self):
-        """Tests the constructor without passing the length.
-        This should pass."""
-        self.assertIsInstance(ofp_header.OFPHeader(
-            xid=1,
-            ofp_type=ofp_header.OFPType.OFPT_HELLO), ofp_header.OFPHeader)
+        self.header = of_header.OFPHeader(of_header.OFPType.OFPT_HELLO,
+                                          xid=1,
+                                          length=0)
 
     def test_size(self):
         """Test the size of the header, always should be 8"""
         self.assertEqual(self.header.get_size(), 8)
 
-    def test_pack(self):
+    def test_pack_empty(self):
+        """Test the pack method for the an empty header"""
+        self.assertRaises(TypeError,
+                          self.header.pack())
+
+    def test_pack_hello(self):
         """Test the pack method for the header
         Testing a header for type HELLO, length=0 and xid=1"""
         packet_header = b'\x01\x00\x00\x00\x00\x00\x00\x01'
