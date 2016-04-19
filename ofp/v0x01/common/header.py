@@ -71,8 +71,7 @@ class OFPHeader(base.GenericStruct):
     length = basic_types.UBInt16()
     xid = basic_types.UBInt32()
 
-    def __init__(self,
-                 ofp_type, xid, length=None):
+    def __init__(self, ofp_type=None, xid=None, length=None):
         self.version = base.OFP_VERSION
         self.ofp_type = ofp_type
         self.length = length
