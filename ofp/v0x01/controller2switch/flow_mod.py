@@ -6,7 +6,6 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ofp.v0x01.common import action
 from ofp.v0x01.common import flow_match
 from ofp.v0x01.common import header as of_header
 from ofp.v0x01.foundation import base
@@ -55,21 +54,21 @@ class FlowMod(base.GenericStruct):
     """
     Modifies the flow table from the controller.
 
-        :param header -- OpenFlow header
-        :param match -- Fields to match
-        :param cookie -- Opaque controller-issued identifier
-        :param command -- One of OFPFC_*
-        :param idle_timeout -- Idle time before discarding (seconds)
-        :param hard_timeout -- Max time before discarding (seconds)
-        :param priority -- Priority level of flow entry
-        :param buffer_idle -- Buffered packet to apply to (or -1).
-                              Not meaningful for OFPFC_DELETE*
-        :param out_port -- For OFPFC_DELETE* commands, require matching
-                           entries to include this as an output port.
-                           A value of OFPP_NONE indicates no restriction.
-        :param flags -- One of OFPFF_*
-        :param actions -- The action length is inferred from the length field
-                          in the header
+        :param xid:          xid to be used on the message header
+        :param match:        Fields to match
+        :param cookie:       Opaque controller-issued identifier
+        :param command:      One of OFPFC_*
+        :param idle_timeout: Idle time before discarding (seconds)
+        :param hard_timeout: Max time before discarding (seconds)
+        :param priority:     Priority level of flow entry
+        :param buffer_idle:  Buffered packet to apply to (or -1).
+                             Not meaningful for OFPFC_DELETE*
+        :param out_port:     For OFPFC_DELETE* commands, require matching
+                             entries to include this as an output port.
+                             A value of OFPP_NONE indicates no restriction.
+        :param flags:        One of OFPFF_*
+        :param actions:      The action length is inferred from the length
+                             field in the header
     """
     header = of_header.OFPHeader()
     match = flow_match.OFPMatch()
@@ -81,13 +80,15 @@ class FlowMod(base.GenericStruct):
     buffer_id = basic_types.UBInt32()
     out_port = basic_types.UBInt16()
     flags = basic_types.UBInt16()
-    actions = action.ActionHeader()
+    actions = []    # TODO: Add here a new type, list of ActionHeaders()
+                    # objects. Related to ISSUE #3
 
-    def __init__(self, header, match, cookie, command=None, idle_timeout=None,
-                 hard_timeout=None, priority=None, buffer_id=None,
-                 out_port=None, flags=None, actions=None):
-
-        self.header = header
+    def __init__(self, xid=None, match=None, cookie=None, command=None,
+                 idle_timeout=None, hard_timeout=None, priority=None,
+                 buffer_id=None, out_port=None, flags=None, actions=None):
+        self.header.ofp_type = of_header.OFPType.OFPT_FLOW_MOD
+        self.header.length = 0
+        self.header.xid = xid
         self.match = match
         self.cookie = cookie
         self.command = command

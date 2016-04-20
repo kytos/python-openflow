@@ -7,7 +7,6 @@ import enum
 
 # Local source tree imports
 from ofp.v0x01.common import header as of_header
-from ofp.v0x01.common import port
 from ofp.v0x01.foundation import base
 from ofp.v0x01.foundation import basic_types
 
@@ -68,17 +67,9 @@ class SwitchFeatures(base.GenericStruct):
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
-
-    # Port info
-    # TODO: On the official spec this element acts like a pointer to the first
-    #       element of a list of ports. Considering that this class must have
-    #       a size of 32, should we use a pointer in python? Or a list?
-    #       In the case of using a pointer, should we create a class that
-    #       represents a list of ports and then point to an instance of it?
-    #       We should consider that in Python all objects acts as C++ pointers
-    #       https://goo.gl/p1nzxh
-    # The number of ports is inferred from the length field in the header
-    ports = port.Port()
+    ports = []
+    # TODO: Add here a new type, list of phyPort()
+    # objects. Related to ISSUE #3
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, pad=None, capabilities=None, actions=None,

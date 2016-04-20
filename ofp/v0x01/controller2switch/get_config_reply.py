@@ -31,7 +31,7 @@ class ConfigFlags(enum.Enum):
 
 # Classes
 
-
+# TODO: Issue #4
 class SwitchConfig(base.GenericStruct):
     """Message used on OFPT_SET_CONFIG and OFPT_GET_CONFIG_REPLY.
 
