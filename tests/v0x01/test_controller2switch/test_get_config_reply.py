@@ -9,7 +9,7 @@ class TestSwitchConfig(unittest.TestCase):
         get_config_reply_message = \
             get_config_reply.SwitchConfig(xid=1, set_message=False, flags=1,
                                           miss_send_len=1024)
-        self.assertEqual(get_config_reply_message.get_size(), 16)
+        self.assertEqual(get_config_reply_message.get_size(), 12)
 
     def test_pack(self):
         get_config_reply_message = \

@@ -58,7 +58,8 @@ class PacketQueue(base.GenericStruct):
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
-    properties = QueuePropHeader()
+    properties = []  # TODO: Add here a new type, list of QueuePropHeader()
+                     # objects. Related to ISSUE #3
 
     def __init__(self, queue_id=None, length=None, pad=None, properties=None):
 
