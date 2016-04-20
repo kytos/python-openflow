@@ -5,9 +5,9 @@
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 class QueueGetConfigRequest(base.GenericStruct):
