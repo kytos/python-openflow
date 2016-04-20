@@ -47,7 +47,8 @@ class FlowStats(base.GenericStruct):
     cookie = basic_types.UBInt64()
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
-    actions = action.ActionHeader()
+    actions = []    # TODO: Add here a new type, list of ActionHeaders()
+                    # objects. Related to ISSUE #3
 
     def __init__(self, length=None, table_id=None, pad=None, match=None,
                  duration_sec=None, duration_nsec=None, priority=None,
