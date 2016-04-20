@@ -7,6 +7,7 @@ setup(name='OpenFlow Next Generation',
       author='OpenFlow Next Generation Team',
       author_email='of-ng-dev@ncc.unesp.br',
       license='MIT',
+      test_suite='tests',
       packages=[],
       zip_safe=False)
 
