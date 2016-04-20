@@ -1,8 +1,11 @@
 # #ProjectName - #SubprojectName
 
-This is a subproject of the #ProjectName project.
-This is the library component, responsible for parsing OpenFlow messages
-to/from OpenFlow switches.
+This is a subproject of the #ProjectName project.  This is the library
+component, in charge of parsing OpenFlow messages to/from OpenFlow switches.
+
+This library was developed to be used with out main controller, but feel free to
+use this code in your projects. Is a very simple and intuitive library that also
+can be used to create your own controller.
 
 ## #SubprojectName structure
 
@@ -14,7 +17,6 @@ and contains the following directory structure:
     - Each version is [incrementally build](#incremental-code) based
       on the previous version
     - Each version has its own unittest suit on the *tests* directory
-  - **Problem**: basic problem used for candidates selection
   - **raw**: raw (binary) OpenFlow Messages, dumped with
     [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
 
@@ -23,9 +25,9 @@ and contains the following directory structure:
 To avoid code repetition this project utilizes an incremental architechture.
 
 This means that the firt version (1.0.0 = v0x01) was fully coded from the
-OpenFlow 1.0.0 Protocol. The 1.1 version (v0x02) imports the 1.0 version
-and then do the necessary changes to make it compatible with the
-OpenFlow 1.1.0 Protocol, and the next version follows the same logic.
+OpenFlow 1.0.0 Protocol. The 1.1 version (v0x02) imports the 1.0 version and
+then do the necessary changes to make it compatible with the OpenFlow 1.1.0
+Protocol, and the next version follows the same logic.
 
 ## OpenFlow Protocol Specification Implemented Versions
 
