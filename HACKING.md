@@ -1,6 +1,12 @@
 Before reading this file, please read the [CONTRIBUTE](CONTRIBUTE.md) file, that
 contains the main guidelines of the project.
 
+## Topics:
+  - [Development Environment setup](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#development-environment-setup)
+    - [Virtualenv (optional)](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#virtualenv)
+    - [Virtualenv Extras (optional)](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#virtualenv-extras)
+  - [Tests/TDD](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#tdd-test-driven-development)
+
 ## Development Environment setup
 
 This project is based on python (version 3.5).
