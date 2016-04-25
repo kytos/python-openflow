@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.symmetric import vendor
+from ofp.v0x01.symmetric import vendor_header
 
 class TestVendorHeader(unittest.TestCase):
     def test_get_size(self):
