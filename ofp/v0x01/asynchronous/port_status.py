@@ -7,7 +7,7 @@ import enum
 
 # Local source tree imports
 from ofp.v0x01.common import header as of_header
-from ofp.v0x01.common import port
+from ofp.v0x01.common import phy_port
 from ofp.v0x01.foundation import base
 from ofp.v0x01.foundation import basic_types
 
@@ -44,7 +44,7 @@ class PortStatus(base.GenericStruct):
     header = of_header.OFPHeader()
     reason = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=7)
-    desc = port.Port()
+    desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, pad=None, desc=None):
 
