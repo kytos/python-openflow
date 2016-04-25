@@ -19,9 +19,9 @@ class PortReason(enum.Enum):
     What changed about the physical port
 
     Enums:
-        OFPPR_ADD       # The port was added
-        OFPPR_DELETE    # The port was removed
-        OFPPR_MODIFY    # Some attribute of the port has changed
+        OFPPR_ADD     # The port was added
+        OFPPR_DELETE  # The port was removed
+        OFPPR_MODIFY  # Some attribute of the port has changed
 
     """
     OFPPR_ADD = 1
@@ -35,10 +35,10 @@ class PortStatus(base.GenericStruct):
     """
     A physical port has changed in the datapath
 
-        :param header -- Openflow Header
-        :param reason -- One of OFPPR_*
-        :param pad -- Align to 32-bits
-        :param desc -- Port description
+        :param header: Openflow Header
+        :param reason: One of OFPPR_*
+        :param pad:    Align to 32-bits
+        :param desc:   Port description
 
     """
     header = of_header.OFPHeader()
@@ -47,7 +47,6 @@ class PortStatus(base.GenericStruct):
     desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, pad=None, desc=None):
-
         self.header.ofp_type = of_header.OFPType.OFPT_PORT_STATUS
         self.reason = reason
         self.desc = desc

@@ -16,10 +16,10 @@ class VendorHeader(base.GenericStruct):
     """OpenFlow Vendor message
 
     This message does not contain a body beyond the OpenFlow Header
-        :param xid -- xid to be used on the message header
-        :param vendor -- Vendor ID:
-                         MSB 0: low-order bytes are IEEE OUI.
-                         MSB != 0: defined by OpenFlow consortium
+        :param xid:    xid to be used on the message header
+        :param vendor: Vendor ID:
+                       MSB 0: low-order bytes are IEEE OUI.
+                       MSB != 0: defined by OpenFlow consortium
     """
     header = of_header.OFPHeader()
     vendor = basic_types.UBInt32()

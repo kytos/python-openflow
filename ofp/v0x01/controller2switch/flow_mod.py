@@ -19,11 +19,11 @@ class FlowModCommand(enum.Enum):
     List the possible commands for a flow.
 
     Enums:
-        OFPFC_ADD               # New Flow
-        OFPFC_MODIFY            # Modify all flows
-        OFPFC_MODIFY_STRICT     # Modify entry strictly matching wildcards
-        OFPFC_DELETE            # Delete all matching flows
-        OFPFC_DELETE_STRICT     # Strictly match wildcards and priority
+        OFPFC_ADD           # New Flow
+        OFPFC_MODIFY        # Modify all flows
+        OFPFC_MODIFY_STRICT # Modify entry strictly matching wildcards
+        OFPFC_DELETE        # Delete all matching flows
+        OFPFC_DELETE_STRICT # Strictly match wildcards and priority
     """
     OFPFC_ADD = 1
     OFPFC_MODIFY = 2
@@ -37,10 +37,10 @@ class FlowModFlags(enum.Enum):
     Types to be used in Flags field
 
     Enums:
-        OFPFF_SEND_FLOW_REM     # Send flow removed message when flow
-                                  expires or is deleted
-        OFPFF_CHECK_OVERLAP     # Check for overlapping entries first
-        OFPFF_EMERG             # Remark this is for emergency
+        OFPFF_SEND_FLOW_REM # Send flow removed message when flow
+                              expires or is deleted
+        OFPFF_CHECK_OVERLAP # Check for overlapping entries first
+        OFPFF_EMERG         # Remark this is for emergency
     """
     OFPFF_SEND_FLOW_REM = 1 << 0
     OFPFF_CHECK_OVERLAP = 1 << 1
@@ -80,8 +80,9 @@ class FlowMod(base.GenericStruct):
     buffer_id = basic_types.UBInt32()
     out_port = basic_types.UBInt16()
     flags = basic_types.UBInt16()
-    actions = []    # TODO: Add here a new type, list of ActionHeaders()
-                    # objects. Related to ISSUE #3
+    actions = []
+    # TODO: Add here a new type, list of ActionHeaders()
+    # objects. Related to ISSUE #3
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,

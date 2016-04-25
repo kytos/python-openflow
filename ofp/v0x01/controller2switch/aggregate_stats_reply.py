@@ -15,10 +15,10 @@ class AggregateStatsReply(base.GenericStruct):
     """
     Body of reply to OFPST_AGGREGATE request
 
-        :param packet_count -- Number of packets in flows
-        :param byte_count -- Number of bytes in flows
-        :param flow_count -- Number of flows
-        :param pad -- Align to 64 bits
+        :param packet_count: Number of packets in flows
+        :param byte_count:   Number of bytes in flows
+        :param flow_count:   Number of flows
+        :param pad:          Align to 64 bits
     """
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()

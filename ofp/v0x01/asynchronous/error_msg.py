@@ -40,7 +40,7 @@ class OFPError(base.GenericStruct):
 
     This message does not contain a body beyond the OpenFlow Header
         :param length: length of the message
-        :param xid: xid to be used on the message header
+        :param xid:    xid to be used on the message header
     """
     header = of_header.OFPHeader()
     type = basic_types.UBInt16()

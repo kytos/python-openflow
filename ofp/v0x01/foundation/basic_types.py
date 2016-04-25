@@ -35,9 +35,9 @@ class UBInt8Array(base.GenericType):
         self._fmt = "!%d%c" % (self.length, 'B')
 
     def unpack(self, buff, offset=0):
-        """ Unpack a buff and stores at value property.
-            :param buff -- Buffer where data is located.
-            :param offset -- Where data stream begins.
+        """Unpack a buff and stores at value property.
+            :param buff:   Buffer where data is located.
+            :param offset: Where data stream begins.
         """
         self._value = struct.unpack_from(self._fmt, buff, offset)
 
@@ -50,36 +50,31 @@ class UBInt8Array(base.GenericType):
 
 
 class UBInt16(base.GenericType):
-    """
-    Format character for an Unsigned Short. Class for an 16 bytes
+    """Format character for an Unsigned Short. Class for an 16 bytes
     Unsigned Integer.
     """
     _fmt = "!H"
 
 
 class UBInt32(base.GenericType):
-    """
-    Format character for an Unsigned Int. Class for an 32 bytes
+    """Format character for an Unsigned Int. Class for an 32 bytes
     Unsigned Integer.
     """
     _fmt = "!I"
 
 
 class UBInt64(base.GenericType):
-    """
-    Format character for an Unsigned Long Long. Class for an 64 bytes
+    """Format character for an Unsigned Long Long. Class for an 64 bytes
     Unsigned Integer.
     """
     _fmt = "!Q"
 
 
 class Char(base.GenericType):
-    """
-    Format double char to create a Char basic type.
-    """
+    """Format double char to create a Char basic type."""
     def __init__(self, value=None, length=0):
         """Build a double char type according to the length
-            :param value: the character to be build.
+            :param value:  the character to be build.
             :param length: the character size.
         """
         if value:

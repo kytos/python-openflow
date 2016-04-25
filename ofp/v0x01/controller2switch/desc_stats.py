@@ -17,11 +17,11 @@ class DescStats(base.GenericStruct):
     revision, serial number, and a description field is avail- able from
     the OFPST_DESC stats request.
 
-        :param mfr_desc -- Manufacturer description
-        :param hw_desc -- Hardware description
-        :param sw_desc -- Software description
-        :param serial_num -- Serial number
-        :param dp_desc -- Human readable description of datapath
+        :param mfr_desc:   Manufacturer description
+        :param hw_desc:    Hardware description
+        :param sw_desc:    Software description
+        :param serial_num: Serial number
+        :param dp_desc:    Human readable description of datapath
     """
     mfr_desc = basic_types.Char(length=base.DESC_STR_LEN)
     hw_desc = basic_types.Char(length=base.DESC_STR_LEN)

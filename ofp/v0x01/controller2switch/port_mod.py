@@ -18,16 +18,16 @@ class PortMod(base.GenericStruct):
     """
     Implements messages to modify the behavior of the physical port.
 
-        :param header -- OpenFlow header
-        :param port_no -- Physical port number
-        :param hw_addr -- The hardware address is not configurable.
+        :param header:    OpenFlow header
+        :param port_no:   Physical port number
+        :param hw_addr:   The hardware address is not configurable.
                           This is used to sanity-check the request,
                           so it must be the same as returned in an
                           ofp_phy_port struct
-        :param config -- Bitmap of OFPPC_* flags
-        :param mask -- Bitmap of OFPPC_* flags to be changed
-        :param advertise -- Bitmap of "ofp_port_features"s
-        :param pad -- Pad to 64-bits
+        :param config:    Bitmap of OFPPC_* flags
+        :param mask:      Bitmap of OFPPC_* flags to be changed
+        :param advertise: Bitmap of "ofp_port_features"s
+        :param pad:       Pad to 64-bits
     """
     header = of_header.OFPHeader()
     port_no = basic_types.UBInt16()

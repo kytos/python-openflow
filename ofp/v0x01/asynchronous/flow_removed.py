@@ -33,19 +33,19 @@ class FlowRemoved(base.GenericStruct):
     """
     Flow removed (datapath -> controller).
 
-        :param header -- Openflow Header
-        :param match -- Description of Fields
-        :param cookie -- Opaque controller-issued identifier
-        :param priority -- Priority level of flow entry
-        :param reason -- One of OFPRR_*
-        :param pad  -- Align to 32-bits
-        :param duration_sec -- Time flow was alive in seconds
-        :param duration_nsec -- Time flow was alive in nanoseconds beyond
-                                duration_sec
-        :param idle_timeout -- Idle timeout from original flow mod
-        :param pad2 -- Align to 64-bits
-        :param packet_count -- Number of packets
-        :param byte_count -- Bytes count
+        :param header:        Openflow Header
+        :param match:         Description of Fields
+        :param cookie:        Opaque controller-issued identifier
+        :param priority:      Priority level of flow entry
+        :param reason:        One of OFPRR_*
+        :param pad :          Align to 32-bits
+        :param duration_sec:  Time flow was alive in seconds
+        :param duration_nsec: Time flow was alive in nanoseconds beyond
+                              duration_sec
+        :param idle_timeout:  Idle timeout from original flow mod
+        :param pad2:          Align to 64-bits
+        :param packet_count:  Number of packets
+        :param byte_count:    Bytes count
 
 
     """

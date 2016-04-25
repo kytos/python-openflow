@@ -18,9 +18,9 @@ class ConfigFlags(enum.Enum):
     """Configuration Flags
 
         # Handling of IP Fragments
-        OFPC_FRAG_NORMAL               # No special handling for fragments
-        OFPC_FRAG_DROP                 # Drop fragments
-        OFPC_FRAG_REASM                # Reassemble (only if OFPC_IP_REASM set)
+        OFPC_FRAG_NORMAL         # No special handling for fragments
+        OFPC_FRAG_DROP           # Drop fragments
+        OFPC_FRAG_REASM          # Reassemble (only if OFPC_IP_REASM set)
         OFPC_FRAG_MASK
     """
     OFPC_FRAG_NORMAL = 0

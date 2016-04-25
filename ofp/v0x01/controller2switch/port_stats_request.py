@@ -13,10 +13,10 @@ class PortStatsRequest(base.GenericStruct):
     """
     Body for ofp_stats_request of type OFPST_PORT
 
-        :param port_no -- OFPST_PORT message must request statistics either
-                          for a single port (specified in port_no) or for
-                          all ports (if port_no == OFPP_NONE).
-        :param pad --
+        :param port_no: OFPST_PORT message must request statistics either
+                        for a single port (specified in port_no) or for
+                        all ports (if port_no == OFPP_NONE).
+        :param pad:
 
     """
     port_no = basic_types.UBInt16()

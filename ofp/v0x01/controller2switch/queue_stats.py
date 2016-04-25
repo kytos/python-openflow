@@ -14,12 +14,12 @@ class QueueStats(base.GenericStruct):
     """
     Implements the reply body of a port_no
 
-        :param port_no -- Port Number
-        :param pad -- Align to 32-bits
-        :param queue_id -- Queue ID
-        :param tx_bytes -- Number of transmitted bytes
-        :param tx_packets -- Number of transmitted packets
-        :param tx_errors -- Number of packets dropped due to overrun
+        :param port_no:    Port Number
+        :param pad:        Align to 32-bits
+        :param queue_id:   Queue ID
+        :param tx_bytes:   Number of transmitted bytes
+        :param tx_packets: Number of transmitted packets
+        :param tx_errors:  Number of packets dropped due to overrun
     """
     port_no = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
