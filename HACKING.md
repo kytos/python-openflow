@@ -96,17 +96,29 @@ RPROMPT="$_OLD_RPROMPT"
 ```
 
 ## TDD (Test Driven Development)
-The tests are run for each implemented version of the protocol. So, to run
-the tests of a specific version use the following command from the project root
-directory:
+We want to keep the aim of 100% of test coverage. For that, we are using
+Python [unittest](https://docs.python.org/3.5/library/unittest.html) and
+to verify the test coverage status we are using
+[coverage.py](https://coverage.readthedocs.org/en/coverage-4.0.3/).
+To install the coverage (python3 version), run:
 
 ```shell
-python3 -m unittest discover -s ofp/VERSION/tests/
+pip3 install coverage
 ```
 
-To run all the tests, from all version, use the following command from the
-project root directory:
+To run the tests, use the following command on the root folder of the project:
 
 ```shell
-python3 -m unittest discover
+python3 setup.py test
 ```
+
+To run check the code test coverage, first run:
+
+```shell
+coverage run --source ofp setup.py test
+```
+
+To see the command line report run the command `coverage report -m`,
+and to generate a HTML report, run: `coverage html` and open the file
+**html_cov/index.html** into your browser
+(you can run `open html_cov/index.html`)
