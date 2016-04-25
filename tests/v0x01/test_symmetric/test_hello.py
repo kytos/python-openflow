@@ -2,15 +2,16 @@ import unittest
 
 from ofp.v0x01.symmetric import hello
 
+
 class TestHello(unittest.TestCase):
+    def setUp(self):
+        self.hello = hello.OFPHello(length=8, xid=1)
 
     def test_get_size(self):
-        hello_message = hello.OFPHello(length=8, xid=1)
-        self.assertEqual(hello_message.get_size(), 8)
+        self.assertEqual(self.hello.get_size(), 8)
 
     def test_pack(self):
-        hello_message = hello.OFPHello(length=8, xid=1)
-        hello_message.pack()
+        self.hello.pack()
 
     def test_unpack(self):
         pass
