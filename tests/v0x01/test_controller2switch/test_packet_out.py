@@ -8,7 +8,7 @@ class TestPacketOut(unittest.TestCase):
 
     def setUp(self):
         self.message = packet_out.PacketOut()
-        self.message.xid = 80
+        self.message.header.xid = 80
         self.message.buffer_id = 5
         self.message.in_pot = phy_port.OFPPort.OFPP_NONE
         self.message.actions_len = 4

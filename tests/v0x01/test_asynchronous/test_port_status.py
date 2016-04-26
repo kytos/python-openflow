@@ -12,7 +12,7 @@ class TestPortStatus(unittest.TestCase):
         """Setup the TestPortStatus Class"""
         name = bytes('X' * base.OFP_MAX_PORT_NAME_LEN, 'utf-8')
         self.message = port_status.PortStatus()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.reason = port_status.PortReason.OFPPR_ADD
         self.message.pad = [0, 0, 0, 0, 0, 0, 0]
         self.message.desc = phy_port.PhyPort()

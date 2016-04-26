@@ -8,7 +8,7 @@ class TestPortMod(unittest.TestCase):
 
     def setUp(self):
         self.message = port_mod.PortMod()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.port_no = 80
         self.message.hw_addr = [1 for _ in range(base.OFP_ETH_ALEN)]
         self.message.config = 1 << 2

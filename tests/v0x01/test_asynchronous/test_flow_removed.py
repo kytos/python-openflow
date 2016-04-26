@@ -10,7 +10,7 @@ class TestFlowRemoved(unittest.TestCase):
     def setUp(self):
         """Setup the TestFlowremoved Class instantiating"""
         self.message = flow_removed.FlowRemoved()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.match = flow_match.OFPMatch()
         self.message.cookie = 0
         self.message.priority = 1

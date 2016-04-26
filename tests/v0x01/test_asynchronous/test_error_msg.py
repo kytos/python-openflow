@@ -9,7 +9,7 @@ class TestErrorMsg(unittest.TestCase):
     def setUp(self):
         """Setup the TestErrorMsg Class instantiating a ErrorMsg message"""
         self.message = error_msg.ErrorMsg()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.type = error_msg.ErrorType.OFPET_BAD_ACTION
         self.message.code = error_msg.BadActionCode.OFPBAC_EPERM
         self.message.data = [0]

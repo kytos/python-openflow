@@ -9,7 +9,7 @@ class TestPacketIn(unittest.TestCase):
     def setUp(self):
         """Setup the TestPacketIn Class instantiating a PacketIn message"""
         self.message = packet_in.PacketIn()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.buffer_id = 1
         self.message.total_len = 1
         self.message.in_port = 1

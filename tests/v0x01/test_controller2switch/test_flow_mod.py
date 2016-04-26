@@ -15,7 +15,7 @@ class TestFlowMod(unittest.TestCase):
         action_header.pad = [15, 15, 15, 15]
 
         self.message = flow_mod.FlowMod()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.command = flow_mod.FlowModCommand.OFPFC_ADD
         self.message.match = flow_match.OFPMatch()
         self.message.cookie = 0

@@ -7,7 +7,7 @@ class TestQueueGetConfigRequest(unittest.TestCase):
 
     def setUp(self):
         self.message = queue_get_config_request.QueueGetConfigRequest()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.port = 80
         self.message.pad = [0, 0]
 

@@ -8,7 +8,7 @@ class TestSwitchFeatures(unittest.TestCase):
 
     def setUp(self):
         self.message = features_reply.SwitchFeatures()
-        self.message.xid = 1
+        self.message.header.xid = 1
         self.message.datapath_id = 1
         self.message.n_buffers = 1
         self.message.n_tables = 1
