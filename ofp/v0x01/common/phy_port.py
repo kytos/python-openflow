@@ -20,19 +20,19 @@ class OFPPortConfig(enum.Enum):
 
     Enums:
         OFPPC_PORT_DOWN     # Port is administratively down.
-        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
-        OFPPC_NO_FWD        # Drop packets forwarded to port.
-        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
-
-        # Not 1.1
         OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
+        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
         OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
         OFPPC_NO_FLOOD      # Do not include this port when flooding.
-
+        OFPPC_NO_FWD        # Drop packets forwarded to port.
+        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
     """
 
     OFPPC_PORT_DOWN = 1 << 0
+    OFPPC_NO_STP = 1 << 1
     OFPPC_NO_RECV = 1 << 2
+    OFPPC_NO_RECV_STP = 1 << 3
+    OFPPC_FLOOD = 1 << 4
     OFPPC_NO_FWD = 1 << 5
     OFPPC_NO_PACKET_IN = 1 << 6
 
@@ -47,12 +47,8 @@ class OFPPortState(enum.Enum):
     appropriately to fully implement an 802.1D spanning tree.
 
     Enums:
-        OFPPS_LINK_DOWN    # No physical link present.
-        OFPPS_BLOCKED      # Port is blocked.
-        OFPPS_LIVE         # Live for Fast Failover Group.
-
-        Not 1.1
         OFPPS_LINK_DOWN    # Not learning or relaying frames.
+        OFPPS_STP_LISTEN   # Not learning or relaying frames.
         OFPPS_STP_LEARN    # Learning but not relaying frames.
         OFPPS_STP_FORWARD  # Learning and relaying frames.
         OFPPS_STP_BLOCK    # Not part of spanning tree.
@@ -60,8 +56,11 @@ class OFPPortState(enum.Enum):
     """
 
     OFPPS_LINK_DOWN = 1 << 0
-    OFPPS_BLOCKED = 1 << 1
-    OFPPS_LIVE = 1 << 2
+    OFPPS_STP_LISTEN = 0 << 8
+    OFPPS_STP_LEARN = 1 << 8
+    OFPPS_STP_FORWARD = 2 << 8
+    OFPPS_STP_BLOCK = 3 << 8
+    OFPPS_STP_MASK = 3 << 8
 
 
 class OFPPort(enum.Enum):
@@ -111,18 +110,11 @@ class OFPPortFeatures(enum.Enum):
         OFPPF_100MB_FD    # 100 Mb full-duplex rate support.
         OFPPF_1GB_HD      # 1 Gb half-duplex rate support.
         OFPPF_1GB_FD      # 1 Gb full-duplex rate support.
-        OFPPF_10GB_FD     # 10 Gb full-duplex rate support.
-        OFPPF_40GB_FD     # 40 Gb full-duplex rate support.
-        OFPPF_100GB_FD    # 100 Gb full-duplex rate support.
-        OFPPF_1TB_FD      # 1 Tb full-duplex rate support.
-        OFPPF_OTHER       # Other rate, not in the list.
-
         OFPPF_COPPER      # Copper medium.
         OFPPF_FIBER       # Fiber medium.
         OFPPF_AUTONEG     # Auto-negotiation.
         OFPPF_PAUSE       # Pause.
         OFPPF_PAUSE_ASYM  # Asymmetric pause.
-
     """
 
     OFPPF_10MB_HD = 1 << 0
@@ -132,11 +124,6 @@ class OFPPortFeatures(enum.Enum):
     OFPPF_1GB_HD = 1 << 4
     OFPPF_1GB_FD = 1 << 5
     OFPPF_10GB_FD = 1 << 6
-    OFPPF_40GB_FD = 1 << 7
-    OFPPF_100GB_FD = 1 << 8
-    OFPPF_1TB_FD = 1 << 9
-    OFPPF_OTHER = 1 << 10
-
     OFPPF_COPPER = 1 << 11
     OFPPF_FIBER = 1 << 12
     OFPPF_AUTONEG = 1 << 13
