@@ -10,7 +10,7 @@ class TestFlowMod(unittest.TestCase):
 
     def setUp(self):
         action_header = action.ActionHeader()
-        action_header.ofpat_type = action.ActionType.OFPAT_SET_VLAN_VID
+        action_header.ofpat_type = action.OFPActionType.OFPAT_SET_VLAN_VID
         action_header.length = 8
         action_header.pad = [15, 15, 15, 15]
 
