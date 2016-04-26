@@ -1,24 +1,28 @@
 import unittest
 
 from ofp.v0x01.controller2switch import queue_get_config_request
-from ofp.v0x01.common import queue
-from ofp.v0x01.common import header
+
 
 class TestQueueGetConfigRequest(unittest.TestCase):
 
+    def setUp(self):
+        self.message = queue_get_config_request.QueueGetConfigRequest()
+        self.message.xid = 1
+        self.message.port = 80
+        self.message.pad = [0, 0]
+
     def test_get_size(self):
-        ofp_header = header.OFPHeader(1, 20, 1)
-        queue_get_config_request_message = \
-            queue_get_config_request.QueueGetConfigRequest(header=ofp_header,
-                                                           port=80, pad=[0, 0])
-        self.assertEqual(queue_get_config_request_message.get_size(), 12)
+        """[Controller2Switch/QueueGetConfigRequest] - size 12"""
+        self.assertEqual(self.message.get_size(), 12)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        ofp_header = header.OFPHeader(1, 20, 1)
-        queue_get_config_request_message = \
-            queue_get_config_request.QueueGetConfigRequest(header=ofp_header,
-                                                           port=80, pad=[0, 0])
-        queue_get_config_request_message.pack()
+        """[Controller2Switch/QueueGetConfigRequest] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/QueueGetConfigRequest] - unpacking"""
+        # TODO
         pass

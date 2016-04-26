@@ -1,17 +1,27 @@
 import unittest
 
-from ofp.v0x01.controller2switch import port_stats_request as PSR
+from ofp.v0x01.controller2switch import port_stats_request
 
 
 class TestPortStatsRequest(unittest.TestCase):
+
     def setUp(self):
-        self.message = PSR.PortStatsRequest(port_no=80, pad=[0, 0, 0, 0, 0, 0])
+        self.message = port_stats_request.PortStatsRequest()
+        self.message.port_no = 80
+        self.message.pad = [0, 0, 0, 0, 0, 0]
 
     def test_get_size(self):
+        """[Controller2Switch/PortStatsRequest] - size 8"""
         self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        self.message.pack()
+        """[Controller2Switch/PortStatsRequest] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/PortStatsRequest] - unpacking"""
+        # TODO
         pass

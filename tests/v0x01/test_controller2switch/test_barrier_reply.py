@@ -4,14 +4,22 @@ from ofp.v0x01.controller2switch import barrier_reply
 
 
 class TestBarrierReply(unittest.TestCase):
+
     def setUp(self):
-        self.barrier_reply = barrier_reply.BarrierReply(xid=1)
+        self.message = barrier_reply.BarrierReply(xid=1)
 
     def test_get_size(self):
-        self.assertEqual(self.barrier_reply.get_size(), 8)
+        """[Controller2Switch/BarrierReply] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        self.barrier_reply.pack()
+        """[Controller2Switch/BarrierReply] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/BarrierReply] - unpacking"""
+        # TODO
         pass

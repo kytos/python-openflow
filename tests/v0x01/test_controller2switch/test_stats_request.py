@@ -1,19 +1,30 @@
 import unittest
 
+from ofp.v0x01.controller2switch import stats_reply
 from ofp.v0x01.controller2switch import stats_request
 
 
 class TestStatsRequest(unittest.TestCase):
 
     def setUp(self):
-        self.stats_request = stats_request.StatsRequest(xid=1, req_type=3,
-                                                        flags=1, body=[])
+        self.message = stats_request.StatsRequest()
+        self.message.header.xid = 1
+        self.message.type = stats_reply.StatsTypes.OFPST_FLOW
+        self.message.flags = 1
+        self.message.body = []
 
     def test_get_size(self):
-        self.assertEqual(self.stats_request.get_size(), 12)
+        """[Controller2Switch/StatsRequest] - size 12"""
+        self.assertEqual(self.message.get_size(), 12)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        self.stats_request.pack()
+        """[Controller2Switch/StatsRequest] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/StatsRequest] - unpacking"""
+        # TODO
         pass

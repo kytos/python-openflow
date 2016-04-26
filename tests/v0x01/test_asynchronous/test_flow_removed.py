@@ -9,32 +9,47 @@ class TestFlowRemoved(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestFlowremoved Class instantiating"""
-        match = flow_match.OFPMatch(
-            wildcards=1, in_port=80, dl_src=[1, 2, 3, 4, 5, 6],
-            dl_dst=[1, 2, 3, 4, 5, 6], dl_vlan=1, dl_vlan_pcp=1, pad1=[0],
-            dl_type=1, nw_tos=1, nw_proto=1, pad2=[0, 0], nw_src=10000,
-            nw_dst=10000, tp_src=80, tp_dst=80)
-        self.message = flow_removed.FlowRemoved(xid=1, match=match, cookie=0,
-                                                priority=1,
-                                                reason=flow_removed.FlowRemovedReason.OFPRR_IDLE_TIMEOUT,
-                                                pad=[1], duration_sec=4,
-                                                duration_nsec=23,
-                                                idle_timeout=9, pad2=[1, 2],
-                                                packet_count=10, byte_count=4)
+        self.message = flow_removed.FlowRemoved()
+        self.message.xid = 1
+        self.message.match = flow_match.OFPMatch()
+        self.message.cookie = 0
+        self.message.priority = 1
+        self.message.reason = flow_removed.FlowRemovedReason.OFPRR_IDLE_TIMEOUT
+        self.message.pad = [1]
+        self.message.duration_sec = 4
+        self.message.duration_nsec = 23
+        self.message.idle_timeout = 9
+        self.message.pad2 = [1, 2]
+        self.message.packet_count = 10
+        self.message.byte_count = 4
+        self.message.match.wildcards = flow_match.OFPFlowWildCards.OFPFW_TP_DST
+        self.message.match.in_port = 80
+        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_vlan = 1
+        self.message.match.dl_vlan_pcp = 1
+        self.message.match.pad1 = [0]
+        self.message.match.dl_type = 1
+        self.message.match.nw_tos = 1
+        self.message.match.nw_proto = 1
+        self.message.match.pad2 = [0, 0]
+        self.message.match.nw_src = 10000
+        self.message.match.nw_dst = 10000
+        self.message.match.tp_src = 80
+        self.message.match.tp_dst = 80
 
     def test_size(self):
-        """Test the size of the message"""
+        """[Asynchronous/FlowRemoved] - size 88"""
         self.assertEqual(self.message.get_size(), 88)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """Test the pack method for the flow_removed"""
-        packet_message = b'\x01\x00\x00\x00\x00\x00\x00\x01'
-        self.assertEqual(self.message.pack(), packet_message)
-
-    def test_unpack(self):
-        """Test FlowRemoved message unpacking.
-        Should read a raw binary datapack, get the first 8 bytes and
-        then unpack it as a FlowRemoved object."""
+        """[Asynchronous/FlowRemoved] - packing"""
         # TODO
-        # self.assertEqual(unpacked_header, self.header)
+        pass
+
+    @unittest.skip('Not yet implemented')
+    def test_unpack(self):
+        """[Asynchronous/FlowRemoved] - unpacking"""
+        # TODO
         pass

@@ -6,27 +6,55 @@ from ofp.v0x01.controller2switch import flow_stats
 
 
 class TestFlowStats(unittest.TestCase):
+
     def setUp(self):
-        match = flow_match.OFPMatch(wildcards=1, in_port=22, dl_src=[1],
-                                    dl_dst=[1], dl_vlan=1, dl_vlan_pcp=1,
-                                    pad1=[0], dl_type=1, nw_tos=1, nw_proto=1,
-                                    pad2=[0, 0], nw_src=10000, nw_dst=10000,
-                                    tp_src=22, tp_dst=22)
-        action_header = action.ActionHeader(1, 40, [1, 1, 1, 1])
-        self.flow_stats = flow_stats.FlowStats(length=160, table_id=1, pad=0,
-                                               match=match, duration_sec=60,
-                                               duration_nsec=10000, priority=1,
-                                               idle_timeout=300,
-                                               hard_timeout=6000, pad2=[10],
-                                               cookie=1, packet_count=1,
-                                               byte_count=1,
-                                               actions=action_header)
+        action_header = action.ActionHeader()
+        action_header.ofpat_type = action.ActionType.OFPAT_SET_VLAN_VID
+        action_header.length = 8
+        action_header.pad = [15, 15, 15, 15]
+
+        self.message = flow_stats.FlowStats()
+        self.message.length = 160
+        self.message.table_id = 1
+        self.message.pad = 0
+        self.message.match = flow_match.OFPMatch()
+        self.message.duration_sec = 60
+        self.message.duration_nsec = 10000
+        self.message.priority = 1
+        self.message.idle_timeout = 300
+        self.message.hard_timeout = 6000
+        self.message.pad2 = [10]
+        self.message.cookie = 1
+        self.message.packet_count = 1
+        self.message.byte_count = 1
+        self.message.actions = [action_header]
+        self.message.match.in_port = 80
+        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_vlan = 1
+        self.message.match.dl_vlan_pcp = 1
+        self.message.match.pad1 = [0]
+        self.message.match.dl_type = 1
+        self.message.match.nw_tos = 1
+        self.message.match.nw_proto = 1
+        self.message.match.pad2 = [0, 0]
+        self.message.match.nw_src = 10000
+        self.message.match.nw_dst = 10000
+        self.message.match.tp_src = 80
+        self.message.match.tp_dst = 80
 
     def test_get_size(self):
-        self.assertEqual(self.flow_stats.get_size(), 88)
+        """[Controller2Switch/FlowStats] - size 88"""
+        self.assertEqual(self.message.get_size(), 88)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        self.flow_stats.pack()
+        """[Controller2Switch/FlowStats] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/FlowStats] - unpacking"""
+        # TODO
         pass

@@ -10,31 +10,34 @@ class TestPortStatus(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestPortStatus Class"""
-        hw_addr = [100, 50, 48, 48, 160, 160]
-        name = bytes("".join(['X' for _ in range(base.OFP_MAX_PORT_NAME_LEN)]),
-                     'utf-8')
-        port = phy_port.PhyPort(port_no=80, hw_addr=hw_addr, name=name,
-                                config=1 << 1, state=3 << 8, curr=0,
-                                advertised=1 << 4, supported=1 << 4,
-                                peer=1 << 4)
-        self.message = port_status.PortStatus(xid=1,
-                                              reason=port_status.PortReason.OFPPR_ADD,
-                                              pad=[1, 1, 1, 1, 1, 1, 1],
-                                              desc=port)
+        name = bytes('X' * base.OFP_MAX_PORT_NAME_LEN, 'utf-8')
+        self.message = port_status.PortStatus()
+        self.message.xid = 1
+        self.message.reason = port_status.PortReason.OFPPR_ADD
+        self.message.pad = [0, 0, 0, 0, 0, 0, 0]
+        self.message.desc = phy_port.PhyPort()
+        self.message.desc.port_no = 2
+        self.message.desc.hw_addr = [10, 10, 18, 18, 16, 16]
+        self.message.desc.name = name
+        self.message.desc.config = phy_port.OFPPortConfig.OFPPC_NO_STP
+        self.message.desc.state = phy_port.OFPPortState.OFPPS_STP_MASK
+        self.message.desc.curr = phy_port.OFPPortFeatures.OFPPF_10GB_FD
+        self.message.desc.advertised = phy_port.OFPPortFeatures.OFPPF_PAUSE
+        self.message.desc.supported = phy_port.OFPPortFeatures.OFPPF_AUTONEG
+        self.message.desc.peer = phy_port.OFPPortFeatures.OFPPF_AUTONEG
 
     def test_size(self):
-        """Test the size of the message"""
-        self.assertEqual(self.header.get_size(), 64)
+        """[Asynchronous/PortStatus] - size 64"""
+        self.assertEqual(self.message.get_size(), 64)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """Test the pack method for the PortStatus"""
-        packet_message = b'\x01\x00\x00\x00\x00\x00\x00\x01'
-        self.assertEqual(self.message.pack(), packet_message)
-
-    def test_unpack(self):
-        """Test message unpacking.
-        Should read a raw binary datapack, get the first 8 bytes and
-        then unpack it as a PortStatus object."""
+        """[Asynchronous/PortStatus] - packing"""
         # TODO
-        # self.assertEqual(unpacked_header, self.header)
+        pass
+
+    @unittest.skip('Not yet implemented')
+    def test_unpack(self):
+        """[Asynchronous/PortStatus] - unpacking"""
+        # TODO
         pass
