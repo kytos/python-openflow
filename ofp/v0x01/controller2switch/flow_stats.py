@@ -39,7 +39,7 @@ class FlowStats(base.GenericStruct):
     match = flow_match.OFPMatch()
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()
-    prioriry = basic_types.UBInt16()
+    priority = basic_types.UBInt16()
     idle_timeout = basic_types.UBInt16()
     hard_timeout = basic_types.UBInt16()
     pad2 = basic_types.UBInt8Array(length=6)

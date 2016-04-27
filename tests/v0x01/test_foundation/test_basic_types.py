@@ -55,7 +55,7 @@ class TestUBInt16(unittest.TestCase):
 
     def test_get_size(self):
         """[Foundation/BasicTypes/UBInt16] - size 2"""
-        self.assertEqual(self.ubint32.get_size(), 2)
+        self.assertEqual(self.ubint16.get_size(), 2)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
