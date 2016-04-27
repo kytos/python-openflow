@@ -18,7 +18,7 @@ class PortMod(base.GenericStruct):
     """
     Implements messages to modify the behavior of the physical port.
 
-        :param header:    OpenFlow header
+        :param xid:       OpenFlow xid to the header
         :param port_no:   Physical port number
         :param hw_addr:   The hardware address is not configurable.
                           This is used to sanity-check the request,
@@ -37,10 +37,11 @@ class PortMod(base.GenericStruct):
     advertise = basic_types.UBInt32()
     pad = basic_types.UBInt8Array(length=4)
 
-    def __init__(self, header=None, port_no=None, hw_addr=None, config=None,
+    def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None, pad=None):
 
-        self.header = header
+        self.header.ofp_type = of_header.OFPType.OFPT_PORT_MOD
+        self.header.xid = xid
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.config = config

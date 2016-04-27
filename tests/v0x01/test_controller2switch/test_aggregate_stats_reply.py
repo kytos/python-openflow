@@ -1,20 +1,29 @@
 import unittest
 
-from ofp.v0x01.controller2switch import aggregate_stats_reply as asr
+from ofp.v0x01.controller2switch import aggregate_stats_reply
 
 
 class TestAggregateStatsReply(unittest.TestCase):
+
     def setUp(self):
-        self.agg_stats_reply = asr.AggregateStatsReply(packet_count=5,
-                                                       byte_count=1,
-                                                       flow_count=8,
-                                                       pad=[1, 2, 3, 4])
+        self.message = aggregate_stats_reply.AggregateStatsReply()
+        self.message.packet_count = 5
+        self.message.byte_count = 1
+        self.message.flow_count = 8
+        self.message.pad = [1, 2, 3, 4]
 
     def test_get_size(self):
-        self.assertEqual(self.agg_stats_reply.get_size(), 24)
+        """[Controller2Switch/AggregateStatsReply] - size 24"""
+        self.assertEqual(self.message.get_size(), 24)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        self.agg_stats_reply.pack()
+        """[Controller2Switch/AggregateStatsReply] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Controller2Switch/AggregateStatsReply] - unpacking"""
+        # TODO
         pass

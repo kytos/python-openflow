@@ -1,149 +1,235 @@
 import unittest
 
 from ofp.v0x01.common import action
-from ofp.v0x01.foundation import basic_types
+from ofp.v0x01.common import phy_port
+
 
 class TestActionHeader(unittest.TestCase):
+    """Test the ActionHeader message"""
+
+    def setUp(self):
+        self.message = action.ActionHeader()
+        self.message.type = action.OFPActionType.OFPAT_SET_TP_SRC
+        self.message.len = 1
+        self.message.pad = [15, 15, 15, 15]
 
     def test_get_size(self):
-        action_header = action.ActionHeader(1, 40, [15, 15, 15, 15])
-        self.assertEqual(action_header.get_size(), 8)
+        """[Common/ActionHeader] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_header = action.ActionHeader(1, 40, [15, 15, 15, 15])
-        action_header.pack()
+        """[Common/ActionHeader] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/ActionHeader] - unpacking"""
+        # TODO
         pass
 
 
 class TestActionOutput(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionOutput()
+        self.message.port = phy_port.OFPPort.OFPP_CONTROLLER
+        self.message.max_len = 8
+
     def test_get_size(self):
-        action_output = action.ActionOutput(0, 8, 8080, 64)
-        self.assertEqual(action_output.get_size(), 8)
+        """[Common/ActionOutput] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_output = action.ActionOutput(0, 8, 8080, 64)
-        action_output.pack()
+        """[Common/ActionOutput] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/ActionOutput] - packing"""
+        # TODO
         pass
 
 
 class TestActionEnqueue(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionEnqueue()
+        self.message.port = phy_port.OFPPort.OFPP_CONTROLLER
+        self.message.pad = [0, 0, 0, 0, 0, 0]
+        self.message.queue_id = 4
+
     def test_get_size(self):
-        action_enqueue = action.ActionEnqueue(11, 16, 80, [1, 2, 3, 4, 5, 6], 1)
-        self.assertEqual(action_enqueue.get_size(), 16)
+        """[Common/ActionEnqueue] - size 16"""
+        self.assertEqual(self.message.get_size(), 16)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_enqueue = action.ActionEnqueue(11, 16, 80, [1, 2, 3, 4, 5, 6], 1)
-        action_enqueue.pack()
+        """[Common/ActionEnqueue] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/ActionEnqueue] - unpacking"""
+        # TODO
         pass
 
 
 class TestActionVlanVid(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionVlanVid()
+        self.message.vlan_vid = 5
+        self.message.pad = [0, 0]
+
     def test_get_size(self):
-        action_vlan_vid = action.ActionVlanVid(1, 8, 1, [20, 20])
-        self.assertEqual(action_vlan_vid.get_size(), 8)
+        """[Common/ActionVlanVid] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_vlan_vid = action.ActionVlanVid(1, 8, 1, [20, 20])
-        action_vlan_vid.pack()
+        """[Common/ActionVlanVid] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionVlanVid] - unpacking"""
+        # TODO
 
 
 class TestActionVlanPCP(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionVlanPCP()
+        self.message.vlan_pcp = 2
+        self.message.pad = [0, 0, 0]
+
     def test_get_size(self):
-        action_vlan_pcp = action.ActionVlanPCP(2, 8, 1, [10, 10, 10])
-        self.assertEqual(action_vlan_pcp.get_size(), 8)
+        """[Common/ActionVlanPCP] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_vlan_pcp = action.ActionVlanPCP(2, 8, 1, [10, 10, 10])
-        action_vlan_pcp.pack()
+        """[Common/Actionvlanpcp] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionVlanVid] - unpacking"""
+        # TODO
 
 
 class TestActionDLAddr(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionDLAddr()
+        self.message.type = action.OFPActionType.OFPAT_SET_DL_SRC
+        self.message.dl_addr = [12, 12, 12, 12, 12, 12]
+
     def test_get_size(self):
-        action_dl_addr = action.ActionDLAddr(
-            4, 16, [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6])
-        self.assertEqual(action_dl_addr.get_size(), 16)
+        """[Common/ActionDLAddr] - size 16"""
+        self.assertEqual(self.message.get_size(), 16)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_dl_addr = action.ActionDLAddr(
-            4, 16, [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6])
-        action_dl_addr.pack()
+        """[Common/ActionDLAddr] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionDLAddr] - unpacking"""
+        # TODO
 
 
 class TestActionNWAddr(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionNWAddr()
+        self.message.type = action.OFPActionType.OFPAT_SET_TW_SRC
+        self.message.nw_addr = [12, 12, 12, 12, 12, 12]
+
     def test_get_size(self):
-        action_nw_addr = action.ActionNWAddr(6, 8, 200111222)
-        self.assertEqual(action_nw_addr.get_size(), 8)
+        """[Common/ActionNWAddr] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_nw_addr = action.ActionNWAddr(6, 8, 200111222)
-        action_nw_addr.pack()
+        """[Common/ActionNWAddr] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionNWAddr] - unpacking"""
+        # TODO
 
 
 class TestActionNWTos(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionNWTos()
+        self.message.type = action.OFPActionType.OFPAT_SET_TW_SRC
+        self.message.nw_tos = 123456
+        self.message.pad = [0, 0, 0]
+
     def test_get_size(self):
-        action_nw_tos = action.ActionNWTos(
-            7, 8, 10, [0, 10, 10])
-        self.assertEqual(action_nw_tos.get_size(), 8)
+        """[Common/ActionNWTos] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_nw_tos = action.ActionNWTos(
-            7, 8, 10, [0, 10, 10])
-        action_nw_tos.pack()
+        """[Common/ActionNWTos] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionNWTos] - unpacking"""
+        # TODO
 
 
 class TestActionTPPort(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionTPPort()
+        self.message.type = action.OFPActionType.OFPAT_SET_TP_SRC
+        self.message.tp_port = 8888
+        self.message.pad = [0, 0]
+
     def test_get_size(self):
-        action_tp_port = action.ActionTPPort(
-            9, 8, 8080, [0, 0])
-        self.assertEqual(action_tp_port.get_size(), 8)
+        """[Common/ActionTPPort] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_tp_port = action.ActionTPPort(
-            9, 8, 8080, [12, 12])
-        action_tp_port.pack()
+        """[Common/ActionTPPort] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionTPPort] - unpacking"""
+        # TODO
 
 
 class TestActionVendorHeader(unittest.TestCase):
 
+    def setUp(self):
+        self.message = action.ActionVendorHeader()
+        self.message.len = 16
+        self.message.vendor = 1
+
     def test_get_size(self):
-        action_vendor_header = action.ActionVendorHeader(0xffff, 16, 16)
-        self.assertEqual(action_vendor_header.get_size(), 8)
+        """[Common/ActionVendorHeader] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        action_vendor_header = action.ActionVendorHeader(0xffff, 16, 16)
-        action_vendor_header.pack()
+        """[Common/ActionVendorHeader] - packing"""
+        # TODO
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        pass
+        """[Common/ActionVendorHeader] - unpacking"""
+        # TODO

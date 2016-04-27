@@ -33,7 +33,7 @@ class PacketIn(base.GenericStruct):
     """
     Packet received on port (datapath -> controller)
 
-        :param header:    Openflow Header
+        :param xid:       Openflow xid of the Header
         :param buffer_id: ID assigned by datapath
         :param total_len: Full length of frame
         :param in_port:   Port on which frame was received
@@ -55,9 +55,11 @@ class PacketIn(base.GenericStruct):
     pad = basic_types.UBInt8()
     data = basic_types.UBInt8Array(length=0)
 
-    def __init__(self, buffer_id, total_len, in_port, reason, pad, data):
+    def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
+                 reason=None, pad=None, data=None):
 
         self.header.ofp_type = of_header.OFPType.OFPT_PACKET_IN
+        self.header.xid = xid
         self.buffer_id = buffer_id
         self.total_len = total_len
         self.in_port = in_port

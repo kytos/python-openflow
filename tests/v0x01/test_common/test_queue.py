@@ -5,51 +5,78 @@ from ofp.v0x01.common import queue
 
 class TestQueuePropHeader(unittest.TestCase):
 
+    def setUp(self):
+        self.message = queue.QueuePropHeader()
+        self.message.property = queue.QueueProperties.OFPQT_MIN_RATE
+        self.message.len = 12
+        self.message.pad = [0, 0, 0, 0]
+
     def test_get_size(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
-        self.assertEqual(queue_prop_header.get_size(), 8)
+        """[Common/QueuePropHeader] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
-        queue_prop_header.pack()
+        """[Common/QueuePropHeader] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/QueuePropHeader] - unpacking"""
+        # TODO
         pass
 
 
 class TestPacketQueue(unittest.TestCase):
 
+    def setUp(self):
+        propertie01 = queue.QueuePropHeader()
+        propertie01.property = queue.QueueProperties.OFPQT_MIN_RATE
+        propertie01.len = 12
+        propertie01.pad = [0, 0, 0, 0]
+        self.message = queue.PacketQueue()
+        self.message.queue_id = 1
+        self.message.length = 8
+        self.message.pad = [0, 0]
+        self.message.properties = [propertie01]
+
     def test_get_size(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [])
-        packet_queue = queue.PacketQueue(queue_id=1, length=8, pad=[0, 0],
-                                         properties=[queue_prop_header])
-        self.assertEqual(packet_queue.get_size(), 8)
+        """[Common/PacketQueue] - size 8"""
+        self.assertEqual(self.message.get_size(), 8)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
-        packet_queue = queue.PacketQueue(queue_id=1, length=8, pad=[0, 0],
-                                         properties=queue_prop_header)
-        packet_queue.pack()
+        """[Common/PacketQueue] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/PacketQueue] - unpacking"""
+        # TODO
         pass
 
 
 class TestQueuePropMinRate(unittest.TestCase):
 
+    def setUp(self):
+        self.message = queue.QueuePropMinRate()
+        self.message.rate = 1000
+        self.message.pad = [0, 0, 0, 0, 0, 0]
+
     def test_get_size(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
-        queue_prop_min_rate = \
-            queue.QueuePropMinRate(prop_header=queue_prop_header, rate=10000,
-                                   pad=[0, 0, 0, 0, 0, 0])
-        self.assertEqual(queue_prop_min_rate.get_size(), 16)
+        """[Common/PropMinRate] - size 16"""
+        self.assertEqual(self.message.get_size(), 16)
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        queue_prop_header = queue.QueuePropHeader(1, 8, [1, 1, 1, 1])
-        queue_prop_min_rate = \
-            queue.QueuePropMinRate(prop_header=queue_prop_header, rate=10000,
-                                   pad=[0, 0, 0, 0, 0, 0])
-        queue_prop_min_rate.pack()
+        """[Common/PropMinRate] - packing"""
+        # TODO
+        pass
 
+    @unittest.skip('Not yet implemented')
     def test_unpack(self):
+        """[Common/PropMinRate] - unpacking"""
+        # TODO
         pass

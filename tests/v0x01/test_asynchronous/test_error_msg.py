@@ -8,24 +8,24 @@ class TestErrorMsg(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestErrorMsg Class instantiating a ErrorMsg message"""
-        self.message = error_msg.ErrorMsg(xid=1,
-                                          type=error_msg.ErrorType.OFPET_BAD_ACTION,
-                                          code=error_msg.BadActionCode.OFPBAC_EPERM,
-                                          data=[0])
+        self.message = error_msg.ErrorMsg()
+        self.message.header.xid = 1
+        self.message.type = error_msg.ErrorType.OFPET_BAD_ACTION
+        self.message.code = error_msg.BadActionCode.OFPBAC_EPERM
+        self.message.data = [0]
 
     def test_size(self):
-        """Test the size of the message"""
-        self.assertEqual(self.message.get_size(), 12)
+        """[Asynchronous/ErrorMsg] - size 12"""
+        self.assertEqual(self.message.get_size(), 12, 'Wrong message size')
 
+    @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """Test the pack method for the packetIn"""
-        packet_message = b'\x01\x00\x00\x00\x00\x00\x00\x01'
-        self.assertEqual(self.message.pack(), packet_message)
-
-    def test_unpack(self):
-        """Test unpacking.
-        Should read a raw binary datapack, get the first 8 bytes and
-        then unpack it as a ErrorMsg object."""
+        """[Asynchronous/ErrorMsg] - packing"""
         # TODO
-        # self.assertEqual(unpacked_header, self.header)
+        pass
+
+    @unittest.skip('Not yet implemented')
+    def test_unpack(self):
+        """[Asynchronous/ErrorMsg] - unpacking"""
+        # TODO
         pass
