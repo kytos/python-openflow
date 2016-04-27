@@ -155,7 +155,7 @@ class ErrorMsg(base.GenericStruct):
     """
     header = of_header.OFPHeader()
     type = basic_types.UBInt16()
-    code = basic_types.UBInt16
+    code = basic_types.UBInt16()
     data = basic_types.UBInt8Array(length=0)
 
     def __init__(self, xid=None, type=None, code=None, data=None):
