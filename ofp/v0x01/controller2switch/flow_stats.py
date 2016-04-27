@@ -39,13 +39,14 @@ class FlowStats(base.GenericStruct):
     match = flow_match.OFPMatch()
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()
-    prioriry = basic_types.UBInt16()
+    priority = basic_types.UBInt16()
     idle_timeout = basic_types.UBInt16()
     hard_timeout = basic_types.UBInt16()
     pad2 = basic_types.UBInt8Array(length=6)
     cookie = basic_types.UBInt64()
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
+    # actions = basic_types.UBInt8Array(length=0)
     actions = []
     # TODO: Add here a new type, list of ActionHeaders()
     #       objects. Related to ISSUE #3
@@ -58,7 +59,8 @@ class FlowStats(base.GenericStruct):
         self.length = length
         self.table_id = table_id
         self.pad = pad
-        self.match = match
+        if match is not None:
+            self.match = match
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
         self.prioriry = priority
@@ -68,4 +70,5 @@ class FlowStats(base.GenericStruct):
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count
-        self.actions = actions
+        if actions is not None:
+            self.actions = actions
