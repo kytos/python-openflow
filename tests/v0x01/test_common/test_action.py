@@ -149,7 +149,7 @@ class TestActionNWAddr(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionNWAddr()
-        self.message.type = action.OFPActionType.OFPAT_SET_TW_SRC
+        self.message.type = action.OFPActionType.OFPAT_SET_NW_SRC
         self.message.nw_addr = [12, 12, 12, 12, 12, 12]
 
     def test_get_size(self):
@@ -171,7 +171,7 @@ class TestActionNWTos(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionNWTos()
-        self.message.type = action.OFPActionType.OFPAT_SET_TW_SRC
+        self.message.type = action.OFPActionType.OFPAT_SET_NW_SRC
         self.message.nw_tos = 123456
         self.message.pad = [0, 0, 0]
 
