@@ -72,7 +72,7 @@ class QueuePropMinRate(base.GenericStruct):
     """
     This class defines the minimum-rate type queue.
 
-        :param prop_reader: prop: OFPQT_MIN, len: 16.
+        :param prop_header: prop: OFPQT_MIN, len: 16.
         :param rate:        In 1/10 of a percent; >1000 -> disabled.
         :param pad:         64-bit alignmet.
     """

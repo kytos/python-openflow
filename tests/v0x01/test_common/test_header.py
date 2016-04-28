@@ -15,7 +15,7 @@ class TestHeader(unittest.TestCase):
 
     def test_size(self):
         """[Common/Header] - size 8"""
-        self.assertEqual(self.header.get_size(), 8)
+        self.assertEqual(self.message.get_size(), 8)
 
     @unittest.expectedFailure
     def test_pack_empty(self):

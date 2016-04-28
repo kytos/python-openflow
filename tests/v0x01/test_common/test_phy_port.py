@@ -20,7 +20,7 @@ class TestPhyPort(unittest.TestCase):
 
     def test_get_size(self):
         """[Common/PhyPort] - size 48"""
-        self.assertEqual(self.mesasge.get_size(), 48)
+        self.assertEqual(self.message.get_size(), 48)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
