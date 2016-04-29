@@ -21,4 +21,5 @@ class OFPRequest(base.GenericStruct):
 
     def __init__(self, xid=None):
         self.header.ofp_type = of_header.OFPType.OFPT_ECHO_REQUEST
+        self.header.length = 8
         self.header.xid = xid
