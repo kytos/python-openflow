@@ -8,7 +8,7 @@ class TestFlowStatsRequest(unittest.TestCase):
 
     def setUp(self):
         self.message = flow_stats_request.FlowStatsRequest()
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.table_id = 1
         self.message.pad = 0
         self.message.out_port = 80

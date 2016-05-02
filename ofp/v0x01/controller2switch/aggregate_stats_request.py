@@ -26,7 +26,7 @@ class AggregateStatsRequest(base.GenericStruct):
                          no restriction
 
     """
-    match = flow_match.OFPMatch()
+    match = flow_match.Match()
     table_id = basic_types.UBInt8()
     pad = basic_types.UBInt8()
     out_port = basic_types.UBInt16()

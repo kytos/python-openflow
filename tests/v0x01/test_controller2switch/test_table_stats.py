@@ -12,7 +12,7 @@ class TestTableStats(unittest.TestCase):
         self.message.table_id = 1
         self.message.pad = [0, 0, 0]
         self.message.name = bytes('X' * base.OFP_MAX_TABLE_NAME_LEN, 'utf-8')
-        self.message.wildcards = flow_match.OFPFlowWildCards.OFPFW_TP_DST
+        self.message.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
         self.message.max_entries = 1
         self.message.active_count = 10
         self.message.count_lookup = 10

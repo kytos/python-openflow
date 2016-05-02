@@ -11,7 +11,7 @@ class TestFlowRemoved(unittest.TestCase):
         """Setup the TestFlowremoved Class instantiating"""
         self.message = flow_removed.FlowRemoved()
         self.message.header.xid = 1
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.cookie = 0
         self.message.priority = 1
         self.message.reason = flow_removed.FlowRemovedReason.OFPRR_IDLE_TIMEOUT
@@ -22,7 +22,7 @@ class TestFlowRemoved(unittest.TestCase):
         self.message.pad2 = [1, 2]
         self.message.packet_count = 10
         self.message.byte_count = 4
-        self.message.match.wildcards = flow_match.OFPFlowWildCards.OFPFW_TP_DST
+        self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
         self.message.match.in_port = 80
         self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]

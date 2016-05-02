@@ -11,15 +11,15 @@ from ofp.v0x01.foundation import base
 # Classes
 
 
-class OFPReply(base.GenericStruct):
+class Reply(base.GenericStruct):
     """OpenFlow Reply message
 
     This message does not contain a body beyond the OpenFlow Header
         :param xid: xid to be used on the message header
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
 
     def __init__(self, xid=None):
-        self.header.ofp_type = of_header.OFPType.OFPT_ECHO_REPLY
+        self.header.ofp_type = of_header.Type.OFPT_ECHO_REPLY
         self.header.length = 8
         self.header.xid = xid

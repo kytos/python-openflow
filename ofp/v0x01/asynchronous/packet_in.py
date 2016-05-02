@@ -47,7 +47,7 @@ class PacketIn(base.GenericStruct):
                           sizeof(struct ofp_packet_in) - 2.
 
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     buffer_id = basic_types.UBInt32()
     total_len = basic_types.UBInt16()
     in_port = basic_types.UBInt16()
@@ -58,7 +58,7 @@ class PacketIn(base.GenericStruct):
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, pad=None, data=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_PACKET_IN
+        self.header.ofp_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
         self.buffer_id = buffer_id
         self.total_len = total_len

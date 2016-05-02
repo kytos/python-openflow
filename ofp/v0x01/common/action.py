@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPActionType(enum.Enum):
+class ActionType(enum.Enum):
     """Actions associated with flows and packets.
 
     Enums:

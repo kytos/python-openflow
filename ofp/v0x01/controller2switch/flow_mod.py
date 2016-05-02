@@ -70,8 +70,8 @@ class FlowMod(base.GenericStruct):
         :param actions:      The action length is inferred from the length
                              field in the header
     """
-    header = of_header.OFPHeader()
-    match = flow_match.OFPMatch()
+    header = of_header.Header()
+    match = flow_match.Match()
     cookie = basic_types.UBInt64()
     command = basic_types.UBInt16()
     idle_timeout = basic_types.UBInt16()
@@ -87,7 +87,7 @@ class FlowMod(base.GenericStruct):
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,
                  buffer_id=None, out_port=None, flags=None, actions=None):
-        self.header.ofp_type = of_header.OFPType.OFPT_FLOW_MOD
+        self.header.ofp_type = of_header.Type.OFPT_FLOW_MOD
         self.header.length = 0
         self.header.xid = xid
         self.match = match

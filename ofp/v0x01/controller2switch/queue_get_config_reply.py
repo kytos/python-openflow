@@ -18,7 +18,7 @@ class QueueGetConfigReply(base.GenericStruct):
         :param pad -- Pad to 64-bits
         :param queue -- List of configured queues
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     port = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=6)
     queue = []
@@ -27,7 +27,7 @@ class QueueGetConfigReply(base.GenericStruct):
 
     def __init__(self, xid=None, port=None, pad=None, queue=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_GET_CONFIG_REPLY
+        self.header.ofp_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.port = port
         self.pad = pad

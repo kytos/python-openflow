@@ -23,7 +23,7 @@ class FlowStatsRequest(base.GenericStruct):
         :param out_port: Require matching entries to include this as an output
                          port. A value of OFPP_NONE indicates no restriction.
     """
-    match = flow_match.OFPMatch()
+    match = flow_match.Match()
     table_id = basic_types.UBInt8()
     pad = basic_types.UBInt8()
     out_port = basic_types.UBInt16()

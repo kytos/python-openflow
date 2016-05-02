@@ -25,7 +25,7 @@ class PacketOut(base.GenericStruct):
                             field in the header. (Only meaningful if
                             buffer_id == -1.)
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     buffer_id = basic_types.UBInt32()
     in_port = basic_types.UBInt16()
     actions_len = basic_types.UBInt16()
@@ -34,7 +34,7 @@ class PacketOut(base.GenericStruct):
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, data=None):
         self.header.xid = xid
-        self.header.ofp_type = of_header.OFPType.OFPT_PACKET_OUT
+        self.header.ofp_type = of_header.Type.OFPT_PACKET_OUT
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len

@@ -1,9 +1,9 @@
 """Exceptions defined on this Library"""
 
 
-class OFPException(Exception):
+class Exception(Exception):
     pass
 
 
-class OFPBadValueException(Exception):
+class BadValueException(Exception):
     pass

@@ -49,8 +49,8 @@ class FlowRemoved(base.GenericStruct):
 
 
     """
-    header = of_header.OFPHeader()
-    match = flow_match.OFPMatch()
+    header = of_header.Header()
+    match = flow_match.Match()
     cookie = basic_types.UBInt64()
 
     priority = basic_types.UBInt16()
@@ -70,7 +70,7 @@ class FlowRemoved(base.GenericStruct):
                  idle_timeout=None, pad2=None, packet_count=None,
                  byte_count=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_FLOW_REMOVED
+        self.header.ofp_type = of_header.Type.OFPT_FLOW_REMOVED
         self.match = match
         self.cookie = cookie
         self.priority = priority

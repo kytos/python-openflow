@@ -19,14 +19,14 @@ class StatsRequest(base.GenericStruct):
         :param flags -- OFPSF_REQ_* flags (none yet defined)
         :param body -- Body of the request
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
     body = basic_types.UBInt8Array(0)
 
     def __init__(self, xid=None, type=None, flags=None, body=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_STATS_REQUEST
+        self.header.ofp_type = of_header.Type.OFPT_STATS_REQUEST
         self.header.xid = xid
         self.type = type
         self.flags = flags

@@ -7,7 +7,7 @@ from ofp.v0x01.symmetric import hello
 class TestHello(unittest.TestCase):
 
     def setUp(self):
-        self.message = hello.OFPHello(xid=1)
+        self.message = hello.Hello(xid=1)
 
     def test_get_size(self):
         """[Symmetric/Hello] - size 8"""

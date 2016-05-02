@@ -29,7 +29,7 @@ class PortMod(base.GenericStruct):
         :param advertise: Bitmap of "ofp_port_features"s
         :param pad:       Pad to 64-bits
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     port_no = basic_types.UBInt16()
     hw_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
     config = basic_types.UBInt32()
@@ -40,7 +40,7 @@ class PortMod(base.GenericStruct):
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None, pad=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_PORT_MOD
+        self.header.ofp_type = of_header.Type.OFPT_PORT_MOD
         self.header.xid = xid
         self.port_no = port_no
         self.hw_addr = hw_addr

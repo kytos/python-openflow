@@ -14,7 +14,7 @@ class TestSwitchFeatures(unittest.TestCase):
         self.message.n_tables = 1
         self.message.pad = [0, 0, 0]
         self.message.capabilities = features_reply.Capabilities.OFPC_TABLE_STATS
-        self.message.actions = action.OFPActionType.OFPAT_SET_DL_SRC
+        self.message.actions = action.ActionType.OFPAT_SET_DL_SRC
         self.message.ports = []
 
     def test_get_size(self):

@@ -8,8 +8,8 @@ class TestHeader(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestHeader Class instantiating a HELLO header"""
-        self.message = of_header.OFPHeader()
-        self.message.ofp_type = of_header.OFPType.OFPT_HELLO
+        self.message = of_header.Header()
+        self.message.ofp_type = of_header.Type.OFPT_HELLO
         self.message.xid = 1
         self.message.length = 0
 
@@ -21,7 +21,7 @@ class TestHeader(unittest.TestCase):
     def test_pack_empty(self):
         """[Common/Header] - packing empty header"""
         self.assertRaises(TypeError,
-                          of_header.OFPHeader().pack())
+                          of_header.Header().pack())
 
     def test_pack(self):
         """[Common/Header] - packing Hello"""

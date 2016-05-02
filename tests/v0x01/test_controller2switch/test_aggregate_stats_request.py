@@ -9,11 +9,11 @@ class TestAggregateStatsRequest(unittest.TestCase):
 
     def setUp(self):
         self.message = aggregate_stats_request.AggregateStatsRequest()
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.table_id = 1
         self.message.pad = 0
-        self.message.out_port = phy_port.OFPPort.OFPP_NONE
-        self.message.match.wildcards = flow_match.OFPFlowWildCards.OFPFW_TP_DST
+        self.message.out_port = phy_port.Port.OFPP_NONE
+        self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
         self.message.match.in_port = 80
         self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]

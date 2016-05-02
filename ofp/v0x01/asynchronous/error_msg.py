@@ -153,13 +153,13 @@ class ErrorMsg(base.GenericStruct):
         :param length: length of the message
         :param xid:    xid to be used on the message header
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     type = basic_types.UBInt16()
     code = basic_types.UBInt16()
     data = basic_types.UBInt8Array(length=0)
 
     def __init__(self, xid=None, type=None, code=None, data=None):
-        self.header.ofp_type = of_header.OFPType.OFPT_ERROR
+        self.header.ofp_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.type = type
         self.code = code

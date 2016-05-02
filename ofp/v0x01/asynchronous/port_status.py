@@ -41,12 +41,12 @@ class PortStatus(base.GenericStruct):
         :param desc:   Port description
 
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     reason = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=7)
     desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, pad=None, desc=None):
-        self.header.ofp_type = of_header.OFPType.OFPT_PORT_STATUS
+        self.header.ofp_type = of_header.Type.OFPT_PORT_STATUS
         self.reason = reason
         self.desc = desc

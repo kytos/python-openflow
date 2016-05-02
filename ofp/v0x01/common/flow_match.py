@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPFlowWildCards(enum.Enum):
+class FlowWildCards(enum.Enum):
     """
     Wildcards used to identify flows.
 
@@ -61,7 +61,7 @@ class OFPFlowWildCards(enum.Enum):
 # Classes
 
 
-class OFPMatch(base.GenericStruct):
+class Match(base.GenericStruct):
     """
     Describes a flow entry. Fields to match against flows
 

@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPType(enum.Enum):
+class Type(enum.Enum):
     """Enumeration of Message Types"""
     # Symetric/Immutable messages
     OFPT_HELLO = 0
@@ -59,7 +59,7 @@ class OFPType(enum.Enum):
 # Classes
 
 
-class OFPHeader(base.GenericStruct):
+class Header(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
         :param ofp_type: Type of  the message

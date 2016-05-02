@@ -9,7 +9,7 @@ class TestActionHeader(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionHeader()
-        self.message.type = action.OFPActionType.OFPAT_SET_TP_SRC
+        self.message.type = action.ActionType.OFPAT_SET_TP_SRC
         self.message.len = 1
         self.message.pad = [15, 15, 15, 15]
 
@@ -34,7 +34,7 @@ class TestActionOutput(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionOutput()
-        self.message.port = phy_port.OFPPort.OFPP_CONTROLLER
+        self.message.port = phy_port.Port.OFPP_CONTROLLER
         self.message.max_len = 8
 
     def test_get_size(self):
@@ -58,7 +58,7 @@ class TestActionEnqueue(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionEnqueue()
-        self.message.port = phy_port.OFPPort.OFPP_CONTROLLER
+        self.message.port = phy_port.Port.OFPP_CONTROLLER
         self.message.pad = [0, 0, 0, 0, 0, 0]
         self.message.queue_id = 4
 
@@ -127,7 +127,7 @@ class TestActionDLAddr(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionDLAddr()
-        self.message.type = action.OFPActionType.OFPAT_SET_DL_SRC
+        self.message.type = action.ActionType.OFPAT_SET_DL_SRC
         self.message.dl_addr = [12, 12, 12, 12, 12, 12]
 
     def test_get_size(self):
@@ -149,7 +149,7 @@ class TestActionNWAddr(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionNWAddr()
-        self.message.type = action.OFPActionType.OFPAT_SET_NW_SRC
+        self.message.type = action.ActionType.OFPAT_SET_NW_SRC
         self.message.nw_addr = [12, 12, 12, 12, 12, 12]
 
     def test_get_size(self):
@@ -171,7 +171,7 @@ class TestActionNWTos(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionNWTos()
-        self.message.type = action.OFPActionType.OFPAT_SET_NW_SRC
+        self.message.type = action.ActionType.OFPAT_SET_NW_SRC
         self.message.nw_tos = 123456
         self.message.pad = [0, 0, 0]
 
@@ -194,7 +194,7 @@ class TestActionTPPort(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionTPPort()
-        self.message.type = action.OFPActionType.OFPAT_SET_TP_SRC
+        self.message.type = action.ActionType.OFPAT_SET_TP_SRC
         self.message.tp_port = 8888
         self.message.pad = [0, 0]
 

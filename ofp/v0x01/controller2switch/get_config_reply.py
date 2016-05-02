@@ -50,7 +50,7 @@ class SwitchConfig(base.GenericStruct):
                               datapath should send to the controller
     """
 
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     flags = basic_types.UBInt16()
     miss_send_len = basic_types.UBInt16()
 
@@ -58,9 +58,9 @@ class SwitchConfig(base.GenericStruct):
                  miss_send_len=None):
 
         if set_message:
-            self.header.ofp_type = of_header.OFPType.OFPT_SET_CONFIG
+            self.header.ofp_type = of_header.Type.OFPT_SET_CONFIG
         else:
-            self.header.ofp_type = of_header.OFPType.OFPT_GET_CONFIG_REPLY
+            self.header.ofp_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.flags = flags
         self.miss_send_len = miss_send_len

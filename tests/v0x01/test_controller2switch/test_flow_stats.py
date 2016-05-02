@@ -9,7 +9,7 @@ class TestFlowStats(unittest.TestCase):
 
     def setUp(self):
         action_header = action.ActionHeader()
-        action_header.ofpat_type = action.OFPActionType.OFPAT_SET_VLAN_VID
+        action_header.ofpat_type = action.ActionType.OFPAT_SET_VLAN_VID
         action_header.length = 8
         action_header.pad = [15, 15, 15, 15]
 
@@ -17,7 +17,7 @@ class TestFlowStats(unittest.TestCase):
         self.message.length = 160
         self.message.table_id = 1
         self.message.pad = 0
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.duration_sec = 60
         self.message.duration_nsec = 10000
         self.message.priority = 1

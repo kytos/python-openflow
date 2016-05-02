@@ -10,20 +10,20 @@ class TestFlowMod(unittest.TestCase):
 
     def setUp(self):
         action_header = action.ActionHeader()
-        action_header.ofpat_type = action.OFPActionType.OFPAT_SET_VLAN_VID
+        action_header.ofpat_type = action.ActionType.OFPAT_SET_VLAN_VID
         action_header.length = 8
         action_header.pad = [15, 15, 15, 15]
 
         self.message = flow_mod.FlowMod()
         self.message.header.xid = 1
         self.message.command = flow_mod.FlowModCommand.OFPFC_ADD
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.cookie = 0
         self.message.idle_timeout = 300
         self.message.hard_timeout = 6000
         self.message.priority = 1
         self.message.buffer_id = 1
-        self.message.out_port = phy_port.OFPPort.OFPP_NONE
+        self.message.out_port = phy_port.Port.OFPP_NONE
         self.message.flags = flow_mod.FlowModFlags.OFPFF_EMERG
         self.message.actions = [action_header]
         self.message.match.in_port = 80
