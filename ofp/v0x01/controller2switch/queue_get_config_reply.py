@@ -27,7 +27,7 @@ class QueueGetConfigReply(base.GenericStruct):
 
     def __init__(self, xid=None, port=None, pad=None, queue=None):
 
-        self.header.ofp_type = of_header.Type.OFPT_GET_CONFIG_REPLY
+        self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.port = port
         self.pad = pad

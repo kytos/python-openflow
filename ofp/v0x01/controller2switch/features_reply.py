@@ -75,7 +75,7 @@ class SwitchFeatures(base.GenericStruct):
                  n_tables=None, pad=None, capabilities=None, actions=None,
                  ports=None):
 
-        self.header.ofp_type = of_header.Type.OFPT_FEATURES_REPLY
+        self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
         self.header.xid = xid
         self.datapath_id = datapath_id

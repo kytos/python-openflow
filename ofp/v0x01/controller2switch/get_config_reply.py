@@ -58,9 +58,9 @@ class SwitchConfig(base.GenericStruct):
                  miss_send_len=None):
 
         if set_message:
-            self.header.ofp_type = of_header.Type.OFPT_SET_CONFIG
+            self.header.message_type = of_header.Type.OFPT_SET_CONFIG
         else:
-            self.header.ofp_type = of_header.Type.OFPT_GET_CONFIG_REPLY
+            self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.flags = flags
         self.miss_send_len = miss_send_len

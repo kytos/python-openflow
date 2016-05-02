@@ -34,7 +34,7 @@ class PacketOut(base.GenericStruct):
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, data=None):
         self.header.xid = xid
-        self.header.ofp_type = of_header.Type.OFPT_PACKET_OUT
+        self.header.message_type = of_header.Type.OFPT_PACKET_OUT
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len

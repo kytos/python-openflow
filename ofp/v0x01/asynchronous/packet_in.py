@@ -58,7 +58,7 @@ class PacketIn(base.GenericStruct):
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, pad=None, data=None):
 
-        self.header.ofp_type = of_header.Type.OFPT_PACKET_IN
+        self.header.message_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
         self.buffer_id = buffer_id
         self.total_len = total_len

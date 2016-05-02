@@ -16,5 +16,5 @@ class GetConfigRequest(base.GenericStruct):
     header = of_header.Header()
 
     def __init__(self, xid=None):
-        self.header.ofp_type = of_header.Type.OFPT_GET_CONFIG_REQUEST
+        self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REQUEST
         self.header.xid = xid

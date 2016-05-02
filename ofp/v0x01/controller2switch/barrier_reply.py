@@ -20,5 +20,5 @@ class BarrierReply(base.GenericStruct):
     header = of_header.Header()
 
     def __init__(self, xid=None):
-        self.header.ofp_type = of_header.Type.OFPT_BARRIER_REPLY
+        self.header.message_type = of_header.Type.OFPT_BARRIER_REPLY
         self.header.xid = xid

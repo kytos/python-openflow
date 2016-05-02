@@ -47,6 +47,6 @@ class PortStatus(base.GenericStruct):
     desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, pad=None, desc=None):
-        self.header.ofp_type = of_header.Type.OFPT_PORT_STATUS
+        self.header.message_type = of_header.Type.OFPT_PORT_STATUS
         self.reason = reason
         self.desc = desc

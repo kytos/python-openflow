@@ -9,7 +9,7 @@ class TestHeader(unittest.TestCase):
     def setUp(self):
         """Setup the TestHeader Class instantiating a HELLO header"""
         self.message = of_header.Header()
-        self.message.ofp_type = of_header.Type.OFPT_HELLO
+        self.message.message_type = of_header.Type.OFPT_HELLO
         self.message.xid = 1
         self.message.length = 0
 

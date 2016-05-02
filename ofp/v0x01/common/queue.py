@@ -81,6 +81,7 @@ class QueuePropMinRate(base.GenericStruct):
     pad = basic_types.UBInt8Array(length=6)
 
     def __init__(self, prop_header=None, rate=None, pad=None):
+        # TODO Set porp_header attributes
         self.prop_header = prop_header
         self.rate = rate
         self.pad = pad

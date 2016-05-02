@@ -70,7 +70,7 @@ class FlowRemoved(base.GenericStruct):
                  idle_timeout=None, pad2=None, packet_count=None,
                  byte_count=None):
 
-        self.header.ofp_type = of_header.Type.OFPT_FLOW_REMOVED
+        self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
         self.match = match
         self.cookie = cookie
         self.priority = priority

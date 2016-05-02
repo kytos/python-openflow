@@ -63,20 +63,20 @@ class StatsReply(base.GenericStruct):
     Class implements the response to the config request
 
         :param header -- OpenFlow header
-        :param ofpsf_req_type -- One of the OFPST_* constants
+        :param body_type -- One of the OFPST_* constants
         :param flags -- OFPSF_REQ_* flags (none yet defined)
         :param body -- Body of the request
     """
     header = of_header.Header()
-    type = basic_types.UBInt16()
+    body_type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
     body = basic_types.UBInt8Array(length=0)
 
-    def __init__(self, xid=None, type=None, flags=None,
+    def __init__(self, xid=None, body_type=None, flags=None,
                  body=None):
 
         self.header.xid = xid
-        self.header.ofp_type = of_header.Type.OFPT_STATS_REPLY
-        self.type = type
+        self.header.message_type = of_header.Type.OFPT_STATS_REPLY
+        self.body_type = body_type
         self.flags = flags
         self.body = body

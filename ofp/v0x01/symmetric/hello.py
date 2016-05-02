@@ -21,6 +21,6 @@ class Hello(base.GenericStruct):
     header = of_header.Header()
 
     def __init__(self, xid=None):
-        self.header.ofp_type = of_header.Type.OFPT_HELLO
+        self.header.message_type = of_header.Type.OFPT_HELLO
         self.header.length = 8
         self.header.xid = xid
