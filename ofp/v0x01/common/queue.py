@@ -70,7 +70,7 @@ class QueuePropMinRate(base.GenericStruct):
     """
     This class defines the minimum-rate type queue.
 
-        :param prop_header: prop: OFPQT_MIN, len: 16.
+        :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
         :param rate:        In 1/10 of a percent; >1000 -> disabled.
         :param pad:         64-bit alignmet.
     """
@@ -78,7 +78,8 @@ class QueuePropMinRate(base.GenericStruct):
     rate = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self, prop_header=None, rate=None):
+    def __init__(self, rate=None):
         # TODO Set porp_header attributes
-        self.prop_header = prop_header
+        self.prop_header.property = QueueProperties.OFPQT_MIN_RATE
+        self.prop_header.len = 16
         self.rate = rate

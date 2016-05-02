@@ -59,9 +59,6 @@ class TestQueuePropMinRate(unittest.TestCase):
 
     def setUp(self):
         self.message = queue.QueuePropMinRate()
-        self.message.prop_header = queue.QueuePropHeader()
-        self.message.prop_header.property = queue.QueueProperties.OFPQT_MIN_RATE
-        self.message.prop_header.len = 12
         self.message.rate = 1000
 
     def test_get_size(self):
