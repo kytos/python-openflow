@@ -6,9 +6,9 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 # Enums
@@ -18,9 +18,9 @@ class ConfigFlags(enum.Enum):
     """Configuration Flags
 
         # Handling of IP Fragments
-        OFPC_FRAG_NORMAL               # No special handling for fragments
-        OFPC_FRAG_DROP                 # Drop fragments
-        OFPC_FRAG_REASM                # Reassemble (only if OFPC_IP_REASM set)
+        OFPC_FRAG_NORMAL         # No special handling for fragments
+        OFPC_FRAG_DROP           # Drop fragments
+        OFPC_FRAG_REASM          # Reassemble (only if OFPC_IP_REASM set)
         OFPC_FRAG_MASK
     """
     OFPC_FRAG_NORMAL = 0
@@ -31,7 +31,7 @@ class ConfigFlags(enum.Enum):
 
 # Classes
 
-
+# TODO: Issue #4
 class SwitchConfig(base.GenericStruct):
     """Message used on OFPT_SET_CONFIG and OFPT_GET_CONFIG_REPLY.
 

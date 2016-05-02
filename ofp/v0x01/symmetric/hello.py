@@ -5,8 +5,10 @@
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+
+# Classes
 
 
 class OFPHello(base.GenericStruct):
@@ -14,11 +16,11 @@ class OFPHello(base.GenericStruct):
 
     This message does not contain a body beyond the OpenFlow Header
         :param length: length of the message
-        :param xid: xid to be used on the message header
+        :param xid:    xid to be used on the message header
     """
     header = of_header.OFPHeader()
 
-    def __init__(self, length=8, xid=None):
+    def __init__(self, xid=None):
         self.header.ofp_type = of_header.OFPType.OFPT_HELLO
-        self.header.length = length
+        self.header.length = 8
         self.header.xid = xid

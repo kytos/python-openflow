@@ -6,9 +6,9 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..common import header as of_header
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import header as of_header
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 # Enum
@@ -68,13 +68,15 @@ class StatsReply(base.GenericStruct):
         :param body -- Body of the request
     """
     header = of_header.OFPHeader()
-    ofpsf_req_type = basic_types.UBInt16()
+    type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
     body = basic_types.UBInt8Array(length=0)
 
-    def __init__(self, header=None, ofpsf_req_type=None, flags=None, body=None):
+    def __init__(self, xid=None, type=None, flags=None,
+                 body=None):
 
-        self.header = header
-        self.ofpsf_req_type = ofpsf_req_type
+        self.header.xid = xid
+        self.header.ofp_type = of_header.OFPType.OFPT_STATS_REPLY
+        self.type = type
         self.flags = flags
         self.body = body

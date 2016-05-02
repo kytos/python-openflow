@@ -6,17 +6,17 @@ or more ports."""
 # Third-party imports
 
 # Local source tree imports
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 
 class QueueStatsRequest(base.GenericStruct):
     """
     Implements the request body of a port_no
 
-        :param port_no -- All ports if OFPT_ALL
-        :param pad -- Align to 32-bits
-        :param queue_id -- All queues if OFPQ_ALL
+        :param port_no:  All ports if OFPT_ALL
+        :param pad:      Align to 32-bits
+        :param queue_id: All queues if OFPQ_ALL
     """
     port_no = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)

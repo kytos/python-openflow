@@ -15,3 +15,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+.coverage
+htmlcov/
+*.egg-info

@@ -6,8 +6,8 @@ import enum
 # Third-party imports
 
 # Local source tree imports
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
 
 # Enums
 
@@ -58,29 +58,28 @@ class OFPFlowWildCards(enum.Enum):
     OFPFW_ALL = ((1 << 22) - 1)
 
 
-# Classes (Structs)
+# Classes
 
 
 class OFPMatch(base.GenericStruct):
     """
     Describes a flow entry. Fields to match against flows
 
-        :param wildcards -- Wildcard fields. */
-        :param in_port -- Input switch port. */
-        :param dl_src[OFP_ETH_ALEN] -- Ethernet source address. */
-        :param dl_dst[OFP_ETH_ALEN] -- Ethernet destination address. */
-        :param dl_vlan -- Input VLAN id.
-        :param dl_vlan_pcp -- Input VLAN priority.
-        :param pad1[1] -- Align to 64-bits.
-        :param dl_type -- Ethernet frame type.
-        :param nw_tos -- IP ToS (actually DSCP field, 6 bits).
-        :param nw_proto -- IP protocol or lower 8 bits of ARP opcode.
-        :param pad2[2] -- Align to 64-bits.
-        :param nw_src -- IP source address.
-        :param nw_dst -- IP destination address.
-        :param tp_src -- TCP/UDP source port.
-        :param tp_dst -- TCP/UDP destination port.
-
+        :param wildcards:            Wildcard fields.
+        :param in_port:              Input switch port.
+        :param dl_src[OFP_ETH_ALEN]: Ethernet source address.
+        :param dl_dst[OFP_ETH_ALEN]: Ethernet destination address.
+        :param dl_vlan:              Input VLAN id.
+        :param dl_vlan_pcp:          Input VLAN priority.
+        :param pad1[1]:              Align to 64-bits.
+        :param dl_type:              Ethernet frame type.
+        :param nw_tos:               IP ToS (actually DSCP field, 6 bits).
+        :param nw_proto:             IP protocol or lower 8 bits of ARP opcode
+        :param pad2[2]:              Align to 64-bits.
+        :param nw_src:               IP source address.
+        :param nw_dst:               IP destination address.
+        :param tp_src:               TCP/UDP source port.
+        :param tp_dst:               TCP/UDP destination port.
     """
 
     # Attributes
@@ -105,7 +104,6 @@ class OFPMatch(base.GenericStruct):
                  dl_vlan=None, dl_vlan_pcp=None, pad1=None, dl_type=None,
                  nw_tos=None, nw_proto=None, pad2=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
-
         self.wildcards = wildcards
         self.in_port = in_port
         self.dl_src = dl_src

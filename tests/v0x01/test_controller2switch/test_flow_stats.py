@@ -1,0 +1,60 @@
+import unittest
+
+from ofp.v0x01.common import action
+from ofp.v0x01.common import flow_match
+from ofp.v0x01.controller2switch import flow_stats
+
+
+class TestFlowStats(unittest.TestCase):
+
+    def setUp(self):
+        action_header = action.ActionHeader()
+        action_header.ofpat_type = action.OFPActionType.OFPAT_SET_VLAN_VID
+        action_header.length = 8
+        action_header.pad = [15, 15, 15, 15]
+
+        self.message = flow_stats.FlowStats()
+        self.message.length = 160
+        self.message.table_id = 1
+        self.message.pad = 0
+        self.message.match = flow_match.OFPMatch()
+        self.message.duration_sec = 60
+        self.message.duration_nsec = 10000
+        self.message.priority = 1
+        self.message.idle_timeout = 300
+        self.message.hard_timeout = 6000
+        self.message.pad2 = [10]
+        self.message.cookie = 1
+        self.message.packet_count = 1
+        self.message.byte_count = 1
+        self.message.actions = [action_header]
+        self.message.match.in_port = 80
+        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_vlan = 1
+        self.message.match.dl_vlan_pcp = 1
+        self.message.match.pad1 = [0]
+        self.message.match.dl_type = 1
+        self.message.match.nw_tos = 1
+        self.message.match.nw_proto = 1
+        self.message.match.pad2 = [0, 0]
+        self.message.match.nw_src = 10000
+        self.message.match.nw_dst = 10000
+        self.message.match.tp_src = 80
+        self.message.match.tp_dst = 80
+
+    def test_get_size(self):
+        """[Controller2Switch/FlowStats] - size 88"""
+        self.assertEqual(self.message.get_size(), 88)
+
+    @unittest.skip('Not yet implemented')
+    def test_pack(self):
+        """[Controller2Switch/FlowStats] - packing"""
+        # TODO
+        pass
+
+    @unittest.skip('Not yet implemented')
+    def test_unpack(self):
+        """[Controller2Switch/FlowStats] - unpacking"""
+        # TODO
+        pass

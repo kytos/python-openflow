@@ -5,21 +5,23 @@
 # Third-party imports
 
 # Local source tree imports
-from ..common import flow_match
-from ..foundation import base
-from ..foundation import basic_types
+from ofp.v0x01.common import flow_match
+from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import basic_types
+
+# Classes
+
 
 class FlowStatsRequest(base.GenericStruct):
     """
     Body for ofp_stats_request of type OFPST_FLOW.
 
-        :param match -- Fields to match
-        :param table_id -- ID of table to read (from ofp_table_stats)
-                           0xff for all tables or 0xfe for emergency
-        :param pad -- Align to 32 bits
-        :param out_port -- Require matching entries to include this as
-                           an output port.  A value of OFPP_NONE indicates
-                           no restriction.
+        :param match:    Fields to match
+        :param table_id: ID of table to read (from ofp_table_stats)
+                         0xff for all tables or 0xfe for emergency
+        :param pad:      Align to 32 bits
+        :param out_port: Require matching entries to include this as an output
+                         port. A value of OFPP_NONE indicates no restriction.
     """
     match = flow_match.OFPMatch()
     table_id = basic_types.UBInt8()
