@@ -52,14 +52,13 @@ class PortStats(base.GenericStruct):
     rx_crc_err = basic_types.UBInt64()
     collisions = basic_types.UBInt64()
 
-    def __init__(self, port_no=None, pad=None, rx_packets=None,
+    def __init__(self, port_no=None, rx_packets=None,
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
                  rx_crc_err=None, collisions=None):
 
         self.port_no = port_no
-        self.pad = pad
         self.rx_packets = rx_packets
         self.tx_packets = tx_packets
         self.rx_bytes = rx_bytes

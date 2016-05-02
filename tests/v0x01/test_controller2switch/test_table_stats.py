@@ -10,7 +10,6 @@ class TestTableStats(unittest.TestCase):
     def setUp(self):
         self.message = table_stats.TableStats()
         self.message.table_id = 1
-        self.message.pad = [0, 0, 0]
         self.message.name = bytes('X' * base.OFP_MAX_TABLE_NAME_LEN, 'utf-8')
         self.message.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
         self.message.max_entries = 1

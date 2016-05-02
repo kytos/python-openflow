@@ -8,7 +8,6 @@ class TestPortStats(unittest.TestCase):
     def setUp(self):
         self.message = port_stats.PortStats()
         self.message.port_no = 80
-        self.message.pad = [0, 0, 0, 0, 0, 0]
         self.message.rx_packets = 5
         self.message.tx_packets = 10
         self.message.rx_bytes = 200

@@ -22,7 +22,6 @@ class PortStatsRequest(base.GenericStruct):
     port_no = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self, port_no=None, pad=None):
+    def __init__(self, port_no=None):
 
         self.port_no = port_no
-        self.pad = pad

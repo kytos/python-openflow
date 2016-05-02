@@ -66,8 +66,8 @@ class FlowRemoved(base.GenericStruct):
     byte_count = basic_types.UBInt64()
 
     def __init__(self, match=None, cookie=None, priority=None,
-                 reason=None, pad=None, duration_sec=None, duration_nsec=None,
-                 idle_timeout=None, pad2=None, packet_count=None,
+                 reason=None, duration_sec=None, duration_nsec=None,
+                 idle_timeout=None, packet_count=None,
                  byte_count=None):
 
         self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
@@ -75,10 +75,8 @@ class FlowRemoved(base.GenericStruct):
         self.cookie = cookie
         self.priority = priority
         self.reason = reason
-        self.pad = pad
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
         self.idle_timeout = idle_timeout
-        self.pad2 = pad2
         self.packet_count = packet_count
         self.byte_count = byte_count

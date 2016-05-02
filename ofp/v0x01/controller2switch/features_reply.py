@@ -72,7 +72,7 @@ class SwitchFeatures(base.GenericStruct):
     # objects. Related to ISSUE #3
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
-                 n_tables=None, pad=None, capabilities=None, actions=None,
+                 n_tables=None, capabilities=None, actions=None,
                  ports=None):
 
         self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
@@ -81,7 +81,6 @@ class SwitchFeatures(base.GenericStruct):
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables
-        self.pad = pad
         self.capabilities = capabilities
         self.actions = actions
         self.ports = ports

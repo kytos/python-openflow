@@ -28,11 +28,10 @@ class QueueStats(base.GenericStruct):
     tx_packets = basic_types.UBInt64()
     tx_errors = basic_types.UBInt64()
 
-    def __init__(self, port_no=None, pad=None, queue_id=None, tx_bytes=None,
+    def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
 
         self.port_no = port_no
-        self.pad = pad
         self.queue_id = queue_id
         self.tx_bytes = tx_bytes
         self.tx_packets = tx_packets

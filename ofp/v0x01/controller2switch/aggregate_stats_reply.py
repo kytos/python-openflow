@@ -25,10 +25,8 @@ class AggregateStatsReply(base.GenericStruct):
     flow_count = basic_types.UBInt32()
     pad = basic_types.UBInt8Array(length=4)
 
-    def __init__(self, packet_count=None, byte_count=None, flow_count=None,
-                 pad=None):
+    def __init__(self, packet_count=None, byte_count=None, flow_count=None):
 
         self.packet_count = packet_count
         self.byte_count = byte_count
         self.flow_count = flow_count
-        self.pad = pad

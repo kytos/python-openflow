@@ -9,7 +9,6 @@ class TestQueuePropHeader(unittest.TestCase):
         self.message = queue.QueuePropHeader()
         self.message.property = queue.QueueProperties.OFPQT_MIN_RATE
         self.message.len = 12
-        self.message.pad = [0, 0, 0, 0]
 
     def test_get_size(self):
         """[Common/QueuePropHeader] - size 8"""
@@ -34,11 +33,9 @@ class TestPacketQueue(unittest.TestCase):
         propertie01 = queue.QueuePropHeader()
         propertie01.property = queue.QueueProperties.OFPQT_MIN_RATE
         propertie01.len = 12
-        propertie01.pad = [0, 0, 0, 0]
         self.message = queue.PacketQueue()
         self.message.queue_id = 1
         self.message.length = 8
-        self.message.pad = [0, 0]
         self.message.properties = [propertie01]
 
     def test_get_size(self):
@@ -65,9 +62,7 @@ class TestQueuePropMinRate(unittest.TestCase):
         self.message.prop_header = queue.QueuePropHeader()
         self.message.prop_header.property = queue.QueueProperties.OFPQT_MIN_RATE
         self.message.prop_header.len = 12
-        self.message.prop_header.pad = [0, 0, 0, 0]
         self.message.rate = 1000
-        self.message.pad = [0, 0, 0, 0, 0, 0]
 
     def test_get_size(self):
         """[Common/PropMinRate] - size 16"""

@@ -15,11 +15,9 @@ class TestFlowRemoved(unittest.TestCase):
         self.message.cookie = 0
         self.message.priority = 1
         self.message.reason = flow_removed.FlowRemovedReason.OFPRR_IDLE_TIMEOUT
-        self.message.pad = [1]
         self.message.duration_sec = 4
         self.message.duration_nsec = 23
         self.message.idle_timeout = 9
-        self.message.pad2 = [1, 2]
         self.message.packet_count = 10
         self.message.byte_count = 4
         self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
@@ -28,11 +26,9 @@ class TestFlowRemoved(unittest.TestCase):
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_vlan = 1
         self.message.match.dl_vlan_pcp = 1
-        self.message.match.pad1 = [0]
         self.message.match.dl_type = 1
         self.message.match.nw_tos = 1
         self.message.match.nw_proto = 1
-        self.message.match.pad2 = [0, 0]
         self.message.match.nw_src = 10000
         self.message.match.nw_dst = 10000
         self.message.match.tp_src = 80

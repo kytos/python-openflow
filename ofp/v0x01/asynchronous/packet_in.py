@@ -56,7 +56,7 @@ class PacketIn(base.GenericStruct):
     data = basic_types.UBInt8Array(length=0)
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
-                 reason=None, pad=None, data=None):
+                 reason=None, data=None):
 
         self.header.message_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
@@ -64,5 +64,4 @@ class PacketIn(base.GenericStruct):
         self.total_len = total_len
         self.in_port = in_port
         self.reason = reason
-        self.pad = pad
         self.data = data

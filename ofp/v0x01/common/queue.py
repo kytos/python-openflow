@@ -39,10 +39,9 @@ class QueuePropHeader(base.GenericStruct):
     len = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=4)
 
-    def __init__(self, property=None, len=None, pad=None):
+    def __init__(self, property=None, len=None):
         self.property = property
         self.len = len
-        self.pad = pad
 
 
 class PacketQueue(base.GenericStruct):
@@ -61,10 +60,9 @@ class PacketQueue(base.GenericStruct):
     # TODO: Add here a new type, list of QueuePropHeader()
     #       objects. Related to ISSUE #3
 
-    def __init__(self, queue_id=None, length=None, pad=None, properties=None):
+    def __init__(self, queue_id=None, length=None, properties=None):
         self.queue_id = queue_id
         self.length = length
-        self.pad = pad
         self.properties = properties
 
 
@@ -80,8 +78,7 @@ class QueuePropMinRate(base.GenericStruct):
     rate = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self, prop_header=None, rate=None, pad=None):
+    def __init__(self, prop_header=None, rate=None):
         # TODO Set porp_header attributes
         self.prop_header = prop_header
         self.rate = rate
-        self.pad = pad

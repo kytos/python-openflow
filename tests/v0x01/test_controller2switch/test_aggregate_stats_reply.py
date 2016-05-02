@@ -10,7 +10,6 @@ class TestAggregateStatsReply(unittest.TestCase):
         self.message.packet_count = 5
         self.message.byte_count = 1
         self.message.flow_count = 8
-        self.message.pad = [1, 2, 3, 4]
 
     def test_get_size(self):
         """[Controller2Switch/AggregateStatsReply] - size 24"""

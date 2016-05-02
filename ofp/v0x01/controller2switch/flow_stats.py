@@ -51,14 +51,13 @@ class FlowStats(base.GenericStruct):
     # TODO: Add here a new type, list of ActionHeaders()
     #       objects. Related to ISSUE #3
 
-    def __init__(self, length=None, table_id=None, pad=None, match=None,
+    def __init__(self, length=None, table_id=None, match=None,
                  duration_sec=None, duration_nsec=None, priority=None,
-                 idle_timeout=None, hard_timeout=None, pad2=None, cookie=None,
+                 idle_timeout=None, hard_timeout=None, cookie=None,
                  packet_count=None, byte_count=None, actions=None):
 
         self.length = length
         self.table_id = table_id
-        self.pad = pad
         if match is not None:
             self.match = match
         self.duration_sec = duration_sec
@@ -66,7 +65,6 @@ class FlowStats(base.GenericStruct):
         self.prioriry = priority
         self.idle_timeout = idle_timeout
         self.hard_timeout = hard_timeout
-        self.pad2 = pad2
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count

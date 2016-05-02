@@ -11,7 +11,6 @@ class TestActionHeader(unittest.TestCase):
         self.message = action.ActionHeader()
         self.message.action_type = action.ActionType.OFPAT_SET_TP_SRC
         self.message.len = 1
-        self.message.pad = [15, 15, 15, 15]
 
     def test_get_size(self):
         """[Common/ActionHeader] - size 8"""
@@ -59,7 +58,6 @@ class TestActionEnqueue(unittest.TestCase):
     def setUp(self):
         self.message = action.ActionEnqueue()
         self.message.port = phy_port.Port.OFPP_CONTROLLER
-        self.message.pad = [0, 0, 0, 0, 0, 0]
         self.message.queue_id = 4
 
     def test_get_size(self):
@@ -84,7 +82,6 @@ class TestActionVlanVid(unittest.TestCase):
     def setUp(self):
         self.message = action.ActionVlanVid()
         self.message.vlan_vid = 5
-        self.message.pad = [0, 0]
 
     def test_get_size(self):
         """[Common/ActionVlanVid] - size 8"""
@@ -106,7 +103,6 @@ class TestActionVlanPCP(unittest.TestCase):
     def setUp(self):
         self.message = action.ActionVlanPCP()
         self.message.vlan_pcp = 2
-        self.message.pad = [0, 0, 0]
 
     def test_get_size(self):
         """[Common/ActionVlanPCP] - size 8"""
@@ -173,7 +169,6 @@ class TestActionNWTos(unittest.TestCase):
         self.message = action.ActionNWTos()
         self.message.nw_tos_type = action.ActionType.OFPAT_SET_NW_SRC
         self.message.nw_tos = 123456
-        self.message.pad = [0, 0, 0]
 
     def test_get_size(self):
         """[Common/ActionNWTos] - size 8"""
@@ -196,7 +191,6 @@ class TestActionTPPort(unittest.TestCase):
         self.message = action.ActionTPPort()
         self.message.tp_port_type = action.ActionType.OFPAT_SET_TP_SRC
         self.message.tp_port = 8888
-        self.message.pad = [0, 0]
 
     def test_get_size(self):
         """[Common/ActionTPPort] - size 8"""

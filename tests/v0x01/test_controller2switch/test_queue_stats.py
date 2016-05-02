@@ -8,7 +8,6 @@ class TestQueueStats(unittest.TestCase):
     def setUp(self):
         self.message = queue_stats.QueueStats()
         self.message.port_no = 80
-        self.message.pad = [0, 0]
         self.message.queue_id = 5
         self.message.tx_bytes = 1
         self.message.tx_packets = 3

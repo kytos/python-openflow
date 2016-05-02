@@ -28,9 +28,8 @@ class FlowStatsRequest(base.GenericStruct):
     pad = basic_types.UBInt8()
     out_port = basic_types.UBInt16()
 
-    def __init__(self, match=None, table_id=None, pad=None, out_port=None):
+    def __init__(self, match=None, table_id=None, out_port=None):
 
         self.match = match
         self.table_id = table_id
-        self.pad = pad
         self.out_port = out_port

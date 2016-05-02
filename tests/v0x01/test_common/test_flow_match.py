@@ -13,11 +13,9 @@ class TestMatch(unittest.TestCase):
         self.message.dl_dst = [129, 168, 0, 3]
         self.message.dl_vlan = 1
         self.message.dl_vlan_pcp = 1
-        self.message.pad1 = [0]
         self.message.dl_type = 1
         self.message.nw_tos = 1
         self.message.nw_proto = 1
-        self.message.pad2 = [0, 0]
         self.message.nw_src = 10000
         self.message.nw_dst = 10000
         self.message.tp_src = 22

@@ -60,10 +60,9 @@ class ActionHeader(base.GenericStruct):
     length = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=4)
 
-    def __init__(self, action_type=None, length=None, pad=None):
+    def __init__(self, action_type=None, length=None):
         self.action_type = action_type
         self.length = length
-        self.pad = pad
 
 
 class ActionOutput(base.GenericStruct):
@@ -109,12 +108,10 @@ class ActionEnqueue(base.GenericStruct):
     pad = basic_types.UBInt8Array(length=6)
     queue_id = basic_types.UBInt32()
 
-    def __init__(self, length=None, port=None, pad=None,
-                 queue_id=None):
+    def __init__(self, length=None, port=None, queue_id=None):
         self.type = ActionType.OFPAT_ENQUEUE
         self.length = length
         self.port = port
-        self.pad = pad
         self.queue_id = queue_id
 
 
@@ -131,11 +128,10 @@ class ActionVlanVid(base.GenericStruct):
     vlan_id = basic_types.UBInt16()
     pad2 = basic_types.UBInt8Array(length=2)
 
-    def __init__(self, length=None, vlan_id=None, pad2=None):
+    def __init__(self, length=None, vlan_id=None):
         self.type = ActionType.OFPAT_SET_VLAN_PCP
         self.length = length
         self.vlan_id = vlan_id
-        self.pad2 = pad2
 
 
 class ActionVlanPCP(base.GenericStruct):
@@ -151,11 +147,10 @@ class ActionVlanPCP(base.GenericStruct):
     vlan_pcp = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
 
-    def __init__(self, length=None, vlan_pcp=None, pad=None):
+    def __init__(self, length=None, vlan_pcp=None):
         self.type = ActionType.OFPAT_SET_VLAN_PCP
         self.length = length
         self.vlan_pcp = vlan_pcp
-        self.pad = pad
 
 
 class ActionDLAddr(base.GenericStruct):
@@ -171,11 +166,10 @@ class ActionDLAddr(base.GenericStruct):
     dl_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
     pad = basic_types.UBInt8Array(length=6)
 
-    def __init__(self, dl_addr_type=None, length=None, dl_addr=None, pad=None):
+    def __init__(self, dl_addr_type=None, length=None, dl_addr=None):
         self.dl_addr_type = dl_addr_type
         self.length = length
         self.dl_addr = dl_addr
-        self.pad = pad
 
 
 class ActionNWAddr(base.GenericStruct):
@@ -208,11 +202,10 @@ class ActionNWTos(base.GenericStruct):
     nw_tos = basic_types.UBInt8()
     pad = basic_types.UBInt8Array(length=3)
 
-    def __init__(self, nw_tos_type=None, length=None, nw_tos=None, pad=None):
+    def __init__(self, nw_tos_type=None, length=None, nw_tos=None):
         self.nw_tos_type = nw_tos_type
         self.length = length
         self.nw_tos = nw_tos
-        self.pad = pad
 
 
 class ActionTPPort(base.GenericStruct):
@@ -228,11 +221,10 @@ class ActionTPPort(base.GenericStruct):
     tp_port = basic_types.UBInt16()
     pad = basic_types.UBInt8Array(length=2)
 
-    def __init__(self, tp_port_type=None, length=None, tp_port=None, pad=None):
+    def __init__(self, tp_port_type=None, length=None, tp_port=None):
         self.tp_port_type = tp_port_type
         self.length = length
         self.tp_port = tp_port
-        self.pad = pad
 
 
 class ActionVendorHeader(base.GenericStruct):

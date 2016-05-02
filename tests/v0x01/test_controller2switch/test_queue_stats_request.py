@@ -8,7 +8,6 @@ class TestQueueStatsRequest(unittest.TestCase):
     def setUp(self):
         self.message = queue_stats_request.QueueStatsRequest()
         self.message.port_no = 80
-        self.message.pad = [0, 0]
         self.message.queue_id = 5
 
     def test_get_size(self):

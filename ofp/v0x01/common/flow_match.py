@@ -101,8 +101,8 @@ class Match(base.GenericStruct):
     tp_dst = basic_types.UBInt16()
 
     def __init__(self, wildcards=None, in_port=None, dl_src=None, dl_dst=None,
-                 dl_vlan=None, dl_vlan_pcp=None, pad1=None, dl_type=None,
-                 nw_tos=None, nw_proto=None, pad2=None, nw_src=None,
+                 dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
+                 nw_tos=None, nw_proto=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
         self.wildcards = wildcards
         self.in_port = in_port
@@ -110,11 +110,9 @@ class Match(base.GenericStruct):
         self.dl_dst = dl_dst
         self.dl_vlan = dl_vlan
         self.dl_vlan_pcp = dl_vlan_pcp
-        self.pad1 = pad1
         self.dl_type = dl_type
         self.nw_tos = nw_tos
         self.nw_proto = nw_proto
-        self.pad2 = pad2
         self.nw_src = nw_src
         self.nw_dst = nw_dst
         self.tp_src = tp_src

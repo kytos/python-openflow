@@ -25,10 +25,9 @@ class QueueGetConfigReply(base.GenericStruct):
     # TODO: Add here a new type, list of ActionHeaders()
     # objects. Related to ISSUE #3
 
-    def __init__(self, xid=None, port=None, pad=None, queue=None):
+    def __init__(self, xid=None, port=None, queue=None):
 
         self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.port = port
-        self.pad = pad
         self.queue = queue

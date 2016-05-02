@@ -9,7 +9,6 @@ class TestQueueGetConfigRequest(unittest.TestCase):
         self.message = queue_get_config_request.QueueGetConfigRequest()
         self.message.header.xid = 1
         self.message.port = 80
-        self.message.pad = [0, 0]
 
     def test_get_size(self):
         """[Controller2Switch/QueueGetConfigRequest] - size 12"""

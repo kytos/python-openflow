@@ -11,7 +11,6 @@ class TestAggregateStatsRequest(unittest.TestCase):
         self.message = aggregate_stats_request.AggregateStatsRequest()
         self.message.match = flow_match.Match()
         self.message.table_id = 1
-        self.message.pad = 0
         self.message.out_port = phy_port.Port.OFPP_NONE
         self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
         self.message.match.in_port = 80
@@ -19,11 +18,9 @@ class TestAggregateStatsRequest(unittest.TestCase):
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_vlan = 1
         self.message.match.dl_vlan_pcp = 1
-        self.message.match.pad1 = [0]
         self.message.match.dl_type = 1
         self.message.match.nw_tos = 1
         self.message.match.nw_proto = 1
-        self.message.match.pad2 = [0, 0]
         self.message.match.nw_src = 10000
         self.message.match.nw_dst = 10000
         self.message.match.tp_src = 80

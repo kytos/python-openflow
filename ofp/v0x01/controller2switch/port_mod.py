@@ -38,7 +38,7 @@ class PortMod(base.GenericStruct):
     pad = basic_types.UBInt8Array(length=4)
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
-                 mask=None, advertise=None, pad=None):
+                 mask=None, advertise=None):
 
         self.header.message_type = of_header.Type.OFPT_PORT_MOD
         self.header.xid = xid
@@ -47,4 +47,3 @@ class PortMod(base.GenericStruct):
         self.config = config
         self.mask = mask
         self.advertise = advertise
-        self.pad = pad

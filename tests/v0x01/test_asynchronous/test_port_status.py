@@ -14,7 +14,6 @@ class TestPortStatus(unittest.TestCase):
         self.message = port_status.PortStatus()
         self.message.header.xid = 1
         self.message.reason = port_status.PortReason.OFPPR_ADD
-        self.message.pad = [0, 0, 0, 0, 0, 0, 0]
         self.message.desc = phy_port.PhyPort()
         self.message.desc.port_no = 2
         self.message.desc.hw_addr = [10, 10, 18, 18, 16, 16]

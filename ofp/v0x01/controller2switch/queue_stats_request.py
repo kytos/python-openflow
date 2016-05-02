@@ -22,8 +22,7 @@ class QueueStatsRequest(base.GenericStruct):
     pad = basic_types.UBInt8Array(length=2)
     queue_id = basic_types.UBInt32()
 
-    def __init__(self, port_no=None, pad=None, queue_id=None):
+    def __init__(self, port_no=None, queue_id=None):
 
         self.port_no = port_no
-        self.pad = pad
         self.queue_id = queue_id
