@@ -42,7 +42,7 @@ class FlowStats(base.GenericStruct):
     priority = basic_types.UBInt16()
     idle_timeout = basic_types.UBInt16()
     hard_timeout = basic_types.UBInt16()
-    pad2 = basic_types.UBInt8Array(length=6)
+    pad2 = basic_types.PAD(6)
     cookie = basic_types.UBInt64()
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
