@@ -10,7 +10,6 @@ from ofp.v0x01.foundation import base
 from ofp.v0x01.foundation import exceptions
 
 __all__ = ['UBInt8',
-           'UBInt8Array',
            'UBInt16',
            'UBInt32',
            'UBInt64',
@@ -81,8 +80,9 @@ class PAD(base.GenericType):
 
 
 class UBInt8(base.GenericType):
-    """Format character for an Unsigned Char. Class for an 8 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Char.
+
+    Class for an 8 bits (1 byte) Unsigned Integer.
     """
     _fmt = "!B"
 
@@ -111,22 +111,25 @@ class UBInt8Array(base.GenericType):
 
 
 class UBInt16(base.GenericType):
-    """Format character for an Unsigned Short. Class for an 16 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Short.
+
+    Class for an 16 bits (2 bytes) Unsigned Integer.
     """
     _fmt = "!H"
 
 
 class UBInt32(base.GenericType):
-    """Format character for an Unsigned Int. Class for an 32 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Int.
+
+    Class for an 32 bits (4 bytes) Unsigned Integer.
     """
     _fmt = "!I"
 
 
 class UBInt64(base.GenericType):
-    """Format character for an Unsigned Long Long. Class for an 64 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Long Long.
+
+    Class for an 64 bits (8 bytes) Unsigned Integer.
     """
     _fmt = "!Q"
 
