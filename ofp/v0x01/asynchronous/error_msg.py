@@ -150,7 +150,6 @@ class ErrorMsg(base.GenericStruct):
     """OpenFlow Error Message
 
     This message does not contain a body beyond the OpenFlow Header
-        :param length: length of the message
         :param xid:    xid to be used on the message header
     """
     header = of_header.Header()
