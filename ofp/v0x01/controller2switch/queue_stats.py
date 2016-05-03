@@ -22,7 +22,7 @@ class QueueStats(base.GenericStruct):
         :param tx_errors:  Number of packets dropped due to overrun
     """
     port_no = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.PAD(2)
     queue_id = basic_types.UBInt32()
     tx_bytes = basic_types.UBInt64()
     tx_packets = basic_types.UBInt64()

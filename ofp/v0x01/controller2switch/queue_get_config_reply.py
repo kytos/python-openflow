@@ -20,7 +20,7 @@ class QueueGetConfigReply(base.GenericStruct):
     """
     header = of_header.Header()
     port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=6)
+    pad = basic_types.PAD(6)
     queue = []
     # TODO: Add here a new type, list of ActionHeaders()
     # objects. Related to ISSUE #3

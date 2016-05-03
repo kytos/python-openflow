@@ -19,7 +19,7 @@ class QueueStatsRequest(base.GenericStruct):
         :param queue_id: All queues if OFPQ_ALL
     """
     port_no = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.PAD(2)
     queue_id = basic_types.UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):

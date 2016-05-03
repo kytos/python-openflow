@@ -25,7 +25,7 @@ class TableStats(base.GenericStruct):
         :param count_matched: Number of packets that hit table
     """
     table_id = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)
+    pad = basic_types.PAD(3)
     name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
     wildcards = basic_types.UBInt32()
     max_entries = basic_types.UBInt32()

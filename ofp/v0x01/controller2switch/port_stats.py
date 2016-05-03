@@ -38,7 +38,7 @@ class PortStats(base.GenericStruct):
         :param collisions:   Number of collisions
     """
     port_no = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=6)
+    pad = basic_types.PAD(6)
     rx_packets = basic_types.UBInt64()
     tx_packets = basic_types.UBInt64()
     rx_bytes = basic_types.UBInt64()

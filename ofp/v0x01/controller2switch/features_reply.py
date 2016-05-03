@@ -63,7 +63,7 @@ class SwitchFeatures(base.GenericStruct):
     datapath_id = basic_types.UBInt64()
     n_buffers = basic_types.UBInt32()
     n_tables = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)  # Align to 64-bits
+    pad = basic_types.PAD(3)  # Align to 64-bits
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
