@@ -156,7 +156,7 @@ class ErrorMsg(base.GenericStruct):
     header = of_header.Header()
     error_type = basic_types.UBInt16()
     code = basic_types.UBInt16()
-    data = basic_types.UBInt8Array(length=0)
+    data = []  # TODO: add special basictype
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         self.header.message_type = of_header.Type.OFPT_ERROR
