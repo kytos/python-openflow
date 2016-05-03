@@ -43,7 +43,7 @@ class PortStatus(base.GenericStruct):
     """
     header = of_header.Header()
     reason = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=7)
+    pad = basic_types.PAD(7)
     desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, desc=None):

@@ -35,7 +35,7 @@ class FlowStats(base.GenericStruct):
     """
     length = basic_types.UBInt16()
     table_id = basic_types.UBInt8()
-    pad = basic_types.UBInt8()
+    pad = basic_types.PAD(1)
     match = flow_match.Match()
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()

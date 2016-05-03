@@ -35,7 +35,7 @@ class PortMod(base.GenericStruct):
     config = basic_types.UBInt32()
     mask = basic_types.UBInt32()
     advertise = basic_types.UBInt32()
-    pad = basic_types.UBInt8Array(length=4)
+    pad = basic_types.PAD(4)
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None):

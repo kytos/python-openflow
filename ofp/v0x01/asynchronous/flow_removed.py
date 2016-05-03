@@ -55,13 +55,13 @@ class FlowRemoved(base.GenericStruct):
 
     priority = basic_types.UBInt16()
     reason = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=1)
+    pad = basic_types.PAD(1)
 
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()
 
     idle_timeout = basic_types.UBInt16()
-    pad2 = basic_types.UBInt8Array(length=2)
+    pad2 = basic_types.PAD(2)
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
 

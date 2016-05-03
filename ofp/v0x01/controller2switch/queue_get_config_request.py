@@ -20,7 +20,7 @@ class QueueGetConfigRequest(base.GenericStruct):
     """
     header = of_header.Header()
     port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.PAD(2)
 
     def __init__(self, xid=None, port=None):
 

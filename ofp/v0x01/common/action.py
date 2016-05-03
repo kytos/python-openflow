@@ -58,7 +58,7 @@ class ActionHeader(base.GenericStruct):
     """
     action_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=4)
+    pad = basic_types.PAD(4)
 
     def __init__(self, action_type=None, length=None):
         self.action_type = action_type
@@ -105,7 +105,7 @@ class ActionEnqueue(base.GenericStruct):
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=6)
+    pad = basic_types.PAD(6)
     queue_id = basic_types.UBInt32()
 
     def __init__(self, length=None, port=None, queue_id=None):
@@ -126,7 +126,7 @@ class ActionVlanVid(base.GenericStruct):
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     vlan_id = basic_types.UBInt16()
-    pad2 = basic_types.UBInt8Array(length=2)
+    pad2 = basic_types.PAD(2)
 
     def __init__(self, length=None, vlan_id=None):
         self.type = ActionType.OFPAT_SET_VLAN_PCP
@@ -145,7 +145,7 @@ class ActionVlanPCP(base.GenericStruct):
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     vlan_pcp = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)
+    pad = basic_types.PAD(3)
 
     def __init__(self, length=None, vlan_pcp=None):
         self.type = ActionType.OFPAT_SET_VLAN_PCP
@@ -164,7 +164,7 @@ class ActionDLAddr(base.GenericStruct):
     dl_addr_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     dl_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
-    pad = basic_types.UBInt8Array(length=6)
+    pad = basic_types.PAD(6)
 
     def __init__(self, dl_addr_type=None, length=None, dl_addr=None):
         self.dl_addr_type = dl_addr_type
@@ -200,7 +200,7 @@ class ActionNWTos(base.GenericStruct):
     nw_tos_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     nw_tos = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)
+    pad = basic_types.PAD(3)
 
     def __init__(self, nw_tos_type=None, length=None, nw_tos=None):
         self.nw_tos_type = nw_tos_type
@@ -219,7 +219,7 @@ class ActionTPPort(base.GenericStruct):
     tp_port_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     tp_port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.PAD(2)
 
     def __init__(self, tp_port_type=None, length=None, tp_port=None):
         self.tp_port_type = tp_port_type
