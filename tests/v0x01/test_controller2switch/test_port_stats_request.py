@@ -8,7 +8,6 @@ class TestPortStatsRequest(unittest.TestCase):
     def setUp(self):
         self.message = port_stats_request.PortStatsRequest()
         self.message.port_no = 80
-        self.message.pad = [0, 0, 0, 0, 0, 0]
 
     def test_get_size(self):
         """[Controller2Switch/PortStatsRequest] - size 8"""

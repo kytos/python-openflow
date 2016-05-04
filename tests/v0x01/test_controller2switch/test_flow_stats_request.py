@@ -8,20 +8,17 @@ class TestFlowStatsRequest(unittest.TestCase):
 
     def setUp(self):
         self.message = flow_stats_request.FlowStatsRequest()
-        self.message.match = flow_match.OFPMatch()
+        self.message.match = flow_match.Match()
         self.message.table_id = 1
-        self.message.pad = 0
         self.message.out_port = 80
         self.message.match.in_port = 80
         self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_vlan = 1
         self.message.match.dl_vlan_pcp = 1
-        self.message.match.pad1 = [0]
         self.message.match.dl_type = 1
         self.message.match.nw_tos = 1
         self.message.match.nw_proto = 1
-        self.message.match.pad2 = [0, 0]
         self.message.match.nw_src = 10000
         self.message.match.nw_dst = 10000
         self.message.match.tp_src = 80

@@ -21,11 +21,11 @@ class VendorHeader(base.GenericStruct):
                        MSB 0: low-order bytes are IEEE OUI.
                        MSB != 0: defined by OpenFlow consortium
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     vendor = basic_types.UBInt32()
 
     def __init__(self, xid=None, vendor=None):
-        self.header.ofp_type = of_header.OFPType.OFPT_ECHO_REQUEST
+        self.header.message_type = of_header.Type.OFPT_ECHO_REQUEST
         self.header.length = 12
         self.header.xid = xid
         self.vendor = vendor

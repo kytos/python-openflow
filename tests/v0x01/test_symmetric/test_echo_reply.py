@@ -4,17 +4,17 @@ import unittest
 from ofp.v0x01.symmetric import echo_reply
 
 
-class TestOFPReply(unittest.TestCase):
+class TestEchoReply(unittest.TestCase):
 
     def setUp(self):
-        self.message = echo_reply.OFPReply(xid=0)
+        self.message = echo_reply.EchoReply(xid=0)
 
     def test_get_size(self):
-        """[Symmetric/OFPReply] - size 8"""
+        """[Symmetric/EchoReply] - size 8"""
         self.assertEqual(self.message.get_size(), 8)
 
     def test_pack(self):
-        """[Symmetric/OFPReply] - packing"""
+        """[Symmetric/EchoReply] - packing"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_echo_reply.dat')
         with open(filename, 'rb') as f:
@@ -24,6 +24,6 @@ class TestOFPReply(unittest.TestCase):
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        """[Symmetric/OFPReply] - unpacking"""
+        """[Symmetric/Reply] - unpacking"""
         # TODO
         pass

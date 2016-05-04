@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPFlowWildCards(enum.Enum):
+class FlowWildCards(enum.Enum):
     """
     Wildcards used to identify flows.
 
@@ -61,7 +61,7 @@ class OFPFlowWildCards(enum.Enum):
 # Classes
 
 
-class OFPMatch(base.GenericStruct):
+class Match(base.GenericStruct):
     """
     Describes a flow entry. Fields to match against flows
 
@@ -89,20 +89,19 @@ class OFPMatch(base.GenericStruct):
     dl_dst = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
     dl_vlan = basic_types.UBInt16()
     dl_vlan_pcp = basic_types.UBInt8()
-    pad1 = basic_types.UBInt8Array(length=1)
+    pad1 = basic_types.PAD(1)
     dl_type = basic_types.UBInt16()
     nw_tos = basic_types.UBInt8()
     nw_proto = basic_types.UBInt8()
-
-    pad2 = basic_types.UBInt8Array(length=2)
+    pad2 = basic_types.PAD(2)
     nw_src = basic_types.UBInt32()
     nw_dst = basic_types.UBInt32()
     tp_src = basic_types.UBInt16()
     tp_dst = basic_types.UBInt16()
 
     def __init__(self, wildcards=None, in_port=None, dl_src=None, dl_dst=None,
-                 dl_vlan=None, dl_vlan_pcp=None, pad1=None, dl_type=None,
-                 nw_tos=None, nw_proto=None, pad2=None, nw_src=None,
+                 dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
+                 nw_tos=None, nw_proto=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
         self.wildcards = wildcards
         self.in_port = in_port
@@ -110,11 +109,9 @@ class OFPMatch(base.GenericStruct):
         self.dl_dst = dl_dst
         self.dl_vlan = dl_vlan
         self.dl_vlan_pcp = dl_vlan_pcp
-        self.pad1 = pad1
         self.dl_type = dl_type
         self.nw_tos = nw_tos
         self.nw_proto = nw_proto
-        self.pad2 = pad2
         self.nw_src = nw_src
         self.nw_dst = nw_dst
         self.tp_src = tp_src

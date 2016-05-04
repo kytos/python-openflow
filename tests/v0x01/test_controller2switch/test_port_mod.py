@@ -14,7 +14,6 @@ class TestPortMod(unittest.TestCase):
         self.message.config = 1 << 2
         self.message.mask = 1 << 1
         self.message.advertise = 1
-        self.message.pad = [0, 0, 0, 0]
 
     def test_get_size(self):
         """[Controller2Switch/PortMod] - size 32"""

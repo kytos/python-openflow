@@ -10,16 +10,13 @@ class TestQueueGetConfigReply(unittest.TestCase):
         propertie01 = queue.QueuePropHeader()
         propertie01.property = queue.QueueProperties.OFPQT_MIN_RATE
         propertie01.len = 12
-        propertie01.pad = [0, 0, 0, 0]
         packet_queue = queue.PacketQueue()
         packet_queue.queue_id = 1
         packet_queue.length = 8
-        packet_queue.pad = [0, 0]
         packet_queue.properties = [propertie01]
         self.message = queue_get_config_reply.QueueGetConfigReply()
         self.message.header.xid = 1
         self.message.port = 80
-        self.message.pad = [0, 0, 0, 0, 0, 0]
         self.message.queue = packet_queue
 
     def test_get_size(self):

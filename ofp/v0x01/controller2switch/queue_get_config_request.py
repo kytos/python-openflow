@@ -18,13 +18,12 @@ class QueueGetConfigRequest(base.GenericStruct):
         :param port -- Target port for the query
         :param pad -- Pad to 64-bits
     """
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     port = basic_types.UBInt16()
-    pad = basic_types.UBInt8Array(length=2)
+    pad = basic_types.PAD(2)
 
-    def __init__(self, xid=None, port=None, pad=None):
+    def __init__(self, xid=None, port=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_GET_CONFIG_REQUEST
+        self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REQUEST
         self.header.xid = xid
         self.port = port
-        self.pad = pad

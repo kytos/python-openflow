@@ -76,7 +76,7 @@ class GenericType(object):
         except struct.error:
             message = "Value out of the possible range to basic type "
             message = message + self.__class__.__name__
-            raise exceptions.OFPBadValueException(message) from struct.error
+            raise exceptions.BadValueException(message) from struct.error
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at _value property. """
@@ -86,7 +86,7 @@ class GenericType(object):
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
-            raise exceptions.OFPException("Error while unpacking"
+            raise exceptions.Exception("Error while unpacking"
                                           "data from buffer")
 
     def get_size(self):

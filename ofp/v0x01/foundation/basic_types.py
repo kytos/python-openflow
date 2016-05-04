@@ -7,9 +7,9 @@ import struct
 
 # Local source tree imports
 from ofp.v0x01.foundation import base
+from ofp.v0x01.foundation import exceptions
 
 __all__ = ['UBInt8',
-           'UBInt8Array',
            'UBInt16',
            'UBInt32',
            'UBInt64',
@@ -19,9 +19,70 @@ __all__ = ['UBInt8',
 #       instead of being an inplace method.
 
 
+class PAD(base.GenericType):
+    """Class for padding attributes"""
+    def __init__(self, size=0):
+        self._size = size
+
+    def __repr__(self):
+        return "{}({})".format(self.__class__.__name__, self._size)
+
+    def __str__(self):
+        return str(self._size)
+
+    def __set__(self, instance, value):
+        # TODO: Check if value is of the same class
+        raise exceptions.PADHasNoValue()
+
+    def __delete__(self, instance):
+        # TODO: This is the right delete way? Or should we delete
+        #       the attribute from the instance?
+        del self._size
+
+    def __eq__(self, other):
+        return self._size == other
+
+    def __ne__(self, other):
+        return self._size != other
+
+    def __gt__(self, other):
+        return self._size > other
+
+    def __ge__(self, other):
+        return self._size >= other
+
+    def __lt__(self, other):
+        return self._size <= other
+
+    def __le__(self, other):
+        return self._size <= other
+
+    def get_size(self):
+        """ Return the size of type in bytes. """
+        return struct.calcsize("!{:d}B".format(self._size))
+
+    def unpack(self, buff, offset):
+        """Unpack a buff and stores at value property.
+            :param buff:   Buffer where data is located.
+            :param offset: Where data stream begins.
+            Do nothing, since the _size is already defined
+            and it is just a PAD. Keep buff and offset just
+            for compability with other unpack methods
+        """
+        pass
+
+    def pack(self):
+        """Pack the object.
+
+        Returns '\x00' multiplied by the size of the PAD
+        """
+        return '\x00' * self._size
+
+
 class UBInt8(base.GenericType):
-    """Format character for an Unsigned Char. Class for an 8 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Char.
+
+    Class for an 8 bits (1 byte) Unsigned Integer.
     """
     _fmt = "!B"
 
@@ -50,22 +111,25 @@ class UBInt8Array(base.GenericType):
 
 
 class UBInt16(base.GenericType):
-    """Format character for an Unsigned Short. Class for an 16 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Short.
+
+    Class for an 16 bits (2 bytes) Unsigned Integer.
     """
     _fmt = "!H"
 
 
 class UBInt32(base.GenericType):
-    """Format character for an Unsigned Int. Class for an 32 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Int.
+
+    Class for an 32 bits (4 bytes) Unsigned Integer.
     """
     _fmt = "!I"
 
 
 class UBInt64(base.GenericType):
-    """Format character for an Unsigned Long Long. Class for an 64 bytes
-    Unsigned Integer.
+    """Format character for an Unsigned Long Long.
+
+    Class for an 64 bits (8 bytes) Unsigned Integer.
     """
     _fmt = "!Q"
 

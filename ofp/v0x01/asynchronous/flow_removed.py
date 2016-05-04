@@ -49,36 +49,34 @@ class FlowRemoved(base.GenericStruct):
 
 
     """
-    header = of_header.OFPHeader()
-    match = flow_match.OFPMatch()
+    header = of_header.Header()
+    match = flow_match.Match()
     cookie = basic_types.UBInt64()
 
     priority = basic_types.UBInt16()
     reason = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=1)
+    pad = basic_types.PAD(1)
 
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()
 
     idle_timeout = basic_types.UBInt16()
-    pad2 = basic_types.UBInt8Array(length=2)
+    pad2 = basic_types.PAD(2)
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
 
-    def __init__(self, match=None, cookie=None, priority=None,
-                 reason=None, pad=None, duration_sec=None, duration_nsec=None,
-                 idle_timeout=None, pad2=None, packet_count=None,
+    def __init__(self, xid=None, match=None, cookie=None, priority=None,
+                 reason=None, duration_sec=None, duration_nsec=None,
+                 idle_timeout=None, packet_count=None,
                  byte_count=None):
-
-        self.header.ofp_type = of_header.OFPType.OFPT_FLOW_REMOVED
+        self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
+        self.header.xid = xid
         self.match = match
         self.cookie = cookie
         self.priority = priority
         self.reason = reason
-        self.pad = pad
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
         self.idle_timeout = idle_timeout
-        self.pad2 = pad2
         self.packet_count = packet_count
         self.byte_count = byte_count

@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPPortConfig(enum.Enum):
+class PortConfig(enum.Enum):
     """Flags to indicate behavior of the physical port.
 
     These flags are used in OFPPhyPort to describe the current configuration.
@@ -37,7 +37,7 @@ class OFPPortConfig(enum.Enum):
     OFPPC_NO_PACKET_IN = 1 << 6
 
 
-class OFPPortState(enum.Enum):
+class PortState(enum.Enum):
     """Current state of the physical port.
 
     These are not configurable from the controller.
@@ -63,7 +63,7 @@ class OFPPortState(enum.Enum):
     OFPPS_STP_MASK = 3 << 8
 
 
-class OFPPort(enum.Enum):
+class Port(enum.Enum):
     """Port numbering. Physical ports are numbered starting from 1.
 
     Enums:
@@ -96,7 +96,7 @@ class OFPPort(enum.Enum):
     OFPP_NONE = 0xffff
 
 
-class OFPPortFeatures(enum.Enum):
+class PortFeatures(enum.Enum):
     """Physical ports features.
 
     The curr, advertised, supported, and peer fields indicate link modes

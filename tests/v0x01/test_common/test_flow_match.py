@@ -3,21 +3,19 @@ import unittest
 from ofp.v0x01.common import flow_match
 
 
-class TestOFPMatch(unittest.TestCase):
+class TestMatch(unittest.TestCase):
 
     def setUp(self):
-        self.message = flow_match.OFPMatch()
-        self.message.wildcards = flow_match.OFPFlowWildCards.OFPFW_IN_PORT
+        self.message = flow_match.Match()
+        self.message.wildcards = flow_match.FlowWildCards.OFPFW_IN_PORT
         self.message.in_port = 22
         self.message.dl_src = [192, 168, 0, 2]
         self.message.dl_dst = [129, 168, 0, 3]
         self.message.dl_vlan = 1
         self.message.dl_vlan_pcp = 1
-        self.message.pad1 = [0]
         self.message.dl_type = 1
         self.message.nw_tos = 1
         self.message.nw_proto = 1
-        self.message.pad2 = [0, 0]
         self.message.nw_src = 10000
         self.message.nw_dst = 10000
         self.message.tp_src = 22

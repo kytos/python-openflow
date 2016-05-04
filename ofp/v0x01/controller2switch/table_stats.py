@@ -25,7 +25,7 @@ class TableStats(base.GenericStruct):
         :param count_matched: Number of packets that hit table
     """
     table_id = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)
+    pad = basic_types.PAD(3)
     name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
     wildcards = basic_types.UBInt32()
     max_entries = basic_types.UBInt32()
@@ -33,12 +33,11 @@ class TableStats(base.GenericStruct):
     count_lookup = basic_types.UBInt64()
     count_matched = basic_types.UBInt64()
 
-    def __init__(self, table_id=None, pad=None, name=None, wildcards=None,
+    def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
 
         self.table_id = table_id
-        self.pad = pad
         self.name = name
         self.wildcards = wildcards
         self.max_entries = max_entries

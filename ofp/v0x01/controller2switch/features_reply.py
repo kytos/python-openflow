@@ -59,11 +59,11 @@ class SwitchFeatures(base.GenericStruct):
         :param ports:        Port definitions
     """
 
-    header = of_header.OFPHeader()
+    header = of_header.Header()
     datapath_id = basic_types.UBInt64()
     n_buffers = basic_types.UBInt32()
     n_tables = basic_types.UBInt8()
-    pad = basic_types.UBInt8Array(length=3)  # Align to 64-bits
+    pad = basic_types.PAD(3)  # Align to 64-bits
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
@@ -72,16 +72,15 @@ class SwitchFeatures(base.GenericStruct):
     # objects. Related to ISSUE #3
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
-                 n_tables=None, pad=None, capabilities=None, actions=None,
+                 n_tables=None, capabilities=None, actions=None,
                  ports=None):
 
-        self.header.ofp_type = of_header.OFPType.OFPT_FEATURES_REPLY
+        self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
         self.header.xid = xid
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables
-        self.pad = pad
         self.capabilities = capabilities
         self.actions = actions
         self.ports = ports

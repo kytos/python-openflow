@@ -11,12 +11,12 @@ class TestPhyPort(unittest.TestCase):
         self.message.port_no = 2
         self.message.hw_addr = [10, 10, 18, 18, 16, 16]
         self.message.name = bytes('X' * base.OFP_MAX_PORT_NAME_LEN, 'utf-8')
-        self.message.config = phy_port.OFPPortConfig.OFPPC_NO_STP
-        self.message.state = phy_port.OFPPortState.OFPPS_STP_MASK
-        self.message.curr = phy_port.OFPPortFeatures.OFPPF_10GB_FD
-        self.message.advertised = phy_port.OFPPortFeatures.OFPPF_PAUSE
-        self.message.supported = phy_port.OFPPortFeatures.OFPPF_AUTONEG
-        self.message.peer = phy_port.OFPPortFeatures.OFPPF_AUTONEG
+        self.message.config = phy_port.PortConfig.OFPPC_NO_STP
+        self.message.state = phy_port.PortState.OFPPS_STP_MASK
+        self.message.curr = phy_port.PortFeatures.OFPPF_10GB_FD
+        self.message.advertised = phy_port.PortFeatures.OFPPF_PAUSE
+        self.message.supported = phy_port.PortFeatures.OFPPF_AUTONEG
+        self.message.peer = phy_port.PortFeatures.OFPPF_AUTONEG
 
     def test_get_size(self):
         """[Common/PhyPort] - size 48"""

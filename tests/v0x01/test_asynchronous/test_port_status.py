@@ -14,17 +14,16 @@ class TestPortStatus(unittest.TestCase):
         self.message = port_status.PortStatus()
         self.message.header.xid = 1
         self.message.reason = port_status.PortReason.OFPPR_ADD
-        self.message.pad = [0, 0, 0, 0, 0, 0, 0]
         self.message.desc = phy_port.PhyPort()
         self.message.desc.port_no = 2
         self.message.desc.hw_addr = [10, 10, 18, 18, 16, 16]
         self.message.desc.name = name
-        self.message.desc.config = phy_port.OFPPortConfig.OFPPC_NO_STP
-        self.message.desc.state = phy_port.OFPPortState.OFPPS_STP_MASK
-        self.message.desc.curr = phy_port.OFPPortFeatures.OFPPF_10GB_FD
-        self.message.desc.advertised = phy_port.OFPPortFeatures.OFPPF_PAUSE
-        self.message.desc.supported = phy_port.OFPPortFeatures.OFPPF_AUTONEG
-        self.message.desc.peer = phy_port.OFPPortFeatures.OFPPF_AUTONEG
+        self.message.desc.config = phy_port.PortConfig.OFPPC_NO_STP
+        self.message.desc.state = phy_port.PortState.OFPPS_STP_MASK
+        self.message.desc.curr = phy_port.PortFeatures.OFPPF_10GB_FD
+        self.message.desc.advertised = phy_port.PortFeatures.OFPPF_PAUSE
+        self.message.desc.supported = phy_port.PortFeatures.OFPPF_AUTONEG
+        self.message.desc.peer = phy_port.PortFeatures.OFPPF_AUTONEG
 
     def test_size(self):
         """[Asynchronous/PortStatus] - size 64"""

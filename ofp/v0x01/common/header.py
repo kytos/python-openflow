@@ -12,7 +12,7 @@ from ofp.v0x01.foundation import basic_types
 # Enums
 
 
-class OFPType(enum.Enum):
+class Type(enum.Enum):
     """Enumeration of Message Types"""
     # Symetric/Immutable messages
     OFPT_HELLO = 0
@@ -59,20 +59,20 @@ class OFPType(enum.Enum):
 # Classes
 
 
-class OFPHeader(base.GenericStruct):
+class Header(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
-        :param ofp_type: Type of  the message
+        :param message_type: Type of  the message
         :param xid:      id of the message
         :param length:   Length of the message, including the header itself
     """
     version = basic_types.UBInt8()
-    ofp_type = basic_types.UBInt8()
+    message_type = basic_types.UBInt8()
     length = basic_types.UBInt16()
     xid = basic_types.UBInt32()
 
-    def __init__(self, ofp_type=None, xid=None, length=None):
+    def __init__(self, message_type=None, xid=None, length=None):
         self.version = base.OFP_VERSION
-        self.ofp_type = ofp_type
+        self.message_type = message_type
         self.length = length
         self.xid = xid
