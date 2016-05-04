@@ -4,10 +4,10 @@ import unittest
 from ofp.v0x01.symmetric import echo_request
 
 
-class TestRequest(unittest.TestCase):
+class TestEchoRequest(unittest.TestCase):
 
     def setUp(self):
-        self.message = echo_request.Request(xid=0)
+        self.message = echo_request.EchoRequest(xid=0)
 
     def test_get_size(self):
         """[Symmetric/Request] - size 8"""

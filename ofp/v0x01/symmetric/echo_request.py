@@ -11,7 +11,7 @@ from ofp.v0x01.foundation import base
 # Classes
 
 
-class Request(base.GenericStruct):
+class EchoRequest(base.GenericStruct):
     """OpenFlow Reply message
 
     This message does not contain a body beyond the OpenFlow Header
