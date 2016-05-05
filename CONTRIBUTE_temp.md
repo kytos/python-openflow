@@ -54,6 +54,30 @@ git push
 git branch -d some-feature
 ```
 
+### Hot Fix and Security Fix
+
+When a Hot or Security fix is required, a different workflow should be followed. The contributer
+should clone the master branch and, after fixing the bug, it has to be merged in master and develop
+branch. 
+First clone the master branch as following:
+
+```
+git checkout -b issue-#001 master
+# Fix the bug
+git checkout master
+git merge issue-#001
+git push
+```
+
+Then, merge the fix to develop branch as well:
+
+```
+git checkout develop
+git merge issue-#001
+git push
+git branch -d issue-#001
+```
+
 ## Creating an Issue
 
 If you find a bug in the project (and you don’t know how to fix it),
