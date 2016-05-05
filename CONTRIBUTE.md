@@ -8,7 +8,77 @@ If you wanna contribute to this project, below we present some ways in
 which you can contribute. Informations about environment setup for developers
 can be found at the [HACKING.md](HACKING.md) file.
 
-## Create an Issue
+## Project Versioning
+This project uses the [Semantic Versioning](http://semver.org/). The project is identified with
+three numbers, as following:
+
+\<MAJOR\>.\<MINOR\>.\<PATCH\>, where:
+
+**MAJOR:** All subprojects should be at same major version. This number identifies that 
+all subproject are able to interact with each other and should be updated when substantial 
+changes occur to all projects.
+
+**MINOR:** This number identifies the release of the subproject. It can vary (and probably 
+will) during the life cycle of each subproject.
+
+**PATCH:** The Patch number is used to identifies bug or security fixes in each 
+subproject.
+
+
+## Project Workflow
+
+Any developer who wishes to contribute to this project should first clone the Develop 
+branch. We follow the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) 
+and all contributors should create a branch from develop branch with the feature's name. Once 
+the feature is implemented the contributer should place a merge request to develop branch. 
+
+```
+git clone https://github.com/kytos/python-openflow.git
+git checkout -b develop origin/develop
+```
+
+Create a branch with the feature name that you will be working:
+
+```
+git checkout -b some-feature develop
+```
+
+Once the feature is already implemented, you can make a merge request to us. Note that all
+merge request should be in develop branch. 
+
+```
+git pull origin develop
+git checkout develop
+git merge some-feature
+git push
+git branch -d some-feature
+```
+
+### Hot Fix and Security Fix
+
+When a Hot or Security fix is required, a different workflow should be followed. The contributer
+should clone the master branch and, after fixing the bug, it has to be merged in master and develop
+branch. 
+First clone the master branch as following:
+
+```
+git checkout -b issue-#001 master
+# Fix the bug
+git checkout master
+git merge issue-#001
+git push
+```
+
+Then, merge the fix to develop branch as well:
+
+```
+git checkout develop
+git merge issue-#001
+git push
+git branch -d issue-#001
+```
+
+## Creating an Issue
 
 If you find a bug in the project (and you don’t know how to fix it),
 have trouble following the documentation or have a question about the project
@@ -16,6 +86,10 @@ have trouble following the documentation or have a question about the project
 you’re likely not the only one, so others will find your issue helpful, too.
 For more information on how issues work, check out
 [github's Issues guide](https://guides.github.com/features/issues/).
+When oppening a new issue, please, use the proper tags we provide to identify the version 
+of the release and the type of the issue that is being opened (i.e.: discussion, bugs,
+etc). It is important to note that these issues will be used as release's cutoff. 
+
 
 ### Issues Pro Tips
 
@@ -31,7 +105,8 @@ For more information on how issues work, check out
   - **Paste error output** or logs in your issue or in a
     [Gist](http://gist.github.com/). If pasting them in the issue, wrap it in
     three backticks: \`\`\` so that it renders nicely.\`\`\` like ```this```
-
+  - **Use Tags** Please, remember to tag your issue according to the version and the
+    issue type.
 
 ## Pull Request
 If you’re able to patch the bug or add the feature yourself – fantastic, make a
