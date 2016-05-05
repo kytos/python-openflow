@@ -32,6 +32,10 @@ branch. We follow the [Gitflow Workflow](https://www.atlassian.com/git/tutorials
 and all contributors should create a branch from develop branch with the feature's name. Once 
 the feature is implemented the contributer should place a merge request to develop branch. 
 
+<img src="https://github.com/kytos/python-openflow/blob/develop/figures/git_flow.png" alt="alt text" width="500" height="250">
+
+In order to reproduce the workflow, please follow the instructions bellow (remember to replace `python-openflow` to the proper subproject name):
+
 ```
 git clone https://github.com/kytos/python-openflow.git
 git checkout -b develop origin/develop
@@ -59,6 +63,11 @@ git branch -d some-feature
 When a Hot or Security fix is required, a different workflow should be followed. The contributer
 should clone the master branch and, after fixing the bug, it has to be merged in master and develop
 branch. 
+
+This workflow is shown in Figure below. Note that the fix should be merged into master **and** develop branches.
+
+<img src="https://github.com/kytos/python-openflow/blob/develop/figures/hot_fix.png" alt="alt text" width="500" height="400">
+
 First clone the master branch as following:
 
 ```
