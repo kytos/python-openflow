@@ -3,27 +3,22 @@
 We'd love for you to contribute to our source code and to make Kytos even better
 than it is today! Here are the guidelines we'd like you to follow:
 
- - [Code of Conduct](#coc)
- - [Question or Problem?](#question)
- - [Issues and Bugs](#issue)
- - [Feature Requests](#feature)
+ - [Got a Question or Problem?](#question)
+ - [Found an Issue?](#issue)
+ - [Want a Feature?](#feature)
+ - [Want a Doc Fix?](#docs)
  - [Submission Guidelines](#submit)
- - [Coding Rules](#rules)
- - [Commit Message Guidelines](#commit)
+ - [Coding Style](#style)
+ - [Tests](#tests)
  - [Signing the CLA](#cla)
- - [Further Info](#info)
+ - [IRC/Mailinglist](#contact)
 
-
-## <a name="coc"></a> Code of Conduct
-
-Help us keep Kytos open and inclusive. Please read and follow our [Code of
-Conduct][coc].
 
 ## <a name="question"></a> Got a Question or Problem?
 
 If you have questions about how to use any component of Kytos project, please
-direct these to our [dev mailing list][kytos-dev]. We are also
-available on [IRC][irc].
+direct these to our [dev mailing list][kytos-dev]. We are also available on
+[IRC][irc].
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -160,9 +155,9 @@ commits.*
 
 That's it! Thank you for your contribution!
 
-#### Hot Fix and Security Fix
+### Hot Fix and Security Fix
 
-#TODO: Quick describe of a hotfix
+_[TODO: Quick describe of a hotfix]_
 
 When a Hot or Security fix is required, a different workflow should be followed.
 The contributer should clone the master branch and, after fixing the bug, it has
@@ -186,7 +181,7 @@ Then, merge the fix to develop branch as well:
   git push
   ```
 
-#### After your pull request is merged
+### After your pull request is merged
 
 After your pull request is merged, you can safely delete your branch and pull
 the changes from the main (upstream) repository:
@@ -219,8 +214,7 @@ the changes from the main (upstream) repository:
 Information about environment setup for developers can be found at the
 [HACKING.md](HACKING.md) file.
 
-
-#### Pull Request Pro Tips
+### Pull Request Pro Tips
 
   - **[Fork](http://guides.github.com/activities/forking/) the repository** and
     clone it locally. Connect your local to the original ‘upstream’ repository
@@ -241,7 +235,7 @@ Information about environment setup for developers can be found at the
     would in your own repository, but makes it easier for the maintainer to
     merge, others to understand and maintain in the future.
 
-#### Open Pull Requests
+### Open Pull Requests
 
 Once you’ve opened a pull request a discussion will start around your proposed
 changes. Other contributors and users may chime in, but ultimately the decision
@@ -254,7 +248,7 @@ what the project maintainer had in mind, or they were already working on it.
 This happens, so our recommendation is to take any feedback you’ve received and
 go forth and pull request again – or create your own open source project.
 
-#### Code contribution steps review:
+### Code contribution steps review:
 
   - Fork the project & clone locally
   - Create an upstream remote and sync your local copy before you branch
@@ -264,13 +258,13 @@ go forth and pull request again – or create your own open source project.
   - Create a new PR in GitHub
   - Respond to any code review feedback
 
-## Coding style
+## <a name="style"></a> Coding style
 
 We follow [PEP8](http://www.python.org/dev/peps/pep-0008/),
 [PEP20](http://www.python.org/dev/peps/pep-0020/) and, as a short resume,
 [The Best of the Best Practices (BOBP) Guide for Python](https://gist.github.com/sloria/7001839)
 
-## Tests
+## <a name="tests"></a> Tests
 
 This project tries to follow the TDD (Test Driven Development) process.  Before
 writing code to contribute, write the tests related to the functionality you
@@ -279,7 +273,7 @@ wish to implement and then write the code to pass this test.
 More info about the tests can be found on the
 [HACKING.md](HACKING.md#tdd-test-driven-development) file.
 
-## Use the raw raw files
+### Use the raw raw files
 
 We provide some files with raw packets to be used as input with the parser
 library. Use theses files to test your features. To use our raw packet files,
@@ -293,7 +287,7 @@ quick process, we promise!
 
 * For individuals we have a [simple click-through form][individual-cla].
 
-## IRC/Mailinglist
+## <a name="contact"></a> IRC/Mailinglist
 
 You can find us on the **#of-ng** IRC channel on **freenode.net** network.
 
