@@ -17,8 +17,8 @@ than it is today! Here are the guidelines we'd like you to follow:
 ## <a name="question"></a> Got a Question or Problem?
 
 If you have questions about how to use any component of Kytos project, please
-direct these to our [dev mailing list][contact]. We are also available on
-[IRC][contact].
+direct these to our [dev mailing list](#contact). We are also available on
+[IRC](#contact).
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -35,7 +35,7 @@ Repository][issues].  If you would like to implement a new feature then consider
 what kind of change it is:
 
 * **Major Changes** that you wish to contribute to the project should be
-  discussed first on our [dev mailing list][contact] or [IRC][contact] so that we
+  discussed first on our [dev mailing list](#contact) or [IRC](#contact) so that we
 can better coordinate our efforts, prevent duplication of work, and help you to
 craft the change so that it is successfully accepted into the project.
 
@@ -112,8 +112,7 @@ Before you submit your pull request consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**;
 * Follow our [Coding Rules](#rules);
-* Run the full Kytos test suite, as described in the [developer
-  documentation][dev-doc], and ensure that all tests pass;
+* Run the full Kytos test suite, and ensure that all tests pass;
 * Commit your changes using a very good descriptive commit message;
 
      ```shell
