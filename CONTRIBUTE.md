@@ -17,24 +17,25 @@ than it is today! Here are the guidelines we'd like you to follow:
 ## <a name="question"></a> Got a Question or Problem?
 
 If you have questions about how to use any component of Kytos project, please
-direct these to our [dev mailing list][kytos-dev]. We are also available on
-[IRC][irc].
+direct these to our [dev mailing list][contact]. We are also available on
+[IRC][contact].
 
 ## <a name="issue"></a> Found an Issue?
 
 If you find a bug in the source code or a mistake in the documentation, you can
-help us by submitting an issue to our [GitHub Repository][github]. Even better
+help us by submitting an issue to our [GitHub Repository][issues]. Even better
 you can submit a Pull Request with a fix.
 
 **Please see the Submission Guidelines below**.
 
 ## <a name="feature"></a> Want a Feature?
+
 You can also request a new feature by submitting an issue to our [GitHub
-Repository][github].  If you would like to implement a new feature then consider
+Repository][issues].  If you would like to implement a new feature then consider
 what kind of change it is:
 
 * **Major Changes** that you wish to contribute to the project should be
-  discussed first on our [dev mailing list][kytos-dev] or [IRC][irc] so that we
+  discussed first on our [dev mailing list][contact] or [IRC][contact] so that we
 can better coordinate our efforts, prevent duplication of work, and help you to
 craft the change so that it is successfully accepted into the project.
 
@@ -295,7 +296,8 @@ There is also our dev mailing list:
 **of-ng-dev** (at) **ncc** (dot) **unesp** (dot) **br**
 
 
-
+[github]: github.com/kytos/python-openflow
+[issues]: https://github.com/kytos/python-openflow/issues
 [fork]: https://github.com/of-ng/ofx-parser/fork
 [pr]: https://github.com/of-ng/ofx-parser/compare
 [readme]: https://github.com/github/ofx-parser#readme
