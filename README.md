@@ -1,16 +1,17 @@
-# #ProjectName - #SubprojectName
+# Kytos - python-openflow
 
-This is a subproject of the #ProjectName project.  This is the library
-component, in charge of parsing OpenFlow messages to/from OpenFlow switches.
+This is a subproject of the *Kytos* project. This is the library component, in
+charge of parsing OpenFlow messages to/from OpenFlow switches.
 
-This library was developed to be used with out main controller, but feel free to
-use this code in your projects. Is a very simple and intuitive library that also
-can be used to create your own controller.
+This library was developed to be used with our main controller, but feel free to
+use this code in your projects/controller. Is a very simple and intuitive
+library that also can be used to create your own controller.
 
-## #SubprojectName structure
+## python-openflow structure
 
-This project is packed as a python package (#pythonPackageName),
-and contains the following directory structure:
+This project is packed as a python package (`python-openflow`), and contains the
+following directory structure:
+
   - **#SubprojectName**: contains all the implemented versions of
     the OpenFlow Protocol Parser. Each version is under its own folder
     - Each version is inside its own directory
