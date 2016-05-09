@@ -72,8 +72,8 @@ running into has been addressed already.
 * **Include system details** like what the library or operating system you’re
   using and its version.
 * **Paste error output** or logs in your issue or in a [Gist][github-gist]. If
-  pasting them in the issue, wrap it in three backticks: \`\`\` so that it
-renders nicely.\`\`\` like ```this```
+  pasting them in the issue, wrap it with three backticks: **\`\`\`** so that it
+renders nicely, like ```this```.
 * **Use Tags** Please, remember to tag your issue according to the version and the issue type.
 * **Steps to reproduce** - please inform all the steps to reproduce the error;
 * **Related Issues** - has a similar issue been reported before?;
@@ -113,14 +113,8 @@ Before you submit your pull request consider the following guidelines:
 * Create your patch, **including appropriate test cases**;
 * Follow our [Coding Rules](#rules);
 * Run the full Kytos test suite, and ensure that all tests pass;
-* Commit your changes using a very good descriptive commit message;
-
-     ```shell
-     git commit -a
-     ```
-  Note: the optional commit `-a` command line option will automatically "add"
-  and "rm" edited files.
-
+* Commit your changes using very good and descriptive commit messages;
+  * Please consider doing atomic commits (small changes in each commit).
 * Run our test suit to see if anything is broken:
 
     ```shell
@@ -145,7 +139,7 @@ If the PR gets too outdated we may ask you to rebase and force push to update
 the PR:
 
     ```shell
-    git rebase master -i
+    git rebase develop -i
     git push origin my-fix-branch -f
     ```
 
