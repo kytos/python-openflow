@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import barrier_reply
+from pyof.v0x01.controller2switch import barrier_reply
 
 
 class TestBarrierReply(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import get_config_request
+from pyof.v0x01.controller2switch import get_config_request
 
 
 class TestGetConfigRequest(unittest.TestCase):

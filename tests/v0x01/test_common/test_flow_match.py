@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.common import flow_match
+from pyof.v0x01.common import flow_match
 
 
 class TestMatch(unittest.TestCase):

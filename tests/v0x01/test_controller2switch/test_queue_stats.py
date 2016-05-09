@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import queue_stats
+from pyof.v0x01.controller2switch import queue_stats
 
 
 class TestQueueStats(unittest.TestCase):

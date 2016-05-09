@@ -1,8 +1,8 @@
 import unittest
 
-from ofp.v0x01.common import flow_match
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.controller2switch import aggregate_stats_request
+from pyof.v0x01.common import flow_match
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.controller2switch import aggregate_stats_request
 
 
 class TestAggregateStatsRequest(unittest.TestCase):

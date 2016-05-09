@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import queue_get_config_request
+from pyof.v0x01.controller2switch import queue_get_config_request
 
 
 class TestQueueGetConfigRequest(unittest.TestCase):

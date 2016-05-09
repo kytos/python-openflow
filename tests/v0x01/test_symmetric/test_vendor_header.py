@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.symmetric import vendor_header
+from pyof.v0x01.symmetric import vendor_header
 
 
 class TestVendorHeader(unittest.TestCase):

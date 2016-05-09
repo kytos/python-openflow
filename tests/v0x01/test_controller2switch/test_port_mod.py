@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.controller2switch import port_mod
-from ofp.v0x01.foundation import base
+from pyof.v0x01.controller2switch import port_mod
+from pyof.v0x01.foundation import base
 
 
 class TestPortMod(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.controller2switch import packet_out
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.controller2switch import packet_out
 
 
 class TestPacketOut(unittest.TestCase):

@@ -291,9 +291,9 @@ There is also our dev mailing list:
 
 [github]: github.com/kytos/python-openflow
 [issues]: https://github.com/kytos/python-openflow/issues
-[fork]: https://github.com/of-ng/ofx-parser/fork
-[pr]: https://github.com/of-ng/ofx-parser/compare
-[readme]: https://github.com/github/ofx-parser#readme
+[fork]: https://github.com/of-ng/python-openflow/fork
+[pr]: https://github.com/of-ng/python-openflow/compare
+[readme]: https://github.com/github/python-openflow#readme
 [github-gist]: http://gist.github.com/
 [github-issues]: https://guides.github.com/features/issues/
 [semver]: http://semver.org/
