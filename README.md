@@ -35,14 +35,39 @@ following directory structure:
   - **raw**: raw (binary) OpenFlow Messages, dumped with
     [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
 
-### Incremental code
+## Main Features
 
-To avoid code repetition this project utilizes an incremental architechture.
+### Speed focused
 
-This means that the firt version (1.0.0 = v0x01) was fully coded from the
+We keep the word performance in mind since the beginning of the development.
+Also, as computer scientists we will always try to get the best performance by
+using the most suitable algorithm.
+
+Some developers participated in several demonstrations involving tests with
+high-speed networks (~ 1 terabit/s), some even involving data transfers from/to
+CERN.
+
+### Always updated
+
+To avoid code repetition this project utilizes an incremental architecture.
+
+This means that the first version (1.0.0 = v0x01) was fully coded from the
 OpenFlow 1.0.0 Protocol. The 1.1 version (v0x02) imports the 1.0 version and
 then do the necessary changes to make it compatible with the OpenFlow 1.1.0
 Protocol, and the next version follows the same logic.
+
+Using incremental code makes the implementation of new versions of OpenFlow
+protocol faster. Yes, we are at initial stages of development, but our main goal
+is always follow the specs.
+
+### Easy to learn
+
+We try to code in a "pythonic way" always. We also have a well documented API.
+Learn to make your controller using this library is a trivial task.
+
+### Born to be free
+
+_[todo]_
 
 ## Authors
 
