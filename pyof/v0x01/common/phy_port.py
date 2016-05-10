@@ -60,7 +60,7 @@ class PortState(enum.Enum):
     OFPPS_STP_LEARN = 1 << 8
     OFPPS_STP_FORWARD = 2 << 8
     OFPPS_STP_BLOCK = 3 << 8
-    OFPPS_STP_MASK = 3 << 8
+    # OFPPS_STP_MASK = 3 << 8  - Refer to ISSUE #7
 
 
 class Port(enum.Enum):
