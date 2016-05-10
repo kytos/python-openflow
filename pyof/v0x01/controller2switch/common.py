@@ -33,12 +33,7 @@ class ConfigFlags(enum.Enum):
 
 
 class SwitchConfig(base.GenericStruct):
-    """Message used on OFPT_SET_CONFIG and OFPT_GET_CONFIG_REPLY.
-
-    This is OFPT_GET_CONFIG_REPLY message sent by the switch to
-    the controller in response to the OFPT_GET_CONFIG_REQUEST,
-    and also is the OFPT_SET_CONFIG message sent by the controller
-    to the switch.
+    """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
 
         :param xid:           xid to be used on the message header
         :param flags:         UBInt16 OFPC_* flags
