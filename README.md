@@ -1,6 +1,8 @@
 # Kytos - python-openflow
 
-![](https://img.shields.io/github/release/kytos/python-openvpn.svg)
+[![Release](http://google.com/)][release-icon]
+
+[release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
 
 This is a subproject of the *Kytos* project. This is the library component, in
 charge of parsing OpenFlow messages to/from OpenFlow switches.
