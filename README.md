@@ -1,9 +1,16 @@
 # Kytos - python-openflow
 
+[![Tag][tag-icon]][tag-url]
 [![Release][release-icon]][release-url]
+[![License][license-icon]][license-url]
 
+
+[tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
+[tag-url]: https://github.com/kytos/python-openflow/tags
 [release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
-[release-url]: https://google.com/
+[release-url]: https://github.com/kytos/python-openflow/releases
+[license-icon]: https://img.shields.io/github/license/kytos/python-openflow.svg
+[license-url]: https://github.com/kytos/python-openflow/blob/master/LICENSE
 
 This is a subproject of the *Kytos* project. This is the library component, in
 charge of parsing OpenFlow messages to/from OpenFlow switches.
