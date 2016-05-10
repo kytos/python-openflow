@@ -1,10 +1,12 @@
 # Kytos - python-openflow
 
+[![Openflow][of-icon][of-url]
 [![Tag][tag-icon]][tag-url]
 [![Release][release-icon]][release-url]
 [![License][license-icon]][license-url]
 
-
+[of-icon]: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
+[of-url]: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
 [tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
 [tag-url]: https://github.com/kytos/python-openflow/tags
 [release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
@@ -41,12 +43,6 @@ This means that the firt version (1.0.0 = v0x01) was fully coded from the
 OpenFlow 1.0.0 Protocol. The 1.1 version (v0x02) imports the 1.0 version and
 then do the necessary changes to make it compatible with the OpenFlow 1.1.0
 Protocol, and the next version follows the same logic.
-
-## OpenFlow Protocol Specification Implemented Versions
-
- - [OpenFlow 1.0.0 Protocol](https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf)
-
-More versions and other technical documents at: https://www.opennetworking.org/sdn-resources/technical-library
 
 ## Authors
 
