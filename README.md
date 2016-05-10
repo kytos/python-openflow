@@ -36,7 +36,18 @@ Protocol, and the next version follows the same logic.
 
 More versions and other technical documents at: https://www.opennetworking.org/sdn-resources/technical-library
 
+## Authors
+
+This is a collaborative project between SPRACE (From São Paulo State University,
+Unesp) and Caltech (California Institute of Technology). For a complete list of
+authors, please open `AUTHORS.md` file.
+
 ## Contributing
 
 If you wanna contribute with this project, please read
 [CONTRIBUTE.md](CONTRIBUTE.md) and [HACKING.md](HACKING.md) files.
+
+## License
+
+This software is under _MIT-License_. For more information please read `LICENSE`
+file.
