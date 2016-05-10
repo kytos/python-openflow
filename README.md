@@ -12,7 +12,7 @@ library that also can be used to create your own controller.
 This project is packed as a python package (`python-openflow`), and contains the
 following directory structure:
 
-  - **#SubprojectName**: contains all the implemented versions of
+  - **python-openflow**: contains all the implemented versions of
     the OpenFlow Protocol Parser. Each version is under its own folder
     - Each version is inside its own directory
     - Each version is [incrementally build](#incremental-code) based
