@@ -64,7 +64,9 @@ class PortState(enum.Enum):
 
 
 class Port(enum.Enum):
-    """Port numbering. Physical ports are numbered starting from 1.
+    """Port numbering. Physical ports are numbered starting from 1. Port number
+    0 is reserved by the specification and must not be used for a switch
+    physical port.
 
     Enums:
         OFPP_MAX         # Maximum number of physical switch ports.

@@ -19,7 +19,10 @@ class PacketOut(base.GenericStruct):
 
         :param xid:         xid of the message header
         :param buffer_id:   ID assigned by datapath (-1 if none)
-        :param in_port:     Packet's input port (OFPP_NONE if none)
+        :param in_port:     Packet's input port (OFPP_NONE if none).
+                            Virtual ports OFPP_IN_PORT, OFPP_TABLE,
+                            OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be
+                            used as an input port.
         :param actions_len: Size of action array in bytes
         :param data:        Packet data. The length is inferred from the length
                             field in the header. (Only meaningful if
