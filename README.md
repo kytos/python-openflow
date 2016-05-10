@@ -1,6 +1,6 @@
 # Kytos - python-openflow
 
-[![Openflow][of-icon][of-url]
+[![Openflow][of-icon]][of-url]
 [![Tag][tag-icon]][tag-url]
 [![Release][release-icon]][release-url]
 [![License][license-icon]][license-url]
