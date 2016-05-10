@@ -74,9 +74,9 @@ class PAD(base.GenericType):
     def pack(self):
         """Pack the object.
 
-        Returns '\x00' multiplied by the size of the PAD
+        Returns b'\x00' multiplied by the size of the PAD
         """
-        return '\x00' * self._size
+        return b'\x00' * self._size
 
 
 class UBInt8(base.GenericType):
