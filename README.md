@@ -16,20 +16,6 @@ This library was developed to be used with *Kytos* controller, but feel free to
 use this code in your projects/controller. Is a very simple and intuitive
 library that also can be used to create your own controller.
 
-## python-openflow structure
-
-This project is packed as a python package (`python-openflow`), and contains the
-following directory structure:
-
-  - **python-openflow**: contains all the implemented versions of
-    the OpenFlow Protocol Parser. Each version is under its own folder
-    - Each version is inside its own directory
-    - Each version is [incrementally build](#incremental-code) based
-      on the previous version
-    - Each version has its own unittest suit on the *tests* directory
-  - **raw**: raw (binary) OpenFlow Messages, dumped with
-    [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
-
 ## Installing
 
 You can install this package from sources or via pip. If you have cloned this
@@ -112,6 +98,21 @@ receive support of many vendors, but never will follow a particular vendor
 direction.
 
 We always will keep this code open.
+
+## python-openflow structure
+
+This project is packed as a python package (`python-openflow`), and contains the
+following directory structure:
+
+  - **python-openflow**: contains all the implemented versions of
+    the OpenFlow Protocol Parser. Each version is under its own folder
+    - Each version is inside its own directory
+    - Each version is [incrementally build](#incremental-code) based
+      on the previous version
+    - Each version has its own unittest suit on the *tests* directory
+  - **raw**: raw (binary) OpenFlow Messages, dumped with
+    [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
+
 
 ## Authors
 
