@@ -53,7 +53,7 @@ can use ipython3 to get advantages of auto complete:
 If you need to send this message via socket, you can call `pack()` method to get
 the binary representation of this object:
 
-  ```
+  ```python
   >>> data = request.pack()
   ```
 
