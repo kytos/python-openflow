@@ -157,6 +157,5 @@ class GenericStruct(metaclass=MetaStruct):
         for _attr, _class in self.__ordered__:
             if _attr != "header":
                 attribute = getattr(self, _attr)
-                value = attribute.unpack(buff, offset=begin)
-                setattr(self, _attr, value)
+                attribute.unpack(buff, offset=begin)
                 begin += attribute.get_size()
