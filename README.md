@@ -17,7 +17,11 @@
 This is a subproject of the *Kytos* project. This is the library component, in
 charge of parsing OpenFlow messages to/from OpenFlow switches.
 
-This library was developed to be used with our main controller, but feel free to
+With `python-openflow` you can parse binary OpenFlow messages into python
+objects, making easy to handle and understand theses messages. Also you can
+instanciate objects and pack them into a binary OpenFlow message.
+
+This library was developed to be used with *Kytos* controller, but feel free to
 use this code in your projects/controller. Is a very simple and intuitive
 library that also can be used to create your own controller.
 
