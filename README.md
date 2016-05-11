@@ -56,6 +56,19 @@ Or, if you wanna install via pip, please execute:
 
 ## Using
 
+Look, how it is easy to create a feature request message with this library. You
+can use ipython3 to get advantages of auto complete:
+
+  ```ipython
+  In [1]: from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+  In [2]: request = FeaturesRequest(xid = 100)
+  In [3]: print(request.header)
+  <pyof.v0x01.common.header.Header object at 0x7efd33bb2780>
+  In [4]: print(request.header.message_type)
+  Type.OFPT_FEATURES_REPLY
+  In [5]: print(request.header.xid)
+  100
+  ```
 _[todo]_
 
 ## Main Features
