@@ -16,6 +16,9 @@ This library was developed to be used with *Kytos* controller, but feel free to
 use this code in your projects/controller. Is a very simple and intuitive
 library that also can be used to create your own controller.
 
+If you wanna more information about *Kytos project*, visit our main [web
+site][kytos-url].
+
 ## Installing
 
 You can install this package from sources or via pip. If you have cloned this
@@ -51,11 +54,11 @@ If you need to send this message via socket, you can call `pack()` method to get
 the binary representation of this object:
 
   ```
-  data = request.pack()
+  >>> data = request.pack()
   ```
 
 For a more detailed documentation, please visit [python-openflow API Reference
-Manual][api-reference-link].
+Manual][api-reference-url].
 
 ## Main Features
 
@@ -130,7 +133,8 @@ If you wanna contribute with this project, please read
 This software is under _MIT-License_. For more information please read `LICENSE`
 file.
 
-[api-reference-link]: https://docs.kytos.io/python-openflow/api-reference/
+[api-reference-url]: http://docs.kytos.io/python-openflow/api-reference/
+[kytos-url]: http://kytos.io/
 [of-icon]: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
 [of-url]: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
 [tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
