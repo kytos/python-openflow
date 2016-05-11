@@ -51,13 +51,13 @@ Look, how it is easy to create a feature request message with this library. You
 can use ipython3 to get advantages of auto complete:
 
   ```python
-  from pyof.v0x01.controller2switch.features_request import FeaturesRequest
-  request = FeaturesRequest(xid = 100)
-  print(request.header)
+  >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+  >>> request = FeaturesRequest(xid = 100)
+  >>> print(request.header)
   <pyof.v0x01.common.header.Header object at 0x7efd33bb2780>
-  print(request.header.message_type)
+  >>> print(request.header.message_type)
   Type.OFPT_FEATURES_REPLY
-  print(request.header.xid)
+  >>> print(request.header.xid)
   100
   ```
 
