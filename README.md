@@ -99,7 +99,7 @@ direction.
 
 We always will keep this code open.
 
-## python-openflow structure
+## Repository Structure
 
 This project is packed as a python package (`python-openflow`), and contains the
 following directory structure:
