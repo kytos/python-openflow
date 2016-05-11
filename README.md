@@ -35,6 +35,25 @@ following directory structure:
   - **raw**: raw (binary) OpenFlow Messages, dumped with
     [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
 
+## Installing
+
+You can install this package from sources or via pip. If you have cloned this
+repository and wanna install via `setuptools`, please run:
+
+  ```shell
+  sudo python3 setup.py install
+  ```
+
+Or, if you wanna install via pip, please execute:
+
+  ```shell
+  sudo pip3 install python-openflow
+  ```
+
+## Using
+
+_[todo]_
+
 ## Main Features
 
 ### Speed focused
@@ -67,7 +86,15 @@ Learn to make your controller using this library is a trivial task.
 
 ### Born to be free
 
-_[todo]_
+OpenFlow was born with a simple idea: make your network more vendor agnostic
+and we like that!
+
+We are advocates and supporters of free software and we believe that the more
+eyes observe a certain code, a better code will be generated. This project can
+receive support of many vendors, but never will follow a particular vendor
+direction.
+
+We always will keep this code open.
 
 ## Authors
 
