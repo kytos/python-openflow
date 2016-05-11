@@ -5,15 +5,6 @@
 [![Release][release-icon]][release-url]
 [![License][license-icon]][license-url]
 
-[of-icon]: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
-[of-url]: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
-[tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
-[tag-url]: https://github.com/kytos/python-openflow/tags
-[release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
-[release-url]: https://github.com/kytos/python-openflow/releases
-[license-icon]: https://img.shields.io/github/license/kytos/python-openflow.svg
-[license-url]: https://github.com/kytos/python-openflow/blob/master/LICENSE
-
 This is a subproject of the *Kytos* project. This is the library component, in
 charge of parsing OpenFlow messages to/from OpenFlow switches.
 
@@ -60,16 +51,25 @@ Look, how it is easy to create a feature request message with this library. You
 can use ipython3 to get advantages of auto complete:
 
   ```python
-  In [1]: from pyof.v0x01.controller2switch.features_request import FeaturesRequest
-  In [2]: request = FeaturesRequest(xid = 100)
-  In [3]: print(request.header)
+  from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+  request = FeaturesRequest(xid = 100)
+  print(request.header)
   <pyof.v0x01.common.header.Header object at 0x7efd33bb2780>
-  In [4]: print(request.header.message_type)
+  print(request.header.message_type)
   Type.OFPT_FEATURES_REPLY
-  In [5]: print(request.header.xid)
+  print(request.header.xid)
   100
   ```
-_[todo]_
+
+If you need to send this message via socket, you can call `pack()` method to get
+the binary representation of this object:
+
+  ```
+  data = request.pack()
+  ```
+
+For a more detailed documentation, please visit [python-openflow API Reference
+Manual][api-reference-link].
 
 ## Main Features
 
@@ -128,3 +128,13 @@ If you wanna contribute with this project, please read
 
 This software is under _MIT-License_. For more information please read `LICENSE`
 file.
+
+[api-reference-link]: https://docs.kytos.io/python-openflow/api-reference/
+[of-icon]: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
+[of-url]: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
+[tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
+[tag-url]: https://github.com/kytos/python-openflow/tags
+[release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
+[release-url]: https://github.com/kytos/python-openflow/releases
+[license-icon]: https://img.shields.io/github/license/kytos/python-openflow.svg
+[license-url]: https://github.com/kytos/python-openflow/blob/master/LICENSE
