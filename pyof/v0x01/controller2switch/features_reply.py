@@ -84,3 +84,6 @@ class SwitchFeatures(base.GenericStruct):
         self.capabilities = capabilities
         self.actions = actions
         self.ports = ports
+
+class FeaturesReply(SwitchFeatures):
+    pass
