@@ -1,5 +1,6 @@
 import unittest
 
+import os
 from pyof.v0x01.common import header as of_header
 
 
@@ -28,8 +29,16 @@ class TestHeader(unittest.TestCase):
         packed_header = b'\x01\x00\x00\x00\x00\x00\x00\x01'
         self.assertEqual(self.message.pack(), packed_header)
 
-    @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Common/Header] - unpacking Hello"""
-        # TODO
-        pass
+        filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
+                                'raw/v0x01/ofpt_hello.dat')
+        f = open(filename,'rb')
+        self.message.unpack(f.read(8))
+
+        self.assertEqual(self.message.length._value, 8)
+        self.assertEqual(self.message.xid._value, 1)
+        self.assertEqual(self.message.message_type._value, 0)
+        self.assertEqual(self.message.version._value, 1)
+
+        f.close()

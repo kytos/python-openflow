@@ -59,8 +59,8 @@ class GenericType(object):
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
     class as base.
     """
-    def __init__(self, val=None):
-        self._value = val
+    def __init__(self,value=None):
+        self._value = value
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self._value)
@@ -117,8 +117,8 @@ class GenericType(object):
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
-            raise exceptions.Exception("Error while unpacking"
-                                       "data from buffer")
+            raise exceptions.UnpackException("Error while unpacking"
+                                             "data from buffer")
 
     def get_size(self):
         """Return the size in bytes of this attribute. """
@@ -297,7 +297,7 @@ class GenericStruct(object):
                                                         type(attr))
             return message
 
-    def unpack(self, buff):
+    def unpack(self, buff, offset=0):
         """Unpack a binary struct into the object attributes.
 
         This method updated the object attributes based on the unpacked data
