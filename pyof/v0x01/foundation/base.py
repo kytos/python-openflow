@@ -76,7 +76,7 @@ class GenericType(object):
         except struct.error:
             message = "Value out of the possible range to basic type "
             message = message + self.__class__.__name__
-            raise exceptions.BadValueException(message) from struct.error
+            raise exceptions.BadValueException(message)
 
     def unpack(self, buff, offset=0):
         """ Unpack a buff and stores at _value property. """
