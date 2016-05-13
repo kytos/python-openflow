@@ -5,19 +5,15 @@
 [![Release][release-icon]][release-url]
 [![License][license-icon]][license-url]
 
-This is a subproject of the *Kytos* project. This is the library component, in
-charge of parsing OpenFlow messages to/from OpenFlow switches.
+*python-openflow* is a low level library to parse OpenFlow messages. So if you
+open a socket and wanna read an OpenFlow packet, or wanna send a message to an
+OpenFlow switch, this is your best friend.
 
-With `python-openflow` you can parse binary OpenFlow messages into python
-objects, making easy to handle and understand theses messages. Also you can
-instanciate objects and pack them into a binary OpenFlow message.
+This library is part of *Kytos* project and was developed to be used with
+*Kytos* controller, but feel free to use this library in your
+project/controller. Is a very intuitive and simple library.
 
-This library was developed to be used with *Kytos* controller, but feel free to
-use this code in your projects/controller. Is a very simple and intuitive
-library that also can be used to create your own controller.
-
-If you wanna more information about *Kytos project*, visit our main [web
-site][kytos-url].
+For more information about, please visit our [Kytos web site][kytos-url].
 
 ## Installing
 
@@ -34,7 +30,7 @@ Or, if you wanna install via pip, please execute:
   sudo pip3 install python-openflow
   ```
 
-## Using
+## Usage
 
 Look, how it is easy to create a feature request message with this library. You
 can use ipython3 to get advantages of auto complete:
@@ -60,7 +56,7 @@ the binary representation of this object:
 For a more detailed documentation, please visit [python-openflow API Reference
 Manual][api-reference-url].
 
-## Main Features
+## Main Highlights
 
 ### Speed focused
 
@@ -101,21 +97,6 @@ receive support of many vendors, but never will follow a particular vendor
 direction.
 
 We always will keep this code open.
-
-## Repository Structure
-
-This project is packed as a python package (`python-openflow`), and contains the
-following directory structure:
-
-  - **python-openflow**: contains all the implemented versions of
-    the OpenFlow Protocol Parser. Each version is under its own folder
-    - Each version is inside its own directory
-    - Each version is [incrementally build](#incremental-code) based
-      on the previous version
-    - Each version has its own unittest suit on the *tests* directory
-  - **raw**: raw (binary) OpenFlow Messages, dumped with
-    [tcpdump](http://www.tcpdump.org/tcpdump_man.html) used for Tests purposes
-
 
 ## Authors
 

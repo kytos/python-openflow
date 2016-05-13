@@ -1,22 +1,48 @@
-.. python-openflow library documentation master file, created by
-   sphinx-quickstart on Wed May 11 16:13:35 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to python-openflow library's documentation!
 ===================================================
 
-Contents:
+*python-openflow* is a low level library to parse OpenFlow messages. So if you
+open a socket and wanna read an OpenFlow packet, or wanna send a message to an
+OpenFlow switch, this is your best friend.
+
+This library is part of *Kytos* project and was developed to be used with
+*Kytos* controller, but feel free to use this library in your
+project/controller. Is a very intuitive and simple library.
+
+For more information about, please visit our |kytos-site|_.
+
+Here you will find an extensive documentation of this library. If you wanna fix
+or improve this documentation, please read our |contrib|_ and feel free to
+submit a patch on our `doc/` directory.
+
+Table of Contents
+=================
 
 .. toctree::
-   :maxdepth: 2
+  :maxdepth: 2
 
+  introduction
+  install
+  usage
+  
+
+API Reference
+-------------
+
+.. automodule:: pyof.v0x01.common.header
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
 
+.. |kytos-site| replace:: Kytos web site
+.. _kytos-site: http://kytos.io/
+.. |contrib| replace:: contributing instructions
+.. _contrib: https://github.com/kytos/python-openflow/blob/develop/CONTRIBUTE.md
