@@ -21,18 +21,20 @@ Table of Contents
 .. toctree::
   :maxdepth: 2
 
-  introduction
-  install
-  usage
+  toc/introduction
+  toc/install
+  toc/usage
+
   
 
 API Reference
 -------------
 
-.. automodule:: pyof.v0x01.common.header
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. toctree::
+   :maxdepth: 9
+   :titlesonly:
+
+   modules
 
 
 Indices and tables

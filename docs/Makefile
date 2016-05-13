@@ -19,6 +19,11 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
+default:
+	make clean
+	make html
+
+
 .PHONY: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -51,10 +56,12 @@ help:
 
 .PHONY: clean
 clean:
+	rm -rf pyof.*
 	rm -rf $(BUILDDIR)/*
 
 .PHONY: html
 html:
+	sphinx-apidoc -o . ../pyof/ -d10 -M
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
