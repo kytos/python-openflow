@@ -7,6 +7,7 @@ import enum
 
 # Local source tree imports
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common import action
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
@@ -50,3 +51,18 @@ class SwitchConfig(base.GenericMessage):
         self.header.xid = xid
         self.flags = flags
         self.miss_send_len = miss_send_len
+
+
+class ListOfActions(basic_types.FixedTypeList):
+    """List of actions.
+
+    Represented by instances of ActionHeader and
+    used on ActionHeader objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of ActionHeader
+    """
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=action.ActionHeader,
+                                           items=items)

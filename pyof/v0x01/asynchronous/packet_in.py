@@ -30,8 +30,7 @@ class PacketInReason(enum.Enum):
 
 
 class PacketIn(base.GenericMessage):
-    """
-    Packet received on port (datapath -> controller)
+    """Packet received on port (datapath -> controller)
 
         :param xid:       Openflow xid of the Header
         :param buffer_id: ID assigned by datapath

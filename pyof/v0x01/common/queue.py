@@ -27,9 +27,23 @@ class QueueProperties(enum.Enum):
 # Classes
 
 
-class QueuePropHeader(base.GenericMessage):
+class ListOfProperties(basic_types.FixedTypeList):
+    """List of properties.
+
+    Represented by instances of QueuePropHeader and
+    used on PacketQueue objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of QueuePropHeader
     """
-    This class describes the header of each queue property.
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=QueuePropHeader,
+                                           items=items)
+
+
+class QueuePropHeader(base.GenericMessage):
+    """This class describes the header of each queue property.
 
         :param property: One of OFPQT_.
         :param len:      Length of property, including this header.
@@ -56,11 +70,9 @@ class PacketQueue(base.GenericMessage):
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
     pad = basic_types.PAD(2)
-    properties = []
-    # TODO: Add here a new type, list of QueuePropHeader()
-    #       objects. Related to ISSUE #3
+    properties = ListOfProperties()
 
-    def __init__(self, queue_id=None, length=None, properties=None):
+    def __init__(self, queue_id=None, length=None, properties=[]):
         self.queue_id = queue_id
         self.length = length
         self.properties = properties

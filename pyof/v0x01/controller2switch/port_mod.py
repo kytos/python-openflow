@@ -2,9 +2,7 @@
 
 # System imports
 
-
 # Third-party imports
-
 
 # Local source tree imports
 from pyof.v0x01.common import header as of_header

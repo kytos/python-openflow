@@ -30,13 +30,9 @@ class TestQueuePropHeader(unittest.TestCase):
 class TestPacketQueue(unittest.TestCase):
 
     def setUp(self):
-        propertie01 = queue.QueuePropHeader()
-        propertie01.property = queue.QueueProperties.OFPQT_MIN_RATE
-        propertie01.len = 12
         self.message = queue.PacketQueue()
         self.message.queue_id = 1
         self.message.length = 8
-        self.message.properties = [propertie01]
 
     def test_get_size(self):
         """[Common/PacketQueue] - size 8"""

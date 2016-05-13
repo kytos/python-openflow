@@ -145,3 +145,184 @@ class Char(base.GenericType):
             self._value = value
         self.length = length
         self._fmt = '!%d%c' % (self.length, 's')
+
+
+class FixedTypeList(list):
+    """Creates a List that will receive OFP Classes"""
+    _pyof_class = None
+
+    def __init__(self, pyof_class, items=[]):
+        self._pyof_class = pyof_class
+        list.__init__(self, [])
+        if items is not None and len(items) > 0:
+            if type(items) is list:
+                self.extend(items)
+            else:
+                self.append(items)
+
+    def __repr__(self):
+        """Unique representantion of the object.
+
+        This can be used to generate an object that has the
+        same content of the current object"""
+        return "{}({},{})".format(self.__class__.__name__,
+                                  self._pyof_class,
+                                  self)
+
+    def __str__(self):
+        """Human-readable object representantion"""
+        return "{}".format([item for item in self])
+
+    def __set__(self, instance, value):
+        """Clear the list and set value as the only item of the list"""
+        self.__delete__(instance)
+        self.append(value)
+
+    def __delete__(self, instance):
+        """This method remove all items from the list"""
+        for item in self:
+            self.remove(item)
+
+    def append(self, item):
+        if type(item) is list:
+            self.extend(item)
+        elif item.__class__ == self._pyof_class:
+            list.append(self, item)
+        else:
+            raise exceptions.WrongListItemType(item.__class__.__name__,
+                                               self._pyof_class.__name__)
+
+    def extend(self, items):
+        for item in items:
+            self.append(item)
+
+    def insert(self, index, item):
+        if item.__class__ == self._pyof_class:
+            list.insert(self, index, item)
+        else:
+            raise exceptions.WrongListItemType(item.__class__.__name__,
+                                               self._pyof_class.__name__)
+
+    def get_size(self):
+        size = 0
+        for item in self:
+            size += item.get_size()
+        return size
+
+    def pack(self):
+        bin_message = b''
+        for item in self:
+            bin_message += item.pack()
+        return bin_message
+
+    def unpack(self, buff, offset=0):
+        """Unpacks the elements of the list
+
+        This unpack method considers that all elements have the same size.
+        To use this class with a pyof_class that accepts elements with
+        different sizes you must reimplement the unpack method.
+
+        Arguments:
+            buff: the binary data to be unpacked
+            offset: used if we need to shift the beginning of the data
+        """
+        item_size = self._pyof_class().get_size()
+        binary_items = [buff[i:i+2] for i in range(offset, len(buff),
+                                                   item_size)]
+        for binary_item in binary_items:
+            item = self._pyof_class()
+            item.unpack(binary_item)
+            self.append(item)
+
+
+class ConstantTypeList(list):
+    """Creates a List that will only allow objects of the same type (class) to
+    be inserted"""
+    def __init__(self, items=[]):
+        list.__init__(self, [])
+        if items is not None and len(items) > 0:
+            if type(items) is list:
+                self.extend(items)
+            else:
+                self.append(items)
+
+    def __repr__(self):
+        """Unique representantion of the object.
+
+        This can be used to generate an object that has the
+        same content of the current object"""
+        return "{}({})".format(self.__class__.__name__,
+                               self)
+
+    def __str__(self):
+        """Human-readable object representantion"""
+        return "{}".format([item for item in self])
+
+    def __set__(self, instance, value):
+        """Clear the list and set value as the only item of the list"""
+        self.__delete__(instance)
+        self.append(value)
+
+    def __delete__(self, instance):
+        """This method remove all items from the list"""
+        for item in self:
+            self.remove(item)
+
+    def append(self, item):
+        if type(item) is list:
+            self.extend(item)
+        elif len(self) == 0:
+            list.append(self, item)
+        elif item.__class__ == self[0].__class__:
+            list.append(self, item)
+        else:
+            raise exceptions.WrongListItemType(item.__class__.__name__,
+                                               self[0].__class__.__name__)
+
+    def extend(self, items):
+        for item in items:
+            self.append(item)
+
+    def insert(self, index, item):
+        if len(self) == 0:
+            list.append(self, item)
+        elif item.__class__ == self[0].__class__:
+            list.insert(self, index, item)
+        else:
+            raise exceptions.WrongListItemType(item.__class__.__name__,
+                                               self[0].__class__.__name__)
+
+    def get_size(self):
+        if getattr(self, 'len', None) and len(self) == 0:
+            return 0
+        else:
+            size = 0
+            for item in self:
+                size += item.get_size()
+            return size
+
+    def pack(self):
+        bin_message = b''
+        for item in self:
+            bin_message += item.pack()
+        return bin_message
+
+    def unpack(self, buff, item_class, offset=0):
+        """Unpacks the elements of the list
+
+        This unpack method considers that all elements have the same size.
+        To use this class with a pyof_class that accepts elements with
+        different sizes you must reimplement the unpack method.
+
+        Arguments:
+            buff: the binary data to be unpacked
+            offset: used if we need to shift the beginning of the data
+            item_class: Class of the expected items on this list
+        """
+        item_size = item_class.get_size()
+        binary_items = [buff[i:i+2] for i in range(offset, len(buff),
+                                                   item_size)]
+        for binary_item in binary_items:
+            item = item_class()
+            item.unpack(binary_item)
+            self.append(item)

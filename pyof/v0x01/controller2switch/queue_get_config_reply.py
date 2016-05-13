@@ -6,8 +6,24 @@
 
 # Local source tree imports
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common import queue
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
+
+
+class ListOfQueues(basic_types.FixedTypeList):
+    """List of queues.
+
+    Represented by instances of PacketQueue and
+    used on QueueGetConfigReply objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of PacketQueue
+    """
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=queue.PacketQueue,
+                                           items=items)
 
 
 class QueueGetConfigReply(base.GenericMessage):
@@ -21,13 +37,11 @@ class QueueGetConfigReply(base.GenericMessage):
     header = of_header.Header()
     port = basic_types.UBInt16()
     pad = basic_types.PAD(6)
-    queue = []
-    # TODO: Add here a new type, list of ActionHeaders()
-    # objects. Related to ISSUE #3
+    queues = ListOfQueues()
 
-    def __init__(self, xid=None, port=None, queue=None):
+    def __init__(self, xid=None, port=None, queues=[]):
 
         self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.port = port
-        self.queue = queue
+        self.queues = queues
