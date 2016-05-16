@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.common import queue
+from pyof.v0x01.common import queue
 
 
 class TestQueuePropHeader(unittest.TestCase):

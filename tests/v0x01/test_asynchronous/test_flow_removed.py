@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.asynchronous import flow_removed
-from ofp.v0x01.common import flow_match
+from pyof.v0x01.asynchronous import flow_removed
+from pyof.v0x01.common import flow_match
 
 
 class TestFlowRemoved(unittest.TestCase):

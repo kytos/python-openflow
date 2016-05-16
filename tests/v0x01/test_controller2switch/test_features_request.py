@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import features_request
+from pyof.v0x01.controller2switch import features_request
 
 class TestFeaturesRequest(unittest.TestCase):
 

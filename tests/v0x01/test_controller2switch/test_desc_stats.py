@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.controller2switch import desc_stats
-from ofp.v0x01.foundation import base
+from pyof.v0x01.controller2switch import desc_stats
+from pyof.v0x01.foundation import base
 
 
 class TestDescStats(unittest.TestCase):

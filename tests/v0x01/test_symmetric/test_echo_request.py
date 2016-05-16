@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from ofp.v0x01.symmetric import echo_request
+from pyof.v0x01.symmetric import echo_request
 
 
 class TestEchoRequest(unittest.TestCase):

@@ -1,9 +1,9 @@
 import unittest
 
-from ofp.v0x01.common import action
-from ofp.v0x01.common import flow_match
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.controller2switch import flow_mod
+from pyof.v0x01.common import action
+from pyof.v0x01.common import flow_match
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.controller2switch import flow_mod
 
 
 class TestFlowMod(unittest.TestCase):

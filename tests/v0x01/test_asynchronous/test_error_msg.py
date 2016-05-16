@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.asynchronous import error_msg
+from pyof.v0x01.asynchronous import error_msg
 
 
 class TestErrorMsg(unittest.TestCase):

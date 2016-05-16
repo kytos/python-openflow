@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.common import flow_match
-from ofp.v0x01.controller2switch import flow_stats_request
+from pyof.v0x01.common import flow_match
+from pyof.v0x01.controller2switch import flow_stats_request
 
 
 class TestFlowStatsRequest(unittest.TestCase):

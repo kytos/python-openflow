@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.asynchronous import packet_in
+from pyof.v0x01.asynchronous import packet_in
 
 
 class TestPacketIn(unittest.TestCase):

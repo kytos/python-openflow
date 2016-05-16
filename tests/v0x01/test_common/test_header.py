@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.common import header as of_header
+from pyof.v0x01.common import header as of_header
 
 
 class TestHeader(unittest.TestCase):

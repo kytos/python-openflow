@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import aggregate_stats_reply
+from pyof.v0x01.controller2switch import aggregate_stats_reply
 
 
 class TestAggregateStatsReply(unittest.TestCase):

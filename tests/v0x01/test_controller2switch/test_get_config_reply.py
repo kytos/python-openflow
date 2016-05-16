@@ -1,15 +1,14 @@
 import unittest
 
-from ofp.v0x01.controller2switch import flow_mod
-from ofp.v0x01.controller2switch import get_config_reply
+from pyof.v0x01.controller2switch import flow_mod
+from pyof.v0x01.controller2switch import get_config_reply
 
 
-class TestSwitchConfig(unittest.TestCase):
+class TestGetConfigReply(unittest.TestCase):
 
     def setUp(self):
-        self.message = get_config_reply.SwitchConfig()
+        self.message = get_config_reply.GetConfigReply()
         self.message.header.xid = 1
-        self.message.set_message = False
         self.message.flags = flow_mod.FlowModFlags.OFPFF_EMERG
         self.message.miss_send_len = 1024
 

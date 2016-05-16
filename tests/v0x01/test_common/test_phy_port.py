@@ -1,7 +1,7 @@
 import unittest
 
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.foundation import base
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.foundation import base
 
 
 class TestPhyPort(unittest.TestCase):

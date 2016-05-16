@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import basic_types
 
 
 class TestUBInt8(unittest.TestCase):
