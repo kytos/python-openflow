@@ -87,7 +87,7 @@ class GenericType(object):
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
         except struct.error:
             raise exceptions.Exception("Error while unpacking"
-                                          "data from buffer")
+                                       "data from buffer")
 
     def get_size(self):
         """ Return the size of type in bytes. """
@@ -102,8 +102,11 @@ class MetaStruct(type):
         return collections.OrderedDict()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = [(key, type(value)) for key, value in
-                                    classdict.items() if key[0] != '_']
+        classdict['__ordered__'] = [(key, type(value))
+                                    for key, value in
+                                    classdict.items()
+                                    if key[0] != '_' and not
+                                    hasattr(value, '__call__')]
         return type.__new__(self, name, bases, classdict)
 
 
