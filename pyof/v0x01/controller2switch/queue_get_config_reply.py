@@ -10,7 +10,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class QueueGetConfigReply(base.GenericStruct):
+class QueueGetConfigReply(base.GenericMessage):
     """Class implements the response to the config request
 
         :param xid -- xid of OpenFlow header

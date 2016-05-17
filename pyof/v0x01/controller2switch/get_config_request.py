@@ -7,7 +7,7 @@ from pyof.v0x01.foundation import base
 # Classe
 
 
-class GetConfigRequest(base.GenericStruct):
+class GetConfigRequest(base.GenericMessage):
     """Get Config Request message.
 
     This message does not contain a body beyond the OpenFlow Header

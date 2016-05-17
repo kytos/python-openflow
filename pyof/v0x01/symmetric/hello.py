@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import base
 # Classes
 
 
-class Hello(base.GenericStruct):
+class Hello(base.GenericMessage):
     """OpenFlow Hello Message
 
     This message does not contain a body beyond the OpenFlow Header

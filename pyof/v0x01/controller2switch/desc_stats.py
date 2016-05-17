@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class DescStats(base.GenericStruct):
+class DescStats(base.GenericMessage):
     """
     Information about the switch manufacturer, hardware revision, software
     revision, serial number, and a description field is avail- able from

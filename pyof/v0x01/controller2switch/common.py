@@ -32,7 +32,7 @@ class ConfigFlags(enum.Enum):
 # Classes
 
 
-class SwitchConfig(base.GenericStruct):
+class SwitchConfig(base.GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
 
         :param xid:           xid to be used on the message header

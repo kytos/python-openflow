@@ -9,7 +9,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class PortStatsRequest(base.GenericStruct):
+class PortStatsRequest(base.GenericMessage):
     """
     Body for ofp_stats_request of type OFPST_PORT
 

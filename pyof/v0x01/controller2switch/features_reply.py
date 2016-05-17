@@ -40,7 +40,7 @@ class Capabilities(enum.Enum):
 # Classes
 
 
-class SwitchFeatures(base.GenericStruct):
+class SwitchFeatures(base.GenericMessage):
     """Message sent by the switch device to the controller.
 
     This message is the response for a features_request

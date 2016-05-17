@@ -12,7 +12,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class FlowStats(base.GenericStruct):
+class FlowStats(base.GenericMessage):
     """
     Body of reply to OFPST_FLOW request.
 

@@ -7,7 +7,7 @@ from pyof.v0x01.foundation import base
 # Classes
 
 
-class FeaturesRequest(base.GenericStruct):
+class FeaturesRequest(base.GenericMessage):
     """Features request message.
 
     This message does not contain a body beyond the OpenFlow Header

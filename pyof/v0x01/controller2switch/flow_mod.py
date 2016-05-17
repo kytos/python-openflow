@@ -50,7 +50,7 @@ class FlowModFlags(enum.Enum):
 # Classes
 
 
-class FlowMod(base.GenericStruct):
+class FlowMod(base.GenericMessage):
     """
     Modifies the flow table from the controller.
 

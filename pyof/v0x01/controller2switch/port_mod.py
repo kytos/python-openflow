@@ -14,7 +14,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class PortMod(base.GenericStruct):
+class PortMod(base.GenericMessage):
     """
     Implements messages to modify the behavior of the physical port.
 

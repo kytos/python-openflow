@@ -10,7 +10,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class StatsRequest(base.GenericStruct):
+class StatsRequest(base.GenericMessage):
     """
     Class implements the response to the config request
 

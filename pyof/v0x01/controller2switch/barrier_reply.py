@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import base
 # Classes
 
 
-class BarrierReply(base.GenericStruct):
+class BarrierReply(base.GenericMessage):
     """OpenFlow Barrier Reply Message
 
     This message does not contain a body beyond the OpenFlow Header

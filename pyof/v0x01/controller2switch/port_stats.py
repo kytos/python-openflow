@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class PortStats(base.GenericStruct):
+class PortStats(base.GenericMessage):
     """
     Body of reply to OFPST_PORT request. If a counter is unsupported, set
     the field to all ones
