@@ -1,13 +1,13 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-setup(name='OpenFlow Next Generation',
+setup(name='Kytos OpenFlow Parser library',
       version='0.1',
-      description='Library to parse and generate messages based on the OpenFlow Protocol',
+      description='Library to parse and generate OpenFlow messages',
       url='http://github.com/kytos/python-openflow',
-      author='OpenFlow Next Generation Team',
+      author='Kytos Team',
       author_email='of-ng-dev@ncc.unesp.br',
       license='MIT',
       test_suite='tests',
-      packages=[],
+      packages=find_packages(exclude=["tests", "*v0x02*"]),
       zip_safe=False)
 
