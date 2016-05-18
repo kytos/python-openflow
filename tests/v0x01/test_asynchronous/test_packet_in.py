@@ -17,8 +17,11 @@ class TestPacketIn(unittest.TestCase):
         self.message.data = [0]
 
     def test_size(self):
-        """[Asynchronous/PacketIn] - size 20"""
-        self.assertEqual(self.message.get_size(), 20)
+        """[Asynchronous/PacketIn] - size 18
+
+        Different from the specification, the minimum size of this class is 18,
+        not 20."""
+        self.assertEqual(self.message.get_size(), 18)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
