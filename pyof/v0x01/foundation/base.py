@@ -67,15 +67,17 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
+        if type(self._value.__class__) is enum.EnumMeta:
+            # Gets the respective value from the Enum
+            value = self._value.value
+        else:
+            value = self._value
         try:
-            if type(self._value.__class__) is enum.EnumMeta:
-                # Gets the respective value from the Enum
-                return struct.pack(self._fmt, self._value.value)
-            else:
-                return struct.pack(self._fmt, self._value)
-        except struct.error:
+            return struct.pack(self._fmt, value)
+        except struct.error as err:
             message = "Value out of the possible range to basic type "
-            message = message + self.__class__.__name__
+            message = message + self.__class__.__name__ + ". "
+            message = message + str(err)
             raise exceptions.BadValueException(message)
 
     def unpack(self, buff, offset=0):
@@ -93,10 +95,15 @@ class GenericType(object):
         """ Return the size of type in bytes. """
         return struct.calcsize(self._fmt)
 
+    def validate(self):
+        try:
+            self.pack()
+        except:
+            raise
+
 
 class MetaStruct(type):
     """MetaClass used to force ordered attributes"""
-
     @classmethod
     def __prepare__(self, name, bases):
         return collections.OrderedDict()
@@ -112,7 +119,6 @@ class MetaStruct(type):
 
 class GenericStruct(metaclass=MetaStruct):
     """Base class for all message classes (structs)"""
-
     def __init__(self, *args, **kwargs):
         for _attr, _class in self.__ordered__:
             if not callable(getattr(self, _attr)):
@@ -140,6 +146,7 @@ class GenericStruct(metaclass=MetaStruct):
             :return: binary representation of the message object
         """
 
+        self.validate()
         message = b''
         for _attr, _class in self.__ordered__:
             message += getattr(self, _attr).pack()
@@ -162,3 +169,30 @@ class GenericStruct(metaclass=MetaStruct):
                 attribute = getattr(self, _attr)
                 attribute.unpack(buff, offset=begin)
                 begin += attribute.get_size()
+
+    def _validate_attributes_type(self):
+        """This method validates the type of each attribute"""
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if attr.__class__ is not _class:
+                raise exceptions.AttributeTypeError(str(attr), attr.__class__,
+                                                    self.__class__)
+            if callable(getattr(attr, 'validate', None)):
+                # If the attribute has a validate method, then call it too
+                try:
+                    attr.validate()
+                except Exception as e:
+                    message = str(e) + "\n"
+                    message += self.__class__.__name__ + "." + _attr
+                    if (_class.__name__):
+                        message += "(" + repr(_class.__name__) + ")"
+                    raise exceptions.BadValueException(message)
+
+    def validate(self):
+        """Method to validate the content of the object.
+
+        Verifications:
+            - attributes type
+            - overflow behaviour
+        """
+        self._validate_attributes_type()
