@@ -12,7 +12,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class VendorHeader(base.GenericStruct):
+class VendorHeader(base.GenericMessage):
     """OpenFlow Vendor message
 
     This message does not contain a body beyond the OpenFlow Header

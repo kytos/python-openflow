@@ -29,7 +29,7 @@ class PacketInReason(enum.Enum):
 # Classes
 
 
-class PacketIn(base.GenericStruct):
+class PacketIn(base.GenericMessage):
     """
     Packet received on port (datapath -> controller)
 

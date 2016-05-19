@@ -13,7 +13,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class PacketOut(base.GenericStruct):
+class PacketOut(base.GenericMessage):
     """
     Send packet (controller -> datapath)
 

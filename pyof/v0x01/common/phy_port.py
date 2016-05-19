@@ -136,7 +136,7 @@ class PortFeatures(enum.Enum):
 # Classes
 
 
-class PhyPort(base.GenericStruct):
+class PhyPort(base.GenericMessage):
     """
     Description of a physical port.
 

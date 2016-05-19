@@ -61,7 +61,7 @@ class FlowWildCards(enum.Enum):
 # Classes
 
 
-class Match(base.GenericStruct):
+class Match(base.GenericMessage):
     """
     Describes a flow entry. Fields to match against flows
 

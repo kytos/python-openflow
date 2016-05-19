@@ -196,3 +196,19 @@ class GenericStruct(metaclass=MetaStruct):
             - overflow behaviour
         """
         self._validate_attributes_type()
+
+
+class GenericMessage(GenericStruct):
+    """ Base class for all message classes (structs) """
+
+    def update_header_length(self):
+        """
+        This method update the packet header length with the actual packet
+        size.
+        """
+        self.header.length = self.get_size()
+
+    def pack(self):
+        self.update_header_length()
+        print("Length: ", self.header.length)
+        GenericStruct.pack(self)

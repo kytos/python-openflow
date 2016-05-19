@@ -27,7 +27,7 @@ class QueueProperties(enum.Enum):
 # Classes
 
 
-class QueuePropHeader(base.GenericStruct):
+class QueuePropHeader(base.GenericMessage):
     """
     This class describes the header of each queue property.
 
@@ -44,7 +44,7 @@ class QueuePropHeader(base.GenericStruct):
         self.len = len
 
 
-class PacketQueue(base.GenericStruct):
+class PacketQueue(base.GenericMessage):
     """
     This class describes a queue.
 
@@ -66,7 +66,7 @@ class PacketQueue(base.GenericStruct):
         self.properties = properties
 
 
-class QueuePropMinRate(base.GenericStruct):
+class QueuePropMinRate(base.GenericMessage):
     """
     This class defines the minimum-rate type queue.
 

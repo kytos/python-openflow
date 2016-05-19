@@ -10,7 +10,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class QueueStatsRequest(base.GenericStruct):
+class QueueStatsRequest(base.GenericMessage):
     """
     Implements the request body of a port_no
 

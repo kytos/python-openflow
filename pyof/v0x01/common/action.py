@@ -48,7 +48,7 @@ class ActionType(enum.Enum):
 # Classes
 
 
-class ActionHeader(base.GenericStruct):
+class ActionHeader(base.GenericMessage):
     """
     Defines the Header that is common to all actions.
 
@@ -65,7 +65,7 @@ class ActionHeader(base.GenericStruct):
         self.length = length
 
 
-class ActionOutput(base.GenericStruct):
+class ActionOutput(base.GenericMessage):
     """Defines the actions output.
 
         :param type: OFPAT_OUTPUT.
@@ -86,7 +86,7 @@ class ActionOutput(base.GenericStruct):
         self.max_length = max_length
 
 
-class ActionEnqueue(base.GenericStruct):
+class ActionEnqueue(base.GenericMessage):
     """
     A switch may support only queues that are tied to specific PCP/TOS bits.
     In that case, we cannot map an arbitrary flow to a specific queue,
@@ -115,7 +115,7 @@ class ActionEnqueue(base.GenericStruct):
         self.queue_id = queue_id
 
 
-class ActionVlanVid(base.GenericStruct):
+class ActionVlanVid(base.GenericMessage):
     """Action structure for OFPAT_SET_VLAN_VID
 
         :param type: OFPAT_SET_VLAN_PCP.
@@ -134,7 +134,7 @@ class ActionVlanVid(base.GenericStruct):
         self.vlan_id = vlan_id
 
 
-class ActionVlanPCP(base.GenericStruct):
+class ActionVlanPCP(base.GenericMessage):
     """Action structure for OFPAT_SET_VLAN_PCP.
 
         :param type: OFPAT_SET_VLAN_PCP.
@@ -153,7 +153,7 @@ class ActionVlanPCP(base.GenericStruct):
         self.vlan_pcp = vlan_pcp
 
 
-class ActionDLAddr(base.GenericStruct):
+class ActionDLAddr(base.GenericMessage):
     """Action structure for OFPAT_SET_DL_SRC/DST.
 
         :param dl_addr_type: OFPAT_SET_DL_SRC/DST.
@@ -172,7 +172,7 @@ class ActionDLAddr(base.GenericStruct):
         self.dl_addr = dl_addr
 
 
-class ActionNWAddr(base.GenericStruct):
+class ActionNWAddr(base.GenericMessage):
     """Action structure for OFPAT_SET_NW_SRC/DST.
 
         :param nw_addr_type: OFPAT_SET_TW_SRC/DST.
@@ -189,7 +189,7 @@ class ActionNWAddr(base.GenericStruct):
         self.nw_addr = nw_addr
 
 
-class ActionNWTos(base.GenericStruct):
+class ActionNWTos(base.GenericMessage):
     """Action structure for OFPAT_SET_NW_TOS.
 
         :param nw_tos_type: OFPAT_SET_TW_SRC/DST.
@@ -208,7 +208,7 @@ class ActionNWTos(base.GenericStruct):
         self.nw_tos = nw_tos
 
 
-class ActionTPPort(base.GenericStruct):
+class ActionTPPort(base.GenericMessage):
     """Action structure for OFPAT_SET_TP_SRC/DST.
 
         :param tp_port_type: OFPAT_SET_TP_SRC/DST.
@@ -227,7 +227,7 @@ class ActionTPPort(base.GenericStruct):
         self.tp_port = tp_port
 
 
-class ActionVendorHeader(base.GenericStruct):
+class ActionVendorHeader(base.GenericMessage):
     """Action header for OFPAT_VENDOR.
     The rest of the body is vendor-defined.
 

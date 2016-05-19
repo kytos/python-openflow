@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import base
 # Classes
 
 
-class EchoRequest(base.GenericStruct):
+class EchoRequest(base.GenericMessage):
     """OpenFlow Reply message
 
     This message does not contain a body beyond the OpenFlow Header

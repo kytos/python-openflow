@@ -10,7 +10,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class QueueGetConfigRequest(base.GenericStruct):
+class QueueGetConfigRequest(base.GenericMessage):
     """
     Class implements the structure query for configured queues on a port
 

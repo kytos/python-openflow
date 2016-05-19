@@ -58,7 +58,7 @@ class StatsTypes(enum.Enum):
 # Classes
 
 
-class StatsReply(base.GenericStruct):
+class StatsReply(base.GenericMessage):
     """
     Class implements the response to the config request
 
