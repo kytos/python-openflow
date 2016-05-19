@@ -8,6 +8,7 @@ import enum
 # Local source tree imports
 from pyof.v0x01.common import flow_match
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
@@ -80,13 +81,11 @@ class FlowMod(base.GenericMessage):
     buffer_id = basic_types.UBInt32()
     out_port = basic_types.UBInt16()
     flags = basic_types.UBInt16()
-    actions = []
-    # TODO: Add here a new type, list of ActionHeaders()
-    # objects. Related to ISSUE #3
+    actions = common.ListOfActions()
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,
-                 buffer_id=None, out_port=None, flags=None, actions=None):
+                 buffer_id=None, out_port=None, flags=None, actions=[]):
         self.header.message_type = of_header.Type.OFPT_FLOW_MOD
         self.header.length = 0
         self.header.xid = xid

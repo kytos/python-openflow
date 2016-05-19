@@ -70,10 +70,9 @@ class StatsReply(base.GenericMessage):
     header = of_header.Header()
     body_type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
-    body = basic_types.UBInt8Array(length=0)
+    body = basic_types.ConstantTypeList()
 
-    def __init__(self, xid=None, body_type=None, flags=None,
-                 body=None):
+    def __init__(self, xid=None, body_type=None, flags=None, body=[]):
 
         self.header.xid = xid
         self.header.message_type = of_header.Type.OFPT_STATS_REPLY

@@ -6,6 +6,7 @@
 
 # Local source tree imports
 from pyof.v0x01.common import flow_match
+from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
@@ -46,20 +47,16 @@ class FlowStats(base.GenericMessage):
     cookie = basic_types.UBInt64()
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
-    # actions = basic_types.UBInt8Array(length=0)
-    actions = []
-    # TODO: Add here a new type, list of ActionHeaders()
-    #       objects. Related to ISSUE #3
+    actions = common.ListOfActions()
 
     def __init__(self, length=None, table_id=None, match=None,
                  duration_sec=None, duration_nsec=None, priority=None,
                  idle_timeout=None, hard_timeout=None, cookie=None,
-                 packet_count=None, byte_count=None, actions=None):
+                 packet_count=None, byte_count=None, actions=[]):
 
         self.length = length
         self.table_id = table_id
-        if match is not None:
-            self.match = match
+        self.match = match
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
         self.prioriry = priority
@@ -68,5 +65,4 @@ class FlowStats(base.GenericMessage):
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count
-        if actions is not None:
-            self.actions = actions
+        self.actions = actions

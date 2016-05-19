@@ -15,4 +15,3 @@ class SetConfig(common.SwitchConfig):
         self.__ordered__ = common.SwitchConfig.__ordered__
         common.SwitchConfig.__init__(self, xid, flags, miss_send_len)
         self.header.message_type = of_header.Type.OFPT_SET_CONFIG
-

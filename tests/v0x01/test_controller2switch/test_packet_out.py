@@ -12,7 +12,8 @@ class TestPacketOut(unittest.TestCase):
         self.message.buffer_id = 5
         self.message.in_pot = phy_port.Port.OFPP_NONE
         self.message.actions_len = 4
-        self.message.data = [0]
+        self.message.actions = []
+        self.message.data = []
 
     def test_get_size(self):
         """[Controller2Switch/PacketOut] - size 16"""

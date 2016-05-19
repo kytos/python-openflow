@@ -9,6 +9,7 @@ import enum
 from pyof.v0x01.common import header as of_header
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import exceptions
 
 # Enums
 
@@ -155,11 +156,17 @@ class ErrorMsg(base.GenericStruct):
     header = of_header.Header()
     error_type = basic_types.UBInt16()
     code = basic_types.UBInt16()
-    data = []  # TODO: add special basictype
+    data = basic_types.ConstantTypeList()
 
-    def __init__(self, xid=None, error_type=None, code=None, data=None):
+    def __init__(self, xid=None, error_type=None, code=None, data=[]):
         self.header.message_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.error_type = error_type
         self.code = code
         self.data = data
+
+    def unpack(self, buff, offset=0):
+        # TODO: Implement the unpack method evaluation the error_type and code
+        #       to unpack the data attribute
+        raise exceptions.MethodNotImplemented("'Unpack' method not implemented"
+                                              "on ErrorMsg class.")
