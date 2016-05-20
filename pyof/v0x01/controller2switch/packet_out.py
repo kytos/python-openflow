@@ -35,7 +35,7 @@ class PacketOut(base.GenericMessage):
     in_port = basic_types.UBInt16()
     actions_len = basic_types.UBInt16()
     actions = common.ListOfActions()
-    data = basic_types.UBInt8Array(length=0)
+    data = basic_types.BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, actions=[], data=[]):

@@ -53,7 +53,7 @@ class PacketIn(base.GenericMessage):
     in_port = basic_types.UBInt16()
     reason = basic_types.UBInt8()
     pad = basic_types.PAD(1)
-    data = basic_types.UBInt8Array(length=0)
+    data = basic_types.BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, data=None):
