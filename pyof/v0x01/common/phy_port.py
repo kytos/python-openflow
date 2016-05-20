@@ -183,3 +183,18 @@ class PhyPort(base.GenericMessage):
         self.advertised = advertised
         self.supported = supported
         self.peer = peer
+
+
+class ListOfPhyPorts(basic_types.FixedTypeList):
+    """List of PhyPorts.
+
+    Represented by instances of PhyPort and
+    used on FeaturesReply/SwitchFeatures objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of PhyPort
+    """
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=PhyPort,
+                                           items=items)

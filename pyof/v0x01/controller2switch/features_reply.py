@@ -7,6 +7,7 @@ import enum
 
 # Local source tree imports
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common import phy_port
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
@@ -39,7 +40,6 @@ class Capabilities(enum.Enum):
 
 # Classes
 
-
 class SwitchFeatures(base.GenericMessage):
     """Message sent by the switch device to the controller.
 
@@ -67,13 +67,11 @@ class SwitchFeatures(base.GenericMessage):
     # Features
     capabilities = basic_types.UBInt32()
     actions = basic_types.UBInt32()
-    ports = []
-    # TODO: Add here a new type, list of phyPort()
-    # objects. Related to ISSUE #3
+    ports = phy_port.ListOfPhyPorts()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None,
-                 ports=None):
+                 ports=[]):
 
         self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
@@ -84,6 +82,7 @@ class SwitchFeatures(base.GenericMessage):
         self.capabilities = capabilities
         self.actions = actions
         self.ports = ports
+
 
 class FeaturesReply(SwitchFeatures):
     pass
