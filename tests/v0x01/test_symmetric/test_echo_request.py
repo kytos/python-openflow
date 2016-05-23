@@ -31,7 +31,4 @@ class TestEchoRequest(unittest.TestCase):
                                 'raw/v0x01/ofpt_echo_request.dat')
         with open(filename,'rb') as f:
             self.header.unpack(f.read(8))
-            f.seek(0,0)
-            msg_size = self.header.length._value
-
-            self.assertEqual(self.message.unpack(f.read(msg_size - 8)), None)
+            self.assertEqual(self.message.unpack(f.read()), None)

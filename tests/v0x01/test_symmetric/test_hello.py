@@ -28,7 +28,6 @@ class TestHello(unittest.TestCase):
         """[Symmetric/Hello] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_hello.dat')
-        f = open(filename, 'rb')
-        self.header.unpack(f.read(8))
-        self.assertEqual(self.message.unpack(f.read()), None)
-        f.close()
+        with open(filename, 'rb') as f:
+            self.header.unpack(f.read(8))
+            self.assertEqual(self.message.unpack(f.read()), None)

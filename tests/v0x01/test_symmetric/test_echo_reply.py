@@ -29,8 +29,7 @@ class TestEchoReply(unittest.TestCase):
         """[Symmetric/Reply] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_echo_reply.dat')
-        f = open(filename,'rb')
-        self.header.unpack(f.read(8))
-        msg_size = self.header.length._value
-        self.assertEqual(self.message.unpack(f.read()), None)
-        f.close()
+        with open(filename,'rb') as f:
+            self.header.unpack(f.read(8))
+            msg_size = self.header.length._value
+            self.assertEqual(self.message.unpack(f.read()), None)
