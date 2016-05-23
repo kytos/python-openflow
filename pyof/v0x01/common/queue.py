@@ -27,9 +27,23 @@ class QueueProperties(enum.Enum):
 # Classes
 
 
-class QueuePropHeader(base.GenericMessage):
+class ListOfProperties(basic_types.FixedTypeList):
+    """List of properties.
+
+    Represented by instances of QueuePropHeader and
+    used on PacketQueue objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of QueuePropHeader
     """
-    This class describes the header of each queue property.
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=QueuePropHeader,
+                                           items=items)
+
+
+class QueuePropHeader(base.GenericStruct):
+    """This class describes the header of each queue property.
 
         :param property: One of OFPQT_.
         :param len:      Length of property, including this header.
@@ -44,9 +58,8 @@ class QueuePropHeader(base.GenericMessage):
         self.len = len
 
 
-class PacketQueue(base.GenericMessage):
-    """
-    This class describes a queue.
+class PacketQueue(base.GenericStruct):
+    """This class describes a queue.
 
         :param queue_id: One of OFPQT_
         :param length:   Length of property, including this header
@@ -56,19 +69,16 @@ class PacketQueue(base.GenericMessage):
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
     pad = basic_types.PAD(2)
-    properties = []
-    # TODO: Add here a new type, list of QueuePropHeader()
-    #       objects. Related to ISSUE #3
+    properties = ListOfProperties()
 
-    def __init__(self, queue_id=None, length=None, properties=None):
+    def __init__(self, queue_id=None, length=None, properties=[]):
         self.queue_id = queue_id
         self.length = length
         self.properties = properties
 
 
-class QueuePropMinRate(base.GenericMessage):
-    """
-    This class defines the minimum-rate type queue.
+class QueuePropMinRate(base.GenericStruct):
+    """This class defines the minimum-rate type queue.
 
         :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
         :param rate:        In 1/10 of a percent; >1000 -> disabled.
@@ -83,3 +93,18 @@ class QueuePropMinRate(base.GenericMessage):
         self.prop_header.property = QueueProperties.OFPQT_MIN_RATE
         self.prop_header.len = 16
         self.rate = rate
+
+
+class ListOfQueues(basic_types.FixedTypeList):
+    """List of queues.
+
+    Represented by instances of PacketQueue and
+    used on QueueGetConfigReply objects
+
+    Attributes:
+        items (optional): Instance or a list of instances of PacketQueue
+    """
+    def __init__(self, items=[]):
+        basic_types.FixedTypeList.__init__(self,
+                                           pyof_class=PacketQueue,
+                                           items=items)

@@ -14,7 +14,6 @@ class TestPacketIn(unittest.TestCase):
         self.message.total_len = 1
         self.message.in_port = 1
         self.message.reason = packet_in.PacketInReason.OFPR_ACTION
-        self.message.data = [0]
 
     def test_size(self):
         """[Asynchronous/PacketIn] - size 18

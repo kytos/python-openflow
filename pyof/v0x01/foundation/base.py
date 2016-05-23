@@ -154,10 +154,7 @@ class GenericStruct(metaclass=MetaStruct):
     def get_size(self):
         tot = 0
         for _attr, _class in self.__ordered__:
-            if _class is not list:
-                # TODO: Remove this if after creating the
-                # specific new list type. Issue #3
-                tot += getattr(self, _attr).get_size()
+            tot += getattr(self, _attr).get_size()
         return tot
 
     def pack(self):
@@ -233,5 +230,8 @@ class GenericMessage(GenericStruct):
 
     def pack(self):
         self.update_header_length()
-        print("Length: ", self.header.length)
-        GenericStruct.pack(self)
+        self.validate()
+        message = b''
+        for _attr, _class in self.__ordered__:
+            message += getattr(self, _attr).pack()
+        return message
