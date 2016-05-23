@@ -36,7 +36,7 @@ class GenericType(object):
         return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
-        return str(self._value)
+        return '{}: {}'.format(self.__class__.__name__, str(self._value))
 
     def __set__(self, instance, value):
         # TODO: Check if value is of the same class
@@ -127,6 +127,29 @@ class GenericStruct(metaclass=MetaStruct):
                     setattr(self, _attr, kwargs[_attr])
                 except KeyError:
                     pass
+
+    def __repr__(self):
+        message = self.__class__.__name__
+        message += '('
+        for _attr, _class in self.__ordered__:
+            message += repr(getattr(self, _attr))
+            message += ", "
+        # Removing a comma and a space from the end of the string
+        message = message[:-2]
+        message += ')'
+        return message
+
+    def __str__(self):
+        message = "{}:\n".format(self.__class__.__name__)
+        for _attr, _class in self.__ordered__:
+            attr = getattr(self, _attr)
+            if not hasattr(attr, '_fmt'):
+                message += "  {}".format(str(attr).replace('\n','\n  '))
+            else:
+                message += "  {}: {}\n".format(_attr, str(attr))
+        message.rstrip('\r')
+        message.rstrip('\n')
+        return message
 
     def get_size(self):
         tot = 0

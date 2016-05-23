@@ -21,6 +21,7 @@ __all__ = ['UBInt8',
 
 class PAD(base.GenericType):
     """Class for padding attributes"""
+    _fmt=''
     def __init__(self, size=0):
         self._size = size
 
