@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x01.controller2switch import stats_reply
+from pyof.v0x01.controller2switch import stats_reply
 
 
 class TestStatsReply(unittest.TestCase):

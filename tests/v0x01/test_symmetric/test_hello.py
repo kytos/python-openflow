@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from ofp.v0x01.symmetric import hello
+from pyof.v0x01.symmetric import hello
 
 
 class TestHello(unittest.TestCase):

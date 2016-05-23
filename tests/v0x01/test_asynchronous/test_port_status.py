@@ -1,8 +1,8 @@
 import unittest
 
-from ofp.v0x01.asynchronous import port_status
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.foundation import base
+from pyof.v0x01.asynchronous import port_status
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.foundation import base
 
 
 class TestPortStatus(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestPortStatus(unittest.TestCase):
         self.message.desc.hw_addr = [10, 10, 18, 18, 16, 16]
         self.message.desc.name = name
         self.message.desc.config = phy_port.PortConfig.OFPPC_NO_STP
-        self.message.desc.state = phy_port.PortState.OFPPS_STP_MASK
+        self.message.desc.state = phy_port.PortState.OFPPS_STP_FORWARD
         self.message.desc.curr = phy_port.PortFeatures.OFPPF_10GB_FD
         self.message.desc.advertised = phy_port.PortFeatures.OFPPF_PAUSE
         self.message.desc.supported = phy_port.PortFeatures.OFPPF_AUTONEG

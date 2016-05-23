@@ -1,6 +1,6 @@
 import unittest
 
-from ofp.v0x02.common import flow_instruction
+from pyof.v0x02.common import flow_instruction
 
 
 class TestOFPInstructionGoToTable(unittest.TestCase):

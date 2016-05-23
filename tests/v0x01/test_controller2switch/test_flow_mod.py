@@ -1,18 +1,13 @@
 import unittest
 
-from ofp.v0x01.common import action
-from ofp.v0x01.common import flow_match
-from ofp.v0x01.common import phy_port
-from ofp.v0x01.controller2switch import flow_mod
+from pyof.v0x01.common import flow_match
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.controller2switch import flow_mod
 
 
 class TestFlowMod(unittest.TestCase):
 
     def setUp(self):
-        action_header = action.ActionHeader()
-        action_header.action_type = action.ActionType.OFPAT_SET_VLAN_VID
-        action_header.length = 8
-
         self.message = flow_mod.FlowMod()
         self.message.header.xid = 1
         self.message.command = flow_mod.FlowModCommand.OFPFC_ADD
@@ -24,7 +19,6 @@ class TestFlowMod(unittest.TestCase):
         self.message.buffer_id = 1
         self.message.out_port = phy_port.Port.OFPP_NONE
         self.message.flags = flow_mod.FlowModFlags.OFPFF_EMERG
-        self.message.actions = [action_header]
         self.message.match.in_port = 80
         self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]

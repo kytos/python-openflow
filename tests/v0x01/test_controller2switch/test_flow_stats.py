@@ -1,17 +1,12 @@
 import unittest
 
-from ofp.v0x01.common import action
-from ofp.v0x01.common import flow_match
-from ofp.v0x01.controller2switch import flow_stats
+from pyof.v0x01.common import flow_match
+from pyof.v0x01.controller2switch import flow_stats
 
 
 class TestFlowStats(unittest.TestCase):
 
     def setUp(self):
-        action_header = action.ActionHeader()
-        action_header.action_type = action.ActionType.OFPAT_SET_VLAN_VID
-        action_header.length = 8
-
         self.message = flow_stats.FlowStats()
         self.message.length = 160
         self.message.table_id = 1
@@ -24,7 +19,6 @@ class TestFlowStats(unittest.TestCase):
         self.message.cookie = 1
         self.message.packet_count = 1
         self.message.byte_count = 1
-        self.message.actions = [action_header]
         self.message.match.in_port = 80
         self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
         self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]

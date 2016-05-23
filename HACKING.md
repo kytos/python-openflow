@@ -2,10 +2,10 @@ Before reading this file, please read the [CONTRIBUTE](CONTRIBUTE.md) file, that
 contains the main guidelines of the project.
 
 ## Topics:
-  - [Development Environment setup](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#development-environment-setup)
-    - [Virtualenv (optional)](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#virtualenv)
-    - [Virtualenv Extras (optional)](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#virtualenv-extras)
-  - [Tests/TDD](https://github.com/kytos/ofx-parser/blob/bigbang/HACKING.md#tdd-test-driven-development)
+  - [Development Environment setup](https://github.com/kytos/python-openflow/blob/master/HACKING.md#development-environment-setup)
+    - [Virtualenv (optional)](https://github.com/kytos/python-openflow/blob/master/HACKING.md#virtualenv)
+    - [Virtualenv Extras (optional)](https://github.com/kytos/python-openflow/blob/master/HACKING.md#virtualenv-extras)
+  - [Tests/TDD](https://github.com/kytos/python-openflow/blob/master/HACKING.md#tdd-test-driven-development)
 
 ## Development Environment setup
 
@@ -76,7 +76,7 @@ directory the virtualenvironment will be automaticaly loaded. If you are using
 bash, then you need to run the `workon` command to activate the environment:
 
 ```shell
-workon ofx-parser
+workon python-openflow
 ```
 
 See more virtualenvwrapper commands on:
