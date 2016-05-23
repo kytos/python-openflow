@@ -38,7 +38,7 @@ class PacketOut(base.GenericMessage):
     data = basic_types.BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, in_port=None,
-                 actions_len=None, actions=[], data=[]):
+                 actions_len=None, actions=[], data=b''):
         self.header.xid = xid
         self.header.message_type = of_header.Type.OFPT_PACKET_OUT
         self.buffer_id = buffer_id

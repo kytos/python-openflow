@@ -56,7 +56,7 @@ class PacketIn(base.GenericMessage):
     data = basic_types.BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
-                 reason=None, data=None):
+                 reason=None, data=b''):
 
         self.header.message_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
