@@ -230,5 +230,8 @@ class GenericMessage(GenericStruct):
 
     def pack(self):
         self.update_header_length()
-        print("Length: ", self.header.length)
-        GenericStruct.pack(self)
+        self.validate()
+        message = b''
+        for _attr, _class in self.__ordered__:
+            message += getattr(self, _attr).pack()
+        return message
