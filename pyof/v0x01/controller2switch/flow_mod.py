@@ -27,11 +27,11 @@ class FlowModCommand(enum.Enum):
         OFPFC_DELETE_STRICT # Strictly match wildcards and priority
 
     """
-    OFPFC_ADD = 1
-    OFPFC_MODIFY = 2
-    OFPFC_MODIFY_STRICT = 3
-    OFPFC_DELETE = 4
-    OFPFC_DELETE_STRICT = 5
+    OFPFC_ADD = 0
+    OFPFC_MODIFY = 1
+    OFPFC_MODIFY_STRICT = 2
+    OFPFC_DELETE = 3
+    OFPFC_DELETE_STRICT = 4
 
 
 class FlowModFlags(enum.Enum):
