@@ -9,7 +9,7 @@ class TestPhyPort(unittest.TestCase):
     def setUp(self):
         self.message = phy_port.PhyPort()
         self.message.port_no = 2
-        self.message.hw_addr = [10, 10, 18, 18, 16, 16]
+        self.message.hw_addr = '1a:2b:3c:4d:5e:6f'
         self.message.name = bytes('X' * base.OFP_MAX_PORT_NAME_LEN, 'utf-8')
         self.message.config = phy_port.PortConfig.OFPPC_NO_STP
         self.message.state = phy_port.PortState.OFPPS_STP_FORWARD

@@ -85,8 +85,8 @@ class Match(base.GenericMessage):
     # Attributes
     wildcards = basic_types.UBInt32()
     in_port = basic_types.UBInt16()
-    dl_src = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
-    dl_dst = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
+    dl_src = basic_types.HWAddress()
+    dl_dst = basic_types.HWAddress()
     dl_vlan = basic_types.UBInt16()
     dl_vlan_pcp = basic_types.UBInt8()
     pad1 = basic_types.PAD(1)

@@ -1,7 +1,6 @@
 import unittest
 
 from pyof.v0x01.controller2switch import port_mod
-from pyof.v0x01.foundation import base
 
 
 class TestPortMod(unittest.TestCase):
@@ -10,7 +9,7 @@ class TestPortMod(unittest.TestCase):
         self.message = port_mod.PortMod()
         self.message.header.xid = 1
         self.message.port_no = 80
-        self.message.hw_addr = [1 for _ in range(base.OFP_ETH_ALEN)]
+        self.message.hw_addr = 'aa:bb:cc:00:33:9f'
         self.message.config = 1 << 2
         self.message.mask = 1 << 1
         self.message.advertise = 1
