@@ -31,7 +31,7 @@ class PortMod(base.GenericMessage):
     """
     header = of_header.Header()
     port_no = basic_types.UBInt16()
-    hw_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
+    hw_addr = basic_types.HWAddress()
     config = basic_types.UBInt32()
     mask = basic_types.UBInt32()
     advertise = basic_types.UBInt32()

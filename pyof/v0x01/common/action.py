@@ -163,7 +163,7 @@ class ActionDLAddr(base.GenericMessage):
     """
     dl_addr_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
-    dl_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
+    dl_addr = basic_types.HWAddress()
     pad = basic_types.PAD(6)
 
     def __init__(self, dl_addr_type=None, length=None, dl_addr=None):

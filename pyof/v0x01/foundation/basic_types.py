@@ -21,7 +21,8 @@ __all__ = ['UBInt8',
 
 class PAD(base.GenericType):
     """Class for padding attributes"""
-    _fmt=''
+    _fmt = ''
+
     def __init__(self, size=0):
         self._size = size
 
@@ -88,29 +89,6 @@ class UBInt8(base.GenericType):
     _fmt = "!B"
 
 
-class UBInt8Array(base.GenericType):
-    """Creates an Array of Unsigned Integer of 8 bytes."""
-    def __init__(self, value=None, length=0):
-        if value:
-            self._value = value
-        self.length = length
-        self._fmt = "!%d%c" % (self.length, 'B')
-
-    def unpack(self, buff, offset=0):
-        """Unpack a buff and stores at value property.
-            :param buff:   Buffer where data is located.
-            :param offset: Where data stream begins.
-        """
-        self._value = struct.unpack_from(self._fmt, buff, offset)
-
-    def pack(self):
-        """Pack the object.
-
-        Here we need a pointer, self.value is a tuple and is expanded to args.
-        """
-        return struct.pack(self._fmt, *self._value)
-
-
 class UBInt16(base.GenericType):
     """Format character for an Unsigned Short.
 
@@ -145,7 +123,7 @@ class Char(base.GenericType):
         if value:
             self._value = value
         self.length = length
-        self._fmt = '!%d%c' % (self.length, 's')
+        self._fmt = '!{}{}'.format(self.length, 's')
 
 
 class FixedTypeList(list):
@@ -174,16 +152,6 @@ class FixedTypeList(list):
         """Human-readable object representantion"""
         return "{}".format([item for item in self])
 
-    def __set__(self, instance, value):
-        """Clear the list and set value as the only item of the list"""
-        self.__delete__(instance)
-        self.append(value)
-
-    def __delete__(self, instance):
-        """This method remove all items from the list"""
-        for item in self:
-            self.remove(item)
-
     def append(self, item):
         if type(item) is list:
             self.extend(item)
@@ -205,10 +173,15 @@ class FixedTypeList(list):
                                                self._pyof_class.__name__)
 
     def get_size(self):
-        size = 0
-        for item in self:
-            size += item.get_size()
-        return size
+        if len(self) == 0:
+            return 0
+        elif issubclass(self._pyof_class, base.GenericType):
+            return len(self) * self._pyof_class().get_size()
+        else:
+            size = 0
+            for item in self:
+                size += item.get_size()
+            return size
 
     def pack(self):
         bin_message = b''
@@ -241,7 +214,7 @@ class ConstantTypeList(list):
     be inserted"""
     def __init__(self, items=[]):
         list.__init__(self, [])
-        if items is not None and len(items) > 0:
+        if items is not None:
             if type(items) is list:
                 self.extend(items)
             else:
@@ -258,16 +231,6 @@ class ConstantTypeList(list):
     def __str__(self):
         """Human-readable object representantion"""
         return "{}".format([item for item in self])
-
-    def __set__(self, instance, value):
-        """Clear the list and set value as the only item of the list"""
-        self.__delete__(instance)
-        self.append(value)
-
-    def __delete__(self, instance):
-        """This method remove all items from the list"""
-        for item in self:
-            self.remove(item)
 
     def append(self, item):
         if type(item) is list:
@@ -294,9 +257,15 @@ class ConstantTypeList(list):
                                                self[0].__class__.__name__)
 
     def get_size(self):
-        if getattr(self, 'len', None) and len(self) == 0:
+        if len(self) == 0:
+            # If this is a empty list, then returns zero
             return 0
+        elif issubclass(self[0].__class__, base.GenericType):
+            # If the type of the elements is GenericType, then returns the
+            # length of the list multiplied by the size of the GenericType.
+            return len(self) * self[0].__class__().get_size()
         else:
+            # Otherwise iter over the list accumulating the sizes.
             size = 0
             for item in self:
                 size += item.get_size()
@@ -329,6 +298,27 @@ class ConstantTypeList(list):
             self.append(item)
 
 
+class HWAddress(base.GenericType):
+    """Defines a hardware address"""
+
+    def __init__(self, hw_address=None):
+        self._value = hw_address
+
+    def pack(self):
+        # struct.pack('!6B', *[int(x, 16) for x in self._value.split(':')])
+        value = self._value.split(':')
+        return struct.pack('!6B', *[int(x, 16) for x in value])
+
+    def unpack(self, buff, offset=0):
+        # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
+        unpacked_data = struct.unpack('!6B', buff)
+        transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
+        self._value = transformed_data
+
+    def get_size(self):
+        return 6
+
+
 class BinaryData(base.GenericType):
     """Class to create objects that represents binary data
 
@@ -338,6 +328,9 @@ class BinaryData(base.GenericType):
     Both the 'pack' and 'unpack' methods will return the binary data itself.
     get_size method will return the size of the instance using python 'len'
     """
+
+    def __init__(self, value=b''):
+        super().__init__(value)
 
     def pack(self):
         if type(self._value) is bytes:

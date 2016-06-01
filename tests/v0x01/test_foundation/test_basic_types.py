@@ -25,29 +25,6 @@ class TestUBInt8(unittest.TestCase):
         pass
 
 
-class TestUBInt8Array(unittest.TestCase):
-
-    def setUp(self):
-        self.item = basic_types.UBInt8Array(value=[15, 15, 15, 15, 15, 15],
-                                            length=6)
-
-    def test_size(self):
-        """[Foundation/BasicTypes/UBInt8Array] - size 6"""
-        self.assertEqual(self.item.get_size(), 6)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Foundation/BasicTypes/UBInt8Array] - packing"""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Foundation/BasicTypes/UBInt8Array] - unpacking"""
-        # TODO
-        pass
-
-
 class TestUBInt16(unittest.TestCase):
 
     def setUp(self):
