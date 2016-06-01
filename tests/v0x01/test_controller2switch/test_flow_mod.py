@@ -24,8 +24,8 @@ class TestFlowMod(unittest.TestCase):
         self.message.out_port = phy_port.Port.OFPP_NONE
         self.message.flags = flow_mod.FlowModFlags.OFPFF_EMERG
         self.message.match.in_port = 80
-        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
+        self.message.match.dl_src = '1a:2b:3c:4d:5e:6f'
+        self.message.match.dl_dst = '6a:5b:4c:43:2e:1f'
         self.message.match.dl_vlan = 1
         self.message.match.dl_vlan_pcp = 1
         self.message.match.dl_type = 1
