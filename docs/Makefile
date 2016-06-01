@@ -62,6 +62,7 @@ clean:
 .PHONY: html
 html:
 	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sed -i "/Submodules/,+1d" *.rst
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."

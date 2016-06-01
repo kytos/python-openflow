@@ -1,4 +1,9 @@
-"""Contains basic and fundamental classes and constants"""
+"""
+Contains basic and fundamental classes. Also few constants are defined here.
+We designed python-openflow in a manner to make easy create new messages and
+OpenFlow structs. You can realize that when you see a message class definition.
+
+"""
 
 # System imports
 import collections
@@ -10,8 +15,8 @@ import struct
 # Local source tree imports
 from pyof.v0x01.foundation import exceptions
 
-__all__ = ['OFP_ETH_ALEN', 'OFP_MAX_PORT_NAME_LEN', 'OFP_VERSION',
-           'OFP_MAX_TABLE_NAME_LEN', 'SERIAL_NUM_LEN', 'DESC_STR_LEN']
+#__all__ = ['OFP_ETH_ALEN', 'OFP_MAX_PORT_NAME_LEN', 'OFP_VERSION',
+#           'OFP_MAX_TABLE_NAME_LEN', 'SERIAL_NUM_LEN', 'DESC_STR_LEN']
 
 # CONSTANTS
 OFP_ETH_ALEN = 6
@@ -103,7 +108,9 @@ class GenericType(object):
 
 
 class MetaStruct(type):
-    """MetaClass used to force ordered attributes"""
+    """
+    MetaClass used to force ordered attributes
+    """
     @classmethod
     def __prepare__(self, name, bases):
         return collections.OrderedDict()
@@ -117,7 +124,9 @@ class MetaStruct(type):
         return type.__new__(self, name, bases, classdict)
 
 
-class GenericStruct(metaclass=MetaStruct):
+class GenericStruct(object):
+    __metaclass__ = MetaStruct
+
     """Base class for all message classes (structs)"""
     def __init__(self, *args, **kwargs):
         for _attr, _class in self.__ordered__:
@@ -152,6 +161,34 @@ class GenericStruct(metaclass=MetaStruct):
         return message
 
     def get_size(self):
+        """Return all tags whose names contain a given string.
+
+        By default only free tags (tags which do not belong to any vocabulary)
+        are returned. If the optional argument ``vocab_id_or_name`` is given
+        then only tags from that vocabulary are returned.
+
+        .. note:: test of a note
+
+        :warning: test of a warning
+
+        :class:`pyof.v0x01.common.header.Header` class.
+
+        :param search_term: the string to search for in the tag names
+        :type search_term: string
+        :param vocab_id_or_name: the id or name of the vocabulary to look in
+            (optional, default: None)
+        :type vocab_id_or_name: string
+
+        :returns: a list of tags that match the search term
+        :rtype: list of ckan.model.tag.Tag objects
+
+        These are written in doctest format, and should illustrate how to use
+        the function.
+
+                >>> a=[1,2,3]
+                >>> print [x + 3 for x in a]
+                [4, 5, 6]
+        """
         tot = 0
         for _attr, _class in self.__ordered__:
             tot += getattr(self, _attr).get_size()
@@ -219,16 +256,34 @@ class GenericStruct(metaclass=MetaStruct):
 
 
 class GenericMessage(GenericStruct):
-    """ Base class for all message classes (structs) """
+    """
+    All OpenFlow messages here on this library will be based on this
+    GenericMessage class.
+
+    So, if you need insert a method that will be used for all messages, here is
+    the place to code.
+    """
 
     def update_header_length(self):
         """
-        This method update the packet header length with the actual packet
+        When sending an OpenFlow message we need to inform on header the length
+        of the message. This is mandatory.
+
+        This method update the packet header length with the actual message
         size.
         """
         self.header.length = self.get_size()
 
     def pack(self):
+        """
+        One of the basic operations on a Message is the pack operation.
+
+        During the packing process we get all attributes of a message and
+        convert to binary.
+
+        Since that this is usually used before send the message to switch, here
+        we also call :func:`update_header_length`. 
+        """
         self.update_header_length()
         self.validate()
         message = b''
