@@ -1,7 +1,7 @@
 """Contains basic and fundamental classes and constants"""
 
 # System imports
-import collections
+from collections import OrderedDict
 import enum
 import struct
 
@@ -29,23 +29,14 @@ class GenericType(object):
 
     We can't implemment the __get__ method here
     """
-    def __init__(self):
-        self._value = None
+    def __init__(self, val=None):
+        self._value = val
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
         return '{}: {}'.format(self.__class__.__name__, str(self._value))
-
-    def __set__(self, instance, value):
-        # TODO: Check if value is of the same class
-        self._value = value
-
-    def __delete__(self, instance):
-        # TODO: This is the right delete way? Or should we delete
-        #       the attribute from the instance?
-        del self._value
 
     def __eq__(self, other):
         return self._value == other
@@ -95,34 +86,35 @@ class GenericType(object):
         """ Return the size of type in bytes. """
         return struct.calcsize(self._fmt)
 
-    def validate(self):
+    def is_valid(self):
         try:
             self.pack()
         except:
             raise
+
+    def value(self):
+        return self._value
 
 
 class MetaStruct(type):
     """MetaClass used to force ordered attributes"""
     @classmethod
     def __prepare__(self, name, bases):
-        return collections.OrderedDict()
+        return OrderedDict()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = [(key, type(value))
-                                    for key, value in
-                                    classdict.items()
-                                    if key[0] != '_' and not
-                                    hasattr(value, '__call__')]
+        classdict['__ordered__'] = OrderedDict([(key, type(value)) for
+                                                key, value in classdict.items()
+                                                if key[0] != '_' and not
+                                                hasattr(value, '__call__')])
         return type.__new__(self, name, bases, classdict)
 
 
 class GenericStruct(metaclass=MetaStruct):
     """Base class for all message classes (structs)"""
     def __init__(self, *args, **kwargs):
-        for _attr, _class in self.__ordered__:
+        for _attr in self.__ordered__:
             if not callable(getattr(self, _attr)):
-                # TODO: Validade data
                 try:
                     setattr(self, _attr, kwargs[_attr])
                 except KeyError:
@@ -131,7 +123,7 @@ class GenericStruct(metaclass=MetaStruct):
     def __repr__(self):
         message = self.__class__.__name__
         message += '('
-        for _attr, _class in self.__ordered__:
+        for _attr in self.__ordered__:
             message += repr(getattr(self, _attr))
             message += ", "
         # Removing a comma and a space from the end of the string
@@ -141,10 +133,10 @@ class GenericStruct(metaclass=MetaStruct):
 
     def __str__(self):
         message = "{}:\n".format(self.__class__.__name__)
-        for _attr, _class in self.__ordered__:
+        for _attr in self.__ordered__:
             attr = getattr(self, _attr)
             if not hasattr(attr, '_fmt'):
-                message += "  {}".format(str(attr).replace('\n','\n  '))
+                message += "  {}".format(str(attr).replace('\n', '\n  '))
             else:
                 message += "  {}: {}\n".format(_attr, str(attr))
         message.rstrip('\r')
@@ -152,10 +144,45 @@ class GenericStruct(metaclass=MetaStruct):
         return message
 
     def get_size(self):
-        tot = 0
-        for _attr, _class in self.__ordered__:
-            tot += getattr(self, _attr).get_size()
-        return tot
+        if not GenericStruct.is_valid(self):
+            raise Exception()
+        else:
+            size = 0
+            for _attr in self.__ordered__:
+                _class = self.__ordered__[_attr]
+                attr = getattr(self, _attr)
+                if _class.__name__ is 'PAD':
+                    size += attr.get_size()
+                elif _class.__name__ is 'Char':
+                    size += getattr(self.__class__, _attr).get_size()
+                elif issubclass(_class, GenericType):
+                    size += _class().get_size()
+                elif isinstance(attr, _class):
+                    size += attr.get_size()
+                else:
+                    size += _class(attr).get_size()
+            return size
+
+    def _attributes(self):
+        """Returns an generator with each attribute from the current instance.
+
+        This attributes are coherced by the expected class for that attribute.
+        """
+
+        for _attr in self.__ordered__:
+            _class = self.__ordered__[_attr]
+            attr = getattr(self, _attr)
+            if issubclass(_class, GenericType):
+                # Checks for generic types
+                if issubclass(type(attr), enum.Enum):
+                    attr = _class(attr)
+                elif not isinstance(attr, _class):
+                    attr = _class(attr)
+            elif issubclass(_class, list):
+                # Verifications for classes derived from list type
+                if not isinstance(attr, _class):
+                    attr = _class(attr)
+            yield attr
 
     def pack(self):
         """Packs the message as binary.
@@ -165,12 +192,19 @@ class GenericStruct(metaclass=MetaStruct):
         representation using its own pack method.
             :return: binary representation of the message object
         """
-
-        self.validate()
-        message = b''
-        for _attr, _class in self.__ordered__:
-            message += getattr(self, _attr).pack()
-        return message
+        if not self.is_valid():
+            error_msg = "Erro on validation prior to pack() on class "
+            error_msg += "{}.".format(self.__class__.__name__)
+            raise exceptions.ValidationError(error_msg)
+        else:
+            message = b''
+            for attr in self._attributes():
+                try:
+                    message += attr.pack()
+                except:
+                    raise exceptions.AttributeTypeError(attr, type(attr),
+                                                        type(attr))
+            return message
 
     def unpack(self, buff):
         """Unpack a binary message.
@@ -184,38 +218,45 @@ class GenericStruct(metaclass=MetaStruct):
                          without the first 8 bytes (header)
         """
         begin = 0
-        for _attr, _class in self.__ordered__:
-            if _attr != "header":
-                attribute = getattr(self, _attr)
-                attribute.unpack(buff, offset=begin)
-                begin += attribute.get_size()
+        for attr in self._attributes:
+            if attr.__class__.__name__ != "Header":
+                attr.unpack(buff, offset=begin)
+                setattr(self, attr.__name__, attr)
+                begin += attr.get_size()
+
+    def _attr_fits_into_class(attr, _class):
+        if not isinstance(attr, _class):
+            try:
+                struct.pack(_class._fmt, attr)
+            except:
+                return False
+        return True
 
     def _validate_attributes_type(self):
         """This method validates the type of each attribute"""
-        for _attr, _class in self.__ordered__:
+        for _attr in self.__ordered__:
+            _class = self.__ordered__[_attr]
             attr = getattr(self, _attr)
-            if attr.__class__ is not _class:
-                raise exceptions.AttributeTypeError(str(attr), attr.__class__,
-                                                    self.__class__)
-            if callable(getattr(attr, 'validate', None)):
-                # If the attribute has a validate method, then call it too
-                try:
-                    attr.validate()
-                except Exception as e:
-                    message = str(e) + "\n"
-                    message += self.__class__.__name__ + "." + _attr
-                    if (_class.__name__):
-                        message += "(" + repr(_class.__name__) + ")"
-                    raise exceptions.BadValueException(message)
+            if isinstance(attr, _class):
+                return True
+            elif issubclass(_class, GenericType):
+                if GenericStruct._fits_into_generic_type(attr, _class):
+                    return True
+            elif not isinstance(attr, _class):
+                return False
+        return True
 
-    def validate(self):
+    def is_valid(self):
         """Method to validate the content of the object.
 
         Verifications:
             - attributes type
             - overflow behaviour
         """
-        self._validate_attributes_type()
+        return True
+        if not self._validate_attributes_type():
+            return False
+        return True
 
 
 class GenericMessage(GenericStruct):
@@ -230,8 +271,19 @@ class GenericMessage(GenericStruct):
 
     def pack(self):
         self.update_header_length()
-        self.validate()
-        message = b''
-        for _attr, _class in self.__ordered__:
-            message += getattr(self, _attr).pack()
-        return message
+        if not self.is_valid():
+            raise Exception("Error on validate")
+        return super().pack()
+
+    def _validate_message_length(self):
+        if not self.header.length == self.get_size():
+            return False
+        return True
+
+    def is_valid(self):
+        return True
+        if not super().is_valid:
+            return False
+        if not self._validate_message_length():
+            return False
+        return True

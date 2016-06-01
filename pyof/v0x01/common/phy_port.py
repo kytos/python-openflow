@@ -161,7 +161,7 @@ class PhyPort(base.GenericMessage):
 
     """
     port_no = basic_types.UBInt16()
-    hw_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
+    hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
     config = basic_types.UBInt32()
     state = basic_types.UBInt32()
