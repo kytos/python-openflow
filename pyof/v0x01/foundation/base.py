@@ -199,8 +199,7 @@ class GenericStruct(object):
         return message
 
     def _attributes(self):
-        """
-        turns an generator with each attribute from the current instance.
+        """Returns a generator with each attribute from the current instance.
 
         This attributes are coherced by the expected class for that attribute.
         """
@@ -218,7 +217,7 @@ class GenericStruct(object):
                 # Verifications for classes derived from list type
                 if not isinstance(attr, _class):
                     attr = _class(attr)
-            yield attr
+            yield (_attr, attr)
 
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
@@ -289,7 +288,7 @@ class GenericStruct(object):
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
-            for attr in self._attributes():
+            for attr_name, attr in self._attributes():
                 try:
                     message += attr.pack()
                 except:
@@ -308,11 +307,15 @@ class GenericStruct(object):
         """
         #TODO: Remove any referency to header here, this is a struct, not a
         #       message.
-        begin = 0
-        for attr in self._attributes:
+        begin = offset
+        for attr_name, attr in self._attributes():
             if attr.__class__.__name__ != "Header":
-                attr.unpack(buff, offset=begin)
-                setattr(self, attr.__name__, attr)
+                if attr.__class__.__name__ != "PAD":
+                    try:
+                        attr.unpack(buff, offset=begin)
+                    except:
+                        raise Exception(attr_name, attr.get_size(), attr)
+                    setattr(self,attr_name, attr)
                 begin += attr.get_size()
 
     def is_valid(self):

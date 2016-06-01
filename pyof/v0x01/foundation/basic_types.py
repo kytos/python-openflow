@@ -301,7 +301,7 @@ class ConstantTypeList(list):
 class HWAddress(base.GenericType):
     """Defines a hardware address"""
 
-    def __init__(self, hw_address=None):
+    def __init__(self, hw_address=b'000000'):
         self._value = hw_address
 
     def pack(self):
@@ -311,7 +311,7 @@ class HWAddress(base.GenericType):
 
     def unpack(self, buff, offset=0):
         # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
-        unpacked_data = struct.unpack('!6B', buff)
+        unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
         transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
         self._value = transformed_data
 
