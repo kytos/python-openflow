@@ -123,7 +123,7 @@ file.
 [tag-url]: https://github.com/kytos/python-openflow/tags
 [release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
 [release-url]: https://github.com/kytos/python-openflow/releases
-[tests-icon]: https://kytos.io/imgs/tests-status.svg
+[tests-icon]: http://kytos.io/imgs/tests-status.svg
 [tests-url]: https://github.com/kytos/python-openflow
 [license-icon]: https://img.shields.io/github/license/kytos/python-openflow.svg
 [license-url]: https://github.com/kytos/python-openflow/blob/master/LICENSE
