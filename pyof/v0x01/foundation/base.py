@@ -59,14 +59,15 @@ class GenericType(object):
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
     class as base.
     """
-    def __init__(self,value=None):
+    def __init__(self, value=None, enum_ref=None):
         self._value = value
+        self._enum_ref = enum_ref
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
-        return '{}: {}'.format(self.__class__.__name__, str(self._value))
+        return '<{}: {}>'.format(self.__class__.__name__, str(self._value))
 
     def __eq__(self, other):
         return self._value == other
@@ -116,6 +117,8 @@ class GenericType(object):
         #       the enum name/reference ?
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
+            if self._enum_ref:
+                self._value = self._enum_ref(self._value)
         except struct.error:
             raise exceptions.UnpackException("Error while unpacking"
                                              "data from buffer")
@@ -136,8 +139,13 @@ class GenericType(object):
             raise
 
     def value(self):
-        #TODO: Review this value._value.value (For enums)
-        return self._value
+        if isinstance(self._value, enum.Enum):
+            return self._value.value
+        else:
+            return self._value
+
+    def is_enum(self):
+        return self._enum_ref is not None
 
 
 class MetaStruct(type):
@@ -288,12 +296,15 @@ class GenericStruct(object):
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
-            for attr_name, attr in self._attributes():
-                try:
+            for attr_name, attr_class in self.__ordered__.items():
+                attr = getattr(self, attr_name)
+                if issubclass(attr_class, GenericStruct):
                     message += attr.pack()
-                except:
-                    raise exceptions.AttributeTypeError(attr, type(attr),
-                                                        type(attr))
+                else:
+                    if isinstance(attr, attr_class):
+                        message += attr.pack()
+                    else:
+                        message += attr_class(attr).pack()
             return message
 
     def unpack(self, buff, offset=0):
@@ -308,15 +319,18 @@ class GenericStruct(object):
         #TODO: Remove any referency to header here, this is a struct, not a
         #       message.
         begin = offset
-        for attr_name, attr in self._attributes():
-            if attr.__class__.__name__ != "Header":
-                if attr.__class__.__name__ != "PAD":
-                    try:
-                        attr.unpack(buff, offset=begin)
-                    except:
-                        raise Exception(attr_name, attr.get_size(), attr)
-                    setattr(self,attr_name, attr)
-                begin += attr.get_size()
+
+        for attr_name, attr_class in self.__ordered__.items():
+            if attr_class.__name__ != "PAD":
+                class_attr = getattr(self.__class__, attr_name)
+                attr = attr_class()
+                attr.unpack(buff, offset=begin)
+
+                if issubclass(attr_class, GenericType) and \
+                        class_attr.is_enum():
+                    attr = class_attr._enum_ref(attr._value)
+                setattr(self, attr_name, attr)
+            begin += attr.get_size()
 
     def is_valid(self):
         """Checks if all attributes on struct is valid.
@@ -344,6 +358,34 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message.
+
+        This method updated the object attributes based on the unpacked
+        data from the buffer binary message. It is an inplace method,
+        and it receives the binary data of the message without the header.
+        There is no return on this method
+
+            :param buff: binary data package to be unpacked
+                         without the first 8 bytes (header)
+        """
+        begin = offset
+
+        for attr_name, attr_class in self.__ordered__.items():
+            if attr_class.__name__ != "Header":
+                if attr_class.__name__ != "PAD":
+                    class_attr = getattr(self.__class__, attr_name)
+                    attr = attr_class()
+                    attr.unpack(buff, offset=begin)
+                    begin += attr.get_size()
+
+                    if issubclass(attr_class, GenericType) and \
+                            class_attr.is_enum():
+                        attr = class_attr._enum_ref(attr._value)
+                    setattr(self, attr_name, attr)
+                else:
+                    begin += attr.get_size()
+
     def _validate_message_length(self):
         if not self.header.length == self.get_size():
             return False
