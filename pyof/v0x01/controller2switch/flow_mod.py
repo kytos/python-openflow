@@ -8,6 +8,7 @@ import enum
 # Local source tree imports
 from pyof.v0x01.common import flow_match
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common import phy_port
 from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
@@ -71,13 +72,13 @@ class FlowMod(base.GenericMessage):
     header = of_header.Header()
     match = flow_match.Match()
     cookie = basic_types.UBInt64()
-    command = basic_types.UBInt16()
+    command = basic_types.UBInt16(enum_ref=FlowModCommand)
     idle_timeout = basic_types.UBInt16()
     hard_timeout = basic_types.UBInt16()
     priority = basic_types.UBInt16()
     buffer_id = basic_types.UBInt32()
-    out_port = basic_types.UBInt16()
-    flags = basic_types.UBInt16()
+    out_port = basic_types.UBInt16(enum_ref=phy_port.Port)
+    flags = basic_types.UBInt16(enum_ref=FlowModFlags)
     actions = common.ListOfActions()
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
