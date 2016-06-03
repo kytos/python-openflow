@@ -13,7 +13,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class AggregateStatsRequest(base.GenericMessage):
+class AggregateStatsRequest(base.GenericStruct):
     """
     Body for ofp_stats_request of type OFPST_AGGREGATE
 

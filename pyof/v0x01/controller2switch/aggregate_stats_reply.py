@@ -11,7 +11,7 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class AggregateStatsReply(base.GenericMessage):
+class AggregateStatsReply(base.GenericStruct):
     """
     Body of reply to OFPST_AGGREGATE request
 

@@ -9,7 +9,7 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class TableStats(base.GenericMessage):
+class TableStats(base.GenericStruct):
     """
     Body of reply to OFPST_TABLE request
 
