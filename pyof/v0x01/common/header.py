@@ -67,7 +67,7 @@ class Header(base.GenericStruct):
         :param length:   Length of the message, including the header itself
     """
     version = basic_types.UBInt8()
-    message_type = basic_types.UBInt8()
+    message_type = basic_types.UBInt8(enum_ref=Type)
     length = basic_types.UBInt16()
     xid = basic_types.UBInt32()
 

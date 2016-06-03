@@ -130,7 +130,7 @@ class PortFeatures(enum.Enum):
 # Classes
 
 
-class PhyPort(base.GenericMessage):
+class PhyPort(base.GenericStruct):
     """
     Description of a physical port.
 
@@ -157,7 +157,7 @@ class PhyPort(base.GenericMessage):
     port_no = basic_types.UBInt16()
     hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
-    config = basic_types.UBInt32()
+    config = basic_types.UBInt32(enum_ref=PortConfig)
     state = basic_types.UBInt32()
     curr = basic_types.UBInt32()
     advertised = basic_types.UBInt32()

@@ -266,8 +266,7 @@ class GenericStruct(object):
             raise Exception()
         else:
             size = 0
-            for _attr in self.__ordered__:
-                _class = self.__ordered__[_attr]
+            for _attr, _class in self.__ordered__.items():
                 attr = getattr(self, _attr)
                 if _class.__name__ is 'PAD':
                     size += attr.get_size()
