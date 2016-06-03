@@ -2,7 +2,7 @@
 
 # System imports
 import enum
-
+from collections import OrderedDict as _OD
 # Third-party imports
 
 # Local source tree imports
@@ -35,16 +35,16 @@ class FlowModCommand(enum.Enum):
     OFPFC_DELETE_STRICT = 4
 
 
-class FlowModFlags(enum.Enum):
+class FlowModFlags(base.GenericBitMask):
     """Types to be used in Flags field"""
-
-    #: Send flow removed message when flow expires or is deleted
-    OFPFF_SEND_FLOW_REM = 1 << 0
-    #: Check for overlapping entries first
-    OFPFF_CHECK_OVERLAP = 1 << 1
-    #: Remark this is for emergency
-    OFPFF_EMERG = 1 << 2
-
+    _enum = _OD(
+        #: Send flow removed message when flow expires or is deleted
+        OFPFF_SEND_FLOW_REM = 1 << 0,
+        #: Check for overlapping entries first
+        OFPFF_CHECK_OVERLAP = 1 << 1,
+        #: Remark this is for emergency
+        OFPFF_EMERG = 1 << 2
+    )
 
 # Classes
 

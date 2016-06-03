@@ -437,3 +437,33 @@ class GenericMessage(GenericStruct):
         size.
         """
         self.header.length = self.get_size()
+
+
+class MetaBitMask(type):
+    def __getattr__(cls, name):
+        return cls._enum[name]
+
+    def __dir__(cls):
+        res = dir(type(cls)) + list(cls.__dict__.keys())
+        if cls is not GenericBitMask:
+            res.extend(cls._enum)
+        return res
+
+
+class GenericBitMask(object, metaclass=MetaBitMask):
+    def __init__(self, bitmask=None):
+        self.bitmask = bitmask
+
+    def __str__(self):
+        return "<%s: %s>" % (self.__class__.__name__, self.names)
+
+    def __repr__(self):
+        return "<%s(%s)>" % (self.__class__.__name__, self.bitmask)
+
+    @property
+    def names(self):
+        result = []
+        for key, value in self._enum.items():
+            if value & self.bitmask:
+                result.append(key)
+        return result
