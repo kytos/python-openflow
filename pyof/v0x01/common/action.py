@@ -52,7 +52,7 @@ class ActionHeader(base.GenericMessage):
     """
     Defines the Header that is common to all actions.
 
-        :param action_type: One of OFPAT_.
+        :param action_type: One of OFPAT\_.
         :param length:     Length of action, including this header.
         :param pad:        Pad for 64-bit alignment.
     """

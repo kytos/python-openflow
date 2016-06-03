@@ -64,37 +64,31 @@ class PortState(enum.Enum):
 
 
 class Port(enum.Enum):
-    """Port numbering. Physical ports are numbered starting from 1. Port number
-    0 is reserved by the specification and must not be used for a switch
-    physical port.
+    """Port numbering.
 
-    Enums:
-        OFPP_MAX         # Maximum number of physical switch ports.
-        OFPP_IN_PORT     # Send the packet out the input port. This
-                         # virtual port must be explicitly used
-                         # in order to send back out of the input port.
-
-        OFPP_TABLE       # Perform actions in flow table.
-                         # NB: This can only be the destination
-                         # port for packet-out messages
-
-        OFPP_NORMAL      # Process with normal L2/L3 switching.
-        OFPP_FLOOD       # All physical ports except input port and
-                         # those disabled by STP
-        OFPP_ALL         # All physical ports except input port
-        OFPP_CONTROLLER  # Send to controller
-        OFPP_LOCAL       # Local openflow "port"
-        OFPP_NONE        # Not associated with a physical port
+    Physical ports are numbered starting from 1. Port number 0 is reserved by
+    the specification and must not be used for a switch physical port.
     """
 
+    #: Maximum number of physical switch ports.
     OFPP_MAX = 0xff00
+    #: Send the packet out the input port. This virtual port must be explicitly
+    #: used in order to send back out of the input port.
     OFPP_IN_PORT = 0xfff8
+    #: Perform actions in flow table.
+    #: NB: This can only be the destination port for packet-out messages
     OFPP_TABLE = 0xfff9
+    #: Process with normal L2/L3 switching.
     OFPP_NORMAL = 0xfffa
+    #: All physical ports except input port and
     OFPP_FLOOD = 0xfffb
+    #: All physical ports except input port
     OFPP_ALL = 0xfffc
+    #: Send to controller
     OFPP_CONTROLLER = 0xfffd
+    #: Local openflow "port"
     OFPP_LOCAL = 0xfffe
+    #: Not associated with a physical port
     OFPP_NONE = 0xffff
 
 

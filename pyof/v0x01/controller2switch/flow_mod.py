@@ -25,6 +25,7 @@ class FlowModCommand(enum.Enum):
         OFPFC_MODIFY_STRICT # Modify entry strictly matching wildcards
         OFPFC_DELETE        # Delete all matching flows
         OFPFC_DELETE_STRICT # Strictly match wildcards and priority
+
     """
     OFPFC_ADD = 1
     OFPFC_MODIFY = 2
@@ -34,17 +35,13 @@ class FlowModCommand(enum.Enum):
 
 
 class FlowModFlags(enum.Enum):
-    """
-    Types to be used in Flags field
+    """Types to be used in Flags field"""
 
-    Enums:
-        OFPFF_SEND_FLOW_REM # Send flow removed message when flow
-                              expires or is deleted
-        OFPFF_CHECK_OVERLAP # Check for overlapping entries first
-        OFPFF_EMERG         # Remark this is for emergency
-    """
+    #: Send flow removed message when flow expires or is deleted
     OFPFF_SEND_FLOW_REM = 1 << 0
+    #: Check for overlapping entries first
     OFPFF_CHECK_OVERLAP = 1 << 1
+    #: Remark this is for emergency
     OFPFF_EMERG = 1 << 2
 
 
