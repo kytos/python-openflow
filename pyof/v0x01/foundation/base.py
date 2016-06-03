@@ -89,11 +89,15 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
-        if type(self._value.__class__) is enum.EnumMeta:
-            # Gets the respective value from the Enum
-            value = self._value.value
+        if self.is_enum():
+            if issubclass(type(self._value), GenericBitMask):
+                value = self._value.bitmask
+            else:
+                # Gets the respective value from the Enum
+                value = self._value.value
         else:
             value = self._value
+
         try:
             return struct.pack(self._fmt, value)
         except struct.error as err:
@@ -297,13 +301,15 @@ class GenericStruct(object):
             message = b''
             for attr_name, attr_class in self.__ordered__.items():
                 attr = getattr(self, attr_name)
-                if issubclass(attr_class, GenericStruct):
+                class_attr = getattr(self.__class__, attr_name)
+                if isinstance(attr, attr_class):
                     message += attr.pack()
+                elif class_attr.is_enum():
+                    message += attr_class(value = attr,
+                                          enum_ref= class_attr._enum_ref).pack()
                 else:
-                    if isinstance(attr, attr_class):
-                        message += attr.pack()
-                    else:
-                        message += attr_class(attr).pack()
+                    message += attr_class(attr).pack()
+
             return message
 
     def unpack(self, buff, offset=0):
@@ -319,16 +325,21 @@ class GenericStruct(object):
         #       message.
         begin = offset
 
+        # TODO: Refact, ugly code
         for attr_name, attr_class in self.__ordered__.items():
             if attr_class.__name__ != "PAD":
                 class_attr = getattr(self.__class__, attr_name)
                 attr = attr_class()
                 attr.unpack(buff, offset=begin)
 
-                if issubclass(attr_class, GenericType) and \
-                        class_attr.is_enum():
+                if issubclass(attr_class, GenericType) and class_attr.is_enum():
+                    #raise Exception(class_attr._enum_ref)
                     attr = class_attr._enum_ref(attr._value)
                 setattr(self, attr_name, attr)
+
+                if issubclass(attr_class, GenericType):
+                    attr = attr_class()
+
             begin += attr.get_size()
 
     def is_valid(self):
