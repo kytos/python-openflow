@@ -49,27 +49,27 @@ class HelloFailedCode(enum.Enum):
 
 class BadRequestCode(enum.Enum):
     """Error_msg 'code' values for OFPET_BAD_REQUEST.
-    'data' contains at least the first 64 bytes of the failed request.
 
-        OFPBRC_BAD_VERSION     # ofp_header.version not supported.
-        OFPBRC_BAD_TYPE        # ofp_header.type not supported.
-        OFPBRC_BAD_STAT        # ofp_stats_request.type not supported.
-        OFPBRC_BAD_VENDOR      # Vendor not supported (in ofp_vendor_header
-                                 or ofp_stats_request or ofp_stats_reply).
-        OFPBRC_BAD_SUBTYPE     # Vendor subtype not supported.
-        OFPBRC_EPERM           # Permissions error.
-        OFPBRC_BAD_LEN         # Wrong request length for type.
-        OFPBRC_BUFFER_EMPTY    # Specified buffer has already been used.
-        OFPBRC_BUFFER_UNKNOWN  # Specified buffer does not exist.
+    'data' contains at least the first 64 bytes of the failed request.
     """
-    OFPBRC_BAD_VERSION = 1,
-    OFPBRC_BAD_TYPE = 2,
-    OFPBRC_BAD_STAT = 3,
-    OFPBRC_BAD_VENDOR = 4,
-    OFPBRC_BAD_SUBTYPE = 5,
-    OFPBRC_EPERM = 6,
-    OFPBRC_BAD_LEN = 7,
-    OFPBRC_BUFFER_EMPTY = 8,
+    #: ofp_header.version not supported.
+    OFPBRC_BAD_VERSION = 1
+    #: ofp_header.type not supported.
+    OFPBRC_BAD_TYPE = 2
+    #: ofp_stats_request.type not supported.
+    OFPBRC_BAD_STAT = 3
+    #: Vendor not supported (in ofp_vendor_header or ofp_stats_request or
+    #: ofp_stats_reply).
+    OFPBRC_BAD_VENDOR = 4
+    #: Vendor subtype not supported.
+    OFPBRC_BAD_SUBTYPE = 5
+    #: Permissions error.
+    OFPBRC_EPERM = 6
+    #: Wrong request length for type.
+    OFPBRC_BAD_LEN = 7
+    #: Specified buffer has already been used.
+    OFPBRC_BUFFER_EMPTY = 8
+    #: Specified buffer does not exist.
     OFPBRC_BUFFER_UNKNOWN = 9
 
 
@@ -100,24 +100,20 @@ class BadActionCode(enum.Enum):
 
 class FlowModFailedCode(enum.Enum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
+
     'data' contains at least the first 64 bytes of the failed request.
-
-        OFPFMFC_ALL_TABLES_FULL    # Flow not added because of full tables
-        OFPFMFC_OVERLAP            # Attempted to add overlapping flow with
-                                     CHECK_OVERLAP flag set
-        OFPFMFC_EPERM              # Permissions error
-        OFPFMFC_BAD_EMERG_TIMEOUT  # Flow not added because of non-zero
-                                     idle/hard timeout
-        OFPFMFC_BAD_COMMAND        # Unknown command
-        OFPFMFC_UNSUPPORTED        # Unsupported action list - cannot process
-                                     in the order specified
-
     """
-    OFPFMFC_ALL_TABLES_FULL = 1,
-    OFPFMFC_OVERLAP = 2,
-    OFPFMFC_EPERM = 3,
-    OFPFMFC_BAD_EMERG_TIMEOUT = 4,
-    OFPFMFC_BAD_COMMAND = 5,
+    #: Flow not added because of full tables
+    OFPFMFC_ALL_TABLES_FULL = 1
+    #: Attempted to add overlapping flow with CHECK_OVERLAP flag set
+    OFPFMFC_OVERLAP = 2
+    #: Permissions error
+    OFPFMFC_EPERM = 3
+    #: Flow not added because of non-zero idle/hard timeout
+    OFPFMFC_BAD_EMERG_TIMEOUT = 4
+    #: Unknown command
+    OFPFMFC_BAD_COMMAND = 5
+    #: Unsupported action list - cannot process in the order specified
     OFPFMFC_UNSUPPORTED = 6
 
 

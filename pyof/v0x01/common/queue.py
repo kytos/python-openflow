@@ -45,7 +45,7 @@ class ListOfProperties(basic_types.FixedTypeList):
 class QueuePropHeader(base.GenericStruct):
     """This class describes the header of each queue property.
 
-        :param property: One of OFPQT_.
+        :param property: One of OFPQT\_.
         :param len:      Length of property, including this header.
         :param pad:      64-bit alignment.
     """
@@ -61,10 +61,10 @@ class QueuePropHeader(base.GenericStruct):
 class PacketQueue(base.GenericStruct):
     """This class describes a queue.
 
-        :param queue_id: One of OFPQT_
+        :param queue_id: One of OFPQT\_
         :param length:   Length of property, including this header
-        :param pad
-        :param properties
+        :param pad:
+        :param properties:
     """
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
