@@ -15,15 +15,15 @@ from pyof.v0x01.foundation import basic_types
 
 class AggregateStatsRequest(base.GenericStruct):
     """
-    Body for ofp_stats_request of type OFPST_AGGREGATE
+    Body for ofp_stats_request of type OFPST_AGGREGATE.
 
-        :param match:    Fields to match
-        :param table_id: ID of table to read (from pyof_table_stats) 0xff
-                         for all tables or 0xfe for emergency.
-        :param pad:      Align to 32 bits
-        :param out_port: Require matching entries to include this as an
-                         output port.  A value of OFPP_NONE indicates
-                         no restriction
+    :param match:    Fields to match
+    :param table_id: ID of table to read (from pyof_table_stats) 0xff
+                     for all tables or 0xfe for emergency.
+    :param pad:      Align to 32 bits
+    :param out_port: Require matching entries to include this as an
+                     output port.  A value of OFPP_NONE indicates
+                     no restriction
 
     """
     match = flow_match.Match()

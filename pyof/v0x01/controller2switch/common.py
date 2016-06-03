@@ -36,10 +36,11 @@ class ConfigFlags(enum.Enum):
 class SwitchConfig(base.GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
 
-        :param xid:           xid to be used on the message header
-        :param flags:         UBInt16 OFPC_* flags
-        :param miss_send_len: UBInt16 max bytes of new flow that the
-                              datapath should send to the controller
+    :param xid:           xid to be used on the message header
+    :param flags:         UBInt16 OFPC_* flags
+    :param miss_send_len: UBInt16 max bytes of new flow that the
+                          datapath should send to the controller
+
     """
 
     header = of_header.Header()

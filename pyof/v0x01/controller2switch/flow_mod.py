@@ -51,21 +51,21 @@ class FlowMod(base.GenericMessage):
     """
     Modifies the flow table from the controller.
 
-        :param xid:          xid to be used on the message header
-        :param match:        Fields to match
-        :param cookie:       Opaque controller-issued identifier
-        :param command:      One of OFPFC_*
-        :param idle_timeout: Idle time before discarding (seconds)
-        :param hard_timeout: Max time before discarding (seconds)
-        :param priority:     Priority level of flow entry
-        :param buffer_idle:  Buffered packet to apply to (or -1).
-                             Not meaningful for OFPFC_DELETE*
-        :param out_port:     For OFPFC_DELETE* commands, require matching
-                             entries to include this as an output port.
-                             A value of OFPP_NONE indicates no restriction.
-        :param flags:        One of OFPFF_*
-        :param actions:      The action length is inferred from the length
-                             field in the header
+    :param xid:          xid to be used on the message header
+    :param match:        Fields to match
+    :param cookie:       Opaque controller-issued identifier
+    :param command:      One of OFPFC_*
+    :param idle_timeout: Idle time before discarding (seconds)
+    :param hard_timeout: Max time before discarding (seconds)
+    :param priority:     Priority level of flow entry
+    :param buffer_idle:  Buffered packet to apply to (or -1).
+                         Not meaningful for OFPFC_DELETE*
+    :param out_port:     For OFPFC_DELETE* commands, require matching
+                         entries to include this as an output port.
+                         A value of OFPP_NONE indicates no restriction.
+    :param flags:        One of OFPFF_*
+    :param actions:      The action length is inferred from the length
+                         field in the header
     """
     header = of_header.Header()
     match = flow_match.Match()

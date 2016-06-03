@@ -59,13 +59,13 @@ class StatsTypes(enum.Enum):
 
 
 class StatsReply(base.GenericMessage):
-    """
-    Class implements the response to the config request
+    """Class implements the response to the config request
 
-        :param header -- OpenFlow header
-        :param body_type -- One of the OFPST_* constants
-        :param flags -- OFPSF_REQ_* flags (none yet defined)
-        :param body -- Body of the request
+    :param header -- OpenFlow header
+    :param body_type -- One of the OFPST_* constants
+    :param flags -- OFPSF_REQ_* flags (none yet defined)
+    :param body -- Body of the request
+
     """
     header = of_header.Header()
     body_type = basic_types.UBInt16()

@@ -33,18 +33,18 @@ class PacketIn(base.GenericMessage):
     """
     Packet received on port (datapath -> controller)
 
-        :param xid:       Openflow xid of the Header
-        :param buffer_id: ID assigned by datapath
-        :param total_len: Full length of frame
-        :param in_port:   Port on which frame was received
-        :param reason:    Reason packet is being sent (one of OFPR_*)
-        :param pad:       Align to 32-bits
-        :param data:      Ethernet frame, halfway through 32-bit word,
-                          so the IP header is 32-bit aligned.  The
-                          amount of data is inferred from the length
-                          field in the header.  Because of padding,
-                          offsetof(struct ofp_packet_in, data) ==
-                          sizeof(struct ofp_packet_in) - 2.
+    :param xid:       Openflow xid of the Header
+    :param buffer_id: ID assigned by datapath
+    :param total_len: Full length of frame
+    :param in_port:   Port on which frame was received
+    :param reason:    Reason packet is being sent (one of OFPR_*)
+    :param pad:       Align to 32-bits
+    :param data:      Ethernet frame, halfway through 32-bit word,
+                      so the IP header is 32-bit aligned.  The
+                      amount of data is inferred from the length
+                      field in the header.  Because of padding,
+                      offsetof(struct ofp_packet_in, data) ==
+                      sizeof(struct ofp_packet_in) - 2.
 
     """
     header = of_header.Header()

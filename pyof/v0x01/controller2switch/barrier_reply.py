@@ -12,9 +12,10 @@ from pyof.v0x01.foundation import base
 
 
 class BarrierReply(base.GenericMessage):
-    """OpenFlow Barrier Reply Message
+    """OpenFlow Barrier Reply Message.
 
-    This message does not contain a body beyond the OpenFlow Header
+    This message does not contain a body beyond the OpenFlow Header.
+
         :param xid: xid to be used on the message header
     """
     header = of_header.Header()

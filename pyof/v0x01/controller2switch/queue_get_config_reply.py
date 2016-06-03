@@ -14,10 +14,11 @@ from pyof.v0x01.foundation import basic_types
 class QueueGetConfigReply(base.GenericMessage):
     """Class implements the response to the config request
 
-        :param xid -- xid of OpenFlow header
-        :param port -- Target port for the query
-        :param pad -- Pad to 64-bits
-        :param queue -- List of configured queues
+    :param xid -- xid of OpenFlow header
+    :param port -- Target port for the query
+    :param pad -- Pad to 64-bits
+    :param queue -- List of configured queues
+
     """
     header = of_header.Header()
     port = basic_types.UBInt16()

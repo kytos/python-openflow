@@ -11,12 +11,12 @@ from pyof.v0x01.foundation import basic_types
 
 
 class QueueGetConfigRequest(base.GenericMessage):
-    """
-    Class implements the structure query for configured queues on a port
+    """Class implements the structure query for configured queues on a port.
 
-        :param xid -- xid of OpenFlow header
-        :param port -- Target port for the query
-        :param pad -- Pad to 64-bits
+    :param xid -- xid of OpenFlow header
+    :param port -- Target port for the query
+    :param pad -- Pad to 64-bits
+
     """
     header = of_header.Header()
     port = basic_types.UBInt16()

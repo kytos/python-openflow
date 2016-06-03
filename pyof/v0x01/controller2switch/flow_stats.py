@@ -17,22 +17,22 @@ class FlowStats(base.GenericStruct):
     """
     Body of reply to OFPST_FLOW request.
 
-        :param length:        Length of this entry
-        :param table_id:      ID of table flow came from
-        :param pad:           Align to 32 bits
-        :param match:         Description of fields
-        :param duration_sec:  Time flow has been alive in seconds
-        :param duration_nsec: Time flow has been alive in nanoseconds beyond
-                              duration_sec
-        :param priority:      Priority of the entry. Only meaningful when this
-                              is not an exact-match entry
-        :param idle_timeout:  Number of seconds idle before expiration
-        :param hard_timeout:  Number of seconds before expiration
-        :param pad2:          Align to 64-bits
-        :param cookie:        Opaque controller-issued identifier
-        :param packet_count:  Number of packets in flow
-        :param byte_count:    Number of bytes in flow
-        :param actions:       Actions
+    :param length:        Length of this entry
+    :param table_id:      ID of table flow came from
+    :param pad:           Align to 32 bits
+    :param match:         Description of fields
+    :param duration_sec:  Time flow has been alive in seconds
+    :param duration_nsec: Time flow has been alive in nanoseconds beyond
+                          duration_sec
+    :param priority:      Priority of the entry. Only meaningful when this
+                          is not an exact-match entry
+    :param idle_timeout:  Number of seconds idle before expiration
+    :param hard_timeout:  Number of seconds before expiration
+    :param pad2:          Align to 64-bits
+    :param cookie:        Opaque controller-issued identifier
+    :param packet_count:  Number of packets in flow
+    :param byte_count:    Number of bytes in flow
+    :param actions:       Actions
     """
     length = basic_types.UBInt16()
     table_id = basic_types.UBInt8()

@@ -49,12 +49,12 @@ class ActionType(enum.Enum):
 
 
 class ActionHeader(base.GenericStruct):
-    """
-    Defines the Header that is common to all actions.
+    """Defines the Header that is common to all actions.
 
-        :param action_type: One of OFPAT\_.
-        :param length:     Length of action, including this header.
-        :param pad:        Pad for 64-bit alignment.
+    :param action_type: One of OFPAT\_.
+    :param length:     Length of action, including this header.
+    :param pad:        Pad for 64-bit alignment.
+
     """
     action_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -68,18 +68,18 @@ class ActionHeader(base.GenericStruct):
 class ActionOutput(base.GenericStruct):
     """Defines the actions output.
 
-        :param type: OFPAT_OUTPUT.
-        :param length:     Length is 8.
-        :param port:       Output port.
-        :param max_length: Max length to send to controller.
+    :param type:       OFPAT_OUTPUT.
+    :param length:     Length is 8.
+    :param port:       Output port.
+    :param max_length: Max length to send to controller.
+
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
     port = basic_types.UBInt16()
     max_length = basic_types.UBInt16()
 
-    def __init__(self, length=None, port=None,
-                 max_length=None):
+    def __init__(self, length=None, port=None, max_length=None):
         self.type = ActionType.OFPAT_OUTPUT
         self.length = length
         self.port = port
@@ -94,13 +94,14 @@ class ActionEnqueue(base.GenericStruct):
     these queues and map flows to them by setting the relevant fields
     (TOS, VLAN PCP).
 
-        :param type: OFPAT_ENQUEUE.
-        :param length:     Len is 16
-        :param port:       Port that queue belongs. Should refer to a valid
-                           physical port.
-                           (i.e. < OFPP_MAX) or OFPP_IN_PORT
-        :param pad:        Pad for 64-bit alignment.
-        :param queue_id:   Where to enqueue the packets.
+    :param type: OFPAT_ENQUEUE.
+    :param length:     Len is 16
+    :param port:       Port that queue belongs. Should refer to a valid
+                       physical port.
+                       (i.e. < OFPP_MAX) or OFPP_IN_PORT
+    :param pad:        Pad for 64-bit alignment.
+    :param queue_id:   Where to enqueue the packets.
+
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -241,7 +242,6 @@ class ActionVendorHeader(base.GenericStruct):
     vendor = basic_types.UBInt32()
 
     def __init__(self, length=None, vendor=None):
-
         self.type = ActionType.OFPAT_VENDOR
         self.length = length
         self.vendor = vendor
