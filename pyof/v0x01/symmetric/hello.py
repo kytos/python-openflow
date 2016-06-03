@@ -21,6 +21,7 @@ class Hello(base.GenericMessage):
     header = of_header.Header()
 
     def __init__(self, xid=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_HELLO
         self.header.length = 8
         self.header.xid = xid

@@ -20,5 +20,6 @@ class BarrierReply(base.GenericMessage):
     header = of_header.Header()
 
     def __init__(self, xid=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_BARRIER_REPLY
         self.header.xid = xid

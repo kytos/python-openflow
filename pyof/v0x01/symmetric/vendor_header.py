@@ -25,6 +25,7 @@ class VendorHeader(base.GenericMessage):
     vendor = basic_types.UBInt32()
 
     def __init__(self, xid=None, vendor=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_ECHO_REQUEST
         self.header.length = 12
         self.header.xid = xid

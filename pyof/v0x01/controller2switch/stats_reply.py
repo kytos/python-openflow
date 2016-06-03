@@ -73,7 +73,7 @@ class StatsReply(base.GenericMessage):
     body = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, body_type=None, flags=None, body=None):
-
+        super().__init__()
         self.header.xid = xid
         self.header.message_type = of_header.Type.OFPT_STATS_REPLY
         self.body_type = body_type

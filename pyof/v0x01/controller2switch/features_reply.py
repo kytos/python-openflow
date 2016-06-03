@@ -72,7 +72,7 @@ class SwitchFeatures(base.GenericMessage):
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None,
                  ports=None):
-
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
         self.header.xid = xid

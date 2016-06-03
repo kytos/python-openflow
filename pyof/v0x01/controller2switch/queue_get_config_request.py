@@ -23,7 +23,7 @@ class QueueGetConfigRequest(base.GenericMessage):
     pad = basic_types.PAD(2)
 
     def __init__(self, xid=None, port=None):
-
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REQUEST
         self.header.xid = xid
         self.port = port

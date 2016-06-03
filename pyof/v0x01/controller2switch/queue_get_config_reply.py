@@ -25,7 +25,7 @@ class QueueGetConfigReply(base.GenericMessage):
     queues = queue.ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):
-
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_GET_CONFIG_REPLY
         self.header.xid = xid
         self.port = port

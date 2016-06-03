@@ -39,7 +39,7 @@ class PortMod(base.GenericMessage):
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None):
-
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_PORT_MOD
         self.header.xid = xid
         self.port_no = port_no

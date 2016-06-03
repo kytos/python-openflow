@@ -57,7 +57,7 @@ class PacketIn(base.GenericMessage):
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, data=b''):
-
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
         self.buffer_id = buffer_id
