@@ -52,8 +52,7 @@ class FlowStats(base.GenericStruct):
     def __init__(self, length=None, table_id=None, match=None,
                  duration_sec=None, duration_nsec=None, priority=None,
                  idle_timeout=None, hard_timeout=None, cookie=None,
-                 packet_count=None, byte_count=None, actions=[]):
-
+                 packet_count=None, byte_count=None, actions=None):
         self.length = length
         self.table_id = table_id
         self.match = match
@@ -65,4 +64,4 @@ class FlowStats(base.GenericStruct):
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count
-        self.actions = actions
+        self.actions = [] if actions is None else actions

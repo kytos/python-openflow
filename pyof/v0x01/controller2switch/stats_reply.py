@@ -72,10 +72,10 @@ class StatsReply(base.GenericMessage):
     flags = basic_types.UBInt16()
     body = basic_types.ConstantTypeList()
 
-    def __init__(self, xid=None, body_type=None, flags=None, body=[]):
+    def __init__(self, xid=None, body_type=None, flags=None, body=None):
 
         self.header.xid = xid
         self.header.message_type = of_header.Type.OFPT_STATS_REPLY
         self.body_type = body_type
         self.flags = flags
-        self.body = body
+        self.body = [] if body is None else body

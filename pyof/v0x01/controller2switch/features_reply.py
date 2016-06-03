@@ -71,7 +71,7 @@ class SwitchFeatures(base.GenericMessage):
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None,
-                 ports=[]):
+                 ports=None):
 
         self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
@@ -81,7 +81,7 @@ class SwitchFeatures(base.GenericMessage):
         self.n_tables = n_tables
         self.capabilities = capabilities
         self.actions = actions
-        self.ports = ports
+        self.ports = [] if ports is None else ports
 
 
 class FeaturesReply(SwitchFeatures):

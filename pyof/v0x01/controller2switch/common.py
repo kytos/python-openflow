@@ -62,7 +62,5 @@ class ListOfActions(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of ActionHeader
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=action.ActionHeader,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(self, pyof_class=action.ActionHeader, items=items)

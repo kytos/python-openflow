@@ -81,7 +81,7 @@ class FlowMod(base.GenericMessage):
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,
-                 buffer_id=None, out_port=None, flags=None, actions=[]):
+                 buffer_id=None, out_port=None, flags=None, actions=None):
         self.header.message_type = of_header.Type.OFPT_FLOW_MOD
         self.header.length = 0
         self.header.xid = xid
@@ -94,4 +94,4 @@ class FlowMod(base.GenericMessage):
         self.buffer_id = buffer_id
         self.out_port = out_port
         self.flags = flags
-        self.actions = actions
+        self.actions = [] if actions is None else actions

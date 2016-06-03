@@ -197,7 +197,7 @@ class ListOfPhyPorts(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of PhyPort
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=PhyPort,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(self,
+                         pyof_class=PhyPort,
+                         items=items)

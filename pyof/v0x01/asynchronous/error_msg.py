@@ -154,12 +154,12 @@ class ErrorMsg(base.GenericMessage):
     code = basic_types.UBInt16()
     data = basic_types.ConstantTypeList()
 
-    def __init__(self, xid=None, error_type=None, code=None, data=[]):
+    def __init__(self, xid=None, error_type=None, code=None, data=None):
         self.header.message_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.error_type = error_type
         self.code = code
-        self.data = data
+        self.data = [] if data is None else data
 
     def unpack(self, buff, offset=0):
         # TODO: Implement the unpack method evaluation the error_type and code

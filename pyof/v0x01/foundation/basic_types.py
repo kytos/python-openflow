@@ -179,14 +179,13 @@ class FixedTypeList(list, base.GenericStruct):
     """Creates a List that will receive OFP Classes"""
     _pyof_class = None
 
-    def __init__(self, pyof_class, items=[]):
+    def __init__(self, pyof_class, items=None):
+        super().__init__()
         self._pyof_class = pyof_class
-        list.__init__(self, [])
-        if items is not None and len(items) > 0:
-            if type(items) is list:
-                self.extend(items)
-            else:
-                self.append(items)
+        if type(items) is list:
+            self.extend(items)
+        elif items:
+            self.append(items)
 
     def __repr__(self):
         """Unique representantion of the object.
@@ -261,13 +260,12 @@ class FixedTypeList(list, base.GenericStruct):
 class ConstantTypeList(list, base.GenericStruct):
     """Creates a List that will only allow objects of the same type (class) to
     be inserted"""
-    def __init__(self, items=[]):
-        list.__init__(self, [])
-        if items is not None:
-            if type(items) is list:
-                self.extend(items)
-            else:
-                self.append(items)
+    def __init__(self, items=None):
+        super().__init__()
+        if type(items) is list:
+            self.extend(items)
+        elif items:
+            self.append(items)
 
     def __repr__(self):
         """Unique representantion of the object.
