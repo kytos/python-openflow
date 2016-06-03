@@ -36,9 +36,9 @@ class TestHeader(unittest.TestCase):
         f = open(filename,'rb')
         self.message.unpack(f.read(8))
 
-        self.assertEqual(self.message.length._value, 8)
-        self.assertEqual(self.message.xid._value, 1)
-        self.assertEqual(self.message.message_type._value, 0)
-        self.assertEqual(self.message.version._value, 1)
+        self.assertEqual(self.message.length, 8)
+        self.assertEqual(self.message.xid, 1)
+        self.assertEqual(self.message.message_type, of_header.Type.OFPT_HELLO)
+        self.assertEqual(self.message.version, 1)
 
         f.close()
