@@ -2,16 +2,16 @@ Before reading this file, please read the [CONTRIBUTE](CONTRIBUTE.md) file, that
 contains the main guidelines of the project.
 
 ## Topics:
-  - [Development Environment setup](https://github.com/kytos/python-openflow/blob/master/HACKING.md#development-environment-setup)
-    - [Virtualenv (optional)](https://github.com/kytos/python-openflow/blob/master/HACKING.md#virtualenv)
-    - [Virtualenv Extras (optional)](https://github.com/kytos/python-openflow/blob/master/HACKING.md#virtualenv-extras)
-  - [Tests/TDD](https://github.com/kytos/python-openflow/blob/master/HACKING.md#tdd-test-driven-development)
+  - [Development Environment setup](#setup)
+    - [Virtualenv (optional)](#virtualenv)
+    - [Virtualenv Extras (optional)](#virtualenv-extras)
+  - [Tests/TDD](#tdd)
 
-## Development Environment setup
+## <a name="setup"></a> Development Environment setup
 
-This project is based on python (version 3.5).
+This project is written in Python (version 3.5).
 
-During the devlopment of the project what you need is to add the ofp folder,
+During the development of the project, what you need is to add the ofp folder,
 inside this repository, to your PYTHONPATH environment variable. For that,
 you have to execute the following on the command line (being on this current
 folder):
@@ -20,37 +20,42 @@ folder):
 export PYTHONPATH=`pwd`/ofp:$PYTHONPATH
 ```
 
-Remember that everytime you start a new shell instance you will have to
-repeat the command above, since this is an environment variable.
+Remember that everytime you start a new shell instance you will have to repeat
+the command above, since this is an environment variable. To have it executed
+automatically in every shell, add it to `~/.bashrc` replacing `pwd` by the full
+path (its output).
 
-### Virtualenv
+### <a name="virtualenv"></a> Virtualenv
 
-To make things easier and avoid the need of redo the export all the time,
+To make things easier and avoid the need of redoing the export all the time,
 we recommend that you install python `virtualenv`. This is not necessary, but
-recommended. With `virtualenv` you can install the required and recommended
-python libraries without messing up with your system. To install them run
+recommended. With `virtualenv`, you can install the required and recommended
+python libraries without messing up with your system. To install it, run
 the following commands:
 
-   ```shell
-   $ sudo apt install python3-pip
-   $ sudo pip3 install virtualenv virtualenvwrapper
-   ```
-   
+```shell
+sudo apt install python3-pip
+sudo pip3 install virtualenv virtualenvwrapper
+```
+
 If you are working with **bash**, add the following lines on your
 `~/.bash_profile` or `~/.bashrc` to setup `virtualenvwrapper`:
 
-   ```shell
-   export WORKON_HOME=~/.virtualenvs
-   source /usr/local/bin/virtualenvwrapper.sh
-   ```
+```shell
+export WORKON_HOME=~/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+```
 
 If you are using **[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)** you
 can just add the `virtualenvwrapper` plugin to your plugins list
 (inside `~/.zshrc`). This plugin will:
-  - Loads Python's [virtualenvwrapper shell tools](http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html), and
-  - Automatically activates virtualenv on cd into git repository with matching name
+  - Load Python's [virtualenvwrapper shell tools](http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html);
+  - Automatically activate virtualenv on `cd` into git repository with matching
+name.
 
-We also recommend adding the bellow code to your `~/.virtualenvs/postmkvirtualenv` file:
+We also recommend adding the bellow code to your
+`~/.virtualenvs/postmkvirtualenv` file:
+
 ```shell
 echo '_OLD_PYTHONPATH="$PYTHONPATH"' >> ~/.virtualenvs/"${PWD##*/}"/bin/postactivate
 echo "PYTHONPATH="'"'$(pwd)'"' >> ~/.virtualenvs/"${PWD##*/}"/bin/postactivate
@@ -64,15 +69,16 @@ After installed, clone this repository locally, `cd` into it and create the
 required virtualenv with the same name as the repository directory:
 
 ```shell
-$ mkvirtualenv "${PWD##*/}" -r requirements.txt
+mkvirtualenv "${PWD##*/}" -r requirements.txt
 ```
 
-This will create the virtualenv with all project requirements and also activate it.
+This will create the virtualenv with all project requirements and also activate
+it.
 
 The standard setup finishes here.
 
 If you are using `oh-my-zsh` plugin then every time you enter on the project
-directory the virtualenvironment will be automaticaly loaded. If you are using
+directory, the virtualenvironment will be automaticaly loaded. If you are using
 bash, then you need to run the `workon` command to activate the environment:
 
 ```shell
@@ -82,9 +88,9 @@ workon python-openflow
 See more virtualenvwrapper commands on:
 http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
 
-#### Virtualenv Extras
+#### <a name="virtualenv-extras"></a> Virtualenv Extras
 
-if you want to show the current activated virtualenv on the right side of your
+If you want to show the current activated virtualenv on the right side of your
 shell, add the following code to your `~/.virtualenvs/postactivate` file:
 
 ```shell
@@ -101,8 +107,8 @@ and also this code to your `~/.virtualenvs/postdeactivate` file:
 RPROMPT="$_OLD_RPROMPT"
 ```
 
-## TDD (Test Driven Development)
-We want to keep the aim of 100% of test coverage. For that, we are using
+## <a name="tdd"></a> TDD (Test Driven Development)
+We aim at 100% of test coverage. For that, we are using
 Python [unittest](https://docs.python.org/3.5/library/unittest.html) and
 to verify the test coverage status we are using
 [coverage.py](https://coverage.readthedocs.org/en/coverage-4.0.3/).
@@ -127,4 +133,4 @@ coverage run --source ofp setup.py test
 To see the command line report run the command `coverage report -m`,
 and to generate a HTML report, run: `coverage html` and open the file
 **html_cov/index.html** into your browser
-(you can run `open html_cov/index.html`)
+(you can run `open html_cov/index.html`).
