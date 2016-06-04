@@ -77,7 +77,7 @@ class PacketQueue(base.GenericStruct):
         self.properties = properties
 
 
-class QueuePropMinRate(base.GenericStruct):
+class QueuePropMinRate(base.GenericMessage):
     """This class defines the minimum-rate type queue.
 
         :param prop_header: prop: OFPQT_MIN_RATE, len: 16.

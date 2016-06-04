@@ -143,7 +143,7 @@ class QueueOpFailedCode(enum.Enum):
 
 # Classes
 
-class ErrorMsg(base.GenericStruct):
+class ErrorMsg(base.GenericMessage):
     """OpenFlow Error Message
 
     This message does not contain a body beyond the OpenFlow Header

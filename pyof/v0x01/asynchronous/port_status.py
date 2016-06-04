@@ -31,7 +31,7 @@ class PortReason(enum.Enum):
 
 # Classes
 
-class PortStatus(base.GenericStruct):
+class PortStatus(base.GenericMessage):
     """
     A physical port has changed in the datapath
 
