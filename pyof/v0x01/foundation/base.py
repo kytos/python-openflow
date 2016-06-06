@@ -59,14 +59,15 @@ class GenericType(object):
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
     class as base.
     """
-    def __init__(self, val=None):
-        self._value = val
+    def __init__(self, value=None, enum_ref=None):
+        self._value = value
+        self._enum_ref = enum_ref
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
-        return '{}: {}'.format(self.__class__.__name__, str(self._value))
+        return '<{}: {}>'.format(self.__class__.__name__, str(self._value))
 
     def __eq__(self, other):
         return self._value == other
@@ -88,11 +89,15 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
-        if type(self._value.__class__) is enum.EnumMeta:
-            # Gets the respective value from the Enum
-            value = self._value.value
+        if self.is_enum():
+            if issubclass(type(self._value), GenericBitMask):
+                value = self._value.bitmask
+            else:
+                # Gets the respective value from the Enum
+                value = self._value.value
         else:
             value = self._value
+
         try:
             return struct.pack(self._fmt, value)
         except struct.error as err:
@@ -116,9 +121,11 @@ class GenericType(object):
         #       the enum name/reference ?
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
+            if self._enum_ref:
+                self._value = self._enum_ref(self._value)
         except struct.error:
-            raise exceptions.Exception("Error while unpacking"
-                                       "data from buffer")
+            raise exceptions.UnpackException("Error while unpacking"
+                                             "data from buffer")
 
     def get_size(self):
         """Return the size in bytes of this attribute. """
@@ -136,8 +143,13 @@ class GenericType(object):
             raise
 
     def value(self):
-        #TODO: Review this value._value.value (For enums)
-        return self._value
+        if isinstance(self._value, enum.Enum):
+            return self._value.value
+        else:
+            return self._value
+
+    def is_enum(self):
+        return self._enum_ref is not None
 
 
 class MetaStruct(type):
@@ -155,7 +167,7 @@ class MetaStruct(type):
         return type.__new__(self, name, bases, classdict)
 
 
-class GenericStruct(object):
+class GenericStruct(object, metaclass=MetaStruct):
     """Class that will be used by all OpenFlow structs.
 
     So, if you need insert a method that will be used for all Structs, here is
@@ -165,7 +177,6 @@ class GenericStruct(object):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-    __metaclass__ = MetaStruct
 
     def __init__(self, *args, **kwargs):
         for _attr in self.__ordered__:
@@ -199,8 +210,7 @@ class GenericStruct(object):
         return message
 
     def _attributes(self):
-        """
-        turns an generator with each attribute from the current instance.
+        """Returns a generator with each attribute from the current instance.
 
         This attributes are coherced by the expected class for that attribute.
         """
@@ -218,7 +228,7 @@ class GenericStruct(object):
                 # Verifications for classes derived from list type
                 if not isinstance(attr, _class):
                     attr = _class(attr)
-            yield attr
+            yield (_attr, attr)
 
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
@@ -259,8 +269,7 @@ class GenericStruct(object):
             raise Exception()
         else:
             size = 0
-            for _attr in self.__ordered__:
-                _class = self.__ordered__[_attr]
+            for _attr, _class in self.__ordered__.items():
                 attr = getattr(self, _attr)
                 if _class.__name__ is 'PAD':
                     size += attr.get_size()
@@ -289,15 +298,20 @@ class GenericStruct(object):
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
-            for attr in self._attributes():
-                try:
+            for attr_name, attr_class in self.__ordered__.items():
+                attr = getattr(self, attr_name)
+                class_attr = getattr(self.__class__, attr_name)
+                if isinstance(attr, attr_class):
                     message += attr.pack()
-                except:
-                    raise exceptions.AttributeTypeError(attr, type(attr),
-                                                        type(attr))
+                elif class_attr.is_enum():
+                    message += attr_class(value = attr,
+                                          enum_ref= class_attr._enum_ref).pack()
+                else:
+                    message += attr_class(attr).pack()
+
             return message
 
-    def unpack(self, buff):
+    def unpack(self, buff, offset=0):
         """Unpack a binary struct into the object attributes.
 
         This method updated the object attributes based on the unpacked data
@@ -308,12 +322,24 @@ class GenericStruct(object):
         """
         #TODO: Remove any referency to header here, this is a struct, not a
         #       message.
-        begin = 0
-        for attr in self._attributes:
-            if attr.__class__.__name__ != "Header":
+        begin = offset
+
+        # TODO: Refact, ugly code
+        for attr_name, attr_class in self.__ordered__.items():
+            if attr_class.__name__ != "PAD":
+                class_attr = getattr(self.__class__, attr_name)
+                attr = attr_class()
                 attr.unpack(buff, offset=begin)
-                setattr(self, attr.__name__, attr)
-                begin += attr.get_size()
+
+                if issubclass(attr_class, GenericType) and class_attr.is_enum():
+                    #raise Exception(class_attr._enum_ref)
+                    attr = class_attr._enum_ref(attr._value)
+                setattr(self, attr_name, attr)
+
+                if issubclass(attr_class, GenericType):
+                    attr = attr_class()
+
+            begin += attr.get_size()
 
     def is_valid(self):
         """Checks if all attributes on struct is valid.
@@ -341,6 +367,34 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message.
+
+        This method updated the object attributes based on the unpacked
+        data from the buffer binary message. It is an inplace method,
+        and it receives the binary data of the message without the header.
+        There is no return on this method
+
+            :param buff: binary data package to be unpacked
+                         without the first 8 bytes (header)
+        """
+        begin = offset
+
+        for attr_name, attr_class in self.__ordered__.items():
+            if attr_class.__name__ != "Header":
+                if attr_class.__name__ != "PAD":
+                    class_attr = getattr(self.__class__, attr_name)
+                    attr = attr_class()
+                    attr.unpack(buff, offset=begin)
+                    begin += attr.get_size()
+
+                    if issubclass(attr_class, GenericType) and \
+                            class_attr.is_enum():
+                        attr = class_attr._enum_ref(attr._value)
+                    setattr(self, attr_name, attr)
+                else:
+                    begin += attr.get_size()
+
     def _validate_message_length(self):
         if not self.header.length == self.get_size():
             return False
@@ -393,3 +447,33 @@ class GenericMessage(GenericStruct):
         size.
         """
         self.header.length = self.get_size()
+
+
+class MetaBitMask(type):
+    def __getattr__(cls, name):
+        return cls._enum[name]
+
+    def __dir__(cls):
+        res = dir(type(cls)) + list(cls.__dict__.keys())
+        if cls is not GenericBitMask:
+            res.extend(cls._enum)
+        return res
+
+
+class GenericBitMask(object, metaclass=MetaBitMask):
+    def __init__(self, bitmask=None):
+        self.bitmask = bitmask
+
+    def __str__(self):
+        return "<%s: %s>" % (self.__class__.__name__, self.names)
+
+    def __repr__(self):
+        return "<%s(%s)>" % (self.__class__.__name__, self.bitmask)
+
+    @property
+    def names(self):
+        result = []
+        for key, value in self._enum.items():
+            if value & self.bitmask:
+                result.append(key)
+        return result

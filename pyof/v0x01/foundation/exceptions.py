@@ -65,3 +65,7 @@ class ValidationError(Exception):
         self.msg = msg
     def __str__(self):
         return self.msg
+
+
+class UnpackException(Exception):
+    pass

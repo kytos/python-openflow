@@ -3,6 +3,8 @@
 # System imports
 import enum
 
+from collections import OrderedDict as _OD
+
 # Third-party imports
 
 # Local source tree imports
@@ -11,30 +13,39 @@ from pyof.v0x01.foundation import basic_types
 
 # Enums
 
+class PortConfig(base.GenericBitMask):
+    _enum = _OD(OFPC_PORT_DOWN = 1 << 0,
+                OFPPC_NO_STP = 1 << 1,
+                OFPPC_NO_RECV = 1 << 2,
+                OFPPC_NO_RECV_STP = 1 << 3,
+                OFPPC_FLOOD = 1 << 4,
+                OFPPC_NO_FWD = 1 << 5,
+                OFPPC_NO_PACKET_IN = 1 << 6)
 
-class PortConfig(enum.Enum):
-    """Flags to indicate behavior of the physical port.
 
-    These flags are used in OFPPhyPort to describe the current configuration.
-    They are used in the OFPPortMod message to configure the port's behavior.
-
-    Enums:
-        OFPPC_PORT_DOWN     # Port is administratively down.
-        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
-        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
-        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
-        OFPPC_NO_FLOOD      # Do not include this port when flooding.
-        OFPPC_NO_FWD        # Drop packets forwarded to port.
-        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
-    """
-
-    OFPPC_PORT_DOWN = 1 << 0
-    OFPPC_NO_STP = 1 << 1
-    OFPPC_NO_RECV = 1 << 2
-    OFPPC_NO_RECV_STP = 1 << 3
-    OFPPC_FLOOD = 1 << 4
-    OFPPC_NO_FWD = 1 << 5
-    OFPPC_NO_PACKET_IN = 1 << 6
+#class PortConfig(enum.Enum):
+#    """Flags to indicate behavior of the physical port.
+#
+#    These flags are used in OFPPhyPort to describe the current configuration.
+#    They are used in the OFPPortMod message to configure the port's behavior.
+#
+#    Enums:
+#        OFPPC_PORT_DOWN     # Port is administratively down.
+#        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
+#        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
+#        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
+#        OFPPC_NO_FLOOD      # Do not include this port when flooding.
+#        OFPPC_NO_FWD        # Drop packets forwarded to port.
+#        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
+#    """
+#
+#    OFPPC_PORT_DOWN = 1 << 0
+#    OFPPC_NO_STP = 1 << 1
+#    OFPPC_NO_RECV = 1 << 2
+#    OFPPC_NO_RECV_STP = 1 << 3
+#    OFPPC_FLOOD = 1 << 4
+#    OFPPC_NO_FWD = 1 << 5
+#    OFPPC_NO_PACKET_IN = 1 << 6
 
 
 class PortState(enum.Enum):
@@ -130,7 +141,7 @@ class PortFeatures(enum.Enum):
 # Classes
 
 
-class PhyPort(base.GenericMessage):
+class PhyPort(base.GenericStruct):
     """
     Description of a physical port.
 
@@ -157,7 +168,7 @@ class PhyPort(base.GenericMessage):
     port_no = basic_types.UBInt16()
     hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
-    config = basic_types.UBInt32()
+    config = basic_types.UBInt32(enum_ref=PortConfig)
     state = basic_types.UBInt32()
     curr = basic_types.UBInt32()
     advertised = basic_types.UBInt32()

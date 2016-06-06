@@ -120,13 +120,62 @@ class Char(base.GenericType):
             :param value:  the character to be build.
             :param length: the character size.
         """
-        if value:
-            self._value = value
+        super().__init__(value)
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
 
-class FixedTypeList(list):
+class HWAddress(base.GenericType):
+    """Defines a hardware address"""
+
+    def __init__(self, hw_address=b'000000'):
+        super().__init__(hw_address)
+
+    def pack(self):
+        # struct.pack('!6B', *[int(x, 16) for x in self._value.split(':')])
+        value = self._value.split(':')
+        return struct.pack('!6B', *[int(x, 16) for x in value])
+
+    def unpack(self, buff, offset=0):
+        # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
+        unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+        transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
+        self._value = transformed_data
+
+    def get_size(self):
+        return 6
+
+
+class BinaryData(base.GenericType):
+    """Class to create objects that represents binary data
+
+    This will be used on the 'data' attribute from
+    packet_out and packet_in messages.
+
+    Both the 'pack' and 'unpack' methods will return the binary data itself.
+    get_size method will return the size of the instance using python 'len'
+    """
+
+    def __init__(self, value=b''):
+        super().__init__(value)
+
+    def pack(self):
+        if type(self._value) is bytes:
+            if len(self._value) > 0:
+                return self._value
+            else:
+                return b''
+        else:
+            raise exceptions.NotBinarydata()
+
+    def unpack(self, buff):
+        self._value = buff
+
+    def get_size(self):
+        return len(self._value)
+
+
+class FixedTypeList(list, base.GenericStruct):
     """Creates a List that will receive OFP Classes"""
     _pyof_class = None
 
@@ -201,15 +250,15 @@ class FixedTypeList(list):
             offset: used if we need to shift the beginning of the data
         """
         item_size = self._pyof_class().get_size()
-        binary_items = [buff[i:i+2] for i in range(offset, len(buff),
-                                                   item_size)]
+        binary_items = [buff[i:i+item_size] for i in range(offset, len(buff),
+                                                           item_size)]
         for binary_item in binary_items:
             item = self._pyof_class()
             item.unpack(binary_item)
             self.append(item)
 
 
-class ConstantTypeList(list):
+class ConstantTypeList(list, base.GenericStruct):
     """Creates a List that will only allow objects of the same type (class) to
     be inserted"""
     def __init__(self, items=[]):
@@ -298,51 +347,3 @@ class ConstantTypeList(list):
             self.append(item)
 
 
-class HWAddress(base.GenericType):
-    """Defines a hardware address"""
-
-    def __init__(self, hw_address=None):
-        self._value = hw_address
-
-    def pack(self):
-        # struct.pack('!6B', *[int(x, 16) for x in self._value.split(':')])
-        value = self._value.split(':')
-        return struct.pack('!6B', *[int(x, 16) for x in value])
-
-    def unpack(self, buff, offset=0):
-        # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
-        unpacked_data = struct.unpack('!6B', buff)
-        transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
-        self._value = transformed_data
-
-    def get_size(self):
-        return 6
-
-
-class BinaryData(base.GenericType):
-    """Class to create objects that represents binary data
-
-    This will be used on the 'data' attribute from
-    packet_out and packet_in messages.
-
-    Both the 'pack' and 'unpack' methods will return the binary data itself.
-    get_size method will return the size of the instance using python 'len'
-    """
-
-    def __init__(self, value=b''):
-        super().__init__(value)
-
-    def pack(self):
-        if type(self._value) is bytes:
-            if len(self._value) > 0:
-                return self._value
-            else:
-                return b''
-        else:
-            raise exceptions.NotBinarydata()
-
-    def unpack(self, buff):
-        self._value = buff
-
-    def get_size(self):
-        return len(self._value)
