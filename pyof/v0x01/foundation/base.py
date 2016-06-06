@@ -167,7 +167,7 @@ class MetaStruct(type):
         return type.__new__(self, name, bases, classdict)
 
 
-class GenericStruct(object):
+class GenericStruct(object, metaclass=MetaStruct):
     """Class that will be used by all OpenFlow structs.
 
     So, if you need insert a method that will be used for all Structs, here is
@@ -177,7 +177,6 @@ class GenericStruct(object):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-    __metaclass__ = MetaStruct
 
     def __init__(self, *args, **kwargs):
         for _attr in self.__ordered__:
