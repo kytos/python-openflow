@@ -3,8 +3,6 @@
 # System imports
 import enum
 
-from collections import OrderedDict as _OD
-
 # Third-party imports
 
 # Local source tree imports
@@ -14,13 +12,13 @@ from pyof.v0x01.foundation import basic_types
 # Enums
 
 class PortConfig(base.GenericBitMask):
-    _enum = _OD(OFPC_PORT_DOWN = 1 << 0,
-                OFPPC_NO_STP = 1 << 1,
-                OFPPC_NO_RECV = 1 << 2,
-                OFPPC_NO_RECV_STP = 1 << 3,
-                OFPPC_FLOOD = 1 << 4,
-                OFPPC_NO_FWD = 1 << 5,
-                OFPPC_NO_PACKET_IN = 1 << 6)
+    OFPC_PORT_DOWN = 1 << 0
+    OFPPC_NO_STP = 1 << 1
+    OFPPC_NO_RECV = 1 << 2
+    OFPPC_NO_RECV_STP = 1 << 3
+    OFPPC_FLOOD = 1 << 4
+    OFPPC_NO_FWD = 1 << 5
+    OFPPC_NO_PACKET_IN = 1 << 6
 
 
 #class PortConfig(enum.Enum):

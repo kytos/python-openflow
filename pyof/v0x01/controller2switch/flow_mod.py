@@ -37,14 +37,12 @@ class FlowModCommand(enum.Enum):
 
 class FlowModFlags(base.GenericBitMask):
     """Types to be used in Flags field"""
-    _enum = _OD(
-        #: Send flow removed message when flow expires or is deleted
-        OFPFF_SEND_FLOW_REM = 1 << 0,
-        #: Check for overlapping entries first
-        OFPFF_CHECK_OVERLAP = 1 << 1,
-        #: Remark this is for emergency
-        OFPFF_EMERG = 1 << 2
-    )
+    #: Send flow removed message when flow expires or is deleted
+    OFPFF_SEND_FLOW_REM = 1 << 0
+    #: Check for overlapping entries first
+    OFPFF_CHECK_OVERLAP = 1 << 1
+    #: Remark this is for emergency
+    OFPFF_EMERG = 1 << 2
 
 # Classes
 
