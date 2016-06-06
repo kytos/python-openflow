@@ -35,6 +35,7 @@ classes are used in all part of this library.
 from collections import OrderedDict as _OD
 import enum
 import struct
+import copy
 
 # Third-party imports
 
@@ -118,9 +119,6 @@ class GenericType(object):
         :param buff: binary buffer.
         :param offset: offset to be applied. Default is 0.
         """
-        # TODO: How to deal with this when the attribute from the
-        #       owner class is an element from a enum? How to recover
-        #       the enum name/reference ?
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
             if self._enum_ref:
@@ -254,6 +252,14 @@ class GenericStruct(object, metaclass=MetaStruct):
                 return False
         return True
 
+    def get_class_attributes(self):
+        for attr_name in self.__ordered__:
+            yield (attr_name, getattr(type(self), attr_name))
+
+    def get_instance_attributes(self):
+        for attr_name in self.__ordered__:
+            yield (attr_name, getattr(self, attr_name))
+
     def get_size(self):
         """Return the size (in bytes) of a struct.
 
@@ -322,25 +328,12 @@ class GenericStruct(object, metaclass=MetaStruct):
 
             :param buff: binary data package to be unpacked.
         """
-        # TODO: Remove any referency to header here, this is a struct, not a
-        #       message.
         begin = offset
-
-        # TODO: Refact, ugly code
-        for attr_name, attr_class in self.__ordered__.items():
-            if attr_class.__name__ != "PAD":
-                class_attr = getattr(self.__class__, attr_name)
-                attr = attr_class()
-                attr.unpack(buff, offset=begin)
-
-                if issubclass(attr_class, GenericType) and class_attr.is_enum():
-                    attr = class_attr._enum_ref(attr._value)
-                setattr(self, attr_name, attr)
-
-                if issubclass(attr_class, GenericType):
-                    attr = attr_class()
-
-            begin += attr.get_size()
+        for attribute_name, class_attribute in self.get_class_attributes():
+            attribute = copy.deepcopy(class_attribute)
+            attribute.unpack(buff, begin)
+            setattr(self, attribute_name, attribute)
+            begin += attribute.get_size()
 
     def is_valid(self):
         """Checks if all attributes on struct is valid.
@@ -380,21 +373,12 @@ class GenericMessage(GenericStruct):
                          without the first 8 bytes (header)
         """
         begin = offset
-
-        for attr_name, attr_class in self.__ordered__.items():
-            if attr_class.__name__ != "Header":
-                if attr_class.__name__ != "PAD":
-                    class_attr = getattr(self.__class__, attr_name)
-                    attr = attr_class()
-                    attr.unpack(buff, offset=begin)
-                    begin += attr.get_size()
-
-                    if issubclass(attr_class, GenericType) and \
-                            class_attr.is_enum():
-                        attr = class_attr._enum_ref(attr._value)
-                    setattr(self, attr_name, attr)
-                else:
-                    begin += attr.get_size()
+        for attribute_name, class_attribute in self.get_class_attributes():
+            if type(class_attribute).__name__ != "Header":
+                attribute = copy.deepcopy(class_attribute)
+                attribute.unpack(buff, begin)
+                setattr(self, attribute_name, attribute)
+                begin += attribute.get_size()
 
     def _validate_message_length(self):
         if not self.header.length == self.get_size():
@@ -468,7 +452,6 @@ class MetaBitMask(type):
                          if key[0] == '_' or hasattr(value, '__call__') or
                          isinstance(value, property)}
             classdict['_enum'] = _enum
-        print(classdict.items())
         return type.__new__(self, name, bases, classdict)
 
     def __getattr__(cls, name):

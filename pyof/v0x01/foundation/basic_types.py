@@ -23,51 +23,24 @@ class PAD(base.GenericType):
     """Class for padding attributes"""
     _fmt = ''
 
-    def __init__(self, size=0):
-        self._size = size
+    def __init__(self, length=0):
+        self._length = length
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._size)
+        return "{}({})".format(self.__class__.__name__, self._length)
 
     def __str__(self):
-        return str(self._size)
-
-    def __set__(self, instance, value):
-        # TODO: Check if value is of the same class
-        raise exceptions.PADHasNoValue()
-
-    def __delete__(self, instance):
-        # TODO: This is the right delete way? Or should we delete
-        #       the attribute from the instance?
-        del self._size
-
-    def __eq__(self, other):
-        return self._size == other
-
-    def __ne__(self, other):
-        return self._size != other
-
-    def __gt__(self, other):
-        return self._size > other
-
-    def __ge__(self, other):
-        return self._size >= other
-
-    def __lt__(self, other):
-        return self._size <= other
-
-    def __le__(self, other):
-        return self._size <= other
+        return str(self._length)
 
     def get_size(self):
         """ Return the size of type in bytes. """
-        return struct.calcsize("!{:d}B".format(self._size))
+        return struct.calcsize("!{:d}B".format(self._length))
 
     def unpack(self, buff, offset):
         """Unpack a buff and stores at value property.
             :param buff:   Buffer where data is located.
             :param offset: Where data stream begins.
-            Do nothing, since the _size is already defined
+            Do nothing, since the _length is already defined
             and it is just a PAD. Keep buff and offset just
             for compability with other unpack methods
         """
@@ -76,9 +49,9 @@ class PAD(base.GenericType):
     def pack(self):
         """Pack the object.
 
-        Returns b'\x00' multiplied by the size of the PAD
+        Returns b'\x00' multiplied by the length of the PAD
         """
-        return b'\x00' * self._size
+        return b'\x00' * self._length
 
 
 class UBInt8(base.GenericType):
@@ -138,7 +111,10 @@ class HWAddress(base.GenericType):
 
     def unpack(self, buff, offset=0):
         # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
-        unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+        try:
+            unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+        except:
+            raise Exception("%s: %s" % (offset, buff))
         transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
         self._value = transformed_data
 
@@ -345,5 +321,3 @@ class ConstantTypeList(list, base.GenericStruct):
             item = item_class()
             item.unpack(binary_item)
             self.append(item)
-
-
