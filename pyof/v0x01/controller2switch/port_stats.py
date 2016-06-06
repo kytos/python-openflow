@@ -11,31 +11,32 @@ from pyof.v0x01.foundation import basic_types
 # Classes
 
 
-class PortStats(base.GenericMessage):
-    """
-    Body of reply to OFPST_PORT request. If a counter is unsupported, set
-    the field to all ones
+class PortStats(base.GenericStruct):
+    """Body of reply to OFPST_PORT request.
 
-        :param port_no:      Port number
-        :param pad:          Align to 64-bits
-        :param rx_packets:   Number of received packets
-        :param tx_packets:   Number of transmitted packets
-        :param rx_bytes:     Number of received bytes
-        :param tx_bytes:     Number of transmitted bytes
-        :param rx_dropped:   Number of packets dropped by RX
-        :param tx_dropped:   Number of packets dropped by TX
-        :param rx_errors:    Number of receive errors.  This is a super-set
-                             of more specific receive errors and should be
-                             greater than or equal to the sum of all
-                             rx_*_err values
-        :param tx_errors:    Number of transmit errors.  This is a super-set
-                             of more specific transmit errors and should be
-                             greater than or equal to the sum of all
-                             tx_*_err values (none currently defined.)
-        :param rx_frame_err: Number of frame alignment errors
-        :param rx_over_err:  Number of packets with RX overrun
-        :param rx_crc_err:   Number of CRC errors
-        :param collisions:   Number of collisions
+    If a counter is unsupported, set the field to all ones.
+
+    :param port_no:      Port number
+    :param pad:          Align to 64-bits
+    :param rx_packets:   Number of received packets
+    :param tx_packets:   Number of transmitted packets
+    :param rx_bytes:     Number of received bytes
+    :param tx_bytes:     Number of transmitted bytes
+    :param rx_dropped:   Number of packets dropped by RX
+    :param tx_dropped:   Number of packets dropped by TX
+    :param rx_errors:    Number of receive errors.  This is a super-set
+                         of more specific receive errors and should be
+                         greater than or equal to the sum of all
+                         rx_*_err values
+    :param tx_errors:    Number of transmit errors.  This is a super-set
+                         of more specific transmit errors and should be
+                         greater than or equal to the sum of all
+                         tx_*_err values (none currently defined.)
+    :param rx_frame_err: Number of frame alignment errors
+    :param rx_over_err:  Number of packets with RX overrun
+    :param rx_crc_err:   Number of CRC errors
+    :param collisions:   Number of collisions
+
     """
     port_no = basic_types.UBInt16()
     pad = basic_types.PAD(6)
@@ -57,7 +58,6 @@ class PortStats(base.GenericMessage):
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
                  rx_crc_err=None, collisions=None):
-
         self.port_no = port_no
         self.rx_packets = rx_packets
         self.tx_packets = tx_packets

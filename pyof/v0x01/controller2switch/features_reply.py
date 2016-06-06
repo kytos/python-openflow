@@ -48,15 +48,15 @@ class SwitchFeatures(base.GenericMessage):
     The 'OFPT_FEATURES_REPLY' message is an instance of this
     class, despite the strange name.
 
-        :param xid:          xid to be used on the message header
-        :param datapath_id:  UBInt64 datapath unique ID
-                             The lower 48-bits are for MAC address, while
-                             the upper 16-bits are implementer-defined
-        :param n_buffers:    UBInt32 max packets buffered at once
-        :param n_tables:     UBInt8 number of tables supported by datapath
-        :param capabilities: UBInt32 bitmap support of capabilities
-        :param actions:
-        :param ports:        Port definitions
+    :param xid:          xid to be used on the message header
+    :param datapath_id:  UBInt64 datapath unique ID
+                         The lower 48-bits are for MAC address, while
+                         the upper 16-bits are implementer-defined
+    :param n_buffers:    UBInt32 max packets buffered at once
+    :param n_tables:     UBInt8 number of tables supported by datapath
+    :param capabilities: UBInt32 bitmap support of capabilities
+    :param actions:
+    :param ports:        Port definitions
     """
 
     header = of_header.Header()
@@ -71,8 +71,8 @@ class SwitchFeatures(base.GenericMessage):
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None,
-                 ports=[]):
-
+                 ports=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
         self.header.length = 40
         self.header.xid = xid
@@ -81,7 +81,7 @@ class SwitchFeatures(base.GenericMessage):
         self.n_tables = n_tables
         self.capabilities = capabilities
         self.actions = actions
-        self.ports = ports
+        self.ports = [] if ports is None else ports
 
 
 class FeaturesReply(SwitchFeatures):

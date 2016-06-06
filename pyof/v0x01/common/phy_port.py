@@ -11,30 +11,39 @@ from pyof.v0x01.foundation import basic_types
 
 # Enums
 
-
-class PortConfig(enum.Enum):
-    """Flags to indicate behavior of the physical port.
-
-    These flags are used in OFPPhyPort to describe the current configuration.
-    They are used in the OFPPortMod message to configure the port's behavior.
-
-    Enums:
-        OFPPC_PORT_DOWN     # Port is administratively down.
-        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
-        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
-        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
-        OFPPC_NO_FLOOD      # Do not include this port when flooding.
-        OFPPC_NO_FWD        # Drop packets forwarded to port.
-        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
-    """
-
-    OFPPC_PORT_DOWN = 1 << 0
+class PortConfig(base.GenericBitMask):
+    OFPC_PORT_DOWN = 1 << 0
     OFPPC_NO_STP = 1 << 1
     OFPPC_NO_RECV = 1 << 2
     OFPPC_NO_RECV_STP = 1 << 3
     OFPPC_FLOOD = 1 << 4
     OFPPC_NO_FWD = 1 << 5
     OFPPC_NO_PACKET_IN = 1 << 6
+
+
+#class PortConfig(enum.Enum):
+#    """Flags to indicate behavior of the physical port.
+#
+#    These flags are used in OFPPhyPort to describe the current configuration.
+#    They are used in the OFPPortMod message to configure the port's behavior.
+#
+#    Enums:
+#        OFPPC_PORT_DOWN     # Port is administratively down.
+#        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
+#        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
+#        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
+#        OFPPC_NO_FLOOD      # Do not include this port when flooding.
+#        OFPPC_NO_FWD        # Drop packets forwarded to port.
+#        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
+#    """
+#
+#    OFPPC_PORT_DOWN = 1 << 0
+#    OFPPC_NO_STP = 1 << 1
+#    OFPPC_NO_RECV = 1 << 2
+#    OFPPC_NO_RECV_STP = 1 << 3
+#    OFPPC_FLOOD = 1 << 4
+#    OFPPC_NO_FWD = 1 << 5
+#    OFPPC_NO_PACKET_IN = 1 << 6
 
 
 class PortState(enum.Enum):
@@ -64,37 +73,31 @@ class PortState(enum.Enum):
 
 
 class Port(enum.Enum):
-    """Port numbering. Physical ports are numbered starting from 1. Port number
-    0 is reserved by the specification and must not be used for a switch
-    physical port.
+    """Port numbering.
 
-    Enums:
-        OFPP_MAX         # Maximum number of physical switch ports.
-        OFPP_IN_PORT     # Send the packet out the input port. This
-                         # virtual port must be explicitly used
-                         # in order to send back out of the input port.
-
-        OFPP_TABLE       # Perform actions in flow table.
-                         # NB: This can only be the destination
-                         # port for packet-out messages
-
-        OFPP_NORMAL      # Process with normal L2/L3 switching.
-        OFPP_FLOOD       # All physical ports except input port and
-                         # those disabled by STP
-        OFPP_ALL         # All physical ports except input port
-        OFPP_CONTROLLER  # Send to controller
-        OFPP_LOCAL       # Local openflow "port"
-        OFPP_NONE        # Not associated with a physical port
+    Physical ports are numbered starting from 1. Port number 0 is reserved by
+    the specification and must not be used for a switch physical port.
     """
 
+    #: Maximum number of physical switch ports.
     OFPP_MAX = 0xff00
+    #: Send the packet out the input port. This virtual port must be explicitly
+    #: used in order to send back out of the input port.
     OFPP_IN_PORT = 0xfff8
+    #: Perform actions in flow table.
+    #: NB: This can only be the destination port for packet-out messages
     OFPP_TABLE = 0xfff9
+    #: Process with normal L2/L3 switching.
     OFPP_NORMAL = 0xfffa
+    #: All physical ports except input port and
     OFPP_FLOOD = 0xfffb
+    #: All physical ports except input port
     OFPP_ALL = 0xfffc
+    #: Send to controller
     OFPP_CONTROLLER = 0xfffd
+    #: Local openflow "port"
     OFPP_LOCAL = 0xfffe
+    #: Not associated with a physical port
     OFPP_NONE = 0xffff
 
 
@@ -136,7 +139,7 @@ class PortFeatures(enum.Enum):
 # Classes
 
 
-class PhyPort(base.GenericMessage):
+class PhyPort(base.GenericStruct):
     """
     Description of a physical port.
 
@@ -161,9 +164,9 @@ class PhyPort(base.GenericMessage):
 
     """
     port_no = basic_types.UBInt16()
-    hw_addr = basic_types.UBInt8Array(length=base.OFP_ETH_ALEN)
+    hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
-    config = basic_types.UBInt32()
+    config = basic_types.UBInt32(enum_ref=PortConfig)
     state = basic_types.UBInt32()
     curr = basic_types.UBInt32()
     advertised = basic_types.UBInt32()
@@ -173,7 +176,6 @@ class PhyPort(base.GenericMessage):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None):
-
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.name = name
@@ -194,7 +196,6 @@ class ListOfPhyPorts(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of PhyPort
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=PhyPort,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(pyof_class=PhyPort,
+                         items=items)

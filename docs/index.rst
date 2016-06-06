@@ -33,6 +33,8 @@ API Reference
 .. toctree::
    :maxdepth: 9
    :titlesonly:
+   :caption: Table of Contents
+   :name: mastertoc
 
    modules
 

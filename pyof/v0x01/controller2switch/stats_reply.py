@@ -59,23 +59,23 @@ class StatsTypes(enum.Enum):
 
 
 class StatsReply(base.GenericMessage):
-    """
-    Class implements the response to the config request
+    """Class implements the response to the config request
 
-        :param header -- OpenFlow header
-        :param body_type -- One of the OFPST_* constants
-        :param flags -- OFPSF_REQ_* flags (none yet defined)
-        :param body -- Body of the request
+    :param header -- OpenFlow header
+    :param body_type -- One of the OFPST_* constants
+    :param flags -- OFPSF_REQ_* flags (none yet defined)
+    :param body -- Body of the request
+
     """
     header = of_header.Header()
     body_type = basic_types.UBInt16()
     flags = basic_types.UBInt16()
     body = basic_types.ConstantTypeList()
 
-    def __init__(self, xid=None, body_type=None, flags=None, body=[]):
-
+    def __init__(self, xid=None, body_type=None, flags=None, body=None):
+        super().__init__()
         self.header.xid = xid
         self.header.message_type = of_header.Type.OFPT_STATS_REPLY
         self.body_type = body_type
         self.flags = flags
-        self.body = body
+        self.body = [] if body is None else body

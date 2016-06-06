@@ -47,12 +47,25 @@ class AttributeTypeError(Exception):
         self.expected_class = expected_class
 
     def __str__(self):
-        return ("Unexpected value ('{}') on attribute '{}' "
-                "from class '{}'".format(self.item,
-                                         self.name, self.expected_class))
+        msg = "Unexpected value ('{}') ".format(str(self.item))
+        msg += "on attribute '{}' ".format(str(self.name))
+        msg += "from class '{}'".format(str(self.expected_class))
+        return msg
 
 
 class NotBinaryData(Exception):
     """Error raised when the content of a BinaryData attribute is not binary"""
     def __str__(self):
         return("The content of this variable needs to be binary data")
+
+
+class ValidationError(Exception):
+    """Error on validate message or struct"""
+    def __init__(self, msg="Error on validate message"):
+        self.msg = msg
+    def __str__(self):
+        return self.msg
+
+
+class UnpackException(Exception):
+    pass

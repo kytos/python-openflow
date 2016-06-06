@@ -36,10 +36,11 @@ class ConfigFlags(enum.Enum):
 class SwitchConfig(base.GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
 
-        :param xid:           xid to be used on the message header
-        :param flags:         UBInt16 OFPC_* flags
-        :param miss_send_len: UBInt16 max bytes of new flow that the
-                              datapath should send to the controller
+    :param xid:           xid to be used on the message header
+    :param flags:         UBInt16 OFPC_* flags
+    :param miss_send_len: UBInt16 max bytes of new flow that the
+                          datapath should send to the controller
+
     """
 
     header = of_header.Header()
@@ -47,7 +48,7 @@ class SwitchConfig(base.GenericMessage):
     miss_send_len = basic_types.UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
-
+        super().__init__()
         self.header.xid = xid
         self.flags = flags
         self.miss_send_len = miss_send_len
@@ -62,7 +63,5 @@ class ListOfActions(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of ActionHeader
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=action.ActionHeader,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(pyof_class=action.ActionHeader, items=items)

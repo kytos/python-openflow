@@ -20,6 +20,8 @@ class EchoReply(base.GenericMessage):
     header = of_header.Header()
 
     def __init__(self, xid=None):
+        super().__init__()
+        self.header = of_header.Header()
         self.header.message_type = of_header.Type.OFPT_ECHO_REPLY
         self.header.length = 8
         self.header.xid = xid

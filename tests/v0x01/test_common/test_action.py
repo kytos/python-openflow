@@ -81,6 +81,7 @@ class TestActionVlanVid(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionVlanVid()
+        self.message.length = 2
         self.message.vlan_vid = 5
 
     def test_get_size(self):
@@ -129,6 +130,7 @@ class TestActionDLAddr(unittest.TestCase):
     def test_get_size(self):
         """[Common/ActionDLAddr] - size 16"""
         self.assertEqual(self.message.get_size(), 16)
+
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
@@ -211,7 +213,7 @@ class TestActionVendorHeader(unittest.TestCase):
 
     def setUp(self):
         self.message = action.ActionVendorHeader()
-        self.message.len = 16
+        self.message.length = 16
         self.message.vendor = 1
 
     def test_get_size(self):

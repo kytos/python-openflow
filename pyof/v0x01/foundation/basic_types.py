@@ -21,52 +21,26 @@ __all__ = ['UBInt8',
 
 class PAD(base.GenericType):
     """Class for padding attributes"""
-    _fmt=''
-    def __init__(self, size=0):
-        self._size = size
+    _fmt = ''
+
+    def __init__(self, length=0):
+        self._length = length
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._size)
+        return "{}({})".format(self.__class__.__name__, self._length)
 
     def __str__(self):
-        return str(self._size)
-
-    def __set__(self, instance, value):
-        # TODO: Check if value is of the same class
-        raise exceptions.PADHasNoValue()
-
-    def __delete__(self, instance):
-        # TODO: This is the right delete way? Or should we delete
-        #       the attribute from the instance?
-        del self._size
-
-    def __eq__(self, other):
-        return self._size == other
-
-    def __ne__(self, other):
-        return self._size != other
-
-    def __gt__(self, other):
-        return self._size > other
-
-    def __ge__(self, other):
-        return self._size >= other
-
-    def __lt__(self, other):
-        return self._size <= other
-
-    def __le__(self, other):
-        return self._size <= other
+        return str(self._length)
 
     def get_size(self):
         """ Return the size of type in bytes. """
-        return struct.calcsize("!{:d}B".format(self._size))
+        return struct.calcsize("!{:d}B".format(self._length))
 
     def unpack(self, buff, offset):
         """Unpack a buff and stores at value property.
             :param buff:   Buffer where data is located.
             :param offset: Where data stream begins.
-            Do nothing, since the _size is already defined
+            Do nothing, since the _length is already defined
             and it is just a PAD. Keep buff and offset just
             for compability with other unpack methods
         """
@@ -75,9 +49,9 @@ class PAD(base.GenericType):
     def pack(self):
         """Pack the object.
 
-        Returns b'\x00' multiplied by the size of the PAD
+        Returns b'\x00' multiplied by the length of the PAD
         """
-        return b'\x00' * self._size
+        return b'\x00' * self._length
 
 
 class UBInt8(base.GenericType):
@@ -86,29 +60,6 @@ class UBInt8(base.GenericType):
     Class for an 8 bits (1 byte) Unsigned Integer.
     """
     _fmt = "!B"
-
-
-class UBInt8Array(base.GenericType):
-    """Creates an Array of Unsigned Integer of 8 bytes."""
-    def __init__(self, value=None, length=0):
-        if value:
-            self._value = value
-        self.length = length
-        self._fmt = "!%d%c" % (self.length, 'B')
-
-    def unpack(self, buff, offset=0):
-        """Unpack a buff and stores at value property.
-            :param buff:   Buffer where data is located.
-            :param offset: Where data stream begins.
-        """
-        self._value = struct.unpack_from(self._fmt, buff, offset)
-
-    def pack(self):
-        """Pack the object.
-
-        Here we need a pointer, self.value is a tuple and is expanded to args.
-        """
-        return struct.pack(self._fmt, *self._value)
 
 
 class UBInt16(base.GenericType):
@@ -142,24 +93,75 @@ class Char(base.GenericType):
             :param value:  the character to be build.
             :param length: the character size.
         """
-        if value:
-            self._value = value
+        super().__init__(value)
         self.length = length
-        self._fmt = '!%d%c' % (self.length, 's')
+        self._fmt = '!{}{}'.format(self.length, 's')
 
 
-class FixedTypeList(list):
+class HWAddress(base.GenericType):
+    """Defines a hardware address"""
+
+    def __init__(self, hw_address=b'000000'):
+        super().__init__(hw_address)
+
+    def pack(self):
+        # struct.pack('!6B', *[int(x, 16) for x in self._value.split(':')])
+        value = self._value.split(':')
+        return struct.pack('!6B', *[int(x, 16) for x in value])
+
+    def unpack(self, buff, offset=0):
+        # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
+        try:
+            unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+        except:
+            raise Exception("%s: %s" % (offset, buff))
+        transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
+        self._value = transformed_data
+
+    def get_size(self):
+        return 6
+
+
+class BinaryData(base.GenericType):
+    """Class to create objects that represents binary data
+
+    This will be used on the 'data' attribute from
+    packet_out and packet_in messages.
+
+    Both the 'pack' and 'unpack' methods will return the binary data itself.
+    get_size method will return the size of the instance using python 'len'
+    """
+
+    def __init__(self, value=b''):
+        super().__init__(value)
+
+    def pack(self):
+        if type(self._value) is bytes:
+            if len(self._value) > 0:
+                return self._value
+            else:
+                return b''
+        else:
+            raise exceptions.NotBinarydata()
+
+    def unpack(self, buff):
+        self._value = buff
+
+    def get_size(self):
+        return len(self._value)
+
+
+class FixedTypeList(list, base.GenericStruct):
     """Creates a List that will receive OFP Classes"""
     _pyof_class = None
 
-    def __init__(self, pyof_class, items=[]):
+    def __init__(self, pyof_class, items=None):
+        super().__init__()
         self._pyof_class = pyof_class
-        list.__init__(self, [])
-        if items is not None and len(items) > 0:
-            if type(items) is list:
-                self.extend(items)
-            else:
-                self.append(items)
+        if type(items) is list:
+            self.extend(items)
+        elif items:
+            self.append(items)
 
     def __repr__(self):
         """Unique representantion of the object.
@@ -173,16 +175,6 @@ class FixedTypeList(list):
     def __str__(self):
         """Human-readable object representantion"""
         return "{}".format([item for item in self])
-
-    def __set__(self, instance, value):
-        """Clear the list and set value as the only item of the list"""
-        self.__delete__(instance)
-        self.append(value)
-
-    def __delete__(self, instance):
-        """This method remove all items from the list"""
-        for item in self:
-            self.remove(item)
 
     def append(self, item):
         if type(item) is list:
@@ -205,10 +197,15 @@ class FixedTypeList(list):
                                                self._pyof_class.__name__)
 
     def get_size(self):
-        size = 0
-        for item in self:
-            size += item.get_size()
-        return size
+        if len(self) == 0:
+            return 0
+        elif issubclass(self._pyof_class, base.GenericType):
+            return len(self) * self._pyof_class().get_size()
+        else:
+            size = 0
+            for item in self:
+                size += item.get_size()
+            return size
 
     def pack(self):
         bin_message = b''
@@ -228,24 +225,23 @@ class FixedTypeList(list):
             offset: used if we need to shift the beginning of the data
         """
         item_size = self._pyof_class().get_size()
-        binary_items = [buff[i:i+2] for i in range(offset, len(buff),
-                                                   item_size)]
+        binary_items = [buff[i:i+item_size] for i in range(offset, len(buff),
+                                                           item_size)]
         for binary_item in binary_items:
             item = self._pyof_class()
             item.unpack(binary_item)
             self.append(item)
 
 
-class ConstantTypeList(list):
+class ConstantTypeList(list, base.GenericStruct):
     """Creates a List that will only allow objects of the same type (class) to
     be inserted"""
-    def __init__(self, items=[]):
-        list.__init__(self, [])
-        if items is not None and len(items) > 0:
-            if type(items) is list:
-                self.extend(items)
-            else:
-                self.append(items)
+    def __init__(self, items=None):
+        super().__init__()
+        if type(items) is list:
+            self.extend(items)
+        elif items:
+            self.append(items)
 
     def __repr__(self):
         """Unique representantion of the object.
@@ -258,16 +254,6 @@ class ConstantTypeList(list):
     def __str__(self):
         """Human-readable object representantion"""
         return "{}".format([item for item in self])
-
-    def __set__(self, instance, value):
-        """Clear the list and set value as the only item of the list"""
-        self.__delete__(instance)
-        self.append(value)
-
-    def __delete__(self, instance):
-        """This method remove all items from the list"""
-        for item in self:
-            self.remove(item)
 
     def append(self, item):
         if type(item) is list:
@@ -294,9 +280,15 @@ class ConstantTypeList(list):
                                                self[0].__class__.__name__)
 
     def get_size(self):
-        if getattr(self, 'len', None) and len(self) == 0:
+        if len(self) == 0:
+            # If this is a empty list, then returns zero
             return 0
+        elif issubclass(self[0].__class__, base.GenericType):
+            # If the type of the elements is GenericType, then returns the
+            # length of the list multiplied by the size of the GenericType.
+            return len(self) * self[0].__class__().get_size()
         else:
+            # Otherwise iter over the list accumulating the sizes.
             size = 0
             for item in self:
                 size += item.get_size()
@@ -327,29 +319,3 @@ class ConstantTypeList(list):
             item = item_class()
             item.unpack(binary_item)
             self.append(item)
-
-
-class BinaryData(base.GenericType):
-    """Class to create objects that represents binary data
-
-    This will be used on the 'data' attribute from
-    packet_out and packet_in messages.
-
-    Both the 'pack' and 'unpack' methods will return the binary data itself.
-    get_size method will return the size of the instance using python 'len'
-    """
-
-    def pack(self):
-        if type(self._value) is bytes:
-            if len(self._value) > 0:
-                return self._value
-            else:
-                return b''
-        else:
-            raise exceptions.NotBinarydata()
-
-    def unpack(self, buff):
-        self._value = buff
-
-    def get_size(self):
-        return len(self._value)
