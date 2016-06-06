@@ -29,7 +29,7 @@ class FlowRemovedReason(enum.Enum):
 
 
 # Classes
-class FlowRemoved(base.GenericStruct):
+class FlowRemoved(base.GenericMessage):
     """Flow removed (datapath -> controller).
 
     :param header:        Openflow Header

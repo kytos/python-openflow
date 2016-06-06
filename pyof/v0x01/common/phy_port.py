@@ -176,7 +176,6 @@ class PhyPort(base.GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None):
-
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.name = name
@@ -197,7 +196,6 @@ class ListOfPhyPorts(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of PhyPort
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=PhyPort,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(pyof_class=PhyPort,
+                         items=items)

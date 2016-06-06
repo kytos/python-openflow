@@ -10,16 +10,17 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class QueueStats(base.GenericMessage):
+class QueueStats(base.GenericStruct):
     """
     Implements the reply body of a port_no
 
-        :param port_no:    Port Number
-        :param pad:        Align to 32-bits
-        :param queue_id:   Queue ID
-        :param tx_bytes:   Number of transmitted bytes
-        :param tx_packets: Number of transmitted packets
-        :param tx_errors:  Number of packets dropped due to overrun
+    :param port_no:    Port Number
+    :param pad:        Align to 32-bits
+    :param queue_id:   Queue ID
+    :param tx_bytes:   Number of transmitted bytes
+    :param tx_packets: Number of transmitted packets
+    :param tx_errors:  Number of packets dropped due to overrun
+
     """
     port_no = basic_types.UBInt16()
     pad = basic_types.PAD(2)
@@ -30,7 +31,6 @@ class QueueStats(base.GenericMessage):
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
-
         self.port_no = port_no
         self.queue_id = queue_id
         self.tx_bytes = tx_bytes

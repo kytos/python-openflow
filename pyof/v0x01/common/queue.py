@@ -36,10 +36,9 @@ class ListOfProperties(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of QueuePropHeader
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=QueuePropHeader,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(pyof_class=QueuePropHeader,
+                         items=items)
 
 
 class QueuePropHeader(base.GenericStruct):
@@ -71,13 +70,13 @@ class PacketQueue(base.GenericStruct):
     pad = basic_types.PAD(2)
     properties = ListOfProperties()
 
-    def __init__(self, queue_id=None, length=None, properties=[]):
+    def __init__(self, queue_id=None, length=None, properties=None):
         self.queue_id = queue_id
         self.length = length
-        self.properties = properties
+        self.properties = [] if properties is None else properties
 
 
-class QueuePropMinRate(base.GenericStruct):
+class QueuePropMinRate(base.GenericMessage):
     """This class defines the minimum-rate type queue.
 
         :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
@@ -104,7 +103,6 @@ class ListOfQueues(basic_types.FixedTypeList):
     Attributes:
         items (optional): Instance or a list of instances of PacketQueue
     """
-    def __init__(self, items=[]):
-        basic_types.FixedTypeList.__init__(self,
-                                           pyof_class=PacketQueue,
-                                           items=items)
+    def __init__(self, items=None):
+        super().__init__(pyof_class=PacketQueue,
+                         items=items)

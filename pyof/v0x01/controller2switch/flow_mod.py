@@ -51,21 +51,21 @@ class FlowMod(base.GenericMessage):
     """
     Modifies the flow table from the controller.
 
-        :param xid:          xid to be used on the message header
-        :param match:        Fields to match
-        :param cookie:       Opaque controller-issued identifier
-        :param command:      One of OFPFC_*
-        :param idle_timeout: Idle time before discarding (seconds)
-        :param hard_timeout: Max time before discarding (seconds)
-        :param priority:     Priority level of flow entry
-        :param buffer_idle:  Buffered packet to apply to (or -1).
-                             Not meaningful for OFPFC_DELETE*
-        :param out_port:     For OFPFC_DELETE* commands, require matching
-                             entries to include this as an output port.
-                             A value of OFPP_NONE indicates no restriction.
-        :param flags:        One of OFPFF_*
-        :param actions:      The action length is inferred from the length
-                             field in the header
+    :param xid:          xid to be used on the message header
+    :param match:        Fields to match
+    :param cookie:       Opaque controller-issued identifier
+    :param command:      One of OFPFC_*
+    :param idle_timeout: Idle time before discarding (seconds)
+    :param hard_timeout: Max time before discarding (seconds)
+    :param priority:     Priority level of flow entry
+    :param buffer_idle:  Buffered packet to apply to (or -1).
+                         Not meaningful for OFPFC_DELETE*
+    :param out_port:     For OFPFC_DELETE* commands, require matching
+                         entries to include this as an output port.
+                         A value of OFPP_NONE indicates no restriction.
+    :param flags:        One of OFPFF_*
+    :param actions:      The action length is inferred from the length
+                         field in the header
     """
     header = of_header.Header()
     match = flow_match.Match()
@@ -81,7 +81,8 @@ class FlowMod(base.GenericMessage):
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,
-                 buffer_id=None, out_port=None, flags=None, actions=[]):
+                 buffer_id=None, out_port=None, flags=None, actions=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_FLOW_MOD
         self.header.length = 0
         self.header.xid = xid
@@ -94,4 +95,4 @@ class FlowMod(base.GenericMessage):
         self.buffer_id = buffer_id
         self.out_port = out_port
         self.flags = flags
-        self.actions = actions
+        self.actions = [] if actions is None else actions

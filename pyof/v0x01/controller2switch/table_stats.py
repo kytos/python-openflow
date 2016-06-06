@@ -9,20 +9,20 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-class TableStats(base.GenericMessage):
-    """
-    Body of reply to OFPST_TABLE request
+class TableStats(base.GenericStruct):
+    """Body of reply to OFPST_TABLE request.
 
-        :param table_id:      Identifier of table.  Lower numbered tables
-                              are consulted first
-        :param pad:           Align to 32-bits
-        :param name:          Table name
-        :param wildcards:     Bitmap of OFPFW_* wildcards that are supported
-                              by the table
-        :param max_entries:   Max number of entries supported
-        :param active_count:  Number of active entries
-        :param count_lookup:  Number of packets looked up in table
-        :param count_matched: Number of packets that hit table
+    :param table_id:      Identifier of table.  Lower numbered tables
+                          are consulted first
+    :param pad:           Align to 32-bits
+    :param name:          Table name
+    :param wildcards:     Bitmap of OFPFW_* wildcards that are supported
+                          by the table
+    :param max_entries:   Max number of entries supported
+    :param active_count:  Number of active entries
+    :param count_lookup:  Number of packets looked up in table
+    :param count_matched: Number of packets that hit table
+
     """
     table_id = basic_types.UBInt8()
     pad = basic_types.PAD(3)
@@ -36,7 +36,6 @@ class TableStats(base.GenericMessage):
     def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
-
         self.table_id = table_id
         self.name = name
         self.wildcards = wildcards
