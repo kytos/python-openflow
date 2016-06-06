@@ -32,7 +32,7 @@ classes are used in all part of this library.
 """
 
 # System imports
-from collections import OrderedDict
+from collections import OrderedDict as _OD
 import enum
 import struct
 
@@ -53,6 +53,8 @@ SERIAL_NUM_LEN = 32
 DESC_STR_LEN = 256
 
 # Classes
+
+
 class GenericType(object):
     """This is a foundation class for all custom attributes.
 
@@ -136,7 +138,7 @@ class GenericType(object):
 
         This method will try to pack an attribute to the proper format.
         """
-        #TODO Raise the proper exception here
+        # TODO Raise the proper exception here
         try:
             self.pack()
         except:
@@ -157,13 +159,13 @@ class MetaStruct(type):
 
     @classmethod
     def __prepare__(self, name, bases):
-        return OrderedDict()
+        return _OD()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = OrderedDict([(key, type(value)) for
-                                                key, value in classdict.items()
-                                                if key[0] != '_' and not
-                                                hasattr(value, '__call__')])
+        classdict['__ordered__'] = _OD([(key, type(value)) for
+                                        key, value in classdict.items()
+                                        if key[0] != '_' and not
+                                        hasattr(value, '__call__')])
         return type.__new__(self, name, bases, classdict)
 
 
@@ -264,7 +266,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         :returns: an `integer` that represents the number of bytes used by the
                   struct.
         """
-        #TODO: raise the proper exception here
+        # TODO: raise the proper exception here
         if not GenericStruct.is_valid(self):
             raise Exception()
         else:
@@ -304,8 +306,8 @@ class GenericStruct(object, metaclass=MetaStruct):
                 if isinstance(attr, attr_class):
                     message += attr.pack()
                 elif class_attr.is_enum():
-                    message += attr_class(value = attr,
-                                          enum_ref= class_attr._enum_ref).pack()
+                    message += attr_class(value=attr,
+                                          enum_ref=class_attr._enum_ref).pack()
                 else:
                     message += attr_class(attr).pack()
 
@@ -320,7 +322,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
             :param buff: binary data package to be unpacked.
         """
-        #TODO: Remove any referency to header here, this is a struct, not a
+        # TODO: Remove any referency to header here, this is a struct, not a
         #       message.
         begin = offset
 
@@ -332,7 +334,6 @@ class GenericStruct(object, metaclass=MetaStruct):
                 attr.unpack(buff, offset=begin)
 
                 if issubclass(attr_class, GenericType) and class_attr.is_enum():
-                    #raise Exception(class_attr._enum_ref)
                     attr = class_attr._enum_ref(attr._value)
                 setattr(self, attr_name, attr)
 
@@ -351,7 +352,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         :class:`basic_types.UBInt8()`, and you try to fill with a string
         value. This method will return false, because this struct is not valid.
         """
-        #TODO: check for attribute types and overflow behaviour
+        # TODO: check for attribute types and overflow behaviour
         return True
         if not self._validate_attributes_type():
             return False
@@ -406,8 +407,8 @@ class GenericMessage(GenericStruct):
         This method will validate the content of the Message. You should call
         this method when you wanna verify if the message is ready to pack.
 
-        During the validation process we check if the attribute values are valid
-        according to OpenFlow specification.
+        During the validation process we check if the attribute values are
+        valid according to OpenFlow specification.
 
         :returns: True or False.
         """
@@ -431,7 +432,7 @@ class GenericMessage(GenericStruct):
 
         :returns: A binary data thats represents the Message.
         """
-        #TODO: Raise a proper lib exception
+        # TODO: Raise a proper lib exception
         self.update_header_length()
         if not self.is_valid():
             raise Exception("Error on validate")
@@ -450,6 +451,26 @@ class GenericMessage(GenericStruct):
 
 
 class MetaBitMask(type):
+    """MetaClass used to create to create a special BitMaskEnum type.
+
+    This metaclass converts the declared class attributes into elementes of an
+    enum and stores it as _enum class attribute. It also replaces the __dir__
+    and __getattr__ attributes, so the resulting Class will behave as an enum
+    class (you can access object.ELEMENT and recover either values or names)
+    """
+    def __new__(self, name, bases, classdict):
+        _enum = _OD([(key, value) for key, value in classdict.items()
+                     if key[0] != '_' and not
+                     hasattr(value, '__call__') and not
+                     isinstance(value, property)])
+        if len(_enum):
+            classdict = {key: value for key, value in classdict.items()
+                         if key[0] == '_' or hasattr(value, '__call__') or
+                         isinstance(value, property)}
+            classdict['_enum'] = _enum
+        print(classdict.items())
+        return type.__new__(self, name, bases, classdict)
+
     def __getattr__(cls, name):
         return cls._enum[name]
 
