@@ -37,8 +37,7 @@ class ListOfProperties(basic_types.FixedTypeList):
         items (optional): Instance or a list of instances of QueuePropHeader
     """
     def __init__(self, items=None):
-        super().__init__(self,
-                         pyof_class=QueuePropHeader,
+        super().__init__(pyof_class=QueuePropHeader,
                          items=items)
 
 
@@ -105,6 +104,5 @@ class ListOfQueues(basic_types.FixedTypeList):
         items (optional): Instance or a list of instances of PacketQueue
     """
     def __init__(self, items=None):
-        super().__init__(self,
-                         pyof_class=PacketQueue,
+        super().__init__(pyof_class=PacketQueue,
                          items=items)
