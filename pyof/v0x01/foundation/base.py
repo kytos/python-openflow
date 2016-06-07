@@ -102,7 +102,6 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
-        print("%s:%s" % (self._fmt, self.value))
         try:
             return struct.pack(self._fmt, self.value)
         except struct.error as err:
