@@ -60,17 +60,16 @@ class GenericType(object):
     """This is a foundation class for all custom attributes.
 
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
-    class as base.
-    """
+    class as base."""
     def __init__(self, value=None, enum_ref=None):
         self._value = value
         self._enum_ref = enum_ref
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._value)
+        return "{}({})".format(type(self).__name__, self._value)
 
     def __str__(self):
-        return '<{}: {}>'.format(self.__class__.__name__, str(self._value))
+        return '{}'.format(str(self._value))
 
     def __eq__(self, other):
         return self._value == other
@@ -105,7 +104,7 @@ class GenericType(object):
             return struct.pack(self._fmt, value)
         except struct.error as err:
             message = "Value out of the possible range to basic type "
-            message = message + self.__class__.__name__ + ". "
+            message = message + type(self).__name__ + ". "
             message = message + str(err)
             raise exceptions.BadValueException(message)
 
@@ -154,7 +153,6 @@ class GenericType(object):
 
 class MetaStruct(type):
     """MetaClass used to force ordered attributes."""
-
     @classmethod
     def __prepare__(self, name, bases):
         return _OD()
@@ -177,7 +175,6 @@ class GenericStruct(object, metaclass=MetaStruct):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-
     def __init__(self, *args, **kwargs):
         for _attr in self.__ordered__:
             if not callable(getattr(self, _attr)):
@@ -185,29 +182,6 @@ class GenericStruct(object, metaclass=MetaStruct):
                     setattr(self, _attr, kwargs[_attr])
                 except KeyError:
                     pass
-
-    def __repr__(self):
-        message = self.__class__.__name__
-        message += '('
-        for _attr in self.__ordered__:
-            message += repr(getattr(self, _attr))
-            message += ", "
-        # Removing a comma and a space from the end of the string
-        message = message[:-2]
-        message += ')'
-        return message
-
-    def __str__(self):
-        message = "{}:\n".format(self.__class__.__name__)
-        for _attr in self.__ordered__:
-            attr = getattr(self, _attr)
-            if not hasattr(attr, '_fmt'):
-                message += "  {}".format(str(attr).replace('\n', '\n  '))
-            else:
-                message += "  {}: {}\n".format(_attr, str(attr))
-        message.rstrip('\r')
-        message.rstrip('\n')
-        return message
 
     def _attributes(self):
         """Returns a generator with each attribute from the current instance.
@@ -282,7 +256,7 @@ class GenericStruct(object, metaclass=MetaStruct):
                 if _class.__name__ is 'PAD':
                     size += attr.get_size()
                 elif _class.__name__ is 'Char':
-                    size += getattr(self.__class__, _attr).get_size()
+                    size += getattr(type(self), _attr).get_size()
                 elif issubclass(_class, GenericType):
                     size += _class().get_size()
                 elif isinstance(attr, _class):
@@ -302,13 +276,13 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         if not self.is_valid():
             error_msg = "Erro on validation prior to pack() on class "
-            error_msg += "{}.".format(self.__class__.__name__)
+            error_msg += "{}.".format(type(self).__name__)
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
             for attr_name, attr_class in self.__ordered__.items():
                 attr = getattr(self, attr_name)
-                class_attr = getattr(self.__class__, attr_name)
+                class_attr = getattr(type(self), attr_name)
                 if isinstance(attr, attr_class):
                     message += attr.pack()
                 elif class_attr.is_enum():
@@ -469,10 +443,10 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         self.bitmask = bitmask
 
     def __str__(self):
-        return "<%s: %s>" % (self.__class__.__name__, self.names)
+        return "{}".format(self.bitmask)
 
     def __repr__(self):
-        return "<%s(%s)>" % (self.__class__.__name__, self.bitmask)
+        return "{}({})".format(type(self).__name__, self.bitmask)
 
     @property
     def names(self):
