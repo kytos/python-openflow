@@ -186,17 +186,6 @@ class GenericStruct(object, metaclass=MetaStruct):
                 except KeyError:
                     pass
 
-    def __repr__(self):
-        message = self.__class__.__name__
-        message += '('
-        for _attr in self.__ordered__:
-            message += repr(getattr(self, _attr))
-            message += ", "
-        # Removing a comma and a space from the end of the string
-        message = message[:-2]
-        message += ')'
-        return message
-
     def __str__(self):
         message = "{}:\n".format(self.__class__.__name__)
         for _attr in self.__ordered__:
@@ -472,7 +461,7 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         return "<%s: %s>" % (self.__class__.__name__, self.names)
 
     def __repr__(self):
-        return "<%s(%s)>" % (self.__class__.__name__, self.bitmask)
+        return "{}({})".format(self.__class__.__name__, self.bitmask)
 
     @property
     def names(self):

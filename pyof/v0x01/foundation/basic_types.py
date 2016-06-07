@@ -163,15 +163,6 @@ class FixedTypeList(list, base.GenericStruct):
         elif items:
             self.append(items)
 
-    def __repr__(self):
-        """Unique representantion of the object.
-
-        This can be used to generate an object that has the
-        same content of the current object"""
-        return "{}({},{})".format(self.__class__.__name__,
-                                  self._pyof_class,
-                                  self)
-
     def __str__(self):
         """Human-readable object representantion"""
         return "{}".format([item for item in self])
@@ -242,14 +233,6 @@ class ConstantTypeList(list, base.GenericStruct):
             self.extend(items)
         elif items:
             self.append(items)
-
-    def __repr__(self):
-        """Unique representantion of the object.
-
-        This can be used to generate an object that has the
-        same content of the current object"""
-        return "{}({})".format(self.__class__.__name__,
-                               self)
 
     def __str__(self):
         """Human-readable object representantion"""
