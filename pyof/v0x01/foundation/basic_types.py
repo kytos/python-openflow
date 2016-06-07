@@ -30,7 +30,7 @@ class PAD(base.GenericType):
         return "{}({})".format(self.__class__.__name__, self._length)
 
     def __str__(self):
-        return str(self._length)
+        return self.pack()
 
     def get_size(self):
         """ Return the size of type in bytes. """
@@ -131,7 +131,6 @@ class BinaryData(base.GenericType):
     Both the 'pack' and 'unpack' methods will return the binary data itself.
     get_size method will return the size of the instance using python 'len'
     """
-
     def __init__(self, value=b''):
         super().__init__(value)
 
@@ -144,7 +143,7 @@ class BinaryData(base.GenericType):
         else:
             raise exceptions.NotBinarydata()
 
-    def unpack(self, buff):
+    def unpack(self, buff, offset):
         self._value = buff
 
     def get_size(self):
@@ -165,7 +164,7 @@ class FixedTypeList(list, base.GenericStruct):
 
     def __str__(self):
         """Human-readable object representantion"""
-        return "{}".format([item for item in self])
+        return "{}".format([str(item) for item in self])
 
     def append(self, item):
         if type(item) is list:
@@ -236,7 +235,7 @@ class ConstantTypeList(list, base.GenericStruct):
 
     def __str__(self):
         """Human-readable object representantion"""
-        return "{}".format([item for item in self])
+        return "{}".format([str(item) for item in self])
 
     def append(self, item):
         if type(item) is list:

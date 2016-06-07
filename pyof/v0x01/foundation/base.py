@@ -60,8 +60,7 @@ class GenericType(object):
     """This is a foundation class for all custom attributes.
 
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
-    class as base.
-    """
+    class as base."""
     def __init__(self, value=None, enum_ref=None):
         self._value = value
         self._enum_ref = enum_ref
@@ -70,7 +69,7 @@ class GenericType(object):
         return "{}({})".format(self.__class__.__name__, self._value)
 
     def __str__(self):
-        return '<{}: {}>'.format(self.__class__.__name__, str(self._value))
+        return '{}'.format(str(self._value))
 
     def __eq__(self, other):
         return self._value == other
@@ -154,7 +153,6 @@ class GenericType(object):
 
 class MetaStruct(type):
     """MetaClass used to force ordered attributes."""
-
     @classmethod
     def __prepare__(self, name, bases):
         return _OD()
@@ -177,7 +175,6 @@ class GenericStruct(object, metaclass=MetaStruct):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-
     def __init__(self, *args, **kwargs):
         for _attr in self.__ordered__:
             if not callable(getattr(self, _attr)):
@@ -185,18 +182,6 @@ class GenericStruct(object, metaclass=MetaStruct):
                     setattr(self, _attr, kwargs[_attr])
                 except KeyError:
                     pass
-
-    def __str__(self):
-        message = "{}:\n".format(self.__class__.__name__)
-        for _attr in self.__ordered__:
-            attr = getattr(self, _attr)
-            if not hasattr(attr, '_fmt'):
-                message += "  {}".format(str(attr).replace('\n', '\n  '))
-            else:
-                message += "  {}: {}\n".format(_attr, str(attr))
-        message.rstrip('\r')
-        message.rstrip('\n')
-        return message
 
     def _attributes(self):
         """Returns a generator with each attribute from the current instance.
@@ -458,7 +443,7 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         self.bitmask = bitmask
 
     def __str__(self):
-        return "<%s: %s>" % (self.__class__.__name__, self.names)
+        return "{}".format(self.bitmask)
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self.bitmask)
