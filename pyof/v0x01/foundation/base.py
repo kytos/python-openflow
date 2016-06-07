@@ -220,27 +220,6 @@ class GenericStruct(object, metaclass=MetaStruct):
                              if attribute not in self_attributes]
         return len(not_equal_elements) == 0
 
-    def _attributes(self):
-        """Returns a generator with each attribute from the current instance.
-
-        This attributes are coherced by the expected class for that attribute.
-        """
-
-        for _attr in self.__ordered__:
-            _class = self.__ordered__[_attr]
-            attr = getattr(self, _attr)
-            if issubclass(_class, GenericType):
-                # Checks for generic types
-                if issubclass(type(attr), enum.Enum):
-                    attr = _class(attr)
-                elif not isinstance(attr, _class):
-                    attr = _class(attr)
-            elif issubclass(_class, list):
-                # Verifications for classes derived from list type
-                if not isinstance(attr, _class):
-                    attr = _class(attr)
-            yield (_attr, attr)
-
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
             try:
