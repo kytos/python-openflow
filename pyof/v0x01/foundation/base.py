@@ -92,7 +92,9 @@ class GenericType(object):
     @property
     def value(self):
         if self.is_enum():
-            return self._value.value
+            if isinstance(self._value, self._enum_ref):
+                return self._value.value
+            return self._value
         elif self.is_bitmask():
             return self._value.bitmask
         else:
@@ -143,10 +145,10 @@ class GenericType(object):
             raise
 
     def is_enum(self):
-        return isinstance(self._value, enum.Enum)
+        return self._enum_ref and issubclass(self._enum_ref, enum.Enum)
 
     def is_bitmask(self):
-        return issubclass(type(self._value), GenericBitMask)
+        return self._value and issubclass(type(self._value), GenericBitMask)
 
 
 class MetaStruct(type):
