@@ -72,7 +72,11 @@ class GenericType(object):
         return '{}'.format(str(self._value))
 
     def __eq__(self, other):
-        return self._value == other
+        if type(other) == type(self):
+            return self.pack() == other.pack()
+        elif self.is_enum() and type(other) is self._enum_ref:
+            return self.value == other.value
+        return self.value == other
 
     def __ne__(self, other):
         return self._value != other
@@ -213,13 +217,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             :param other: the message we want to compare with
         
         """
-        other_attributes = other.get_instance_attributes()
-        self_attributes = self.get_instance_attributes()
-        not_equal_elements = [attribute for attribute in self_attributes 
-                             if attribute not in other_attributes]
-        not_equal_elements += [attribute for attribute in other_attributes 
-                             if attribute not in self_attributes]
-        return len(not_equal_elements) == 0
+        return self.pack() == other.pack()
 
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
