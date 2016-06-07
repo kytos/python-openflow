@@ -181,6 +181,45 @@ class GenericStruct(object, metaclass=MetaStruct):
                 except KeyError:
                     pass
 
+    def __repr__(self):
+        message = self.__class__.__name__
+        message += '('
+        for _attr in self.__ordered__:
+            message += repr(getattr(self, _attr))
+            message += ", "
+        # Removing a comma and a space from the end of the string
+        message = message[:-2]
+        message += ')'
+        return message
+
+    def __str__(self):
+        message = "{}:\n".format(self.__class__.__name__)
+        for _attr in self.__ordered__:
+            attr = getattr(self, _attr)
+            if not hasattr(attr, '_fmt'):
+                message += "  {}".format(str(attr).replace('\n', '\n  '))
+            else:
+                message += "  {}: {}\n".format(_attr, str(attr))
+        message.rstrip('\r')
+        message.rstrip('\n')
+        return message
+
+    def __eq__(self, other):
+        """Check if two structures are the same.
+
+        This method checks if a structure fields are the same as other.
+
+            :param other: the message we want to compare with
+        
+        """
+        other_attributes = other.get_instance_attributes()
+        self_attributes = self.get_instance_attributes()
+        not_equal_elements = [attribute for attribute in self_attributes 
+                             if attribute not in other_attributes]
+        not_equal_elements += [attribute for attribute in other_attributes 
+                             if attribute not in self_attributes]
+        return len(not_equal_elements) == 0
+
     def _attributes(self):
         """Returns a generator with each attribute from the current instance.
 
@@ -333,6 +372,8 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
+
+
     def unpack(self, buff, offset=0):
         """Unpack a binary message.
 
