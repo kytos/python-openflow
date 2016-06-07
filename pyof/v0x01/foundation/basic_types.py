@@ -97,6 +97,20 @@ class Char(base.GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
+    def pack(self):
+        packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
+        return packed[:-1] + b'\0'  # null-terminated
+
+    def unpack(self, buff, offset=0):
+        try:
+            begin = offset
+            end = begin + self.length
+            unpacked_data = struct.unpack(self._fmt, buff[begin:end])[0]
+        except:
+            raise Exception("%s: %s" % (offset, buff))
+
+        self._value = unpacked_data.decode('ascii').rstrip('\0')
+
 
 class HWAddress(base.GenericType):
     """Defines a hardware address"""
