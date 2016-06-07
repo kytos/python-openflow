@@ -1,12 +1,12 @@
 import unittest
 
-from pyof.v0x01.controller2switch import queue_stats
+from pyof.v0x01.controller2switch.common import QueueStats
 
 
 class TestQueueStats(unittest.TestCase):
 
     def setUp(self):
-        self.message = queue_stats.QueueStats()
+        self.message = QueueStats()
         self.message.port_no = 80
         self.message.queue_id = 5
         self.message.tx_bytes = 1

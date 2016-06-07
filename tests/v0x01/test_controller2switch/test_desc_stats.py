@@ -1,6 +1,6 @@
 import unittest
 
-from pyof.v0x01.controller2switch import desc_stats
+from pyof.v0x01.controller2switch.common import DescStats
 from pyof.v0x01.foundation import base
 
 
@@ -8,7 +8,7 @@ class TestDescStats(unittest.TestCase):
 
     def setUp(self):
         content = bytes('A' * base.DESC_STR_LEN, 'utf-8')
-        self.message = desc_stats.DescStats()
+        self.message = DescStats()
         self.message.mfr_desc = content
         self.message.hw_desc = content
         self.message.sw_desc = content

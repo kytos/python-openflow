@@ -1,12 +1,12 @@
 import unittest
 
-from pyof.v0x01.controller2switch import port_stats
+from pyof.v0x01.controller2switch.common import PortStats
 
 
 class TestPortStats(unittest.TestCase):
 
     def setUp(self):
-        self.message = port_stats.PortStats()
+        self.message = PortStats()
         self.message.port_no = 80
         self.message.rx_packets = 5
         self.message.tx_packets = 10

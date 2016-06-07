@@ -1,12 +1,12 @@
 import unittest
 
-from pyof.v0x01.controller2switch import aggregate_stats_reply
+from pyof.v0x01.controller2switch.common import AggregateStatsReply
 
 
 class TestAggregateStatsReply(unittest.TestCase):
 
     def setUp(self):
-        self.message = aggregate_stats_reply.AggregateStatsReply()
+        self.message = AggregateStatsReply()
         self.message.packet_count = 5
         self.message.byte_count = 1
         self.message.flow_count = 8
