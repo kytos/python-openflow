@@ -67,3 +67,29 @@ class TestUBInt32(unittest.TestCase):
         """[Foundation/BasicTypes/UBInt32] - unpacking"""
         # TODO
         pass
+
+class TestChar(unittest.TestCase):
+
+    def setUp(self):
+        self.char1 = basic_types.Char('foo', length=3)
+        self.char2 = basic_types.Char('foo', length=5)
+
+    def test_get_size(self):
+        """[Foundation/BasicTypes/Char] - get_size"""
+        self.assertEqual(self.char1.get_size(), 3)
+        self.assertEqual(self.char2.get_size(), 5)
+
+    def test_pack(self):
+        """[Foundation/BasicTypes/Char] - packing"""
+        self.assertEqual(self.char1.pack(), b'fo\x00')
+        self.assertEqual(self.char2.pack(), b'foo\x00\x00')
+
+    def test_unpack(self):
+        """[Foundation/BasicTypes/Char] - unpacking"""
+        char1 = basic_types.Char(length=3)
+        char2 = basic_types.Char(length=5)
+        char1.unpack(b'fo\x00')
+        char2.unpack(b'foo\x00\x00')
+
+        self.assertEqual(char1.value, 'fo')
+        self.assertEqual(char2.value, 'foo')

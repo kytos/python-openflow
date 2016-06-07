@@ -89,19 +89,20 @@ class GenericType(object):
     def __le__(self, other):
         return self._value <= other
 
+    @property
+    def value(self):
+        if self.is_enum():
+            return self._value.value
+        elif self.is_bitmask():
+            return self._value.bitmask
+        else:
+            return self._value
+
     def pack(self):
         """Pack the valeu as a binary representation."""
-        if self.is_enum():
-            if issubclass(type(self._value), GenericBitMask):
-                value = self._value.bitmask
-            else:
-                # Gets the respective value from the Enum
-                value = self._value.value
-        else:
-            value = self._value
-
+        print("%s:%s" % (self._fmt, self.value))
         try:
-            return struct.pack(self._fmt, value)
+            return struct.pack(self._fmt, self.value)
         except struct.error as err:
             message = "Value out of the possible range to basic type "
             message = message + type(self).__name__ + ". "
@@ -141,14 +142,11 @@ class GenericType(object):
         except:
             raise
 
-    def value(self):
-        if isinstance(self._value, enum.Enum):
-            return self._value.value
-        else:
-            return self._value
-
     def is_enum(self):
-        return self._enum_ref is not None
+        return isinstance(self._value, enum.Enum)
+
+    def is_bitmask(self):
+        return issubclass(type(self._value), GenericBitMask)
 
 
 class MetaStruct(type):
