@@ -27,7 +27,7 @@ class PAD(base.GenericType):
         self._length = length
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._length)
+        return "{}({})".format(type(self).__name__, self._length)
 
     def __str__(self):
         return self.pack()

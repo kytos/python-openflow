@@ -66,7 +66,7 @@ class GenericType(object):
         self._enum_ref = enum_ref
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._value)
+        return "{}({})".format(type(self).__name__, self._value)
 
     def __str__(self):
         return '{}'.format(str(self._value))
@@ -104,7 +104,7 @@ class GenericType(object):
             return struct.pack(self._fmt, value)
         except struct.error as err:
             message = "Value out of the possible range to basic type "
-            message = message + self.__class__.__name__ + ". "
+            message = message + type(self).__name__ + ". "
             message = message + str(err)
             raise exceptions.BadValueException(message)
 
@@ -256,7 +256,7 @@ class GenericStruct(object, metaclass=MetaStruct):
                 if _class.__name__ is 'PAD':
                     size += attr.get_size()
                 elif _class.__name__ is 'Char':
-                    size += getattr(self.__class__, _attr).get_size()
+                    size += getattr(type(self), _attr).get_size()
                 elif issubclass(_class, GenericType):
                     size += _class().get_size()
                 elif isinstance(attr, _class):
@@ -276,13 +276,13 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         if not self.is_valid():
             error_msg = "Erro on validation prior to pack() on class "
-            error_msg += "{}.".format(self.__class__.__name__)
+            error_msg += "{}.".format(type(self).__name__)
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
             for attr_name, attr_class in self.__ordered__.items():
                 attr = getattr(self, attr_name)
-                class_attr = getattr(self.__class__, attr_name)
+                class_attr = getattr(type(self), attr_name)
                 if isinstance(attr, attr_class):
                     message += attr.pack()
                 elif class_attr.is_enum():
@@ -446,7 +446,7 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         return "{}".format(self.bitmask)
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self.bitmask)
+        return "{}({})".format(type(self).__name__, self.bitmask)
 
     @property
     def names(self):
