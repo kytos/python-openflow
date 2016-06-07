@@ -1,13 +1,13 @@
 import unittest
 
 from pyof.v0x01.common import flow_match
-from pyof.v0x01.controller2switch import flow_stats_request
+from pyof.v0x01.controller2switch.common import FlowStatsRequest
 
 
 class TestFlowStatsRequest(unittest.TestCase):
 
     def setUp(self):
-        self.message = flow_stats_request.FlowStatsRequest()
+        self.message = FlowStatsRequest()
         self.message.match = flow_match.Match()
         self.message.table_id = 1
         self.message.out_port = 80

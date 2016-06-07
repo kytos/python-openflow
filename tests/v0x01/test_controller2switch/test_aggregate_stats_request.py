@@ -2,13 +2,13 @@ import unittest
 
 from pyof.v0x01.common import flow_match
 from pyof.v0x01.common import phy_port
-from pyof.v0x01.controller2switch import aggregate_stats_request
+from pyof.v0x01.controller2switch.common import AggregateStatsRequest
 
 
 class TestAggregateStatsRequest(unittest.TestCase):
 
     def setUp(self):
-        self.message = aggregate_stats_request.AggregateStatsRequest()
+        self.message = AggregateStatsRequest()
         self.message.match = flow_match.Match()
         self.message.table_id = 1
         self.message.out_port = phy_port.Port.OFPP_NONE

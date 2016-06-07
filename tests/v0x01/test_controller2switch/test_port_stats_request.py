@@ -1,12 +1,12 @@
 import unittest
 
-from pyof.v0x01.controller2switch import port_stats_request
+from pyof.v0x01.controller2switch.common import PortStatsRequest 
 
 
 class TestPortStatsRequest(unittest.TestCase):
 
     def setUp(self):
-        self.message = port_stats_request.PortStatsRequest()
+        self.message = PortStatsRequest()
         self.message.port_no = 80
 
     def test_get_size(self):
