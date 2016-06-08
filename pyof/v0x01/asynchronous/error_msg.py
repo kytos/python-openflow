@@ -155,6 +155,7 @@ class ErrorMsg(base.GenericMessage):
     data = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.error_type = error_type

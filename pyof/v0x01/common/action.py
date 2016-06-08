@@ -61,6 +61,7 @@ class ActionHeader(base.GenericStruct):
     pad = basic_types.PAD(4)
 
     def __init__(self, action_type=None, length=None):
+        super().__init__()
         self.action_type = action_type
         self.length = length
 
@@ -80,6 +81,7 @@ class ActionOutput(base.GenericStruct):
     max_length = basic_types.UBInt16()
 
     def __init__(self, length=None, port=None, max_length=None):
+        super().__init__()
         self.type = ActionType.OFPAT_OUTPUT
         self.length = length
         self.port = port
@@ -110,6 +112,7 @@ class ActionEnqueue(base.GenericStruct):
     queue_id = basic_types.UBInt32()
 
     def __init__(self, length=None, port=None, queue_id=None):
+        super().__init__()
         self.type = ActionType.OFPAT_ENQUEUE
         self.length = length
         self.port = port
@@ -130,6 +133,7 @@ class ActionVlanVid(base.GenericStruct):
     pad2 = basic_types.PAD(2)
 
     def __init__(self, length=None, vlan_id=None):
+        super().__init__()
         self.type = ActionType.OFPAT_SET_VLAN_PCP
         self.length = length
         self.vlan_id = vlan_id
@@ -149,6 +153,7 @@ class ActionVlanPCP(base.GenericStruct):
     pad = basic_types.PAD(3)
 
     def __init__(self, length=None, vlan_pcp=None):
+        super().__init__()
         self.type = ActionType.OFPAT_SET_VLAN_PCP
         self.length = length
         self.vlan_pcp = vlan_pcp
@@ -168,6 +173,7 @@ class ActionDLAddr(base.GenericStruct):
     pad = basic_types.PAD(6)
 
     def __init__(self, dl_addr_type=None, length=None, dl_addr=None):
+        super().__init__()
         self.dl_addr_type = dl_addr_type
         self.length = length
         self.dl_addr = dl_addr
@@ -185,6 +191,7 @@ class ActionNWAddr(base.GenericStruct):
     nw_addr = basic_types.UBInt32()
 
     def __init__(self, nw_addr_type=None, length=None, nw_addr=None):
+        super().__init__()
         self.nw_addr_type = nw_addr_type
         self.length = length
         self.nw_addr = nw_addr
@@ -204,6 +211,7 @@ class ActionNWTos(base.GenericStruct):
     pad = basic_types.PAD(3)
 
     def __init__(self, nw_tos_type=None, length=None, nw_tos=None):
+        super().__init__()
         self.nw_tos_type = nw_tos_type
         self.length = length
         self.nw_tos = nw_tos
@@ -223,6 +231,7 @@ class ActionTPPort(base.GenericStruct):
     pad = basic_types.PAD(2)
 
     def __init__(self, tp_port_type=None, length=None, tp_port=None):
+        super().__init__()
         self.tp_port_type = tp_port_type
         self.length = length
         self.tp_port = tp_port
@@ -242,6 +251,7 @@ class ActionVendorHeader(base.GenericStruct):
     vendor = basic_types.UBInt32()
 
     def __init__(self, length=None, vendor=None):
+        super().__init__()
         self.type = ActionType.OFPAT_VENDOR
         self.length = length
         self.vendor = vendor

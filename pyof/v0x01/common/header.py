@@ -72,6 +72,7 @@ class Header(base.GenericStruct):
     xid = basic_types.UBInt32()
 
     def __init__(self, message_type=None, xid=None, length=None):
+        super().__init__()
         self.version = base.OFP_VERSION
         self.message_type = message_type
         self.length = length

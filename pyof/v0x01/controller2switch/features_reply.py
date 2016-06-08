@@ -1,7 +1,6 @@
 """Defines Features Reply classes and related items"""
 
 # System imports
-import enum
 
 # Third-party imports
 
@@ -12,13 +11,9 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 
-# Enums
+class Capabilities(base.GenericBitMask):
+    """Capabilities supported by the datapath
 
-
-class Capabilities(enum.Enum):
-    """Enumeration of Capabilities supported by the datapath
-
-    Enums:
         OFPC_FLOW_STATS     # Flow statistics
         OFPC_TABLE_STATS    # Table statistics
         OFPC_PORT_STATS     # Port statistics

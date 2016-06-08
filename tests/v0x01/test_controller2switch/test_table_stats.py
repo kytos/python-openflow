@@ -1,14 +1,14 @@
 import unittest
 
 from pyof.v0x01.common import flow_match
-from pyof.v0x01.controller2switch import table_stats
+from pyof.v0x01.controller2switch.common import TableStats
 from pyof.v0x01.foundation import base
 
 
 class TestTableStats(unittest.TestCase):
 
     def setUp(self):
-        self.message = table_stats.TableStats()
+        self.message = TableStats()
         self.message.table_id = 1
         self.message.name = bytes('X' * base.OFP_MAX_TABLE_NAME_LEN, 'utf-8')
         self.message.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST

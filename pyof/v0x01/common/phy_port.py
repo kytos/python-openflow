@@ -1,7 +1,6 @@
 """Defines physical port classes and related items"""
 
 # System imports
-import enum
 
 # Third-party imports
 
@@ -9,9 +8,20 @@ import enum
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-# Enums
-
 class PortConfig(base.GenericBitMask):
+    """Flags to indicate behavior of the physical port.
+
+    These flags are used in OFPPhyPort to describe the current configuration.
+    They are used in the OFPPortMod message to configure the port's behavior.
+
+        OFPPC_PORT_DOWN     # Port is administratively down.
+        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
+        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
+        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
+        OFPPC_NO_FLOOD      # Do not include this port when flooding.
+        OFPPC_NO_FWD        # Drop packets forwarded to port.
+        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
+    """
     OFPC_PORT_DOWN = 1 << 0
     OFPPC_NO_STP = 1 << 1
     OFPPC_NO_RECV = 1 << 2
@@ -21,32 +31,9 @@ class PortConfig(base.GenericBitMask):
     OFPPC_NO_PACKET_IN = 1 << 6
 
 
-#class PortConfig(enum.Enum):
-#    """Flags to indicate behavior of the physical port.
-#
-#    These flags are used in OFPPhyPort to describe the current configuration.
-#    They are used in the OFPPortMod message to configure the port's behavior.
-#
-#    Enums:
-#        OFPPC_PORT_DOWN     # Port is administratively down.
-#        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
-#        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
-#        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
-#        OFPPC_NO_FLOOD      # Do not include this port when flooding.
-#        OFPPC_NO_FWD        # Drop packets forwarded to port.
-#        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
-#    """
-#
-#    OFPPC_PORT_DOWN = 1 << 0
-#    OFPPC_NO_STP = 1 << 1
-#    OFPPC_NO_RECV = 1 << 2
-#    OFPPC_NO_RECV_STP = 1 << 3
-#    OFPPC_FLOOD = 1 << 4
-#    OFPPC_NO_FWD = 1 << 5
-#    OFPPC_NO_PACKET_IN = 1 << 6
 
 
-class PortState(enum.Enum):
+class PortState(base.GenericBitMask):
     """Current state of the physical port.
 
     These are not configurable from the controller.
@@ -55,7 +42,6 @@ class PortState(enum.Enum):
     must adjust OFPPC_NO_RECV, OFPPC_NO_FWD, and OFPPC_NO_PACKET_IN
     appropriately to fully implement an 802.1D spanning tree.
 
-    Enums:
         OFPPS_LINK_DOWN    # Not learning or relaying frames.
         OFPPS_STP_LISTEN   # Not learning or relaying frames.
         OFPPS_STP_LEARN    # Learning but not relaying frames.
@@ -72,7 +58,7 @@ class PortState(enum.Enum):
     # OFPPS_STP_MASK = 3 << 8  - Refer to ISSUE #7
 
 
-class Port(enum.Enum):
+class Port(base.GenericBitMask):
     """Port numbering.
 
     Physical ports are numbered starting from 1. Port number 0 is reserved by
@@ -101,14 +87,13 @@ class Port(enum.Enum):
     OFPP_NONE = 0xffff
 
 
-class PortFeatures(enum.Enum):
+class PortFeatures(base.GenericBitMask):
     """Physical ports features.
 
     The curr, advertised, supported, and peer fields indicate link modes
     (10M to 10G full and half-duplex), link type (copper/fiber) and
     link features (autone-gotiation and pause).
 
-    Enums:
         OFPPF_10MB_HD     # 10 Mb half-duplex rate support.
         OFPPF_10MB_FD     # 10 Mb full-duplex rate support.
         OFPPF_100MB_HD    # 100 Mb half-duplex rate support.
@@ -176,6 +161,7 @@ class PhyPort(base.GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None):
+        super().__init__()
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.name = name

@@ -27,10 +27,10 @@ class PAD(base.GenericType):
         self._length = length
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._length)
+        return "{}({})".format(type(self).__name__, self._length)
 
     def __str__(self):
-        return str(self._length)
+        return self.pack()
 
     def get_size(self):
         """ Return the size of type in bytes. """
@@ -97,6 +97,20 @@ class Char(base.GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
+    def pack(self):
+        packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
+        return packed[:-1] + b'\0'  # null-terminated
+
+    def unpack(self, buff, offset=0):
+        try:
+            begin = offset
+            end = begin + self.length
+            unpacked_data = struct.unpack(self._fmt, buff[begin:end])[0]
+        except:
+            raise Exception("%s: %s" % (offset, buff))
+
+        self._value = unpacked_data.decode('ascii').rstrip('\0')
+
 
 class HWAddress(base.GenericType):
     """Defines a hardware address"""
@@ -131,7 +145,6 @@ class BinaryData(base.GenericType):
     Both the 'pack' and 'unpack' methods will return the binary data itself.
     get_size method will return the size of the instance using python 'len'
     """
-
     def __init__(self, value=b''):
         super().__init__(value)
 
@@ -144,7 +157,7 @@ class BinaryData(base.GenericType):
         else:
             raise exceptions.NotBinarydata()
 
-    def unpack(self, buff):
+    def unpack(self, buff, offset):
         self._value = buff
 
     def get_size(self):
@@ -163,18 +176,9 @@ class FixedTypeList(list, base.GenericStruct):
         elif items:
             self.append(items)
 
-    def __repr__(self):
-        """Unique representantion of the object.
-
-        This can be used to generate an object that has the
-        same content of the current object"""
-        return "{}({},{})".format(self.__class__.__name__,
-                                  self._pyof_class,
-                                  self)
-
     def __str__(self):
         """Human-readable object representantion"""
-        return "{}".format([item for item in self])
+        return "{}".format([str(item) for item in self])
 
     def append(self, item):
         if type(item) is list:
@@ -243,17 +247,9 @@ class ConstantTypeList(list, base.GenericStruct):
         elif items:
             self.append(items)
 
-    def __repr__(self):
-        """Unique representantion of the object.
-
-        This can be used to generate an object that has the
-        same content of the current object"""
-        return "{}({})".format(self.__class__.__name__,
-                               self)
-
     def __str__(self):
         """Human-readable object representantion"""
-        return "{}".format([item for item in self])
+        return "{}".format([str(item) for item in self])
 
     def append(self, item):
         if type(item) is list:

@@ -1,7 +1,6 @@
 """Defines flow statistics structures and related items"""
 
 # System imports
-import enum
 
 # Third-party imports
 
@@ -9,10 +8,7 @@ import enum
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-# Enums
-
-
-class FlowWildCards(enum.Enum):
+class FlowWildCards(base.GenericBitMask):
     """
     Wildcards used to identify flows.
 
@@ -104,6 +100,7 @@ class Match(base.GenericStruct):
                  dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
                  nw_tos=None, nw_proto=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
+        super().__init__()
         self.wildcards = wildcards
         self.in_port = in_port
         self.dl_src = dl_src

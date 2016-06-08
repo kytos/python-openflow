@@ -60,20 +60,23 @@ class GenericType(object):
     """This is a foundation class for all custom attributes.
 
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
-    class as base.
-    """
+    class as base."""
     def __init__(self, value=None, enum_ref=None):
         self._value = value
         self._enum_ref = enum_ref
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self._value)
+        return "{}({})".format(type(self).__name__, self._value)
 
     def __str__(self):
-        return '<{}: {}>'.format(self.__class__.__name__, str(self._value))
+        return '{}'.format(str(self._value))
 
     def __eq__(self, other):
-        return self._value == other
+        if type(other) == type(self):
+            return self.pack() == other.pack()
+        elif self.is_enum() and type(other) is self._enum_ref:
+            return self.value == other.value
+        return self.value == other
 
     def __ne__(self, other):
         return self._value != other
@@ -90,22 +93,24 @@ class GenericType(object):
     def __le__(self, other):
         return self._value <= other
 
+    @property
+    def value(self):
+        if self.is_enum():
+            if isinstance(self._value, self._enum_ref):
+                return self._value.value
+            return self._value
+        elif self.is_bitmask():
+            return self._value.bitmask
+        else:
+            return self._value
+
     def pack(self):
         """Pack the valeu as a binary representation."""
-        if self.is_enum():
-            if issubclass(type(self._value), GenericBitMask):
-                value = self._value.bitmask
-            else:
-                # Gets the respective value from the Enum
-                value = self._value.value
-        else:
-            value = self._value
-
         try:
-            return struct.pack(self._fmt, value)
+            return struct.pack(self._fmt, self.value)
         except struct.error as err:
             message = "Value out of the possible range to basic type "
-            message = message + self.__class__.__name__ + ". "
+            message = message + type(self).__name__ + ". "
             message = message + str(err)
             raise exceptions.BadValueException(message)
 
@@ -142,19 +147,15 @@ class GenericType(object):
         except:
             raise
 
-    def value(self):
-        if isinstance(self._value, enum.Enum):
-            return self._value.value
-        else:
-            return self._value
-
     def is_enum(self):
-        return self._enum_ref is not None
+        return self._enum_ref and issubclass(self._enum_ref, enum.Enum)
+
+    def is_bitmask(self):
+        return self._value and issubclass(type(self._value), GenericBitMask)
 
 
 class MetaStruct(type):
     """MetaClass used to force ordered attributes."""
-
     @classmethod
     def __prepare__(self, name, bases):
         return _OD()
@@ -177,14 +178,9 @@ class GenericStruct(object, metaclass=MetaStruct):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-
     def __init__(self, *args, **kwargs):
-        for _attr in self.__ordered__:
-            if not callable(getattr(self, _attr)):
-                try:
-                    setattr(self, _attr, kwargs[_attr])
-                except KeyError:
-                    pass
+        for attribute_name, class_attribute in self.get_class_attributes():
+            setattr(self, attribute_name, copy.deepcopy(class_attribute))
 
     def __repr__(self):
         message = self.__class__.__name__
@@ -209,26 +205,15 @@ class GenericStruct(object, metaclass=MetaStruct):
         message.rstrip('\n')
         return message
 
-    def _attributes(self):
-        """Returns a generator with each attribute from the current instance.
+    def __eq__(self, other):
+        """Check if two structures are the same.
 
-        This attributes are coherced by the expected class for that attribute.
+        This method checks if a structure fields are the same as other.
+
+            :param other: the message we want to compare with
+
         """
-
-        for _attr in self.__ordered__:
-            _class = self.__ordered__[_attr]
-            attr = getattr(self, _attr)
-            if issubclass(_class, GenericType):
-                # Checks for generic types
-                if issubclass(type(attr), enum.Enum):
-                    attr = _class(attr)
-                elif not isinstance(attr, _class):
-                    attr = _class(attr)
-            elif issubclass(_class, list):
-                # Verifications for classes derived from list type
-                if not isinstance(attr, _class):
-                    attr = _class(attr)
-            yield (_attr, attr)
+        return self.pack() == other.pack()
 
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
@@ -253,12 +238,41 @@ class GenericStruct(object, metaclass=MetaStruct):
         return True
 
     def get_class_attributes(self):
-        for attr_name in self.__ordered__:
-            yield (attr_name, getattr(type(self), attr_name))
+        """Returns a generator for class attributes.
+
+            >>> for _name, _class_attribute in self.get_class_attributes():
+            >>>     print("Attribute name: {}".format(_name))
+            >>>     print("Class attribute: {}".format(_class_attribute))
+
+        :return: A generator of sets with attribute name and class attribute.
+        """
+        for attribute_name in self.__ordered__:
+            yield (attribute_name, getattr(type(self), attribute_name))
 
     def get_instance_attributes(self):
-        for attr_name in self.__ordered__:
-            yield (attr_name, getattr(self, attr_name))
+        """Returns a generator for instance attributes.
+
+            >>> for _name, _instance_attr in self.get_instance_attributes():
+            >>>     print("Attribute name: {}".format(_name))
+            >>>     print("Instance attribute: {}".format(_instance_attr))
+
+        :return: A generator of sets with attribute name and its instance.
+        """
+        for attribute_name in self.__ordered__:
+            yield (attribute_name, getattr(self, attribute_name))
+
+    def get_attributes(self):
+        """Returns a generator for class and instance attributes.
+
+            >>> for _instance_attr, _class_attr in self.get_attributes():
+            >>>     print("Instance attribute: {}".format(_instance_attr))
+            >>>     print("Class attribute: {}".format(_class_attr))
+
+        :return: A generator of sets with instance and class attributes.
+        """
+        for attribute_name in self.__ordered__:
+            yield (getattr(self, attribute_name),
+                   getattr(type(self), attribute_name))
 
     def get_size(self):
         """Return the size (in bytes) of a struct.
@@ -282,7 +296,7 @@ class GenericStruct(object, metaclass=MetaStruct):
                 if _class.__name__ is 'PAD':
                     size += attr.get_size()
                 elif _class.__name__ is 'Char':
-                    size += getattr(self.__class__, _attr).get_size()
+                    size += getattr(type(self), _attr).get_size()
                 elif issubclass(_class, GenericType):
                     size += _class().get_size()
                 elif isinstance(attr, _class):
@@ -302,13 +316,13 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         if not self.is_valid():
             error_msg = "Erro on validation prior to pack() on class "
-            error_msg += "{}.".format(self.__class__.__name__)
+            error_msg += "{}.".format(type(self).__name__)
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
             for attr_name, attr_class in self.__ordered__.items():
                 attr = getattr(self, attr_name)
-                class_attr = getattr(self.__class__, attr_name)
+                class_attr = getattr(type(self), attr_name)
                 if isinstance(attr, attr_class):
                     message += attr.pack()
                 elif class_attr.is_enum():
@@ -469,10 +483,10 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         self.bitmask = bitmask
 
     def __str__(self):
-        return "<%s: %s>" % (self.__class__.__name__, self.names)
+        return "{}".format(self.bitmask)
 
     def __repr__(self):
-        return "<%s(%s)>" % (self.__class__.__name__, self.bitmask)
+        return "{}({})".format(type(self).__name__, self.bitmask)
 
     @property
     def names(self):

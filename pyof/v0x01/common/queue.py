@@ -53,6 +53,7 @@ class QueuePropHeader(base.GenericStruct):
     pad = basic_types.PAD(4)
 
     def __init__(self, property=None, len=None):
+        super().__init__()
         self.property = property
         self.len = len
 
@@ -71,6 +72,7 @@ class PacketQueue(base.GenericStruct):
     properties = ListOfProperties()
 
     def __init__(self, queue_id=None, length=None, properties=None):
+        super().__init__()
         self.queue_id = queue_id
         self.length = length
         self.properties = [] if properties is None else properties
@@ -88,6 +90,7 @@ class QueuePropMinRate(base.GenericMessage):
     pad = basic_types.PAD(6)
 
     def __init__(self, rate=None):
+        super().__init__()
         # TODO Set porp_header attributes
         self.prop_header.property = QueueProperties.OFPQT_MIN_RATE
         self.prop_header.len = 16
