@@ -100,6 +100,7 @@ class Match(base.GenericStruct):
                  dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
                  nw_tos=None, nw_proto=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
+        super().__init__()
         self.wildcards = wildcards
         self.in_port = in_port
         self.dl_src = dl_src

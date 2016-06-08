@@ -161,6 +161,7 @@ class PhyPort(base.GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None):
+        super().__init__()
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.name = name

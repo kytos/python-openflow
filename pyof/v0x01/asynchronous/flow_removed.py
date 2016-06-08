@@ -66,6 +66,7 @@ class FlowRemoved(base.GenericMessage):
                  reason=None, duration_sec=None, duration_nsec=None,
                  idle_timeout=None, packet_count=None,
                  byte_count=None):
+        super().__init__()
         self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
         self.header.xid = xid
         self.match = match
