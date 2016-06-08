@@ -83,6 +83,7 @@ class AggregateStatsReply(base.GenericStruct):
     pad = basic_types.PAD(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
+        super().__init__()
         self.packet_count = packet_count
         self.byte_count = byte_count
         self.flow_count = flow_count
@@ -134,6 +135,7 @@ class DescStats(base.GenericStruct):
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
+        super().__init__()
         self.mfr_desc = mfr_desc
         self.hw_desc = hw_desc
         self.sw_desc = sw_desc
@@ -181,6 +183,7 @@ class FlowStats(base.GenericStruct):
                  duration_sec=None, duration_nsec=None, priority=None,
                  idle_timeout=None, hard_timeout=None, cookie=None,
                  packet_count=None, byte_count=None, actions=None):
+        super().__init__()
         self.length = length
         self.table_id = table_id
         self.match = match
@@ -213,6 +216,7 @@ class FlowStatsRequest(base.GenericStruct):
     out_port = basic_types.UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
+        super().__init__()
         self.match = match
         self.table_id = table_id
         self.out_port = out_port
@@ -265,6 +269,7 @@ class PortStats(base.GenericStruct):
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
                  rx_crc_err=None, collisions=None):
+        super().__init__()
         self.port_no = port_no
         self.rx_packets = rx_packets
         self.tx_packets = tx_packets
@@ -294,6 +299,7 @@ class PortStatsRequest(base.GenericStruct):
     pad = basic_types.PAD(6)
 
     def __init__(self, port_no=None):
+        super().__init__()
         self.port_no = port_no
 
 
@@ -318,6 +324,7 @@ class QueueStats(base.GenericStruct):
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
+        super().__init__()
         self.port_no = port_no
         self.queue_id = queue_id
         self.tx_bytes = tx_bytes
@@ -338,6 +345,7 @@ class QueueStatsRequest(base.GenericStruct):
     queue_id = basic_types.UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
+        super().__init__()
         self.port_no = port_no
         self.queue_id = queue_id
 
@@ -369,6 +377,7 @@ class TableStats(base.GenericStruct):
     def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
+        super().__init__()
         self.table_id = table_id
         self.name = name
         self.wildcards = wildcards
