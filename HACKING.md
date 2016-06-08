@@ -127,7 +127,7 @@ python3 setup.py test
 To run check the code test coverage, first run:
 
 ```shell
-coverage run --source ofp setup.py test
+coverage run setup.py test
 ```
 
 To see the command line report run the command `coverage report -m`,
