@@ -179,12 +179,8 @@ class GenericStruct(object, metaclass=MetaStruct):
               type too.
     """
     def __init__(self, *args, **kwargs):
-        for _attr in self.__ordered__:
-            if not callable(getattr(self, _attr)):
-                try:
-                    setattr(self, _attr, kwargs[_attr])
-                except KeyError:
-                    pass
+        for attribute_name, class_attribute in self.get_class_attributes():
+            setattr(self, attribute_name, copy.deepcopy(class_attribute))
 
     def __repr__(self):
         message = self.__class__.__name__
@@ -215,7 +211,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         This method checks if a structure fields are the same as other.
 
             :param other: the message we want to compare with
-        
+
         """
         return self.pack() == other.pack()
 
@@ -242,12 +238,41 @@ class GenericStruct(object, metaclass=MetaStruct):
         return True
 
     def get_class_attributes(self):
-        for attr_name in self.__ordered__:
-            yield (attr_name, getattr(type(self), attr_name))
+        """Returns a generator for class attributes.
+
+            >>> for _name, _class_attribute in self.get_class_attributes():
+            >>>     print("Attribute name: {}".format(_name))
+            >>>     print("Class attribute: {}".format(_class_attribute))
+
+        :return: A generator of sets with attribute name and class attribute.
+        """
+        for attribute_name in self.__ordered__:
+            yield (attribute_name, getattr(type(self), attribute_name))
 
     def get_instance_attributes(self):
-        for attr_name in self.__ordered__:
-            yield (attr_name, getattr(self, attr_name))
+        """Returns a generator for instance attributes.
+
+            >>> for _name, _instance_attr in self.get_instance_attributes():
+            >>>     print("Attribute name: {}".format(_name))
+            >>>     print("Instance attribute: {}".format(_instance_attr))
+
+        :return: A generator of sets with attribute name and its instance.
+        """
+        for attribute_name in self.__ordered__:
+            yield (attribute_name, getattr(self, attribute_name))
+
+    def get_attributes(self):
+        """Returns a generator for class and instance attributes.
+
+            >>> for _instance_attr, _class_attr in self.get_attributes():
+            >>>     print("Instance attribute: {}".format(_instance_attr))
+            >>>     print("Class attribute: {}".format(_class_attr))
+
+        :return: A generator of sets with instance and class attributes.
+        """
+        for attribute_name in self.__ordered__:
+            yield (getattr(self, attribute_name),
+                   getattr(type(self), attribute_name))
 
     def get_size(self):
         """Return the size (in bytes) of a struct.
@@ -350,8 +375,6 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
-
-
     def unpack(self, buff, offset=0):
         """Unpack a binary message.
 
