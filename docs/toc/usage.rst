@@ -15,9 +15,8 @@ for autocompletion:
 
 >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
 >>> request = FeaturesRequest(xid = 100)
->>> print(request.header)
-Header:
-  1  Type.OFPT_FEATURES_REQUEST  None  100
+>>> print(request.header) #doctest: +ELLIPSIS
+<pyof...common.header.Header object at 0x...>
 >>> print(request.header.message_type)
 Type.OFPT_FEATURES_REQUEST
 >>> print(request.header.xid)
