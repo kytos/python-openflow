@@ -72,7 +72,11 @@ class GenericType(object):
         return '{}'.format(str(self._value))
 
     def __eq__(self, other):
-        return self._value == other
+        if type(other) == type(self):
+            return self.pack() == other.pack()
+        elif self.is_enum() and type(other) is self._enum_ref:
+            return self.value == other.value
+        return self.value == other
 
     def __ne__(self, other):
         return self._value != other
@@ -92,7 +96,9 @@ class GenericType(object):
     @property
     def value(self):
         if self.is_enum():
-            return self._value.value
+            if isinstance(self._value, self._enum_ref):
+                return self._value.value
+            return self._value
         elif self.is_bitmask():
             return self._value.bitmask
         else:
@@ -100,7 +106,6 @@ class GenericType(object):
 
     def pack(self):
         """Pack the valeu as a binary representation."""
-        print("%s:%s" % (self._fmt, self.value))
         try:
             return struct.pack(self._fmt, self.value)
         except struct.error as err:
@@ -143,10 +148,10 @@ class GenericType(object):
             raise
 
     def is_enum(self):
-        return isinstance(self._value, enum.Enum)
+        return self._enum_ref and issubclass(self._enum_ref, enum.Enum)
 
     def is_bitmask(self):
-        return issubclass(type(self._value), GenericBitMask)
+        return self._value and issubclass(type(self._value), GenericBitMask)
 
 
 class MetaStruct(type):
@@ -181,26 +186,38 @@ class GenericStruct(object, metaclass=MetaStruct):
                 except KeyError:
                     pass
 
-    def _attributes(self):
-        """Returns a generator with each attribute from the current instance.
-
-        This attributes are coherced by the expected class for that attribute.
-        """
-
+    def __repr__(self):
+        message = self.__class__.__name__
+        message += '('
         for _attr in self.__ordered__:
-            _class = self.__ordered__[_attr]
+            message += repr(getattr(self, _attr))
+            message += ", "
+        # Removing a comma and a space from the end of the string
+        message = message[:-2]
+        message += ')'
+        return message
+
+    def __str__(self):
+        message = "{}:\n".format(self.__class__.__name__)
+        for _attr in self.__ordered__:
             attr = getattr(self, _attr)
-            if issubclass(_class, GenericType):
-                # Checks for generic types
-                if issubclass(type(attr), enum.Enum):
-                    attr = _class(attr)
-                elif not isinstance(attr, _class):
-                    attr = _class(attr)
-            elif issubclass(_class, list):
-                # Verifications for classes derived from list type
-                if not isinstance(attr, _class):
-                    attr = _class(attr)
-            yield (_attr, attr)
+            if not hasattr(attr, '_fmt'):
+                message += "  {}".format(str(attr).replace('\n', '\n  '))
+            else:
+                message += "  {}: {}\n".format(_attr, str(attr))
+        message.rstrip('\r')
+        message.rstrip('\n')
+        return message
+
+    def __eq__(self, other):
+        """Check if two structures are the same.
+
+        This method checks if a structure fields are the same as other.
+
+            :param other: the message we want to compare with
+        
+        """
+        return self.pack() == other.pack()
 
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
@@ -333,6 +350,8 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
+
+
     def unpack(self, buff, offset=0):
         """Unpack a binary message.
 
