@@ -1,12 +1,40 @@
 """Defines physical port classes and related items"""
 
 # System imports
-from enum import _enum
+import enum
 # Third-party imports
 
 # Local source tree imports
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
+
+
+class Port(enum.Enum):
+    """Port numbering.
+
+    Physical ports are numbered starting from 1. Port number 0 is reserved by
+    the specification and must not be used for a switch physical port.
+    """
+    #: Maximum number of physical switch ports.
+    OFPP_MAX = 0xff00
+    #: Send the packet out the input port. This virtual port must be explicitly
+    #: used in order to send back out of the input port.
+    OFPP_IN_PORT = 0xfff8
+    #: Perform actions in flow table.
+    #: NB: This can only be the destination port for packet-out messages
+    OFPP_TABLE = 0xfff9
+    #: Process with normal L2/L3 switching.
+    OFPP_NORMAL = 0xfffa
+    #: All physical ports except input port and those disabled by STP
+    OFPP_FLOOD = 0xfffb
+    #: All physical ports except input port
+    OFPP_ALL = 0xfffc
+    #: Send to controller
+    OFPP_CONTROLLER = 0xfffd
+    #: Local openflow "port"
+    OFPP_LOCAL = 0xfffe
+    #: Not associated with a physical port
+    OFPP_NONE = 0xffff
 
 
 class PortConfig(base.GenericBitMask):
@@ -30,30 +58,6 @@ class PortConfig(base.GenericBitMask):
     OFPPC_FLOOD = 1 << 4
     OFPPC_NO_FWD = 1 << 5
     OFPPC_NO_PACKET_IN = 1 << 6
-
-
-class PortState(base.GenericBitMask):
-    """Current state of the physical port.
-
-    These are not configurable from the controller.
-
-    The OFPPS_STP_* bits have no effect on switch operation. The controller
-    must adjust OFPPC_NO_RECV, OFPPC_NO_FWD, and OFPPC_NO_PACKET_IN
-    appropriately to fully implement an 802.1D spanning tree.
-
-        OFPPS_LINK_DOWN    # Not learning or relaying frames.
-        OFPPS_STP_LISTEN   # Not learning or relaying frames.
-        OFPPS_STP_LEARN    # Learning but not relaying frames.
-        OFPPS_STP_FORWARD  # Learning and relaying frames.
-        OFPPS_STP_BLOCK    # Not part of spanning tree.
-        OFPPS_STP_MASK     # Bit mask for OFPPS_STP_* values.
-    """
-    OFPPS_LINK_DOWN = 1 << 0
-    OFPPS_STP_LISTEN = 0 << 8
-    OFPPS_STP_LEARN = 1 << 8
-    OFPPS_STP_FORWARD = 2 << 8
-    OFPPS_STP_BLOCK = 3 << 8
-    # OFPPS_STP_MASK = 3 << 8  - Refer to ISSUE #7
 
 
 class PortFeatures(base.GenericBitMask):
@@ -89,40 +93,35 @@ class PortFeatures(base.GenericBitMask):
     OFPPF_PAUSE_ASYM = 1 << 15
 
 
-class Port(_enum.Enum):
-    """Port numbering.
+class PortState(base.GenericBitMask):
+    """Current state of the physical port.
 
-    Physical ports are numbered starting from 1. Port number 0 is reserved by
-    the specification and must not be used for a switch physical port.
+    These are not configurable from the controller.
+
+    The OFPPS_STP_* bits have no effect on switch operation. The controller
+    must adjust OFPPC_NO_RECV, OFPPC_NO_FWD, and OFPPC_NO_PACKET_IN
+    appropriately to fully implement an 802.1D spanning tree.
+
+        OFPPS_LINK_DOWN    # Not learning or relaying frames.
+        OFPPS_STP_LISTEN   # Not learning or relaying frames.
+        OFPPS_STP_LEARN    # Learning but not relaying frames.
+        OFPPS_STP_FORWARD  # Learning and relaying frames.
+        OFPPS_STP_BLOCK    # Not part of spanning tree.
+        OFPPS_STP_MASK     # Bit mask for OFPPS_STP_* values.
     """
-    #: Maximum number of physical switch ports.
-    OFPP_MAX = 0xff00
-    #: Send the packet out the input port. This virtual port must be explicitly
-    #: used in order to send back out of the input port.
-    OFPP_IN_PORT = 0xfff8
-    #: Perform actions in flow table.
-    #: NB: This can only be the destination port for packet-out messages
-    OFPP_TABLE = 0xfff9
-    #: Process with normal L2/L3 switching.
-    OFPP_NORMAL = 0xfffa
-    #: All physical ports except input port and those disabled by STP
-    OFPP_FLOOD = 0xfffb
-    #: All physical ports except input port
-    OFPP_ALL = 0xfffc
-    #: Send to controller
-    OFPP_CONTROLLER = 0xfffd
-    #: Local openflow "port"
-    OFPP_LOCAL = 0xfffe
-    #: Not associated with a physical port
-    OFPP_NONE = 0xffff
+    OFPPS_LINK_DOWN = 1 << 0
+    OFPPS_STP_LISTEN = 0 << 8
+    OFPPS_STP_LEARN = 1 << 8
+    OFPPS_STP_FORWARD = 2 << 8
+    OFPPS_STP_BLOCK = 3 << 8
+    # OFPPS_STP_MASK = 3 << 8  - Refer to ISSUE #7
 
 
 # Classes
 
 
 class PhyPort(base.GenericStruct):
-    """
-    Description of a physical port.
+    """Description of a physical port.
 
     The port_no field is a value the datapath associates with a physical port.
     The hw_addr field typically is the MAC address for the port;
@@ -143,7 +142,7 @@ class PhyPort(base.GenericStruct):
     :param supported:  Features supported by the port.
     :param peer:       Features advertised by peer.
     """
-    port_no = basic_types.UBInt16(enum_ref=Port)
+    port_no = basic_types.UBInt16()
     hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
     config = basic_types.UBInt32(enum_ref=PortConfig)

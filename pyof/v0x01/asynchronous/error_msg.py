@@ -148,14 +148,13 @@ class ErrorMsg(base.GenericMessage):
     This message does not contain a body beyond the OpenFlow Header
         :param xid:    xid to be used on the message header
     """
-    header = of_header.Header()
-    error_type = basic_types.UBInt16()
+    header = of_header.Header(message_type=of_header.Type.OFPT_ERROR)
+    error_type = basic_types.UBInt16(enum_ref=ErrorType)
     code = basic_types.UBInt16()
     data = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.error_type = error_type
         self.code = code
@@ -164,5 +163,5 @@ class ErrorMsg(base.GenericMessage):
     def unpack(self, buff, offset=0):
         # TODO: Implement the unpack method evaluation the error_type and code
         #       to unpack the data attribute
-        raise exceptions.MethodNotImplemented("'Unpack' method not implemented"
-                                              "on ErrorMsg class.")
+        raise exceptions.MethodNotImplemented("'Unpack' method not "
+                                              "implemented on ErrorMsg class")

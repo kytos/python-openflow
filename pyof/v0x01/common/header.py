@@ -63,17 +63,16 @@ class Header(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
     :param message_type: Type of  the message
-    :param xid:      id of the message
-    :param length:   Length of the message, including the header itself
+    :param xid:          id of the message
+    :param length:       Length of the message, including the header itself
     """
-    version = basic_types.UBInt8()
+    version = basic_types.UBInt8(base.OFP_VERSION)
     message_type = basic_types.UBInt8(enum_ref=Type)
     length = basic_types.UBInt16()
     xid = basic_types.UBInt32()
 
     def __init__(self, message_type=None, xid=None, length=None):
         super().__init__()
-        self.version = base.OFP_VERSION
         self.message_type = message_type
         self.length = length
         self.xid = xid

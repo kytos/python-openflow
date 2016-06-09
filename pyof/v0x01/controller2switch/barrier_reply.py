@@ -18,9 +18,8 @@ class BarrierReply(base.GenericMessage):
 
     :param xid: xid to be used on the message header
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_BARRIER_REPLY)
 
     def __init__(self, xid=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_BARRIER_REPLY
         self.header.xid = xid

@@ -36,10 +36,10 @@ classes are used in all part of this library.
 """
 
 # System imports
-from collections import OrderedDict as _OD
+from collections import OrderedDict
 import enum
 import struct
-import copy
+from copy import deepcopy
 
 # Third-party imports
 
@@ -47,7 +47,8 @@ import copy
 from pyof.v0x01.foundation import exceptions
 
 # This will determine the order on sphinx documentation.
-__all__ = ['GenericStruct', 'GenericMessage', 'GenericType', 'MetaStruct']
+__all__ = ['GenericStruct', 'GenericMessage', 'GenericType', 'GenericBitMask',
+           'MetaStruct', 'MetaBitMask']
 
 # Constants
 OFP_ETH_ALEN = 6
@@ -67,7 +68,7 @@ class GenericType(object):
     class as base."""
     def __init__(self, value=None, enum_ref=None):
         self._value = value
-        self._enum_ref = enum_ref
+        self.enum_ref = enum_ref
 
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self._value)
@@ -78,7 +79,7 @@ class GenericType(object):
     def __eq__(self, other):
         if type(other) == type(self):
             return self.pack() == other.pack()
-        elif self.is_enum() and type(other) is self._enum_ref:
+        elif self.isenum() and type(other) is self.enum_ref:
             return self.value == other.value
         return self.value == other
 
@@ -99,8 +100,8 @@ class GenericType(object):
 
     @property
     def value(self):
-        if self.is_enum():
-            if isinstance(self._value, self._enum_ref):
+        if self.isenum():
+            if isinstance(self._value, self.enum_ref):
                 return self._value.value
             return self._value
         elif self.is_bitmask():
@@ -130,8 +131,8 @@ class GenericType(object):
         """
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
-            if self._enum_ref:
-                self._value = self._enum_ref(self._value)
+            if self.enum_ref:
+                self._value = self.enum_ref(self._value)
         except struct.error:
             raise exceptions.UnpackException("Error while unpacking"
                                              "data from buffer")
@@ -151,8 +152,8 @@ class GenericType(object):
         except:
             raise
 
-    def is_enum(self):
-        return self._enum_ref and issubclass(self._enum_ref, enum.Enum)
+    def isenum(self):
+        return self.enum_ref and issubclass(self.enum_ref, enum.Enum)
 
     def is_bitmask(self):
         return self._value and issubclass(type(self._value), GenericBitMask)
@@ -162,13 +163,13 @@ class MetaStruct(type):
     """MetaClass used to force ordered attributes."""
     @classmethod
     def __prepare__(self, name, bases):
-        return _OD()
+        return OrderedDict()
 
     def __new__(self, name, bases, classdict):
-        classdict['__ordered__'] = _OD([(key, type(value)) for
-                                        key, value in classdict.items()
-                                        if key[0] != '_' and not
-                                        hasattr(value, '__call__')])
+        classdict['__ordered__'] = OrderedDict([(key, type(value)) for
+                                                key, value in classdict.items()
+                                                if key[0] != '_' and not
+                                                hasattr(value, '__call__')])
         return type.__new__(self, name, bases, classdict)
 
 
@@ -184,7 +185,7 @@ class GenericStruct(object, metaclass=MetaStruct):
     """
     def __init__(self, *args, **kwargs):
         for attribute_name, class_attribute in self.get_class_attributes():
-            setattr(self, attribute_name, copy.deepcopy(class_attribute))
+            setattr(self, attribute_name, deepcopy(class_attribute))
 
     def __eq__(self, other):
         """Check if two structures are the same.
@@ -312,9 +313,9 @@ class GenericStruct(object, metaclass=MetaStruct):
                 class_attr = getattr(type(self), attr_name)
                 if isinstance(attr, attr_class):
                     message += attr.pack()
-                elif class_attr.is_enum():
+                elif class_attr.isenum():
                     message += attr_class(value=attr,
-                                          enum_ref=class_attr._enum_ref).pack()
+                                          enum_ref=class_attr.enum_ref).pack()
                 else:
                     message += attr_class(attr).pack()
 
@@ -331,7 +332,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
-            attribute = copy.deepcopy(class_attribute)
+            attribute = deepcopy(class_attribute)
             attribute.unpack(buff, begin)
             setattr(self, attribute_name, attribute)
             begin += attribute.get_size()
@@ -376,7 +377,7 @@ class GenericMessage(GenericStruct):
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
             if type(class_attribute).__name__ != "Header":
-                attribute = copy.deepcopy(class_attribute)
+                attribute = deepcopy(class_attribute)
                 attribute.unpack(buff, begin)
                 setattr(self, attribute_name, attribute)
                 begin += attribute.get_size()
@@ -439,15 +440,15 @@ class MetaBitMask(type):
     """MetaClass used to create to create a special BitMaskEnum type.
 
     This metaclass converts the declared class attributes into elementes of an
-    enum and stores it as _enum class attribute. It also replaces the __dir__
+    enum and stores it class attribute. It also replaces the __dir__
     and __getattr__ attributes, so the resulting Class will behave as an enum
     class (you can access object.ELEMENT and recover either values or names)
     """
     def __new__(self, name, bases, classdict):
-        _enum = _OD([(key, value) for key, value in classdict.items()
-                     if key[0] != '_' and not
-                     hasattr(value, '__call__') and not
-                     isinstance(value, property)])
+        _enum = OrderedDict([(key, value) for key, value in classdict.items()
+                            if key[0] != '_' and not
+                            hasattr(value, '__call__') and not
+                            isinstance(value, property)])
         if len(_enum):
             classdict = {key: value for key, value in classdict.items()
                          if key[0] == '_' or hasattr(value, '__call__') or
@@ -478,7 +479,11 @@ class GenericBitMask(object, metaclass=MetaBitMask):
     @property
     def names(self):
         result = []
-        for key, value in self._enum.items():
+        for key, value in self.iteritems():
             if value & self.bitmask:
                 result.append(key)
         return result
+
+    def iteritems(self):
+        for key, value in self._enum.items():
+            yield (key, value)

@@ -53,23 +53,19 @@ class SwitchFeatures(base.GenericMessage):
     :param actions:      UBInt32 Bitmap of supported "action_type"s
     :param ports:        Port definitions
     """
-
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_FEATURES_REPLY)
     datapath_id = basic_types.UBInt64()
     n_buffers = basic_types.UBInt32()
     n_tables = basic_types.UBInt8()
     pad = basic_types.PAD(3)  # Align to 64-bits
     # Features
-    capabilities = basic_types.UBInt32()
+    capabilities = basic_types.UBInt32(enum_ref=Capabilities)
     actions = basic_types.UBInt32()
     ports = phy_port.ListOfPhyPorts()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
-                 n_tables=None, capabilities=None, actions=None,
-                 ports=None):
+                 n_tables=None, capabilities=None, actions=None, ports=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_FEATURES_REPLY
-        self.header.length = 40
         self.header.xid = xid
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
@@ -80,4 +76,8 @@ class SwitchFeatures(base.GenericMessage):
 
 
 class FeaturesReply(SwitchFeatures):
-    pass
+    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
+                 n_tables=None, capabilities=None, actions=None, ports=None):
+        self.__ordered__ = super().__ordered__
+        super().__init__(xid, datapath_id, n_buffers, n_tables, capabilities,
+                         actions, ports)

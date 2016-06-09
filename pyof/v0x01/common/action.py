@@ -53,9 +53,11 @@ class ActionHeader(base.GenericStruct):
     :param action_type: One of OFPAT\_.
     :param length:     Length of action, including this header.
     :param pad:        Pad for 64-bit alignment.
-
     """
-    action_type = basic_types.UBInt16()
+    action_type = basic_types.UBInt16(enum_ref=ActionType)
+    # TODO: Implement is_valid specific method here to check length for
+    #       'This is the length of action, including
+    #        any padding to make it 64-bit aligned.'
     length = basic_types.UBInt16()
     pad = basic_types.PAD(4)
 
@@ -79,21 +81,21 @@ class ActionOutput(base.GenericStruct):
     :param port:       Output port.
     :param max_length: Max length to send to controller.
     """
-    type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    type = basic_types.UBInt16(ActionType.OFPAT_OUTPUT,
+                               enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     port = basic_types.UBInt16()
     max_length = basic_types.UBInt16()
 
-    def __init__(self, length=None, port=None, max_length=None):
+    def __init__(self, port=None, max_length=None):
         super().__init__()
-        self.type = ActionType.OFPAT_OUTPUT
-        self.length = length
         self.port = port
         self.max_length = max_length
 
 
 class ActionEnqueue(base.GenericStruct):
-    """
+    """Send packets to given queue on port.
+
     A switch may support only queues that are tied to specific PCP/TOS bits.
     In that case, we cannot map an arbitrary flow to a specific queue,
     therefore the action ENQUEUE is not supported. The user can still use
@@ -108,16 +110,15 @@ class ActionEnqueue(base.GenericStruct):
     :param pad:        Pad for 64-bit alignment.
     :param queue_id:   Where to enqueue the packets.
     """
-    type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    type = basic_types.UBInt16(ActionType.OFPAT_ENQUEUE,
+                               enum_ref=ActionType)
+    length = basic_types.UBInt16(16)
     port = basic_types.UBInt16()
     pad = basic_types.PAD(6)
     queue_id = basic_types.UBInt32()
 
-    def __init__(self, length=None, port=None, queue_id=None):
+    def __init__(self, port=None, queue_id=None):
         super().__init__()
-        self.type = ActionType.OFPAT_ENQUEUE
-        self.length = length
         self.port = port
         self.queue_id = queue_id
 
@@ -134,15 +135,14 @@ class ActionVlanVid(base.GenericStruct):
     :param vlan_id:    VLAN priority.
     :param pad2:       Pad for bit alignment.
     """
-    type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    type = basic_types.UBInt16(ActionType.OFPAT_SET_VLAN_PCP,
+                               enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     vlan_id = basic_types.UBInt16()
     pad2 = basic_types.PAD(2)
 
-    def __init__(self, length=None, vlan_id=None):
+    def __init__(self, vlan_id=None):
         super().__init__()
-        self.type = ActionType.OFPAT_SET_VLAN_PCP
-        self.length = length
         self.vlan_id = vlan_id
 
 
@@ -157,15 +157,14 @@ class ActionVlanPCP(base.GenericStruct):
     :param vlan_pcp:   VLAN Priority.
     :param pad:        Pad for bit alignment.
     """
-    type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    type = basic_types.UBInt16(ActionType.OFPAT_SET_VLAN_PCP,
+                               enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     vlan_pcp = basic_types.UBInt8()
     pad = basic_types.PAD(3)
 
-    def __init__(self, length=None, vlan_pcp=None):
+    def __init__(self, vlan_pcp=None):
         super().__init__()
-        self.type = ActionType.OFPAT_SET_VLAN_PCP
-        self.length = length
         self.vlan_pcp = vlan_pcp
 
 
@@ -178,15 +177,14 @@ class ActionDLAddr(base.GenericStruct):
     :param dl_addr:    Ethernet address.
     :param pad:        Pad for bit alignment.
     """
-    dl_addr_type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    dl_addr_type = basic_types.UBInt16(enum_ref=ActionType)
+    length = basic_types.UBInt16(16)
     dl_addr = basic_types.HWAddress()
     pad = basic_types.PAD(6)
 
-    def __init__(self, dl_addr_type=None, length=None, dl_addr=None):
+    def __init__(self, dl_addr_type=None, dl_addr=None):
         super().__init__()
         self.dl_addr_type = dl_addr_type
-        self.length = length
         self.dl_addr = dl_addr
 
 
@@ -198,14 +196,13 @@ class ActionNWAddr(base.GenericStruct):
     :param length:       Length is 8.
     :param nw_addr:      IP Address
     """
-    nw_addr_type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    nw_addr_type = basic_types.UBInt16(enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     nw_addr = basic_types.UBInt32()
 
-    def __init__(self, nw_addr_type=None, length=None, nw_addr=None):
+    def __init__(self, nw_addr_type=None, nw_addr=None):
         super().__init__()
         self.nw_addr_type = nw_addr_type
-        self.length = length
         self.nw_addr = nw_addr
 
 
@@ -222,15 +219,15 @@ class ActionNWTos(base.GenericStruct):
     #                   TODO: Implement IPAddr field
     :param pad:         Pad for bit alignment.
     """
-    nw_tos_type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    nw_tos_type = basic_types.UBInt16(enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     nw_tos = basic_types.UBInt8()
+    # TODO: Implement IPAddr field
     pad = basic_types.PAD(3)
 
-    def __init__(self, nw_tos_type=None, length=None, nw_tos=None):
+    def __init__(self, nw_tos_type=None, nw_tos=None):
         super().__init__()
         self.nw_tos_type = nw_tos_type
-        self.length = length
         self.nw_tos = nw_tos
 
 
@@ -243,15 +240,14 @@ class ActionTPPort(base.GenericStruct):
     :param tp_port:    TCP/UDP/other port to set.
     :param pad:        Pad for bit alignment.
     """
-    tp_port_type = basic_types.UBInt16()
-    length = basic_types.UBInt16()
+    tp_port_type = basic_types.UBInt16(enum_ref=ActionType)
+    length = basic_types.UBInt16(8)
     tp_port = basic_types.UBInt16()
     pad = basic_types.PAD(2)
 
-    def __init__(self, tp_port_type=None, length=None, tp_port=None):
+    def __init__(self, tp_port_type=None, tp_port=None):
         super().__init__()
         self.tp_port_type = tp_port_type
-        self.length = length
         self.tp_port = tp_port
 
 
@@ -264,12 +260,12 @@ class ActionVendorHeader(base.GenericStruct):
     :param length:     Length is a multiple of 8  # TODO: validate length
     :param vendor:     Vendor ID, which takes the same form as in VendorHeader
     """
-    type = basic_types.UBInt16()
+    type = basic_types.UBInt16(ActionType.OFPAT_VENDOR,
+                               enum_ref=ActionType)
     length = basic_types.UBInt16()
     vendor = basic_types.UBInt32()
 
     def __init__(self, length=None, vendor=None):
         super().__init__()
-        self.type = ActionType.OFPAT_VENDOR
         self.length = length
         self.vendor = vendor

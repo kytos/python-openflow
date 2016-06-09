@@ -46,12 +46,12 @@ class FlowRemoved(base.GenericMessage):
     :param packet_count:  Number of packets
     :param byte_count:    Bytes count
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_REMOVED)
     match = flow_match.Match()
     cookie = basic_types.UBInt64()
 
     priority = basic_types.UBInt16()
-    reason = basic_types.UBInt8()
+    reason = basic_types.UBInt8(enum_ref=FlowRemovedReason)
     pad = basic_types.PAD(1)
 
     duration_sec = basic_types.UBInt32()
@@ -66,7 +66,6 @@ class FlowRemoved(base.GenericMessage):
                  reason=None, duration_sec=None, duration_nsec=None,
                  idle_timeout=None, packet_count=None, byte_count=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
         self.header.xid = xid
         self.match = match
         self.cookie = cookie

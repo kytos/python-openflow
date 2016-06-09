@@ -47,7 +47,7 @@ class QueuePropHeader(base.GenericStruct):
         :param len:      Length of property, including this header.
         :param pad:      64-bit alignment.
     """
-    property = basic_types.UBInt16()
+    property = basic_types.UBInt16(enum_ref=QueueProperties)
     len = basic_types.UBInt16()
     pad = basic_types.PAD(4)
 
@@ -77,22 +77,20 @@ class PacketQueue(base.GenericStruct):
         self.properties = [] if properties is None else properties
 
 
-class QueuePropMinRate(base.GenericMessage):
+class QueuePropMinRate(base.GenericStruct):
     """This class defines the minimum-rate type queue.
 
     :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
     :param rate:        In 1/10 of a percent; >1000 -> disabled.
     :param pad:         64-bit alignmet.
     """
-    prop_header = QueuePropHeader()
+    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MIN_RATE,
+                                  len=16)
     rate = basic_types.UBInt16()
     pad = basic_types.PAD(6)
 
     def __init__(self, rate=None):
         super().__init__()
-        # TODO Set porp_header attributes
-        self.prop_header.property = QueueProperties.OFPQT_MIN_RATE
-        self.prop_header.len = 16
         self.rate = rate
 
 
