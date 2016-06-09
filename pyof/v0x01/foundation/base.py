@@ -8,23 +8,27 @@ class definition.
 A struct here is a group of basic attributes and/or struct attributes. For
 instance, a :class:`~.common.header.Header` is a struct:
 
-    >>> class Header(base.GenericStruct):
-    >>>    version = basic_types.UBInt8()
-    >>>    message_type = basic_types.UBInt8()
-    >>>    length = basic_types.UBInt16()
-    >>>    xid = basic_types.UBInt32()
+.. code-block:: python3
+
+    class Header(base.GenericStruct):
+        version = basic_types.UBInt8()
+        message_type = basic_types.UBInt8()
+        length = basic_types.UBInt16()
+        xid = basic_types.UBInt32()
 
 A message here is like a struct but all messages has a header attribute. For
 instance the :class:`~.asynchronous.packet_in.PacketIn` class is a message:
 
-    >>> class PacketIn(base.GenericMessage):
-    >>>     header = of_header.Header()
-    >>>     buffer_id = basic_types.UBInt32()
-    >>>     total_len = basic_types.UBInt16()
-    >>>     in_port = basic_types.UBInt16()
-    >>>     reason = basic_types.UBInt8()
-    >>>     pad = basic_types.PAD(1)
-    >>>     data = basic_types.BinaryData()
+.. code-block:: python3
+
+    class PacketIn(base.GenericMessage):
+        header = of_header.Header()
+        buffer_id = basic_types.UBInt32()
+        total_len = basic_types.UBInt16()
+        in_port = basic_types.UBInt16()
+        reason = basic_types.UBInt8()
+        pad = basic_types.PAD(1)
+        data = basic_types.BinaryData()
 
 The main classes of this module are :class:`GenericStruct`,
 :class:`GenericMessage`, :class:`GenericType` and :class:`MetaStruct`. Theses
@@ -182,29 +186,6 @@ class GenericStruct(object, metaclass=MetaStruct):
         for attribute_name, class_attribute in self.get_class_attributes():
             setattr(self, attribute_name, copy.deepcopy(class_attribute))
 
-    def __repr__(self):
-        message = self.__class__.__name__
-        message += '('
-        for _attr in self.__ordered__:
-            message += repr(getattr(self, _attr))
-            message += ", "
-        # Removing a comma and a space from the end of the string
-        message = message[:-2]
-        message += ')'
-        return message
-
-    def __str__(self):
-        message = "{}:\n".format(self.__class__.__name__)
-        for _attr in self.__ordered__:
-            attr = getattr(self, _attr)
-            if not hasattr(attr, '_fmt'):
-                message += "  {}".format(str(attr).replace('\n', '\n  '))
-            else:
-                message += "  {}: {}\n".format(_attr, str(attr))
-        message.rstrip('\r')
-        message.rstrip('\n')
-        return message
-
     def __eq__(self, other):
         """Check if two structures are the same.
 
@@ -240,9 +221,11 @@ class GenericStruct(object, metaclass=MetaStruct):
     def get_class_attributes(self):
         """Returns a generator for class attributes.
 
-            >>> for _name, _class_attribute in self.get_class_attributes():
-            >>>     print("Attribute name: {}".format(_name))
-            >>>     print("Class attribute: {}".format(_class_attribute))
+        .. code-block:: python3
+
+            for _name, _class_attribute in self.get_class_attributes():
+                print("Attribute name: {}".format(_name))
+                print("Class attribute: {}".format(_class_attribute))
 
         :return: A generator of sets with attribute name and class attribute.
         """
@@ -252,9 +235,11 @@ class GenericStruct(object, metaclass=MetaStruct):
     def get_instance_attributes(self):
         """Returns a generator for instance attributes.
 
-            >>> for _name, _instance_attr in self.get_instance_attributes():
-            >>>     print("Attribute name: {}".format(_name))
-            >>>     print("Instance attribute: {}".format(_instance_attr))
+        .. code-block:: python3
+
+            for _name, _instance_attr in self.get_instance_attributes():
+                print("Attribute name: {}".format(_name))
+                print("Instance attribute: {}".format(_instance_attr))
 
         :return: A generator of sets with attribute name and its instance.
         """
@@ -264,9 +249,11 @@ class GenericStruct(object, metaclass=MetaStruct):
     def get_attributes(self):
         """Returns a generator for class and instance attributes.
 
-            >>> for _instance_attr, _class_attr in self.get_attributes():
-            >>>     print("Instance attribute: {}".format(_instance_attr))
-            >>>     print("Class attribute: {}".format(_class_attr))
+        .. code-block:: python3
+
+            for _instance_attr, _class_attr in self.get_attributes():
+            print("Instance attribute: {}".format(_instance_attr))
+            print("Class attribute: {}".format(_class_attr))
 
         :return: A generator of sets with instance and class attributes.
         """
