@@ -20,13 +20,12 @@ class ErrorType(enum.Enum):
     will not change in future versions of the protocol (although new values
     may be added).
 
-        OFPET_HELLO_FAILED      # Hello protocol failed
-        OFPET_BAD_REQUEST       # Request was not understood
-        OFPET_BAD_ACTION        # Error in action description
-        OFPET_FLOW_MOD_FAILED   # Problem in modifying Flow entry
-        OFPET_PORT_MOD_FAILED   # Problem in modifying Port entry
-        OFPET_QUEUE_OP_FAILED   # # Problem in modifying Queue entry
-
+    OFPET_HELLO_FAILED      # Hello protocol failed
+    OFPET_BAD_REQUEST       # Request was not understood
+    OFPET_BAD_ACTION        # Error in action description
+    OFPET_FLOW_MOD_FAILED   # Problem in modifying Flow entry
+    OFPET_PORT_MOD_FAILED   # Problem in modifying Port entry
+    OFPET_QUEUE_OP_FAILED   # # Problem in modifying Queue entry
     """
     OFPET_HELLO_FAILED = 1,
     OFPET_BAD_REQUEST = 2,

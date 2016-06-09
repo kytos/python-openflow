@@ -62,9 +62,9 @@ class Type(enum.Enum):
 class Header(base.GenericStruct):
     """Representation of an OpenFlow message Header
 
-        :param message_type: Type of  the message
-        :param xid:      id of the message
-        :param length:   Length of the message, including the header itself
+    :param message_type: Type of  the message
+    :param xid:      id of the message
+    :param length:   Length of the message, including the header itself
     """
     version = basic_types.UBInt8()
     message_type = basic_types.UBInt8(enum_ref=Type)

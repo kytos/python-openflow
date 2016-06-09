@@ -64,8 +64,7 @@ class FlowRemoved(base.GenericMessage):
 
     def __init__(self, xid=None, match=None, cookie=None, priority=None,
                  reason=None, duration_sec=None, duration_nsec=None,
-                 idle_timeout=None, packet_count=None,
-                 byte_count=None):
+                 idle_timeout=None, packet_count=None, byte_count=None):
         super().__init__()
         self.header.message_type = of_header.Type.OFPT_FLOW_REMOVED
         self.header.xid = xid

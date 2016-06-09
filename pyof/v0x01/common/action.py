@@ -29,7 +29,6 @@ class ActionType(enum.Enum):
         OFPAT_SET_TP_DST    # TCP/UDP destination port.
         OFPAT_ENQUEUE       # Output to queue.
     """
-
     OFPAT_OUTPUT = 0
     OFPAT_SET_VLAN_VID = 1
     OFPAT_SET_VLAN_PCP = 2
@@ -69,11 +68,16 @@ class ActionHeader(base.GenericStruct):
 class ActionOutput(base.GenericStruct):
     """Defines the actions output.
 
+    Action structure for OFPAT_OUTPUT, which sends packets out ’port’.
+    When the ’port’ is the OFPP_CONTROLLER, ’max_len’ indicates the max
+    number of bytes to send. A ’max_len’ of zero means no bytes of the
+    packet should be sent.
+    # TODO : Implement validations considering the description above.
+
     :param type:       OFPAT_OUTPUT.
     :param length:     Length is 8.
     :param port:       Output port.
     :param max_length: Max length to send to controller.
-
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -96,14 +100,13 @@ class ActionEnqueue(base.GenericStruct):
     these queues and map flows to them by setting the relevant fields
     (TOS, VLAN PCP).
 
-    :param type: OFPAT_ENQUEUE.
+    :param type:       OFPAT_ENQUEUE.
     :param length:     Len is 16
     :param port:       Port that queue belongs. Should refer to a valid
-                       physical port.
-                       (i.e. < OFPP_MAX) or OFPP_IN_PORT
+                       physical port. (i.e. < OFPP_MAX) or OFPP_IN_PORT
+                       # TODO : Validation
     :param pad:        Pad for 64-bit alignment.
     :param queue_id:   Where to enqueue the packets.
-
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -122,10 +125,14 @@ class ActionEnqueue(base.GenericStruct):
 class ActionVlanVid(base.GenericStruct):
     """Action structure for OFPAT_SET_VLAN_VID
 
-        :param type: OFPAT_SET_VLAN_PCP.
-        :param length:     Length is 8.
-        :param vlan_id:    VLAN priority.
-        :param pad2:       Pad for bit alignment.
+    .. note:: The vlan_vid field is 16 bits long,
+              when an actual VLAN id is only 12 bits.
+              The value 0xffff is used to indicate that no VLAN id was set
+
+    :param type: OFPAT_SET_VLAN_PCP.
+    :param length:     Length is 8.
+    :param vlan_id:    VLAN priority.
+    :param pad2:       Pad for bit alignment.
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -142,10 +149,13 @@ class ActionVlanVid(base.GenericStruct):
 class ActionVlanPCP(base.GenericStruct):
     """Action structure for OFPAT_SET_VLAN_PCP.
 
-        :param type: OFPAT_SET_VLAN_PCP.
-        :param length:     Length is 8.
-        :param vlan_pcp:   VLAN Priority.
-        :param pad:        Pad for bit alignment.
+    .. note:: The vlan_pcp field is 8 bits long,
+              but only the lower 3 bits have meaning.
+
+    :param type: OFPAT_SET_VLAN_PCP.
+    :param length:     Length is 8.
+    :param vlan_pcp:   VLAN Priority.
+    :param pad:        Pad for bit alignment.
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -162,10 +172,11 @@ class ActionVlanPCP(base.GenericStruct):
 class ActionDLAddr(base.GenericStruct):
     """Action structure for OFPAT_SET_DL_SRC/DST.
 
-        :param dl_addr_type: OFPAT_SET_DL_SRC/DST.
-        :param length:     Length is 16.
-        :param dl_addr:    Ethernet address.
-        :param pad:        Pad for bit alignment.
+    # TODO: implement validation of OFPAT_SET_DL_SRC/DST
+    :param dl_addr_type: OFPAT_SET_DL_SRC/DST.
+    :param length:     Length is 16.
+    :param dl_addr:    Ethernet address.
+    :param pad:        Pad for bit alignment.
     """
     dl_addr_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -182,9 +193,10 @@ class ActionDLAddr(base.GenericStruct):
 class ActionNWAddr(base.GenericStruct):
     """Action structure for OFPAT_SET_NW_SRC/DST.
 
-        :param nw_addr_type: OFPAT_SET_TW_SRC/DST.
-        :param length:     Length is 8.
-        :param nw_addr:    IP Address
+    # TODO: implement validation of OFPAT_SET_TW_SRC/DST
+    :param nw_addr_type: OFPAT_SET_TW_SRC/DST.
+    :param length:       Length is 8.
+    :param nw_addr:      IP Address
     """
     nw_addr_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -200,10 +212,15 @@ class ActionNWAddr(base.GenericStruct):
 class ActionNWTos(base.GenericStruct):
     """Action structure for OFPAT_SET_NW_TOS.
 
-        :param nw_tos_type: OFPAT_SET_TW_SRC/DST.
-        :param length:     Length is 8.
-        :param nw_tos:     IP ToS (DSCP field, 6 bits).
-        :param pad:        Pad for bit alignment.
+    .. note:: The nw_tos field is the 6 upper bits of the ToS field to set,
+              in the original bit positions (shifted to the left by 2).
+
+    # TODO: implement validation of OFPAT_SET_TW_SRC/DST
+    :param nw_tos_type: OFPAT_SET_TW_SRC/DST.
+    :param length:      Length is 8.
+    :param nw_tos:      IP ToS (DSCP field, 6 bits).
+    #                   TODO: Implement IPAddr field
+    :param pad:         Pad for bit alignment.
     """
     nw_tos_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -220,10 +237,11 @@ class ActionNWTos(base.GenericStruct):
 class ActionTPPort(base.GenericStruct):
     """Action structure for OFPAT_SET_TP_SRC/DST.
 
-        :param tp_port_type: OFPAT_SET_TP_SRC/DST.
-        :param length:     Length is 8.
-        :param tp_port:    TCP/UDP port.
-        :param pad:        Pad for bit alignment.
+    # TODO: implement validation of OFPAT_SET_TP_SRC/DST
+    :param tp_port_type: OFPAT_SET_TP_SRC/DST.
+    :param length:     Length is 8.
+    :param tp_port:    TCP/UDP/other port to set.
+    :param pad:        Pad for bit alignment.
     """
     tp_port_type = basic_types.UBInt16()
     length = basic_types.UBInt16()
@@ -239,12 +257,12 @@ class ActionTPPort(base.GenericStruct):
 
 class ActionVendorHeader(base.GenericStruct):
     """Action header for OFPAT_VENDOR.
+
     The rest of the body is vendor-defined.
 
-        :param type: OFPAT_VENDOR.
-        :param length:     Length is a multiple of 8.
-        :param vendor:     Vendor ID, which takes the same form as in "struct
-                           ofp_vendor_header".
+    :param type: OFPAT_VENDOR.
+    :param length:     Length is a multiple of 8  # TODO: validate length
+    :param vendor:     Vendor ID, which takes the same form as in VendorHeader
     """
     type = basic_types.UBInt16()
     length = basic_types.UBInt16()

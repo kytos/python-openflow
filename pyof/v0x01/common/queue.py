@@ -33,8 +33,7 @@ class ListOfProperties(basic_types.FixedTypeList):
     Represented by instances of QueuePropHeader and
     used on PacketQueue objects
 
-    Attributes:
-        items (optional): Instance or a list of instances of QueuePropHeader
+    :param items: (optional) Instance or a list of instances of QueuePropHeader
     """
     def __init__(self, items=None):
         super().__init__(pyof_class=QueuePropHeader,
@@ -61,10 +60,10 @@ class QueuePropHeader(base.GenericStruct):
 class PacketQueue(base.GenericStruct):
     """This class describes a queue.
 
-        :param queue_id: One of OFPQT\_
-        :param length:   Length of property, including this header
-        :param pad:
-        :param properties:
+    :param queue_id:   id for the specific queue
+    :param length:     Length in bytes of this queue desc
+    :param pad:        64-bit alignment
+    :param properties: List of properties
     """
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
@@ -81,9 +80,9 @@ class PacketQueue(base.GenericStruct):
 class QueuePropMinRate(base.GenericMessage):
     """This class defines the minimum-rate type queue.
 
-        :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
-        :param rate:        In 1/10 of a percent; >1000 -> disabled.
-        :param pad:         64-bit alignmet.
+    :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
+    :param rate:        In 1/10 of a percent; >1000 -> disabled.
+    :param pad:         64-bit alignmet.
     """
     prop_header = QueuePropHeader()
     rate = basic_types.UBInt16()
@@ -103,8 +102,7 @@ class ListOfQueues(basic_types.FixedTypeList):
     Represented by instances of PacketQueue and
     used on QueueGetConfigReply objects
 
-    Attributes:
-        items (optional): Instance or a list of instances of PacketQueue
+    :param items: (optional) Instance or a list of instances of PacketQueue
     """
     def __init__(self, items=None):
         super().__init__(pyof_class=PacketQueue,

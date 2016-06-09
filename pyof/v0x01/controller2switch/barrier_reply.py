@@ -16,7 +16,7 @@ class BarrierReply(base.GenericMessage):
 
     This message does not contain a body beyond the OpenFlow Header.
 
-        :param xid: xid to be used on the message header
+    :param xid: xid to be used on the message header
     """
     header = of_header.Header()
 

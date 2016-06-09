@@ -32,7 +32,7 @@ class FlowWildCards(base.GenericBitMask):
     OFPFW_TP_SRC = 1 << 6
     OFPFW_TP_DST = 1 << 7
 
-    # IP source address wildcard bit count.  0 is exact match, 1 ignores the
+    # IP source address wildcard bit count. 0 is exact match, 1 ignores the
     # LSB, 2 ignores the 2 least-significant bits, ..., 32 and higher wildcard
     # the entire field.  This is the *opposite* of the usual convention where
     # e.g. /24 indicates that 8 bits (not 24 bits) are wildcarded.

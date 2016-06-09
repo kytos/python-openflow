@@ -130,19 +130,18 @@ class PhyPort(base.GenericStruct):
     containing a human-readable name for the interface. The value of
     OFP_MAX_PORT_NAME_LEN is 16.
 
-        :param port_no
-        :param hw_addr
-        :param name:       Null-terminated
-        :param config:     Bitmap of OFPPC* flags.
-        :param state:      Bitmap of OFPPS* flags.
+    :param port_no
+    :param hw_addr
+    :param name:       Null-terminated
+    :param config:     Bitmap of OFPPC* flags.
+    :param state:      Bitmap of OFPPS* flags.
 
-        # Bitmaps of OFPPF_* that describe features. All bits zeroed if
-        # unsupported or unavailable.
-        :param curr:       Current features.
-        :param advertised: Features being advertised by the port.
-        :param supported:  Features supported by the port.
-        :param peer:       Features advertised by peer.
-
+    # Bitmaps of OFPPF_* that describe features. All bits zeroed if
+    # unsupported or unavailable.
+    :param curr:       Current features.
+    :param advertised: Features being advertised by the port.
+    :param supported:  Features supported by the port.
+    :param peer:       Features advertised by peer.
     """
     port_no = basic_types.UBInt16(enum_ref=Port)
     hw_addr = basic_types.HWAddress()
@@ -175,8 +174,7 @@ class ListOfPhyPorts(basic_types.FixedTypeList):
     Represented by instances of PhyPort and
     used on FeaturesReply/SwitchFeatures objects
 
-    Attributes:
-        items (optional): Instance or a list of instances of PhyPort
+    :param items: (optional) Instance or a list of instances of PhyPort
     """
     def __init__(self, items=None):
         super().__init__(pyof_class=PhyPort,

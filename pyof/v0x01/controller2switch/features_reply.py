@@ -14,14 +14,14 @@ from pyof.v0x01.foundation import basic_types
 class Capabilities(base.GenericBitMask):
     """Capabilities supported by the datapath
 
-        OFPC_FLOW_STATS     # Flow statistics
-        OFPC_TABLE_STATS    # Table statistics
-        OFPC_PORT_STATS     # Port statistics
-        OFPC_STP            # 802.1d spanning tree
-        OFPC_RESERVED       # Reserved, must be zero
-        OFPC_IP_REASM       # Can reassembe IP fragments
-        OFPC_QUEUE_STATS    # Queue statistics
-        OFPC_ARP_MATCH_IP   # Match IP addresses in ARP pkts
+    OFPC_FLOW_STATS     # Flow statistics
+    OFPC_TABLE_STATS    # Table statistics
+    OFPC_PORT_STATS     # Port statistics
+    OFPC_STP            # 802.1d spanning tree
+    OFPC_RESERVED       # Reserved, must be zero
+    OFPC_IP_REASM       # Can reassembe IP fragments
+    OFPC_QUEUE_STATS    # Queue statistics
+    OFPC_ARP_MATCH_IP   # Match IP addresses in ARP pkts
     """
     OFPC_FLOW_STATS = 1 << 0
     OFPC_TABLE_STATS = 1 << 1
@@ -49,8 +49,8 @@ class SwitchFeatures(base.GenericMessage):
                          the upper 16-bits are implementer-defined
     :param n_buffers:    UBInt32 max packets buffered at once
     :param n_tables:     UBInt8 number of tables supported by datapath
-    :param capabilities: UBInt32 bitmap support of capabilities
-    :param actions:
+    :param capabilities: UBInt32 bitmap of supported capabilities
+    :param actions:      UBInt32 Bitmap of supported "action_type"s
     :param ports:        Port definitions
     """
 

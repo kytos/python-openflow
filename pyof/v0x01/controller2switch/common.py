@@ -41,7 +41,6 @@ class SwitchConfig(base.GenericMessage):
     :param flags:         UBInt16 OFPC_* flags
     :param miss_send_len: UBInt16 max bytes of new flow that the
                           datapath should send to the controller
-
     """
 
     header = of_header.Header()
