@@ -15,13 +15,11 @@ class EchoReply(base.GenericMessage):
     """OpenFlow Reply message
 
     This message does not contain a body beyond the OpenFlow Header
-        :param xid: xid to be used on the message header
+    :param xid: xid to be used on the message header
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_ECHO_REPLY,
+                              length=8)
 
     def __init__(self, xid=None):
         super().__init__()
-        self.header = of_header.Header()
-        self.header.message_type = of_header.Type.OFPT_ECHO_REPLY
-        self.header.length = 8
         self.header.xid = xid

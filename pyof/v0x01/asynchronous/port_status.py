@@ -32,22 +32,19 @@ class PortReason(enum.Enum):
 # Classes
 
 class PortStatus(base.GenericMessage):
-    """
-    A physical port has changed in the datapath
+    """A physical port has changed in the datapath
 
-        :param header: Openflow Header
-        :param reason: One of OFPPR_*
-        :param pad:    Align to 32-bits
-        :param desc:   Port description
-
+    :param header: Openflow Header
+    :param reason: One of OFPPR_*
+    :param pad:    Align to 32-bits
+    :param desc:   Port description
     """
-    header = of_header.Header()
-    reason = basic_types.UBInt8()
+    header = of_header.Header(message_type=of_header.Type.OFPT_PORT_STATUS)
+    reason = basic_types.UBInt8(enum_ref=PortReason)
     pad = basic_types.PAD(7)
     desc = phy_port.PhyPort()
 
     def __init__(self, reason=None, desc=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_PORT_STATUS
         self.reason = reason
         self.desc = desc

@@ -31,7 +31,7 @@ class PacketOut(base.GenericMessage):
                         buffer_id == -1.)
 
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_OUT)
     buffer_id = basic_types.UBInt32()
     in_port = basic_types.UBInt16()
     actions_len = basic_types.UBInt16()
@@ -42,7 +42,6 @@ class PacketOut(base.GenericMessage):
                  actions_len=None, actions=None, data=b''):
         super().__init__()
         self.header.xid = xid
-        self.header.message_type = of_header.Type.OFPT_PACKET_OUT
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len

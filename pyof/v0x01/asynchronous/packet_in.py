@@ -47,18 +47,17 @@ class PacketIn(base.GenericMessage):
                       sizeof(struct ofp_packet_in) - 2.
 
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_IN)
     buffer_id = basic_types.UBInt32()
     total_len = basic_types.UBInt16()
     in_port = basic_types.UBInt16()
-    reason = basic_types.UBInt8()
+    reason = basic_types.UBInt8(enum_ref=PacketInReason)
     pad = basic_types.PAD(1)
     data = basic_types.BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, data=b''):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_PACKET_IN
         self.header.xid = xid
         self.buffer_id = buffer_id
         self.total_len = total_len
