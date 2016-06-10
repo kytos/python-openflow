@@ -47,9 +47,9 @@ class AttributeTypeError(Exception):
         self.expected_class = expected_class
 
     def __str__(self):
-        msg = "Unexpected value ('{}') ".format(str(self.item))
-        msg += "on attribute '{}' ".format(str(self.name))
-        msg += "from class '{}'".format(str(self.expected_class))
+        msg = "Unexpected value '{}' ".format(str(self.item))
+        msg += "with class '{}' ".format(str(self.item_class))
+        msg += "and expected class '{}'".format(str(self.expected_class))
         return msg
 
 

@@ -197,6 +197,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         return self.pack() == other.pack()
 
+    @staticmethod
     def _attr_fits_into_class(attr, _class):
         if not isinstance(attr, _class):
             try:
@@ -213,7 +214,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             if isinstance(attr, _class):
                 return True
             elif issubclass(_class, GenericType):
-                if GenericStruct._fits_into_generic_type(attr, _class):
+                if GenericStruct._attr_fits_into_class(attr, _class):
                     return True
             elif not isinstance(attr, _class):
                 return False

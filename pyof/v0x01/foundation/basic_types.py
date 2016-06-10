@@ -155,7 +155,7 @@ class BinaryData(base.GenericType):
             else:
                 return b''
         else:
-            raise exceptions.NotBinarydata()
+            raise exceptions.NotBinaryData()
 
     def unpack(self, buff, offset):
         self._value = buff
