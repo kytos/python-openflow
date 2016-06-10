@@ -24,6 +24,7 @@ class PAD(base.GenericType):
     _fmt = ''
 
     def __init__(self, length=0):
+        super().__init__()
         self._length = length
 
     def __repr__(self):
@@ -36,13 +37,14 @@ class PAD(base.GenericType):
         """ Return the size of type in bytes. """
         return struct.calcsize("!{:d}B".format(self._length))
 
-    def unpack(self, buff, offset):
+    def unpack(self, buff, offset=0):
         """Unpack a buff and stores at value property.
-            :param buff:   Buffer where data is located.
-            :param offset: Where data stream begins.
-            Do nothing, since the _length is already defined
-            and it is just a PAD. Keep buff and offset just
-            for compability with other unpack methods
+
+        Do nothing, since the _length is already defined and it is just a PAD.
+        Keep buff and offset just for compability with other unpack methods.
+
+        :param buff:   Buffer where data is located.
+        :param offset: Where data stream begins.
         """
         pass
 
@@ -149,7 +151,7 @@ class BinaryData(base.GenericType):
         super().__init__(value)
 
     def pack(self):
-        if type(self._value) is bytes:
+        if isinstance(self._value, bytes):
             if len(self._value) > 0:
                 return self._value
             else:
@@ -157,7 +159,7 @@ class BinaryData(base.GenericType):
         else:
             raise exceptions.NotBinaryData()
 
-    def unpack(self, buff, offset):
+    def unpack(self, buff, offset=0):
         self._value = buff
 
     def get_size(self):
@@ -171,7 +173,7 @@ class FixedTypeList(list, base.GenericStruct):
     def __init__(self, pyof_class, items=None):
         super().__init__()
         self._pyof_class = pyof_class
-        if type(items) is list:
+        if isinstance(items, list):
             self.extend(items)
         elif items:
             self.append(items)
@@ -181,7 +183,7 @@ class FixedTypeList(list, base.GenericStruct):
         return "{}".format([str(item) for item in self])
 
     def append(self, item):
-        if type(item) is list:
+        if isinstance(item, list):
             self.extend(item)
         elif item.__class__ == self._pyof_class:
             list.append(self, item)
@@ -242,7 +244,7 @@ class ConstantTypeList(list, base.GenericStruct):
     be inserted"""
     def __init__(self, items=None):
         super().__init__()
-        if type(items) is list:
+        if isinstance(items, list):
             self.extend(items)
         elif items:
             self.append(items)
@@ -252,7 +254,7 @@ class ConstantTypeList(list, base.GenericStruct):
         return "{}".format([str(item) for item in self])
 
     def append(self, item):
-        if type(item) is list:
+        if isinstance(item, list):
             self.extend(item)
         elif len(self) == 0:
             list.append(self, item)

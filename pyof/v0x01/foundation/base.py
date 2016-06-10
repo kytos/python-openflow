@@ -65,7 +65,10 @@ class GenericType(object):
     """This is a foundation class for all custom attributes.
 
     Attributes like `UBInt8`, `UBInt16`, `HWAddress` amoung others uses this
-    class as base."""
+    class as base.
+    """
+    _fmt = None
+
     def __init__(self, value=None, enum_ref=None):
         self._value = value
         self.enum_ref = enum_ref
@@ -110,7 +113,7 @@ class GenericType(object):
             return self._value
 
     def pack(self):
-        """Pack the valeu as a binary representation."""
+        """Pack the value as a binary representation."""
         try:
             return struct.pack(self._fmt, self.value)
         except struct.error as err:
@@ -162,15 +165,15 @@ class GenericType(object):
 class MetaStruct(type):
     """MetaClass used to force ordered attributes."""
     @classmethod
-    def __prepare__(self, name, bases):
+    def __prepare__(mcs, name, bases):  # pylint: disable=unused-argument
         return OrderedDict()
 
-    def __new__(self, name, bases, classdict):
+    def __new__(mcs, name, bases, classdict):
         classdict['__ordered__'] = OrderedDict([(key, type(value)) for
                                                 key, value in classdict.items()
                                                 if key[0] != '_' and not
                                                 hasattr(value, '__call__')])
-        return type.__new__(self, name, bases, classdict)
+        return type.__new__(mcs, name, bases, classdict)
 
 
 class GenericStruct(object, metaclass=MetaStruct):
@@ -183,7 +186,7 @@ class GenericStruct(object, metaclass=MetaStruct):
               has a list of attributes and theses attributes can be of struct
               type too.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         for attribute_name, class_attribute in self.get_class_attributes():
             setattr(self, attribute_name, deepcopy(class_attribute))
 
@@ -208,8 +211,8 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def _validate_attributes_type(self):
         """This method validates the type of each attribute"""
-        for _attr in self.__ordered__:
-            _class = self.__ordered__[_attr]
+        for _attr in self.__ordered__:        # pylint: disable=no-member
+            _class = self.__ordered__[_attr]  # pylint: disable=no-member
             attr = getattr(self, _attr)
             if isinstance(attr, _class):
                 return True
@@ -231,7 +234,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         :return: A generator of sets with attribute name and class attribute.
         """
-        for attribute_name in self.__ordered__:
+        for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (attribute_name, getattr(type(self), attribute_name))
 
     def get_instance_attributes(self):
@@ -245,7 +248,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         :return: A generator of sets with attribute name and its instance.
         """
-        for attribute_name in self.__ordered__:
+        for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (attribute_name, getattr(self, attribute_name))
 
     def get_attributes(self):
@@ -259,7 +262,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         :return: A generator of sets with instance and class attributes.
         """
-        for attribute_name in self.__ordered__:
+        for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (getattr(self, attribute_name),
                    getattr(type(self), attribute_name))
 
@@ -280,6 +283,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             raise Exception()
         else:
             size = 0
+            # pylint: disable=no-member
             for _attr, _class in self.__ordered__.items():
                 attr = getattr(self, _attr)
                 if _class.__name__ is 'PAD':
@@ -309,6 +313,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             raise exceptions.ValidationError(error_msg)
         else:
             message = b''
+            # pylint: disable=no-member
             for attr_name, attr_class in self.__ordered__.items():
                 attr = getattr(self, attr_name)
                 class_attr = getattr(type(self), attr_name)
@@ -364,6 +369,8 @@ class GenericMessage(GenericStruct):
     .. note:: A Message on this library context is like a Struct but has a
               also a `header` attribute.
     """
+    header = None
+
     def unpack(self, buff, offset=0):
         """Unpack a binary message.
 
@@ -445,17 +452,17 @@ class MetaBitMask(type):
     and __getattr__ attributes, so the resulting Class will behave as an enum
     class (you can access object.ELEMENT and recover either values or names)
     """
-    def __new__(self, name, bases, classdict):
+    def __new__(mcs, name, bases, classdict):
         _enum = OrderedDict([(key, value) for key, value in classdict.items()
-                            if key[0] != '_' and not
-                            hasattr(value, '__call__') and not
-                            isinstance(value, property)])
+                             if key[0] != '_' and not
+                             hasattr(value, '__call__') and not
+                             isinstance(value, property)])
         if len(_enum):
             classdict = {key: value for key, value in classdict.items()
                          if key[0] == '_' or hasattr(value, '__call__') or
                          isinstance(value, property)}
             classdict['_enum'] = _enum
-        return type.__new__(self, name, bases, classdict)
+        return type.__new__(mcs, name, bases, classdict)
 
     def __getattr__(cls, name):
         return cls._enum[name]
@@ -470,6 +477,7 @@ class MetaBitMask(type):
 class GenericBitMask(object, metaclass=MetaBitMask):
     def __init__(self, bitmask=None):
         self.bitmask = bitmask
+        self._enum = {}
 
     def __str__(self):
         return "{}".format(self.bitmask)
