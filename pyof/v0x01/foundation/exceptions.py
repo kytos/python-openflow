@@ -63,6 +63,7 @@ class ValidationError(Exception):
     """Error on validate message or struct"""
     def __init__(self, msg="Error on validate message"):
         self.msg = msg
+
     def __str__(self):
         return self.msg
 

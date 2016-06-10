@@ -20,13 +20,12 @@ class ErrorType(enum.Enum):
     will not change in future versions of the protocol (although new values
     may be added).
 
-        OFPET_HELLO_FAILED      # Hello protocol failed
-        OFPET_BAD_REQUEST       # Request was not understood
-        OFPET_BAD_ACTION        # Error in action description
-        OFPET_FLOW_MOD_FAILED   # Problem in modifying Flow entry
-        OFPET_PORT_MOD_FAILED   # Problem in modifying Port entry
-        OFPET_QUEUE_OP_FAILED   # # Problem in modifying Queue entry
-
+    OFPET_HELLO_FAILED      # Hello protocol failed
+    OFPET_BAD_REQUEST       # Request was not understood
+    OFPET_BAD_ACTION        # Error in action description
+    OFPET_FLOW_MOD_FAILED   # Problem in modifying Flow entry
+    OFPET_PORT_MOD_FAILED   # Problem in modifying Port entry
+    OFPET_QUEUE_OP_FAILED   # # Problem in modifying Queue entry
     """
     OFPET_HELLO_FAILED = 1,
     OFPET_BAD_REQUEST = 2,
@@ -149,14 +148,13 @@ class ErrorMsg(base.GenericMessage):
     This message does not contain a body beyond the OpenFlow Header
         :param xid:    xid to be used on the message header
     """
-    header = of_header.Header()
-    error_type = basic_types.UBInt16()
+    header = of_header.Header(message_type=of_header.Type.OFPT_ERROR)
+    error_type = basic_types.UBInt16(enum_ref=ErrorType)
     code = basic_types.UBInt16()
     data = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_ERROR
         self.header.xid = xid
         self.error_type = error_type
         self.code = code
@@ -165,5 +163,5 @@ class ErrorMsg(base.GenericMessage):
     def unpack(self, buff, offset=0):
         # TODO: Implement the unpack method evaluation the error_type and code
         #       to unpack the data attribute
-        raise exceptions.MethodNotImplemented("'Unpack' method not implemented"
-                                              "on ErrorMsg class.")
+        raise exceptions.MethodNotImplemented("'Unpack' method not "
+                                              "implemented on ErrorMsg class")

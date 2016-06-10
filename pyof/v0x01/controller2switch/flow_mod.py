@@ -2,7 +2,6 @@
 
 # System imports
 import enum
-from collections import OrderedDict as _OD
 # Third-party imports
 
 # Local source tree imports
@@ -44,6 +43,7 @@ class FlowModFlags(base.GenericBitMask):
     #: Remark this is for emergency
     OFPFF_EMERG = 1 << 2
 
+
 # Classes
 
 
@@ -67,7 +67,7 @@ class FlowMod(base.GenericMessage):
     :param actions:      The action length is inferred from the length
                          field in the header
     """
-    header = of_header.Header()
+    header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_MOD)
     match = flow_match.Match()
     cookie = basic_types.UBInt64()
     command = basic_types.UBInt16(enum_ref=FlowModCommand)
@@ -83,8 +83,6 @@ class FlowMod(base.GenericMessage):
                  idle_timeout=None, hard_timeout=None, priority=None,
                  buffer_id=None, out_port=None, flags=None, actions=None):
         super().__init__()
-        self.header.message_type = of_header.Type.OFPT_FLOW_MOD
-        self.header.length = 0
         self.header.xid = xid
         self.match = match
         self.cookie = cookie

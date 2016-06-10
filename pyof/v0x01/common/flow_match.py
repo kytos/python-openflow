@@ -8,6 +8,7 @@
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+
 class FlowWildCards(base.GenericBitMask):
     """
     Wildcards used to identify flows.
@@ -32,7 +33,7 @@ class FlowWildCards(base.GenericBitMask):
     OFPFW_TP_SRC = 1 << 6
     OFPFW_TP_DST = 1 << 7
 
-    # IP source address wildcard bit count.  0 is exact match, 1 ignores the
+    # IP source address wildcard bit count. 0 is exact match, 1 ignores the
     # LSB, 2 ignores the 2 least-significant bits, ..., 32 and higher wildcard
     # the entire field.  This is the *opposite* of the usual convention where
     # e.g. /24 indicates that 8 bits (not 24 bits) are wildcarded.
@@ -58,8 +59,7 @@ class FlowWildCards(base.GenericBitMask):
 
 
 class Match(base.GenericStruct):
-    """
-    Describes a flow entry. Fields to match against flows
+    """Describes a flow entry. Fields to match against flows
 
     :param wildcards:            Wildcard fields.
     :param in_port:              Input switch port.
@@ -76,11 +76,9 @@ class Match(base.GenericStruct):
     :param nw_dst:               IP destination address.
     :param tp_src:               TCP/UDP source port.
     :param tp_dst:               TCP/UDP destination port.
-
     """
-
     # Attributes
-    wildcards = basic_types.UBInt32()
+    wildcards = basic_types.UBInt32(enum_ref=FlowWildCards)
     in_port = basic_types.UBInt16()
     dl_src = basic_types.HWAddress()
     dl_dst = basic_types.HWAddress()

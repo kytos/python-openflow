@@ -31,6 +31,47 @@ class ConfigFlags(enum.Enum):
     OFPC_FRAG_MASK = 3
 
 
+class StatsTypes(enum.Enum):
+    """
+    Class implements type field which is used both, request and reply. It
+    specifies the kind of information being passed and determines how the
+    body field is interpreted.
+
+    Enums:
+
+        OFPST_DESC = 1          # Description of this OpenFlow switch.
+                                # The request body is empty.
+
+        OFPST_FLOW = 2          # Individual flow statistics.
+                                # The request body is struct
+                                # ofp_flow_stats_request.
+
+        OFPST_AGGREGATE = 3     # Aggregate flow statistics.
+                                # The request body is struct
+                                # ofp_aggregate_stats_request.
+
+        OFPST_TABLE = 4         # Flow table statistics.
+                                # The request body is empty.
+
+        OFPST_PORT = 5          # Physical port statistics.
+                                # The request body is empty.
+
+        OFPST_QUEUE = 6         # Queue statistics for a port.
+                                # The request body defines the port
+
+        OFPST_VENDOR = 0xffff   # Vendor extension.
+                                # The request and reply bodies begin with
+                                # a 32-bit vendor ID
+    """
+    OFPST_DESC = 1
+    OFPST_FLOW = 2
+    OFPST_AGGREGATE = 3
+    OFPST_TABLE = 4
+    OFPST_PORT = 5
+    OFPST_QUEUE = 6
+    OFPST_VENDOR = 0xffff
+
+
 # Classes
 
 
@@ -41,11 +82,9 @@ class SwitchConfig(base.GenericMessage):
     :param flags:         UBInt16 OFPC_* flags
     :param miss_send_len: UBInt16 max bytes of new flow that the
                           datapath should send to the controller
-
     """
-
     header = of_header.Header()
-    flags = basic_types.UBInt16()
+    flags = basic_types.UBInt16(enum_ref=ConfigFlags)
     miss_send_len = basic_types.UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
@@ -208,7 +247,6 @@ class FlowStatsRequest(base.GenericStruct):
     :param pad:      Align to 32 bits
     :param out_port: Require matching entries to include this as an output
                      port. A value of OFPP_NONE indicates no restriction.
-
     """
     match = flow_match.Match()
     table_id = basic_types.UBInt8()
@@ -368,7 +406,7 @@ class TableStats(base.GenericStruct):
     table_id = basic_types.UBInt8()
     pad = basic_types.PAD(3)
     name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
-    wildcards = basic_types.UBInt32()
+    wildcards = basic_types.UBInt32(enum_ref=flow_match.FlowWildCards)
     max_entries = basic_types.UBInt32()
     active_count = basic_types.UBInt32()
     count_lookup = basic_types.UBInt64()
