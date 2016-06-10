@@ -1,6 +1,6 @@
 import unittest
 
-from pyof.v0x01.controller2switch import stats_reply
+from pyof.v0x01.controller2switch import common
 from pyof.v0x01.controller2switch import stats_request
 
 
@@ -9,7 +9,7 @@ class TestStatsRequest(unittest.TestCase):
     def setUp(self):
         self.message = stats_request.StatsRequest()
         self.message.header.xid = 1
-        self.message.type = stats_reply.StatsTypes.OFPST_FLOW
+        self.message.type = common.StatsTypes.OFPST_FLOW
         self.message.flags = 1
         self.message.body = []
 
