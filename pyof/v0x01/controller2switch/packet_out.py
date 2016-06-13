@@ -7,12 +7,15 @@ uses the OFPT_PACKET_OUT message"""
 
 # Local source tree imports
 from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 # Classes
 
+#: in_port valid virtual port values, for validation
+_VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
 
 class PacketOut(base.GenericMessage):
     """
@@ -47,3 +50,15 @@ class PacketOut(base.GenericMessage):
         self.actions_len = actions_len
         self.actions = [] if actions is None else actions
         self.data = data
+
+    def is_valid(self):
+        return super().is_valid() and self._validate_in_port()
+
+    def _validate_in_port(self):
+        port = self.in_port
+        if isinstance(port, int) and port > 0 and port < Port.OFPP_MAX.value:
+            return True
+        elif isinstance(port, Port) and port in _VIRT_IN_PORTS:
+            return True
+        else:
+            raise ValueError('{} is not a valid input port.'.format(port))
