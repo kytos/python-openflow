@@ -107,26 +107,23 @@ Before you submit your pull request consider the following guidelines:
 * Please sign our [CLA](#cla) before sending pull requests. We cannot accept
   code without this;
 * Make your changes in a new git branch, from `develop` branch:
-
-```shell
-git checkout -b my-fix-branch develop
-```
+    ```shell
+    git checkout -b my-fix-branch develop
+    ```
 
 * **Include appropriate test cases**;
 * Follow our [Coding Rules](#rules);
 * Commit your changes using very good and descriptive commit messages;
   * Please consider doing atomic commits (small changes in each commit).
 * Run our test suit to check if anything is broken:
-
-```shell
-python3 setup.py test
-```
+    ```shell
+    python3 setup.py test
+    ```
 
 * Push your branch to GitHub:
-
-```shell
-git push origin my-fix-branch
-```
+    ```shell
+    git push origin my-fix-branch
+    ```
 
 * In GitHub, send a pull request to `python-openflow:develop`.
 * If we suggest changes then:
@@ -138,7 +135,6 @@ git push origin my-fix-branch
 
 If the PR gets too outdated we may ask you to rebase and force push to update
 the PR:
-
 ```shell
 git pull
 git rebase develop -i
@@ -160,7 +156,6 @@ The contributer should clone the master branch and, after fixing the bug, it has
 to be merged in master and develop branch.
 
 First clone the master branch as following:
-
 ```shell
 git checkout -b issue-#001 master
 # Fix the bug
@@ -170,7 +165,6 @@ git push
 ```
 
 Then, merge the fix to develop branch as well:
-
 ```shell
 git checkout develop
 git merge issue-#001
@@ -183,28 +177,30 @@ After your pull request is merged, you can safely delete your branch and pull
 the changes from the main (upstream) repository:
 
 * Delete the remote branch on GitHub either through the GitHub web UI or your
-  local shell as follows:
-
+local shell as follows:
     ```shell
     git push origin --delete my-fix-branch
     ```
 
 * Check out the `develop` branch:
-
     ```shell
     git checkout develop -f
     ```
 
 * Delete the local branch:
-
     ```shell
     git branch -D my-fix-branch
     ```
 
-* Update your `develop` with the latest upstream version:
-
+* If you haven't done it yet, add the *upstream* repository (only once):
     ```shell
-    git pull --ff upstream develop
+    git remote add upstream https://github.com/kytos/python-openflow.git
+    git remote # you should now see origin and upstream
+    ```
+
+* Update your `develop` with the latest upstream version:
+    ```shell
+    git pull upstream develop
     ```
 
 Information about environment setup for developers can be found at the
