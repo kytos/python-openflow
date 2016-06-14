@@ -78,6 +78,6 @@ class SwitchFeatures(base.GenericMessage):
 class FeaturesReply(SwitchFeatures):
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):
-        self.__ordered__ = super().__ordered__
+        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, datapath_id, n_buffers, n_tables, capabilities,
                          actions, ports)
