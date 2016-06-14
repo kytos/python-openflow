@@ -2,22 +2,17 @@ import os
 import sys
 from setuptools import setup, find_packages, Command
 
-SEP='<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
-
 
 class Doctest(Command):
     if sys.argv[-1] == 'test':
-        print(SEP)
         print("Running docs make and make doctest")
         os.system("make doctest -C docs/")
-        print(SEP)
 
 
 class Pep8Test(Command):
     if sys.argv[-1] == 'test':
         print("Running pep8 under source code folder")
-        os.system("python setup.py pep8 --exclude '.eggs*'")
-        print(SEP)
+        os.system("python3 setup.py pep8 --exclude '.eggs*'")
 
 setup(name='Kytos OpenFlow Parser library',
       version='0.1',
