@@ -33,29 +33,6 @@ class WrongListItemType(Exception):
         return message
 
 
-class PADHasNoValue(Exception):
-    """Exception raised when user tries to set a value on a PAD attribute"""
-    def __str__(self):
-        return "You can't set a value on a PAD attribute"
-
-
-class AttributeTypeError(Exception):
-    """Error raise when the attribute is not of the expected type
-    defined on the class definition"""
-
-    def __init__(self, item, item_class, expected_class):
-        super().__init__()
-        self.item = item
-        self.item_class = item_class
-        self.expected_class = expected_class
-
-    def __str__(self):
-        msg = "Unexpected value '{}' ".format(str(self.item))
-        msg += "with class '{}' ".format(str(self.item_class))
-        msg += "and expected class '{}'".format(str(self.expected_class))
-        return msg
-
-
 class NotBinaryData(Exception):
     """Error raised when the content of a BinaryData attribute is not binary"""
     def __str__(self):
