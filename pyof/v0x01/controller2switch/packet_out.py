@@ -11,6 +11,7 @@ from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation.exceptions import ValidationError
 
 # Classes
 
@@ -51,14 +52,24 @@ class PacketOut(base.GenericMessage):
         self.actions = [] if actions is None else actions
         self.data = data
 
+    def validate(self):
+        if not super().is_valid():
+            raise ValidationError()
+        self._validate_in_port()
+
     def is_valid(self):
-        return super().is_valid() and self._validate_in_port()
+        try:
+            self.validate()
+            return True
+        except ValidationError:
+            return False
 
     def _validate_in_port(self):
         port = self.in_port
-        if isinstance(port, int) and port > 0 and port < Port.OFPP_MAX.value:
-            return True
-        elif isinstance(port, Port) and port in _VIRT_IN_PORTS:
-            return True
-        else:
-            raise ValueError('{} is not a valid input port.'.format(port))
+        valid = True
+        if isinstance(port, int) and (port < 1 or port >= Port.OFPP_MAX.value):
+            valid = False
+        elif isinstance(port, Port) and port not in _VIRT_IN_PORTS:
+            valid = False
+        if not valid:
+            raise ValidationError('{} is not a valid input port.'.format(port))

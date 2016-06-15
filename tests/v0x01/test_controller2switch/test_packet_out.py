@@ -3,6 +3,7 @@ import unittest
 from pyof.v0x01.common import phy_port
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch import packet_out
+from pyof.v0x01.foundation.exceptions import ValidationError
 
 
 class TestPacketOut(unittest.TestCase):
@@ -43,7 +44,8 @@ class TestPacketOut(unittest.TestCase):
                    Port.OFPP_FLOOD, Port.OFPP_ALL)
         for in_port in invalid:
             self.message.in_port = in_port
-            self.assertRaises(ValueError, self.message.is_valid)
+            self.assertFalse(self.message.is_valid())
+            self.assertRaises(ValidationError, self.message.validate)
 
     def test_valid_physical_in_ports(self):
         """Physical port limits from 1.0.0 spec."""
@@ -57,4 +59,5 @@ class TestPacketOut(unittest.TestCase):
         max_valid = int(Port.OFPP_MAX.value) - 1
         for in_port in (-1, 0, max_valid + 1, max_valid + 2):
             self.message.in_port = in_port
-            self.assertRaises(ValueError, self.message.is_valid)
+            self.assertFalse(self.message.is_valid())
+            self.assertRaises(ValidationError, self.message.validate)

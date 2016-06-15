@@ -1,6 +1,11 @@
 """Exceptions defined on this Library"""
 
 
+class ValidationError(Exception):
+    """Can be used directly or inherited by specific validation errors."""
+    pass
+
+
 class MethodNotImplemented(Exception):
     """Exception to be raised when a method is not implemented"""
     def __init__(self, message=None):
@@ -37,16 +42,6 @@ class NotBinaryData(Exception):
     """Error raised when the content of a BinaryData attribute is not binary"""
     def __str__(self):
         return "The content of this variable needs to be binary data"
-
-
-class ValidationError(Exception):
-    """Error on validate message or struct"""
-    def __init__(self, msg="Error on validate message"):
-        super().__init__()
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
 
 
 class UnpackException(Exception):
