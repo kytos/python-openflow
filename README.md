@@ -36,10 +36,10 @@ sudo pip3 install python-openflow
 For example, see how it is easy to create a feature request message with this
 library. You can use ipython3 to get the advantages of autocompletion:
 
-```python3
+```python
 >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
 >>> request = FeaturesRequest(xid = 100)
->>> print(request.header) #doctest: +ELLIPSIS
+>>> print(request.header)  #doctest: +ELLIPSIS
 <pyof...common.header.Header object at 0x...>
 >>> print(request.header.message_type)
 Type.OFPT_FEATURES_REQUEST
@@ -50,7 +50,7 @@ Type.OFPT_FEATURES_REQUEST
 If you need to send this message via socket, call the `pack()` method to get its
 binary representation:
 
-```python3
+```python
 >>> binary_msg = request.pack()
 ```
 
