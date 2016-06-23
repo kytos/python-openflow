@@ -25,7 +25,7 @@ Table of Contents
   toc/install
   toc/usage
 
-  
+
 
 API Reference
 -------------
@@ -33,7 +33,7 @@ API Reference
 .. toctree::
    :maxdepth: 9
    :titlesonly:
-   :caption: Table of Contents
+   :caption: python-openflow packages
    :name: mastertoc
 
    modules
