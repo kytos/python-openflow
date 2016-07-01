@@ -15,7 +15,7 @@ class Pep8Test(Command):
         os.system("python3 setup.py pep8 --exclude '.eggs*'")
 
 setup(name='python-openflow',
-      version='0.1',
+      version='1.1.0-alpha',
       description='Library to parse and generate OpenFlow messages',
       url='http://github.com/kytos/python-openflow',
       author='Kytos Team',
