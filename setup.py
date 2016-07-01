@@ -8,7 +8,6 @@ class Doctest(Command):
         print("Running docs make and make doctest")
         os.system("make doctest -C docs/")
 
-<<<<<<< HEAD
 
 class Pep8Test(Command):
     if sys.argv[-1] == 'test':
