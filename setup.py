@@ -8,7 +8,7 @@ class Doctest(Command):
         print("Running docs make and make doctest")
         os.system("make doctest -C docs/")
 
-setup(name='Kytos OpenFlow Parser library',
+setup(name='python-openflow',
       version='0.1',
       description='Library to parse and generate OpenFlow messages',
       url='http://github.com/kytos/python-openflow',
