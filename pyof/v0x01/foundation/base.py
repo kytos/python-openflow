@@ -47,8 +47,8 @@ class GenericType:
     :class:`~.basic_types.Char` and others.
 
     :param value: The type's value
-    :param type enum_ref: If :attr:`value` is from an Enum, specify its
-        type
+    :param enum_ref: If :attr:`value` is from an Enum, specify its type
+    :type enum_ref: :class:`type`
     """
 
     _fmt = None
