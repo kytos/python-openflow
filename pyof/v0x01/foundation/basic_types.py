@@ -13,7 +13,9 @@ __all__ = ('UBInt8',
            'UBInt16',
            'UBInt32',
            'UBInt64',
-           'Char')
+           'Char',
+           'PAD',
+           'HWAddress')
 
 # TODO: Refactor unpack methods to return the unpacked object
 #       instead of being an inplace method.

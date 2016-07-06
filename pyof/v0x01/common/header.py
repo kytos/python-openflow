@@ -13,7 +13,8 @@ from pyof.v0x01.foundation import basic_types
 
 
 class Type(enum.Enum):
-    """Enumeration of Message Types"""
+    """Enumeration of Message Types."""
+
     # Symetric/Immutable messages
     OFPT_HELLO = 0
     OFPT_ERROR = 1
@@ -60,12 +61,14 @@ class Type(enum.Enum):
 
 
 class Header(base.GenericStruct):
-    """Representation of an OpenFlow message Header
+    """Representation of an OpenFlow message Header.
 
-    :param message_type: Type of  the message
-    :param xid:          id of the message
-    :param length:       Length of the message, including the header itself
+    Args:
+        message_type (Type): Type of the message.
+        xid (int): ID of the message.
+        length (int): Length of the message, including the header itself.
     """
+
     version = basic_types.UBInt8(base.OFP_VERSION)
     message_type = basic_types.UBInt8(enum_ref=Type)
     length = basic_types.UBInt16()

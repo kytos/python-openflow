@@ -1,4 +1,4 @@
-"""Defines OpenFlow queues structures and related items"""
+"""Defines OpenFlow queues structures and related items."""
 
 # System imports
 import enum
@@ -13,14 +13,11 @@ from pyof.v0x01.foundation import basic_types
 
 
 class QueueProperties(enum.Enum):
-    """
-    Describes the queue properties.
+    """Describe queue properties."""
 
-    Enums:
-        OFPQT_NONE      # No property defined for queue (default)
-        OFPQT_MIN_RATE  # Minimum datarate guaranteed
-    """
+    #: No property defined for queue (default)
     OFPQT_NONE = 0
+    #: Minimum datarate guaranteed
     OFPQT_MIN_RATE = 1
 
 
@@ -30,43 +27,51 @@ class QueueProperties(enum.Enum):
 class ListOfProperties(basic_types.FixedTypeList):
     """List of properties.
 
-    Represented by instances of QueuePropHeader and
-    used on PacketQueue objects
+    Represented by instances of :class:`QueuePropHeader` and used on
+    :class:`PacketQueue` objects.
 
-    :param items: (optional) Instance or a list of instances of QueuePropHeader
+    Args:
+        items (:class:`list` of/or :class:`QueuePropHeader`):
+            :class:`QueuePropHeader` instance or list of instances.
     """
+
     def __init__(self, items=None):
         super().__init__(pyof_class=QueuePropHeader,
                          items=items)
 
 
 class QueuePropHeader(base.GenericStruct):
-    """This class describes the header of each queue property.
+    """Describe the header of each queue property.
 
-        :param property: One of OFPQT\_.
-        :param len:      Length of property, including this header.
-        :param pad:      64-bit alignment.
+    Args:
+        property (QueueProperties): The queue property.
+        len (int): Length of property, including this header.
     """
+
     property = basic_types.UBInt16(enum_ref=QueueProperties)
     len = basic_types.UBInt16()
+    #: 64-bit alignment
     pad = basic_types.PAD(4)
 
-    def __init__(self, property=None, len=None):
+    def __init__(self, prop=None, length=None):
         super().__init__()
-        self.property = property
-        self.len = len
+        self.property = prop
+        self.len = length
 
 
 class PacketQueue(base.GenericStruct):
-    """This class describes a queue.
+    """Describe a queue.
 
-    :param queue_id:   id for the specific queue
-    :param length:     Length in bytes of this queue desc
-    :param pad:        64-bit alignment
-    :param properties: List of properties
+    Args:
+        queue_id (int): ID of the specific queue.
+        length (int): Length in bytes of this queue desc.
+        properties(ListOfProperties): Queue's list of properties. Default is an
+            empty list.
     """
+
     queue_id = basic_types.UBInt32()
     length = basic_types.UBInt16()
+    #: 64-bit alignment.
     pad = basic_types.PAD(2)
     properties = ListOfProperties()
 
@@ -78,15 +83,16 @@ class PacketQueue(base.GenericStruct):
 
 
 class QueuePropMinRate(base.GenericStruct):
-    """This class defines the minimum-rate type queue.
+    """Define the minimum-rate type queue.
 
-    :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
-    :param rate:        In 1/10 of a percent; >1000 -> disabled.
-    :param pad:         64-bit alignmet.
+    Args:
+        rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
     """
-    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MIN_RATE,
-                                  len=16)
+
+    prop_header = QueuePropHeader(prop=QueueProperties.OFPQT_MIN_RATE,
+                                  length=16)
     rate = basic_types.UBInt16()
+    #: 64-bit alignmet.
     pad = basic_types.PAD(6)
 
     def __init__(self, rate=None):
@@ -97,10 +103,12 @@ class QueuePropMinRate(base.GenericStruct):
 class ListOfQueues(basic_types.FixedTypeList):
     """List of queues.
 
-    Represented by instances of PacketQueue and
-    used on QueueGetConfigReply objects
+    Represented by instances of :class:`PacketQueue` and used on
+    :class:`QueueGetConfigReply` objects.
 
-    :param items: (optional) Instance or a list of instances of PacketQueue
+    Args:
+        items (:class:`list` of/or :class:`PacketQueue`): :class:`PacketQueue`
+            instance or list of instances.
     """
     def __init__(self, items=None):
         super().__init__(pyof_class=PacketQueue,
