@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
@@ -301,3 +302,8 @@ texinfo_documents = [
 #     curl https://docs.python.org/3/objects.inv >python.inv
 intersphinx_mapping = {'python': ('https://docs.python.org/3',
                                   (None, 'python.inv'))}
+
+# Napoleon settings from http://www.sphinx-doc.org/en/stable/ext/napoleon.html
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_special_with_doc = False  # Sphinx's default
