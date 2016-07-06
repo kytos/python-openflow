@@ -12,7 +12,7 @@ class Doctest(Command):
 class Pep8Test(Command):
     if sys.argv[-1] == 'test':
         print("Running pep8 under source code folder")
-        os.system("python3 setup.py pep8 --exclude '.eggs*'")
+        os.system("python3 setup.py pep8 --exclude '.eggs*,docs/conf.py'")
 
 setup(name='python-openflow',
       version='1.1.0-alpha',
