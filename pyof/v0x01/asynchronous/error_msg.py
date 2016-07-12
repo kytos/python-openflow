@@ -1,4 +1,4 @@
-"""Defines an Error Message"""
+"""Defines an Error Message."""
 
 # System imports
 import enum
@@ -15,34 +15,35 @@ from pyof.v0x01.foundation import exceptions
 
 
 class ErrorType(enum.Enum):
-    """
-    Values for ’type’ in ofp_error_message.  These values are immutable: they
-    will not change in future versions of the protocol (although new values
-    may be added).
+    """Values for ’type’ in ofp_error_message.
 
-    OFPET_HELLO_FAILED      # Hello protocol failed
-    OFPET_BAD_REQUEST       # Request was not understood
-    OFPET_BAD_ACTION        # Error in action description
-    OFPET_FLOW_MOD_FAILED   # Problem in modifying Flow entry
-    OFPET_PORT_MOD_FAILED   # Problem in modifying Port entry
-    OFPET_QUEUE_OP_FAILED   # # Problem in modifying Queue entry
+    These values are immutable: they will not change in future versions of the
+    protocol (although new values may be added).
     """
+
+    #: Hello protocol failed
     OFPET_HELLO_FAILED = 1,
+    #: Request was not understood
     OFPET_BAD_REQUEST = 2,
+    #: Error in action description
     OFPET_BAD_ACTION = 3,
+    #: Problem in modifying Flow entry
     OFPET_FLOW_MOD_FAILED = 4,
+    #: Problem in modifying Port entry
     OFPET_PORT_MOD_FAILED = 5,
+    #: Problem in modifying Queue entry
     OFPET_QUEUE_OP_FAILED = 6
 
 
 class HelloFailedCode(enum.Enum):
     """Error_msg 'code' values for OFPET_HELLO_FAILED.
-    'data' contains an ASCII text string that may give failure details.
 
-        OFPHFC_INCOMPATIBLE  # No compatible version
-        OFPHFC_EPERM         # Permissions error
+    'data' contains an ASCII text string that may give failure details.
     """
+
+    #: No compatible version
     OFPHFC_INCOMPATIBLE = 1,
+    #: Permissions error
     OFPHFC_EPERM = 2
 
 
@@ -51,6 +52,7 @@ class BadRequestCode(enum.Enum):
 
     'data' contains at least the first 64 bytes of the failed request.
     """
+
     #: ofp_header.version not supported.
     OFPBRC_BAD_VERSION = 1
     #: ofp_header.type not supported.
@@ -74,26 +76,27 @@ class BadRequestCode(enum.Enum):
 
 class BadActionCode(enum.Enum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
-    'data' contains at least the first 64 bytes of the failed request.
 
-        OFPBAC_BAD_TYPE         # Unknown action type
-        OFPBAC_BAD_LEN          # Length problem in actions
-        OFPBAC_BAD_VENDOR       # Unknown vendor id specified
-        OFPBAC_BAD_VENDOR_TYPE  # Unknown action type for vendor id
-        OFPBAC_BAD_OUT_PORT     # Problem validating output action
-        OFPBAC_BAD_ARGUMENT     # Bad action argument
-        OFPBAC_EPERM            # Permissions error
-        OFPBAC_TOO_MANY         # Can’t handle this many actions
-        OFPBAC_BAD_QUEUE        # Problem validating output queue
+    'data' contains at least the first 64 bytes of the failed request.
     """
+
+    #: Unknown action type
     OFPBAC_BAD_TYPE = 1,
+    #: Length problem in actions
     OFPBAC_BAD_LEN = 2,
+    #: Unknown vendor id specified
     OFPBAC_BAD_VENDOR = 3,
+    #: Unknown action type for vendor id
     OFPBAC_BAD_VENDOR_TYPE = 4,
+    #: Problem validating output action
     OFPBAC_BAD_OUT_PORT = 5,
+    #: Bad action argument
     OFPBAC_BAD_ARGUMENT = 6,
+    #: Permissions error
     OFPBAC_EPERM = 7,
+    #: Can’t handle this many actions
     OFPBAC_TOO_MANY = 8,
+    #: Problem validating output queue
     OFPBAC_BAD_QUEUE = 9
 
 
@@ -102,6 +105,7 @@ class FlowModFailedCode(enum.Enum):
 
     'data' contains at least the first 64 bytes of the failed request.
     """
+
     #: Flow not added because of full tables
     OFPFMFC_ALL_TABLES_FULL = 1
     #: Attempted to add overlapping flow with CHECK_OVERLAP flag set
@@ -118,36 +122,45 @@ class FlowModFailedCode(enum.Enum):
 
 class PortModFailedCode(enum.Enum):
     """Error_msg 'code' values for OFPET_PORT_MOD_FAILED.
-    'data' contains at least the first 64 bytes of the failed request.
 
-        OFPPMFC_BAD_PORT     # Specified port does not exist
-        OFPPMFC_BAD_HW_ADDR  # Specified hardware address is wrong
+    'data' contains at least the first 64 bytes of the failed request.
     """
+
+    #: Specified port does not exist
     OFPPMFC_BAD_PORT = 1,
+    #: Specified hardware address is wrong
     OFPPMFC_BAD_HW_ADDR = 2
 
 
 class QueueOpFailedCode(enum.Enum):
     """Error msg 'code' values for OFPET_QUEUE_OP_FAILED.
-    'data' contains at least the first 64 bytes of the failed request.
 
-        OFPQOFC_BAD_PORT   # Invalid port (or port does not exist)
-        OFPQOFC_BAD_QUEUE  # Queue does not exist
-        OFPQOFC_EPERM      # Permissions error
+    'data' contains at least the first 64 bytes of the failed request.
     """
+
+    #: Invalid port (or port does not exist)
     OFPQOFC_BAD_PORT = 1,
+    #: Queue does not exist
     OFPQOFC_BAD_QUEUE = 2,
+    #: Permissions error
     OFPQOFC_EPERM = 3
 
 
 # Classes
 
 class ErrorMsg(base.GenericMessage):
-    """OpenFlow Error Message
+    """OpenFlow Error Message.
 
-    This message does not contain a body beyond the OpenFlow Header
-        :param xid:    xid to be used on the message header
+    This message does not contain a body in addition to the OpenFlow Header.
+
+    Args:
+        xid (int): To be included in the message header.
+        error_type (ErrorType): Error type.
+        code (enum.Enum): Error code.
+        data: Its content is specified in the error code documentation.
     """
+
+    #: :class:`~.header.Header`: OpenFlow Header
     header = of_header.Header(message_type=of_header.Type.OFPT_ERROR)
     error_type = basic_types.UBInt16(enum_ref=ErrorType)
     code = basic_types.UBInt16()
@@ -161,7 +174,6 @@ class ErrorMsg(base.GenericMessage):
         self.data = [] if data is None else data
 
     def unpack(self, buff, offset=0):
-        # TODO: Implement the unpack method evaluation the error_type and code
-        #       to unpack the data attribute
+        """Unpack binary data into python object."""
         raise exceptions.MethodNotImplemented("'Unpack' method not "
                                               "implemented on ErrorMsg class")
