@@ -52,33 +52,36 @@ def new_message_from_message_type(message_type):
     Raises:
         KytosUndefinedMessageType: unkown Message_Type
     """
-    if not isinstance(message_type, Type):
-        raise ValueError
+
+    message_type = str(message_type)
 
     available_classes = {
-        Type.OFPT_HELLO: Hello,
-        Type.OFPT_ERROR: ErrorMsg,
-        Type.OFPT_ECHO_REQUEST: EchoRequest,
-        Type.OFPT_ECHO_REPLY: EchoReply,
-        Type.OFPT_VENDOR: VendorHeader,
-        Type.OFPT_FEATURES_REQUEST: FeaturesRequest,
-        Type.OFPT_FEATURES_REPLY: FeaturesReply,
-        Type.OFPT_GET_CONFIG_REQUEST: GetConfigRequest,
-        Type.OFPT_GET_CONFIG_REPLY: GetConfigReply,
-        Type.OFPT_SET_CONFIG: SetConfig,
-        Type.OFPT_PACKET_IN: PacketIn,
-        Type.OFPT_FLOW_REMOVED: FlowRemoved,
-        Type.OFPT_PORT_STATUS: PortStatus,
-        Type.OFPT_PACKET_OUT: PacketOut,
-        Type.OFPT_FLOW_MOD: FlowMod,
-        Type.OFPT_PORT_MOD: PortMod,
-        Type.OFPT_STATS_REQUEST: StatsRequest,
-        Type.OFPT_STATS_REPLY: StatsReply,
-        Type.OFPT_BARRIER_REQUEST: BarrierRequest,
-        Type.OFPT_BARRIER_REPLY: BarrierReply,
-        Type.OFPT_QUEUE_GET_CONFIG_REQUEST: QueueGetConfigRequest,
-        Type.OFPT_QUEUE_GET_CONFIG_REPLY: QueueGetConfigReply
+        str(Type.OFPT_HELLO): Hello,
+        str(Type.OFPT_ERROR): ErrorMsg,
+        str(Type.OFPT_ECHO_REQUEST): EchoRequest,
+        str(Type.OFPT_ECHO_REPLY): EchoReply,
+        str(Type.OFPT_VENDOR): VendorHeader,
+        str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
+        str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
+        str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,
+        str(Type.OFPT_GET_CONFIG_REPLY): GetConfigReply,
+        str(Type.OFPT_SET_CONFIG): SetConfig,
+        str(Type.OFPT_PACKET_IN): PacketIn,
+        str(Type.OFPT_FLOW_REMOVED): FlowRemoved,
+        str(Type.OFPT_PORT_STATUS): PortStatus,
+        str(Type.OFPT_PACKET_OUT): PacketOut,
+        str(Type.OFPT_FLOW_MOD): FlowMod,
+        str(Type.OFPT_PORT_MOD): PortMod,
+        str(Type.OFPT_STATS_REQUEST): StatsRequest,
+        str(Type.OFPT_STATS_REPLY): StatsReply,
+        str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
+        str(Type.OFPT_BARRIER_REPLY): BarrierReply,
+        str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
+        str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply
     }
+
+    if message_type not in available_classes:
+        raise ValueError
 
     message_class = available_classes.get(message_type)
     message_instance = message_class()

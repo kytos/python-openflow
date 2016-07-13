@@ -376,7 +376,7 @@ class GenericMessage(GenericStruct):
 
         This method updated the object attributes based on the unpacked
         data from the buffer binary message. It is an inplace method,
-        and it receives the binary data of the message without the header.
+        and it receives the binary data of the message **without** the header.
         There is no return on this method
 
             :param buff: binary data package to be unpacked
