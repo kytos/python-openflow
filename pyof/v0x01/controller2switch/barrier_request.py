@@ -1,4 +1,4 @@
-"""Defines Barrier Request message"""
+"""Defines Barrier Request message."""
 
 # System imports
 
@@ -12,11 +12,14 @@ from pyof.v0x01.foundation import base
 
 
 class BarrierRequest(base.GenericMessage):
-    """OpenFlow Barrier Request Message
+    """OpenFlow Barrier Request Message.
 
-    This message does not contain a body beyond the OpenFlow Header
-    :param xid: xid to be used on the message header
+    This message does not contain a body in addition to the OpenFlow Header.
+
+    Args:
+        xid (int): xid to be used on the message header.
     """
+
     header = of_header.Header(message_type=of_header.Type.OFPT_BARRIER_REQUEST)
 
     def __init__(self, xid=None):

@@ -1,4 +1,4 @@
-"""Defines common structures and enums for controller2switch"""
+"""Defines common structures and enums for controller2switch."""
 
 # System imports
 import enum
@@ -17,58 +17,40 @@ from pyof.v0x01.foundation import basic_types
 
 
 class ConfigFlags(enum.Enum):
-    """Configuration Flags
+    """Configuration Flags. Handling of IP Fragments."""
 
-        # Handling of IP Fragments
-        OFPC_FRAG_NORMAL         # No special handling for fragments
-        OFPC_FRAG_DROP           # Drop fragments
-        OFPC_FRAG_REASM          # Reassemble (only if OFPC_IP_REASM set)
-        OFPC_FRAG_MASK
-    """
+    #: No special handling for fragments
     OFPC_FRAG_NORMAL = 0
+    #: Drop fragments
     OFPC_FRAG_DROP = 1
+    #: Reassemble (only if OFPC_IP_REASM set)
     OFPC_FRAG_REASM = 2
     OFPC_FRAG_MASK = 3
 
 
 class StatsTypes(enum.Enum):
-    """
-    Class implements type field which is used both, request and reply. It
-    specifies the kind of information being passed and determines how the
+    """Type field to be used both in both request and reply.
+
+    It specifies the kind of information being passed and determines how the
     body field is interpreted.
-
-    Enums:
-
-        OFPST_DESC = 1          # Description of this OpenFlow switch.
-                                # The request body is empty.
-
-        OFPST_FLOW = 2          # Individual flow statistics.
-                                # The request body is struct
-                                # ofp_flow_stats_request.
-
-        OFPST_AGGREGATE = 3     # Aggregate flow statistics.
-                                # The request body is struct
-                                # ofp_aggregate_stats_request.
-
-        OFPST_TABLE = 4         # Flow table statistics.
-                                # The request body is empty.
-
-        OFPST_PORT = 5          # Physical port statistics.
-                                # The request body is empty.
-
-        OFPST_QUEUE = 6         # Queue statistics for a port.
-                                # The request body defines the port
-
-        OFPST_VENDOR = 0xffff   # Vendor extension.
-                                # The request and reply bodies begin with
-                                # a 32-bit vendor ID
     """
+
+    #: Description of this OpenFlow switch. The request body is empty.
     OFPST_DESC = 1
+    #: Individual flow statistics. The request body is struct
+    #: ofp_flow_stats_request.
     OFPST_FLOW = 2
+    #: Aggregate flow statistics. The request body is struct
+    #: ofp_aggregate_stats_request.
     OFPST_AGGREGATE = 3
+    #: Flow table statistics. The request body is empty.
     OFPST_TABLE = 4
+    #: Physical port statistics. The request body is empty.
     OFPST_PORT = 5
+    #: Queue statistics for a port. The request body defines the port
     OFPST_QUEUE = 6
+    #: Vendor extension. The request and reply bodies begin with a 32-bit
+    #: vendor ID
     OFPST_VENDOR = 0xffff
 
 
@@ -78,11 +60,13 @@ class StatsTypes(enum.Enum):
 class SwitchConfig(base.GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
 
-    :param xid:           xid to be used on the message header
-    :param flags:         UBInt16 OFPC_* flags
-    :param miss_send_len: UBInt16 max bytes of new flow that the
-                          datapath should send to the controller
+    Args:
+        xid (int): xid to be used on the message header.
+        flags (ConfigFlags): OFPC_* flags.
+        miss_send_len (int): UBInt16 max bytes of new flow that the datapath
+            should send to the controller.
     """
+
     header = of_header.Header()
     flags = basic_types.UBInt16(enum_ref=ConfigFlags)
     miss_send_len = basic_types.UBInt16()
@@ -97,12 +81,12 @@ class SwitchConfig(base.GenericMessage):
 class ListOfActions(basic_types.FixedTypeList):
     """List of actions.
 
-    Represented by instances of ActionHeader and
-    used on ActionHeader objects
+    Represented by instances of ActionHeader and used on ActionHeader objects.
 
-    Attributes:
-        items (optional): Instance or a list of instances of ActionHeader
+    Args:
+        items (ActionHeader): Instance or a list of instances.
     """
+
     def __init__(self, items=None):
         super().__init__(pyof_class=action.ActionHeader, items=items)
 
@@ -110,15 +94,16 @@ class ListOfActions(basic_types.FixedTypeList):
 class AggregateStatsReply(base.GenericStruct):
     """Body of reply to OFPST_AGGREGATE request.
 
-    :param packet_count: Number of packets in flows
-    :param byte_count:   Number of bytes in flows
-    :param flow_count:   Number of flows
-    :param pad:          Align to 64 bits
-
+    Args:
+        packet_count (int): Number of packets in flows
+        byte_count (int):   Number of bytes in flows
+        flow_count (int):   Number of flows
     """
+
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
     flow_count = basic_types.UBInt32()
+    #: Align to 64 bits
     pad = basic_types.PAD(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
@@ -129,20 +114,19 @@ class AggregateStatsReply(base.GenericStruct):
 
 
 class AggregateStatsRequest(base.GenericStruct):
-    """
-    Body for ofp_stats_request of type OFPST_AGGREGATE.
+    """Body for ofp_stats_request of type OFPST_AGGREGATE.
 
-    :param match:    Fields to match
-    :param table_id: ID of table to read (from pyof_table_stats) 0xff
-                     for all tables or 0xfe for emergency.
-    :param pad:      Align to 32 bits
-    :param out_port: Require matching entries to include this as an
-                     output port.  A value of OFPP_NONE indicates
-                     no restriction
-
+    Args:
+        match (Match): Fields to match.
+        table_id (int): ID of table to read (from pyof_table_stats) 0xff for
+            all tables or 0xfe for emergency.
+        out_port (int): Require matching entries to include this as an output
+            port. A value of OFPP_NONE indicates no restriction.
     """
+
     match = flow_match.Match()
     table_id = basic_types.UBInt8()
+    #: Align to 32 bits
     pad = basic_types.PAD(1)
     out_port = basic_types.UBInt16()
 
@@ -154,18 +138,19 @@ class AggregateStatsRequest(base.GenericStruct):
 
 
 class DescStats(base.GenericStruct):
-    """
+    """Information available from the OFPST_DESC stats request.
+
     Information about the switch manufacturer, hardware revision, software
-    revision, serial number, and a description field is avail- able from
-    the OFPST_DESC stats request.
+    revision, serial number and a description field.
 
-    :param mfr_desc:   Manufacturer description
-    :param hw_desc:    Hardware description
-    :param sw_desc:    Software description
-    :param serial_num: Serial number
-    :param dp_desc:    Human readable description of datapath
-
+    Args:
+        mfr_desc (str): Manufacturer description
+        hw_desc (str): Hardware description
+        sw_desc (str): Software description
+        serial_num (str): Serial number
+        dp_desc (str): Human readable description of datapath
     """
+
     mfr_desc = basic_types.Char(length=base.DESC_STR_LEN)
     hw_desc = basic_types.Char(length=base.DESC_STR_LEN)
     sw_desc = basic_types.Char(length=base.DESC_STR_LEN)
@@ -183,28 +168,28 @@ class DescStats(base.GenericStruct):
 
 
 class FlowStats(base.GenericStruct):
-    """
-    Body of reply to OFPST_FLOW request.
+    """Body of reply to OFPST_FLOW request.
 
-    :param length:        Length of this entry
-    :param table_id:      ID of table flow came from
-    :param pad:           Align to 32 bits
-    :param match:         Description of fields
-    :param duration_sec:  Time flow has been alive in seconds
-    :param duration_nsec: Time flow has been alive in nanoseconds beyond
-                          duration_sec
-    :param priority:      Priority of the entry. Only meaningful when this
-                          is not an exact-match entry
-    :param idle_timeout:  Number of seconds idle before expiration
-    :param hard_timeout:  Number of seconds before expiration
-    :param pad2:          Align to 64-bits
-    :param cookie:        Opaque controller-issued identifier
-    :param packet_count:  Number of packets in flow
-    :param byte_count:    Number of bytes in flow
-    :param actions:       Actions
+    Args:
+        length (int): Length of this entry.
+        table_id (int): ID of table flow came from.
+        match (Match): Description of fields.
+        duration_sec (int): Time flow has been alive in seconds.
+        duration_nsec (int): Time flow has been alive in nanoseconds in
+            addition to duration_sec.
+        priority (int): Priority of the entry. Only meaningful when this
+            is not an exact-match entry.
+        idle_timeout (int): Number of seconds idle before expiration.
+        hard_timeout (int): Number of seconds before expiration.
+        cookie (int): Opaque controller-issued identifier.
+        packet_count (int): Number of packets in flow.
+        byte_count (int): Number of bytes in flow.
+        actions (ListOfActions): Actions.
     """
+
     length = basic_types.UBInt16()
     table_id = basic_types.UBInt8()
+    #: Align to 32 bits.
     pad = basic_types.PAD(1)
     match = flow_match.Match()
     duration_sec = basic_types.UBInt32()
@@ -212,6 +197,7 @@ class FlowStats(base.GenericStruct):
     priority = basic_types.UBInt16()
     idle_timeout = basic_types.UBInt16()
     hard_timeout = basic_types.UBInt16()
+    #: Align to 64-bits
     pad2 = basic_types.PAD(6)
     cookie = basic_types.UBInt64()
     packet_count = basic_types.UBInt64()
@@ -238,18 +224,20 @@ class FlowStats(base.GenericStruct):
 
 
 class FlowStatsRequest(base.GenericStruct):
-    """
-    Body for ofp_stats_request of type OFPST_FLOW.
+    """Body for ofp_stats_request of type OFPST_FLOW.
 
-    :param match:    Fields to match
-    :param table_id: ID of table to read (from pyof_table_stats)
-                     0xff for all tables or 0xfe for emergency
-    :param pad:      Align to 32 bits
-    :param out_port: Require matching entries to include this as an output
-                     port. A value of OFPP_NONE indicates no restriction.
+    Args:
+        match (Match): Fields to match.
+        table_id (int): ID of table to read (from pyof_table_stats)
+            0xff for all tables or 0xfe for emergency.
+        out_port (:class:`int`, :class:`.Port`): Require matching entries to
+            include this as an output port. A value of :attr:`.Port.OFPP_NONE`
+            indicates no restriction.
     """
+
     match = flow_match.Match()
     table_id = basic_types.UBInt8()
+    #: Align to 32 bits.
     pad = basic_types.PAD(1)
     out_port = basic_types.UBInt16()
 
@@ -265,29 +253,28 @@ class PortStats(base.GenericStruct):
 
     If a counter is unsupported, set the field to all ones.
 
-    :param port_no:      Port number
-    :param pad:          Align to 64-bits
-    :param rx_packets:   Number of received packets
-    :param tx_packets:   Number of transmitted packets
-    :param rx_bytes:     Number of received bytes
-    :param tx_bytes:     Number of transmitted bytes
-    :param rx_dropped:   Number of packets dropped by RX
-    :param tx_dropped:   Number of packets dropped by TX
-    :param rx_errors:    Number of receive errors.  This is a super-set
-                         of more specific receive errors and should be
-                         greater than or equal to the sum of all
-                         rx_*_err values
-    :param tx_errors:    Number of transmit errors.  This is a super-set
-                         of more specific transmit errors and should be
-                         greater than or equal to the sum of all
-                         tx_*_err values (none currently defined.)
-    :param rx_frame_err: Number of frame alignment errors
-    :param rx_over_err:  Number of packets with RX overrun
-    :param rx_crc_err:   Number of CRC errors
-    :param collisions:   Number of collisions
-
+    Args:
+        port_no (:class:`int`, :class:`.Port`): Port number.
+        rx_packets (int): Number of received packets.
+        tx_packets (int): Number of transmitted packets.
+        rx_bytes (int): Number of received bytes.
+        tx_bytes (int): Number of transmitted bytes.
+        rx_dropped (int): Number of packets dropped by RX.
+        tx_dropped (int): Number of packets dropped by TX.
+        rx_errors (int): Number of receive errors. This is a super-set of more
+            specific receive errors and should be greater than or equal to the
+            sum of all rx_*_err values.
+        tx_errors (int): Number of transmit errors.  This is a super-set of
+            more specific transmit errors and should be greater than or equal
+            to the sum of all tx_*_err values (none currently defined).
+        rx_frame_err (int): Number of frame alignment errors.
+        rx_over_err (int): Number of packets with RX overrun.
+        rx_crc_err (int): Number of CRC errors.
+        collisions (int): Number of collisions.
     """
+
     port_no = basic_types.UBInt16()
+    #: Align to 64-bits.
     pad = basic_types.PAD(6)
     rx_packets = basic_types.UBInt64()
     tx_packets = basic_types.UBInt64()
@@ -324,16 +311,16 @@ class PortStats(base.GenericStruct):
 
 
 class PortStatsRequest(base.GenericStruct):
-    """
-    Body for ofp_stats_request of type OFPST_PORT
+    """Body for ofp_stats_request of type OFPST_PORT.
 
-    :param port_no: OFPST_PORT message must request statistics either
-                    for a single port (specified in port_no) or for
-                    all ports (if port_no == OFPP_NONE).
-    :param pad:
-
+    Args:
+        port_no (:class:`int`, :class:`.Port`): OFPST_PORT message must request
+            statistics either for a single port (specified in port_no) or for
+            all ports (if port_no == :attr:`.Port.OFPP_NONE`).
     """
+
     port_no = basic_types.UBInt16()
+    #: Align to 64-bits.
     pad = basic_types.PAD(6)
 
     def __init__(self, port_no=None):
@@ -342,18 +329,18 @@ class PortStatsRequest(base.GenericStruct):
 
 
 class QueueStats(base.GenericStruct):
-    """
-    Implements the reply body of a port_no
+    """Implements the reply body of a port_no.
 
-    :param port_no:    Port Number
-    :param pad:        Align to 32-bits
-    :param queue_id:   Queue ID
-    :param tx_bytes:   Number of transmitted bytes
-    :param tx_packets: Number of transmitted packets
-    :param tx_errors:  Number of packets dropped due to overrun
-
+    Args:
+        port_no (:class:`int`, :class:`.Port`): Port Number.
+        queue_id (int): Queue ID.
+        tx_bytes (int): Number of transmitted bytes.
+        tx_packets (int): Number of transmitted packets.
+        tx_errors (int): Number of packets dropped due to overrun.
     """
+
     port_no = basic_types.UBInt16()
+    #: Align to 32-bits.
     pad = basic_types.PAD(2)
     queue_id = basic_types.UBInt32()
     tx_bytes = basic_types.UBInt64()
@@ -371,14 +358,16 @@ class QueueStats(base.GenericStruct):
 
 
 class QueueStatsRequest(base.GenericStruct):
-    """
-    Implements the request body of a port_no
+    """Implements the request body of a ``port_no``.
 
-    :param port_no:  All ports if OFPT_ALL
-    :param pad:      Align to 32-bits
-    :param queue_id: All queues if OFPQ_ALL
+    Args:
+        port_no (:class:`int`, :class:`.Port`): All ports if
+            :attr:`.Port.OFPP_ALL`.
+        queue_id (int): All queues if OFPQ_ALL.
     """
+
     port_no = basic_types.UBInt16()
+    #: Align to 32-bits
     pad = basic_types.PAD(2)
     queue_id = basic_types.UBInt32()
 
@@ -391,19 +380,20 @@ class QueueStatsRequest(base.GenericStruct):
 class TableStats(base.GenericStruct):
     """Body of reply to OFPST_TABLE request.
 
-    :param table_id:      Identifier of table.  Lower numbered tables
-                          are consulted first
-    :param pad:           Align to 32-bits
-    :param name:          Table name
-    :param wildcards:     Bitmap of OFPFW_* wildcards that are supported
-                          by the table
-    :param max_entries:   Max number of entries supported
-    :param active_count:  Number of active entries
-    :param count_lookup:  Number of packets looked up in table
-    :param count_matched: Number of packets that hit table
-
+    Args:
+        table_id (int): Identifier of table.  Lower numbered tables are
+            consulted first.
+        name (str): Table name.
+        wildcards (FlowWildCards): Bitmap of OFPFW_* wildcards that are
+            supported by the table.
+        max_entries (int): Max number of entries supported.
+        active_count (int): Number of active entries.
+        count_lookup (int): Number of packets looked up in table.
+        count_matched (int): Number of packets that hit table.
     """
+
     table_id = basic_types.UBInt8()
+    #: Align to 32-bits.
     pad = basic_types.PAD(3)
     name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
     wildcards = basic_types.UBInt32(enum_ref=flow_match.FlowWildCards)

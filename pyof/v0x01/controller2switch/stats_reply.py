@@ -1,4 +1,4 @@
-"""Response the stat request packet from the controller"""
+"""Response the stat request packet from the controller."""
 
 # System imports
 
@@ -14,14 +14,15 @@ from pyof.v0x01.foundation import basic_types
 
 
 class StatsReply(base.GenericMessage):
-    """Class implements the response to the config request
+    """Class implements the response to the config request.
 
-    :param header -- OpenFlow header
-    :param body_type -- One of the OFPST_* constants
-    :param flags -- OFPSF_REQ_* flags (none yet defined)
-    :param body -- Body of the request
-
+    Args:
+        body_type (StatsTypes): One of the OFPST_* constants.
+        flags (int): OFPSF_REQ_* flags (none yet defined).
+        body (ConstantTypeList): Body of the request.
     """
+
+    #: OpenFlow :class:`.Header`
     header = of_header.Header(message_type=of_header.Type.OFPT_STATS_REPLY)
     body_type = basic_types.UBInt16(enum_ref=common.StatsTypes)
     flags = basic_types.UBInt16()
