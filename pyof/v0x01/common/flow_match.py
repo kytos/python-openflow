@@ -1,4 +1,4 @@
-"""Defines flow statistics structures and related items"""
+"""Defines flow statistics structures and related items."""
 
 # System imports
 

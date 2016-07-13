@@ -127,7 +127,7 @@ class ActionEnqueue(base.GenericStruct):
 
 
 class ActionVlanVid(base.GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`
+    """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
 
     Args:
         vlan_id (int): VLAN priority.
@@ -173,8 +173,7 @@ class ActionVlanPCP(base.GenericStruct):
 
 
 class ActionDLAddr(base.GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or
-    :attr:`~ActionType.OFPAT_SET_DL_DST`.
+    """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or _DST.
 
     Args:
         dl_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_DL_SRC` or
@@ -197,8 +196,7 @@ class ActionDLAddr(base.GenericStruct):
 
 
 class ActionNWAddr(base.GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or
-    :attr:`~ActionType.OFPAT_SET_NW_DST`.
+    """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST.
 
     Args:
         nw_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
@@ -244,8 +242,7 @@ class ActionNWTos(base.GenericStruct):
 
 
 class ActionTPPort(base.GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or
-    :attr:`~ActionType.OFPAT_SET_TP_DST`.
+    """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or _DST.
 
     Args:
         tp_port_type (ActionType): :attr:`~ActionType.OFPAT_SET_TP_SRC` or

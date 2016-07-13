@@ -110,6 +110,7 @@ class ListOfQueues(basic_types.FixedTypeList):
         items (:class:`list` of/or :class:`PacketQueue`): :class:`PacketQueue`
             instance or list of instances.
     """
+
     def __init__(self, items=None):
         super().__init__(pyof_class=PacketQueue,
                          items=items)

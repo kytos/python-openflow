@@ -1,1 +1,1 @@
-"""Symmetric Messages"""
+"""Symmetric Messages."""

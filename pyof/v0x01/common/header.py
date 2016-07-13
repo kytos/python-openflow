@@ -1,4 +1,4 @@
-"""Defines Header classes and related items"""
+"""Defines Header classes and related items."""
 
 # System imports
 import enum

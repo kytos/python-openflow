@@ -312,7 +312,7 @@ class FixedTypeList(list, base.GenericStruct):
 
 
 class ConstantTypeList(list, base.GenericStruct):
-    """Create a list to contain only objects of the same type (class)."""
+    """List that contains only objects of the same type (class)."""
 
     def __init__(self, items=None):
         super().__init__()
