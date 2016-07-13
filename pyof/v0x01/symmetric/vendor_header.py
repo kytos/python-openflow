@@ -1,4 +1,4 @@
-"""Defines Vendor message"""
+"""Defines Vendor message."""
 
 # System imports
 
@@ -13,14 +13,17 @@ from pyof.v0x01.foundation import basic_types
 
 
 class VendorHeader(base.GenericMessage):
-    """OpenFlow Vendor message
+    """OpenFlow Vendor message.
 
-    This message does not contain a body beyond the OpenFlow Header
-        :param xid:    xid to be used on the message header
-        :param vendor: Vendor ID:
-                       MSB 0: low-order bytes are IEEE OUI.
-                       MSB != 0: defined by OpenFlow consortium
+    This message does not contain a body beyond the OpenFlow Header.
+
+    Args:
+        xid (int): xid to be used on the message header.
+        vendor (int): Vendor ID:
+            MSB 0: low-order bytes are IEEE OUI.
+            MSB != 0: defined by OpenFlow consortium.
     """
+
     header = of_header.Header(message_type=of_header.Type.OFPT_VENDOR)
     vendor = basic_types.UBInt32()
 

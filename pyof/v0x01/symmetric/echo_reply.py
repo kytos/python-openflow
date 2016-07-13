@@ -1,4 +1,4 @@
-"""Defines Echo Reply message during the handshake"""
+"""Defines Echo Reply message during the handshake."""
 
 # System imports
 
@@ -12,11 +12,14 @@ from pyof.v0x01.foundation import base
 
 
 class EchoReply(base.GenericMessage):
-    """OpenFlow Reply message
+    """OpenFlow Reply message.
 
-    This message does not contain a body beyond the OpenFlow Header
-    :param xid: xid to be used on the message header
+    This message does not contain a body beyond the OpenFlow Header.
+
+    Args:
+        xid (int): xid to be used on the message header.
     """
+
     header = of_header.Header(message_type=of_header.Type.OFPT_ECHO_REPLY,
                               length=8)
 
