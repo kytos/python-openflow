@@ -1,4 +1,4 @@
-"""Defines basic types to be used in structures and messages."""
+"""Basic types used in structures and messages."""
 
 # System imports
 import struct
@@ -9,18 +9,21 @@ import struct
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import exceptions
 
-__all__ = ['UBInt8',
+__all__ = ('UBInt8',
            'UBInt16',
            'UBInt32',
            'UBInt64',
-           'Char']
+           'Char',
+           'PAD',
+           'HWAddress')
 
 # TODO: Refactor unpack methods to return the unpacked object
 #       instead of being an inplace method.
 
 
 class PAD(base.GenericType):
-    """Class for padding attributes"""
+    """Class for padding attributes."""
+
     _fmt = ''
 
     def __init__(self, length=0):
@@ -34,24 +37,31 @@ class PAD(base.GenericType):
         return self.pack()
 
     def get_size(self):
-        """ Return the size of type in bytes. """
+        """Return the type size in bytes.
+
+        :return: Size in bytes
+        :rtype: int
+        """
         return struct.calcsize("!{:d}B".format(self._length))
 
     def unpack(self, buff, offset=0):
-        """Unpack a buff and stores at value property.
+        """Unpack *buff* into this object.
 
         Do nothing, since the _length is already defined and it is just a PAD.
         Keep buff and offset just for compability with other unpack methods.
 
-        :param buff:   Buffer where data is located.
-        :param offset: Where data stream begins.
+        :param buff: Buffer where data is located
+        :param int offset: Where data stream begins
         """
         pass
 
     def pack(self):
         """Pack the object.
 
-        Returns b'\x00' multiplied by the length of the PAD
+        Return the byte 0 (zero) *length* times.
+
+        :return: A sequence of zeros
+        :rtype: bytes
         """
         return b'\x00' * self._length
 
@@ -59,74 +69,107 @@ class PAD(base.GenericType):
 class UBInt8(base.GenericType):
     """Format character for an Unsigned Char.
 
-    Class for an 8 bits (1 byte) Unsigned Integer.
+    Class for an 8-bit (1-byte) Unsigned Integer.
     """
+
     _fmt = "!B"
 
 
 class UBInt16(base.GenericType):
     """Format character for an Unsigned Short.
 
-    Class for an 16 bits (2 bytes) Unsigned Integer.
+    Class for an 16-bit (2-byte) Unsigned Integer.
     """
+
     _fmt = "!H"
 
 
 class UBInt32(base.GenericType):
     """Format character for an Unsigned Int.
 
-    Class for an 32 bits (4 bytes) Unsigned Integer.
+    Class for an 32-bit (4-byte) Unsigned Integer.
     """
+
     _fmt = "!I"
 
 
 class UBInt64(base.GenericType):
     """Format character for an Unsigned Long Long.
 
-    Class for an 64 bits (8 bytes) Unsigned Integer.
+    Class for an 64-bit (8-byte) Unsigned Integer.
     """
+
     _fmt = "!Q"
 
 
 class Char(base.GenericType):
-    """Format double char to create a Char basic type."""
+    """Build a double char type according to the length.
+
+    :param value: The character to be build
+    :param int length: Character size
+    """
+
     def __init__(self, value=None, length=0):
-        """Build a double char type according to the length
-            :param value:  the character to be build.
-            :param length: the character size.
-        """
         super().__init__(value)
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
     def pack(self):
+        """Pack the value as a binary representation.
+
+        :return: The binary representation
+        :rtype: bytes
+        :raise struct.error: if the value does not fit the binary format
+        """
         packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
         return packed[:-1] + b'\0'  # null-terminated
 
     def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        :param bytes buff: Binary data package to be unpacked
+        :param int offset: Where to begin unpacking
+        :raise Exception: if there is a struct unpacking error
+        """
         try:
             begin = offset
             end = begin + self.length
             unpacked_data = struct.unpack(self._fmt, buff[begin:end])[0]
-        except:
+        except struct.error:
             raise Exception("%s: %s" % (offset, buff))
 
         self._value = unpacked_data.decode('ascii').rstrip('\0')
 
 
 class HWAddress(base.GenericType):
-    """Defines a hardware address"""
+    """Defines a hardware address."""
 
     def __init__(self, hw_address=b'000000'):
         super().__init__(hw_address)
 
     def pack(self):
-        # struct.pack('!6B', *[int(x, 16) for x in self._value.split(':')])
+        """Pack the value as a binary representation.
+
+        :return: The binary representation
+        :rtype: bytes
+        :raise struct.error: if the value does not fit the binary format
+        """
         value = self._value.split(':')
         return struct.pack('!6B', *[int(x, 16) for x in value])
 
     def unpack(self, buff, offset=0):
-        # value = ':'.join([hex(x)[2:] for x in struct.unpack('!6B', buff)])
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        :param bytes buff: Binary data package to be unpacked
+        :param int offset: Where to begin unpacking
+        :raise Exception: if there is a struct unpacking error
+        """
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
         except:
@@ -135,22 +178,38 @@ class HWAddress(base.GenericType):
         self._value = transformed_data
 
     def get_size(self):
+        """Return the address size in bytes.
+
+        :return: The address size in bytes
+        :rtype: int
+        """
         return 6
 
 
 class BinaryData(base.GenericType):
-    """Class to create objects that represents binary data
+    """Class to create objects that represent binary data.
 
-    This will be used on the 'data' attribute from
-    packet_out and packet_in messages.
+    This is used on the ``data`` attribute from
+    :class:`~.controller2switch.packet_in.PacketIn` and
+    :class:`~.controller2switch.packet_out.PacketOut` messages. Both the
+    :meth:`pack` and :meth:`unpack` methods will return the binary data itself.
+    :meth:`get_size` method will return the size of the instance using Python's
+    :func:`len`.
 
-    Both the 'pack' and 'unpack' methods will return the binary data itself.
-    get_size method will return the size of the instance using python 'len'
+    :param bytes value: The binary data
     """
+
     def __init__(self, value=b''):
         super().__init__(value)
 
     def pack(self):
+        """Pack the value as a binary representation.
+
+        :return: The binary representation
+        :rtype: bytes
+        :raise: :class:`~.exceptions.NotBinaryData` - if value is not
+            :class:`bytes`
+        """
         if isinstance(self._value, bytes):
             if len(self._value) > 0:
                 return self._value
@@ -160,14 +219,28 @@ class BinaryData(base.GenericType):
             raise exceptions.NotBinaryData()
 
     def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results. Since the *buff* is binary data, no conversion is done.
+
+        :param bytes buff: Binary data package to be unpacked
+        :param int offset: Where to begin unpacking
+        """
         self._value = buff
 
     def get_size(self):
+        """Return the size in bytes.
+
+        :return: The address size in bytes
+        :rtype: int
+        """
         return len(self._value)
 
 
 class FixedTypeList(list, base.GenericStruct):
-    """Creates a List that will receive OFP Classes"""
+    """A list that stores pyof classes."""
+
     _pyof_class = None
 
     def __init__(self, pyof_class, items=None):
@@ -179,7 +252,7 @@ class FixedTypeList(list, base.GenericStruct):
             self.append(items)
 
     def __str__(self):
-        """Human-readable object representantion"""
+        """Human-readable object representation."""
         return "{}".format([str(item) for item in self])
 
     def append(self, item):
@@ -220,15 +293,14 @@ class FixedTypeList(list, base.GenericStruct):
         return bin_message
 
     def unpack(self, buff, offset=0):
-        """Unpacks the elements of the list
+        """Unpack the elements of the list.
 
         This unpack method considers that all elements have the same size.
         To use this class with a pyof_class that accepts elements with
-        different sizes you must reimplement the unpack method.
+        different sizes, you must reimplement the unpack method.
 
-        Arguments:
-            buff: the binary data to be unpacked
-            offset: used if we need to shift the beginning of the data
+        :param bytes buff: The binary data to be unpacked
+        :param int offset: If we need to shift the beginning of the data
         """
         item_size = self._pyof_class().get_size()
         binary_items = [buff[i:i+item_size] for i in range(offset, len(buff),
@@ -240,8 +312,8 @@ class FixedTypeList(list, base.GenericStruct):
 
 
 class ConstantTypeList(list, base.GenericStruct):
-    """Creates a List that will only allow objects of the same type (class) to
-    be inserted"""
+    """List that contains only objects of the same type (class)."""
+
     def __init__(self, items=None):
         super().__init__()
         if isinstance(items, list):
@@ -250,7 +322,7 @@ class ConstantTypeList(list, base.GenericStruct):
             self.append(items)
 
     def __str__(self):
-        """Human-readable object representantion"""
+        """Human-readable object representantion."""
         return "{}".format([str(item) for item in self])
 
     def append(self, item):
@@ -299,16 +371,15 @@ class ConstantTypeList(list, base.GenericStruct):
         return bin_message
 
     def unpack(self, buff, item_class, offset=0):
-        """Unpacks the elements of the list
+        """Unpack the elements of the list.
 
         This unpack method considers that all elements have the same size.
         To use this class with a pyof_class that accepts elements with
-        different sizes you must reimplement the unpack method.
+        different sizes, you must reimplement the unpack method.
 
-        Arguments:
-            buff: the binary data to be unpacked
-            offset: used if we need to shift the beginning of the data
-            item_class: Class of the expected items on this list
+        :param bytes buff: The binary data to be unpacked
+        :param int offset: If we need to shift the beginning of the data
+        :param type item_class: Class of the expected items on this list
         """
         item_size = item_class.get_size()
         binary_items = [buff[i:i+2] for i in range(offset, len(buff),

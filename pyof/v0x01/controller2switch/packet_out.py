@@ -1,6 +1,4 @@
-"""When the controller wishes to send a packet out through the datapath, it
-uses the OFPT_PACKET_OUT message"""
-
+"""For the controller to send a packet out through the datapath."""
 # System imports
 
 # Third-party imports
@@ -18,23 +16,24 @@ from pyof.v0x01.foundation.exceptions import ValidationError
 #: in_port valid virtual port values, for validation
 _VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
 
+
 class PacketOut(base.GenericMessage):
-    """
-    Send packet (controller -> datapath)
+    """Send packet (controller -> datapath).
 
-    :param xid:         xid of the message header
-    :param buffer_id:   ID assigned by datapath (-1 if none)
-    :param in_port:     Packet's input port (OFPP_NONE if none).
-                        Virtual ports OFPP_IN_PORT, OFPP_TABLE,
-                        OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be
-                        used as an input port.
-    :param actions_len: Size of action array in bytes
-    :param actions:     Actions (class ActionHeader)
-    :param data:        Packet data. The length is inferred from the length
-                        field in the header. (Only meaningful if
-                        buffer_id == -1.)
-
+    Args:
+        xid (int): xid of the message header.
+        buffer_id (int): ID assigned by datapath (-1 if none).
+        in_port (:class:`int`, :class:`.Port`): Packet's input port
+            (:attr:`.Port.OFPP_NONE` if none). Virtual ports OFPP_IN_PORT,
+            OFPP_TABLE, OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be used as
+            input port.
+        actions_len (int): Size of action array in bytes.
+        actions (ListOfActions): Actions (class ActionHeader).
+        data (bytes): Packet data. The length is inferred from the length
+            field in the header. (Only meaningful if
+            buffer_id == -1).
     """
+
     header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_OUT)
     buffer_id = basic_types.UBInt32()
     in_port = basic_types.UBInt16()
@@ -53,11 +52,13 @@ class PacketOut(base.GenericMessage):
         self.data = data
 
     def validate(self):
+        """Validate the entire message."""
         if not super().is_valid():
             raise ValidationError()
         self._validate_in_port()
 
     def is_valid(self):
+        """Answer if this message is valid."""
         try:
             self.validate()
             return True
