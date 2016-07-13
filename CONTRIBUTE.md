@@ -44,7 +44,38 @@ to craft the change so that it is successfully accepted into the project.
 
 ## <a name="docs"></a> Want a Doc Fix?
 
-Feel free to [contact us](#contact) or submit a pull request.
+You can [contact us](#contact) or, better yet,
+[submit an issue/pull request](#submit) following the subsections below.
+
+### Updating Sphinx documentation
+To change the documentation that is created by Sphinx, in the `docs` folder,
+follow these instructions:
+
+1. In Python files, use
+   [Google-style docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments);
+2. To generate the documentation, run `make` inside `docs` folder;
+3. Open `docs/_build/html/index.html` in your browser to check the output of
+   your changes;
+4. Repeat steps 2 and 3 until you are satisfied with the results (don't forget
+   to refresh the page in the browser);
+
+#### Tips and tricks
+To automatically build the documentation and refresh the browser every time a
+file is changed:
+
+1. Install the required package: `sudo pip3 install sphinx-autobuild`
+2. In the `docs` folder, run `make livehtml`
+3. Go to http://127.0.0.1:8000/index.html
+
+### Check before submitting
+Before submitting a doc fix, please, certify that:
+
+1. You are not adding check errors to the output of
+`pydocstyle --add-ignore=D105 pyof/` (from the root folder). It is OK to have
+errors about missing `__init__` docstrings if its documentation is in the
+class docstring;
+2. The output of `make` in the `docs` folder has no errors or warnings;
+3. The same as above for `make doctest`.
 
 ## <a name="submit"></a> Submission Guidelines
 
@@ -281,7 +312,7 @@ quick process, we promise!
 
 * For individuals we have a [simple click-through form][individual-cla].
 
-## <a name="contact"></a> IRC/Mailinglist
+## <a name="contact"></a> Contact: IRC/Mailinglist
 
 You can find us on the **#of-ng** IRC channel on **freenode.net** network.
 
