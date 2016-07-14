@@ -178,13 +178,12 @@ commits.*
 
 That's it! Thank you for your contribution!
 
-### Hot Fix and Security Fix
+### Hotfix and Security Fix
 
-_[TODO: Quick describe of a hotfix]_
-
-When a Hot or Security fix is required, a different workflow should be followed.
-The contributer should clone the master branch and, after fixing the bug, it has
-to be merged in master and develop branch.
+To solve important problems like security issues or bugs, we follow a slightly
+different workflow to make sure the changes can be merged also in the master
+branch (production code). The contributer should clone the master branch and,
+after fixing the bug, it has to be merged in both master and develop branch.
 
 First clone the master branch as following:
 ```shell
