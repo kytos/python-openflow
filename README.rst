@@ -108,13 +108,13 @@ Authors
 
 This is a collaborative project between SPRACE (From São Paulo State University,
 Unesp) and Caltech (California Institute of Technology). For a complete list of
-authors, please open ``AUTHORS.md`` file.
+authors, please open ``AUTHORS.rst`` file.
 
 Contributing
 ------------
 
 If you want to contribute to this project, please read
-`CONTRIBUTE.md <CONTRIBUTE.md>`__ and `HACKING.md <HACKING.md>`__ files.
+`CONTRIBUTE.rst <CONTRIBUTE.rst>`__ and `HACKING.rst <HACKING.rst>`__ files.
 
 License
 -------

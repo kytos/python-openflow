@@ -1,4 +1,4 @@
-Before reading this file, please read the `CONTRIBUTE <CONTRIBUTE.md>`__ file, that
+Before reading this file, please read the `CONTRIBUTE <CONTRIBUTE.rst>`__ file, that
 contains the main guidelines of the project.
 
 Topics:

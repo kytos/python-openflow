@@ -224,7 +224,7 @@ the changes from the main (upstream) repository:
        git pull upstream develop
 
 Information about environment setup for developers can be found at the
-`HACKING.md <HACKING.md>`__ file.
+`HACKING.rst <HACKING.rst>`__ file.
 
 Pull Request Pro Tips
 ~~~~~~~~~~~~~~~~~~~~~
@@ -290,7 +290,7 @@ writing code to contribute, write the tests related to the functionality you
 wish to implement and then write the code to pass this test.
 
 More info about the tests can be found on the
-`HACKING.md <HACKING.md#tdd-test-driven-development>`__ file.
+`HACKING.rst <HACKING.rst#tdd-test-driven-development>`__ file.
 
 Use the raw packet files
 ~~~~~~~~~~~~~~~~~~~~~~~~
