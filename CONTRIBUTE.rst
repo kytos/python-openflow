@@ -14,15 +14,15 @@ than it is today! Here are the guidelines we follow:
 -  `Signing the CLA <#cla>`__
 -  `IRC/Mailinglist <#contact>`__
 
- Got a Question or Problem?
----------------------------
+Got a Question or Problem?
+--------------------------
 
 If you have questions about how to use any component of Kytos project, please
 direct these to our `dev mailing list <#contact>`__. We are also available on
 `IRC <#contact>`__.
 
- Found an Issue?
-----------------
+Found an Issue?
+---------------
 
 If you find a bug in the source code or a mistake in the documentation, you can
 help us by submitting an issue to our `GitHub Repository <https://github.com/kytos/python-openflow/issues>`__. Even better,
@@ -30,8 +30,8 @@ you can submit a Pull Request with a fix.
 
 **Please see the Submission `Guidelines <#submit>`__ below**.
 
- Want a Feature?
-----------------
+Want a Feature?
+---------------
 
 You can also request a new feature by submitting an issue to our `GitHub
   Repository <https://github.com/kytos/python-openflow/issues>`__. If you would like to implement a new feature, then
@@ -45,13 +45,13 @@ consider what kind of change it is:
 -  **Small Changes** can be crafted and submitted to the `GitHub
    Repository <github.com/kytos/python-openflow>`__ as a Pull Request.
 
- Want a Doc Fix?
-----------------
+Want a Doc Fix?
+---------------
 
 Feel free to `contact us <#contact>`__ or submit a pull request.
 
- Submission Guidelines
-----------------------
+Submission Guidelines
+---------------------
 
 Submitting an Issue
 ~~~~~~~~~~~~~~~~~~~
@@ -275,15 +275,15 @@ Code contribution steps review:
 -  Create a new PR in GitHub
 -  Respond to any code review feedback
 
- Coding style
--------------
+Coding style
+------------
 
 We follow `PEP8 <http://www.python.org/dev/peps/pep-0008/>`__,
 `PEP20 <http://www.python.org/dev/peps/pep-0020/>`__ and, as a short resume,
 `The Best of the Best Practices (BOBP) Guide for Python <https://gist.github.com/sloria/7001839>`__
 
- Tests
-------
+Tests
+-----
 
 This project tries to follow the TDD (Test Driven Development) process. Before
 writing code to contribute, write the tests related to the functionality you
@@ -299,8 +299,8 @@ We provide some files with raw packets to be used as input with the parser
 library. Use theses files to test your features. To use our raw packet files,
 please take a look inside ``raw`` directory.
 
- Signing the CLA
-----------------
+Signing the CLA
+---------------
 
 Please sign our Contributor License Agreement (CLA) before sending pull
 requests. For any code changes to be accepted, the CLA must be signed. It's a
@@ -308,8 +308,8 @@ quick process, we promise!
 
 -  For individuals we have a [simple click-through form][individual-cla].
 
- IRC/Mailinglist
-----------------
+IRC/Mailinglist
+---------------
 
 You can find us on the **#of-ng** IRC channel on **freenode.net** network.
 
