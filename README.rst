@@ -1,10 +1,7 @@
-# Kytos - python-openflow
+Kytos - python-openflow
+=======================
 
-[![Openflow][of-icon]][of-url]
-[![Tag][tag-icon]][tag-url]
-[![Release][release-icon]][release-url]
-[![Tests][tests-icon]][tests-url]
-[![License][license-icon]][license-url]
+|Openflow| |Tag| |Release| |Tests| |License|
 
 *python-openflow* is a low level library to parse OpenFlow messages. If you want
 to read an OpenFlow packet from an open socket or send a message to an OpenFlow
@@ -14,52 +11,56 @@ This library is part of *Kytos* project and was developed to be used with
 *Kytos* controller, but feel free to use this simple and intuitive library in
 another project with another controller.
 
-For more information about, please visit our [Kytos web site][kytos-url].
+For more information about, please visit our `Kytos web site <http://kytos.io/>`__.
 
-## Installing
+Installing
+----------
 
 You can install this package from source or via pip. If you have cloned this
-repository and want to install it via `setuptools`, please run:
+repository and want to install it via ``setuptools``, please run:
 
-```shell
-sudo python3 setup.py install
-```
+.. code:: shell
+
+    sudo python3 setup.py install
 
 Or, to install via pip, please execute:
 
-```shell
-sudo pip3 install python-openflow
-```
+.. code:: shell
 
-## Usage
+    sudo pip3 install python-openflow
+
+Usage
+-----
 
 For example, see how it is easy to create a feature request message with this
 library. You can use ipython3 to get the advantages of autocompletion:
 
-```python
->>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
->>> request = FeaturesRequest(xid = 100)
->>> print(request.header)  #doctest: +ELLIPSIS
-<pyof...common.header.Header object at 0x...>
->>> print(request.header.message_type)
-Type.OFPT_FEATURES_REQUEST
->>> print(request.header.xid)
-100
-```
+.. code:: python
 
-If you need to send this message via socket, call the `pack()` method to get its
+    >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+    >>> request = FeaturesRequest(xid = 100)
+    >>> print(request.header)  #doctest: +ELLIPSIS
+    <pyof...common.header.Header object at 0x...>
+    >>> print(request.header.message_type)
+    Type.OFPT_FEATURES_REQUEST
+    >>> print(request.header.xid)
+    100
+
+If you need to send this message via socket, call the ``pack()`` method to get its
 binary representation:
 
-```python
->>> binary_msg = request.pack()
-```
+.. code:: python
 
-For a more detailed documentation, please check the [python-openflow API
-Reference Manual][api-reference-url].
+    >>> binary_msg = request.pack()
 
-## Main Highlights
+For a more detailed documentation, please check the `python-openflow API
+Reference Manual <http://docs.kytos.io/python-openflow/api-reference/>`__.
 
-### Speed focused
+Main Highlights
+---------------
+
+Speed focused
+~~~~~~~~~~~~~
 
 We keep the word *performance* in mind since the beginning of the development.
 Also, as computer scientists, we will always try to get the best performance by
@@ -69,7 +70,8 @@ Some of our developers participated in several demonstrations involving tests
 with high-speed networks (~1 terabit/s), some even involving data transfers
 from/to CERN.
 
-### Always updated
+Always updated
+~~~~~~~~~~~~~~
 
 To avoid code repetition this project utilizes an incremental architecture.
 
@@ -82,13 +84,15 @@ Using incremental code makes the implementation of new versions of OpenFlow
 protocol faster. Our main goal is to follow the specifications since the very
 beginning.
 
-### Easy to learn
+Easy to learn
+~~~~~~~~~~~~~
 
 Python is an easy language to learn and we aim at writing code in a "pythonic
 way". We also provide a well documented API. Thus, learning to make your
 controller using this library is a trivial task.
 
-### Born to be free
+Born to be free
+~~~~~~~~~~~~~~~
 
 OpenFlow was born with a simple idea: make your network more vendor agnostic
 and we like that!
@@ -99,31 +103,32 @@ from many vendors, but will never follow a particular vendor direction.
 
 *python-openflow* will always be free software.
 
-## Authors
+Authors
+-------
 
 This is a collaborative project between SPRACE (From São Paulo State University,
 Unesp) and Caltech (California Institute of Technology). For a complete list of
-authors, please open `AUTHORS.md` file.
+authors, please open ``AUTHORS.md`` file.
 
-## Contributing
+Contributing
+------------
 
 If you want to contribute to this project, please read
-[CONTRIBUTE.md](CONTRIBUTE.md) and [HACKING.md](HACKING.md) files.
+`CONTRIBUTE.md <CONTRIBUTE.md>`__ and `HACKING.md <HACKING.md>`__ files.
 
-## License
+License
+-------
 
-This software is under _MIT-License_. For more information please read `LICENSE`
+This software is under *MIT-License*. For more information please read ``LICENSE``
 file.
 
-[api-reference-url]: http://docs.kytos.io/python-openflow/api-reference/
-[kytos-url]: http://kytos.io/
-[of-icon]: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
-[of-url]: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
-[tag-icon]: https://img.shields.io/github/tag/kytos/python-openflow.svg
-[tag-url]: https://github.com/kytos/python-openflow/tags
-[release-icon]: https://img.shields.io/github/release/kytos/python-openvpn.svg
-[release-url]: https://github.com/kytos/python-openflow/releases
-[tests-icon]: http://kytos.io/imgs/tests-status.svg
-[tests-url]: https://github.com/kytos/python-openflow
-[license-icon]: https://img.shields.io/github/license/kytos/python-openflow.svg
-[license-url]: https://github.com/kytos/python-openflow/blob/master/LICENSE
+.. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
+   :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
+.. |Tag| image:: https://img.shields.io/github/tag/kytos/python-openflow.svg
+   :target: https://github.com/kytos/python-openflow/tags
+.. |Release| image:: https://img.shields.io/github/release/kytos/python-openvpn.svg
+   :target: https://github.com/kytos/python-openflow/releases
+.. |Tests| image:: http://kytos.io/imgs/tests-status.svg
+   :target: https://github.com/kytos/python-openflow
+.. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
+   :target: https://github.com/kytos/python-openflow/blob/master/LICENSE
