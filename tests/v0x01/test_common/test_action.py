@@ -131,7 +131,6 @@ class TestActionDLAddr(unittest.TestCase):
         """[Common/ActionDLAddr] - size 16"""
         self.assertEqual(self.message.get_size(), 16)
 
-
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Common/ActionDLAddr] - packing"""
