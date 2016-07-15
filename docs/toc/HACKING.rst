@@ -1,42 +1,33 @@
-Before reading this file, please read the `CONTRIBUTE <CONTRIBUTE.rst>`__ file, that
+Hacking
+=======
+
+Before reading this file, please read the :doc:`CONTRIBUTE` section that
 contains the main guidelines of the project.
 
-Topics:
--------
-
--  `Development Environment setup <#setup>`__
-
-   -  `Virtualenv (optional) <#virtualenv>`__
-   -  `Virtualenv Extras (optional) <#virtualenv-extras>`__
-
--  `Tests/TDD <#tdd>`__
-
-Development Environment setup
+Development Environment Setup
 -----------------------------
 
 This project is written in Python (version 3.5).
 
-During the development of the project, what you need is to add the ofp folder,
-inside this repository, to your PYTHONPATH environment variable. For that,
-you have to execute the following on the command line (being on this current
-folder):
+You need to add the pyof folder, located in this repository root, to your
+PYTHONPATH environment variable. For that, you have to execute the following on
+the command line (while in the repository root folder):
 
 .. code:: shell
 
     export PYTHONPATH=`pwd`/ofp:$PYTHONPATH
 
-Remember that everytime you start a new shell instance you will have to repeat
+Remember that every time you start a new shell instance you will have to repeat
 the command above, since this is an environment variable. To have it executed
-automatically in every shell, add it to ``~/.bashrc`` replacing ``pwd`` by the full
-path (its output).
+automatically in every shell, add it to ``~/.bashrc`` replacing ``pwd`` by the
+full of the repository (output of ``pwd``).
 
 Virtualenv
 ~~~~~~~~~~
 
-To make things easier and avoid the need of redoing the export all the time,
-we recommend that you install python ``virtualenv``. This is not necessary, but
-recommended. With ``virtualenv``, you can install the required and recommended
-python libraries without messing up with your system. To install it, run
+Another option is to use *virtualenv*. It installs the required and
+recommended python libraries without messing up with your system. Besides, you
+don't need to manually change the PYTHONPATH variable. To install it, run
 the following commands:
 
 .. code:: shell
@@ -45,20 +36,20 @@ the following commands:
     sudo pip3 install virtualenv virtualenvwrapper
 
 If you are working with **bash**, add the following lines on your
-``~/.bash_profile`` or ``~/.bashrc`` to setup ``virtualenvwrapper``:
+``~/.bash_profile`` or ``~/.bashrc`` to setup *virtualenvwrapper*:
 
 .. code:: shell
 
     export WORKON_HOME=~/.virtualenvs
     source /usr/local/bin/virtualenvwrapper.sh
 
-If you are using **`oh-my-zsh <https://github.com/robbyrussell/oh-my-zsh>`__** you
-can just add the ``virtualenvwrapper`` plugin to your plugins list
+If you are using `oh-my-zsh <https://github.com/robbyrussell/oh-my-zsh>`__, you
+can just add the *virtualenvwrapper* plugin to your plugins list
 (inside ``~/.zshrc``). This plugin will:
 
 -  Load Python's `virtualenvwrapper shell tools <http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html>`__;
--  Automatically activate virtualenv on ``cd`` into git repository with matching
-   name.
+-  Automatically activate virtualenv when ``cd``'ing into git repository with a
+   matching name.
 
 We also recommend adding the bellow code to your
 ``~/.virtualenvs/postmkvirtualenv`` file:
@@ -118,11 +109,11 @@ and also this code to your ``~/.virtualenvs/postdeactivate`` file:
 TDD (Test Driven Development)
 -----------------------------
 
-We aim at 100% of test coverage. For that, we are using
-Python `unittest <https://docs.python.org/3.5/library/unittest.html>`__ and
-to verify the test coverage status we are using
-`coverage.py <https://coverage.readthedocs.org/en/coverage-4.0.3/>`__.
-To install the coverage (python3 version), run:
+We aim at 100% of test coverage. We are using
+Python `unittest <https://docs.python.org/3.5/library/unittest.html>`__ to
+write tests and
+`coverage.py <https://coverage.readthedocs.org/en/coverage-4.0.3/>`__ for
+coverage metrics. To install the coverage (python3 version), run:
 
 .. code:: shell
 
@@ -140,7 +131,7 @@ To run check the code test coverage, first run:
 
     coverage run setup.py test
 
-To see the command line report run the command ``coverage report -m``,
-and to generate a HTML report, run: ``coverage html`` and open the file
+To see the command line report run the command ``coverage report`` and, to
+generate a HTML report, run: ``coverage html`` and open the file
 **html\_cov/index.html** into your browser
 (you can run ``open html_cov/index.html``).

@@ -5,122 +5,71 @@ Kytos - python-openflow
 
 *python-openflow* is a low level library to parse OpenFlow messages. If you want
 to read an OpenFlow packet from an open socket or send a message to an OpenFlow
-switch, this is your best friend.
+switch, this is your best friend. The main features are: high performance,
+latest specification compliance, short learning curve and free software license.
 
-This library is part of *Kytos* project and was developed to be used with
-*Kytos* controller, but feel free to use this simple and intuitive library in
-another project with another controller.
+This library is part of `Kytos <http://kytos.io>`_ project, a collaborative
+project between SPRACE (from São Paulo State University, Unesp) and Caltech
+(California Institute of Technology). *python-openflow*  was developed to be
+used with *Kytos* controller, but feel free to use this simple and intuitive
+library in another project with another controller.
 
-For more information about, please visit our `Kytos web site <http://kytos.io/>`__.
+Overview
+--------
 
-Installing
-----------
-
-You can install this package from source or via pip. If you have cloned this
-repository and want to install it via ``setuptools``, please run:
-
-.. code:: shell
-
-    sudo python3 setup.py install
-
-Or, to install via pip, please execute:
-
-.. code:: shell
-
-    sudo pip3 install python-openflow
+This is just an overview for you to check whether this project fits your needs.
+For a more detailed documentation, please check the `python-openflow API
+Reference Manual <http://docs.kytos.io/python-openflow/api-reference/>`_.
 
 Usage
------
+^^^^^
 
 For example, see how it is easy to create a feature request message with this
 library. You can use ipython3 to get the advantages of autocompletion:
 
-.. code:: python
+.. The code in this section is replicated in docs/toc/usage.rst.
 
-    >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
-    >>> request = FeaturesRequest(xid = 100)
-    >>> print(request.header)  #doctest: +ELLIPSIS
-    <pyof...common.header.Header object at 0x...>
-    >>> print(request.header.message_type)
-    Type.OFPT_FEATURES_REQUEST
-    >>> print(request.header.xid)
-    100
+>>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+>>> request = FeaturesRequest(xid = 100)
+>>> print(request.header.message_type)
+Type.OFPT_FEATURES_REQUEST
+>>> print(request.header.xid)
+100
 
-If you need to send this message via socket, call the ``pack()`` method to get its
-binary representation:
+If you need to send this message via socket, call the ``pack()`` method to get
+its binary representation:
 
 .. code:: python
 
     >>> binary_msg = request.pack()
 
-For a more detailed documentation, please check the `python-openflow API
-Reference Manual <http://docs.kytos.io/python-openflow/api-reference/>`__.
+Installing
+^^^^^^^^^^
 
-Main Highlights
----------------
+The easiest way to install is using pip3 (pip for Python 3):
 
-Speed focused
-~~~~~~~~~~~~~
+.. code:: shell
 
-We keep the word *performance* in mind since the beginning of the development.
-Also, as computer scientists, we will always try to get the best performance by
-using the most suitable algorithms.
+    sudo pip3 install python-openflow
 
-Some of our developers participated in several demonstrations involving tests
-with high-speed networks (~1 terabit/s), some even involving data transfers
-from/to CERN.
+Support
+^^^^^^^
 
-Always updated
-~~~~~~~~~~~~~~
-
-To avoid code repetition this project utilizes an incremental architecture.
-
-This means that the first version (1.0.0 = v0x01) was coded from the full
-OpenFlow 1.0.2 Protocol. The 1.1 version (v0x02) imports the 1.0 version and
-then do the necessary changes to make it compatible with the OpenFlow 1.1.0
-Protocol, and the next version follows the same logic.
-
-Using incremental code makes the implementation of new versions of OpenFlow
-protocol faster. Our main goal is to follow the specifications since the very
-beginning.
-
-Easy to learn
-~~~~~~~~~~~~~
-
-Python is an easy language to learn and we aim at writing code in a "pythonic
-way". We also provide a well documented API. Thus, learning to make your
-controller using this library is a trivial task.
-
-Born to be free
-~~~~~~~~~~~~~~~
-
-OpenFlow was born with a simple idea: make your network more vendor agnostic
-and we like that!
-
-We are advocates and supporters of free software and we believe that the more
-eyes observe the code, the better it will be. This project can receive support
-from many vendors, but will never follow a particular vendor direction.
-
-*python-openflow* will always be free software.
-
-Authors
--------
-
-This is a collaborative project between SPRACE (From São Paulo State University,
-Unesp) and Caltech (California Institute of Technology). For a complete list of
-authors, please open ``AUTHORS.rst`` file.
+We are available in IRC and there is also a development mailing list. Details
+are available in the full documentation.
 
 Contributing
-------------
+^^^^^^^^^^^^
 
-If you want to contribute to this project, please read
-`CONTRIBUTE.rst <CONTRIBUTE.rst>`__ and `HACKING.rst <HACKING.rst>`__ files.
+Contributions are welcome either by creating issues in GitHub or in the form of
+pull requests. Before, please, read the contribution and hacking guides in the
+main documentation.
 
 License
--------
+^^^^^^^
 
-This software is under *MIT-License*. For more information please read ``LICENSE``
-file.
+This software is under *MIT-License*. For more information please read
+the ``LICENSE`` file.
 
 .. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
    :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf

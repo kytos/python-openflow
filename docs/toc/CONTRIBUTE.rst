@@ -1,5 +1,5 @@
-Contributing - Thanks for asking, let's find a place for you.
--------------------------------------------------------------
+Contributing
+============
 
 We'd love for you to contribute to our source code and to make Kytos even better
 than it is today! Here are the guidelines we follow:
@@ -161,15 +161,13 @@ That's it! Thank you for your contribution!
 Hot Fix and Security Fix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-*[TODO: Quick describe of a hotfix]*
-
 When a Hot or Security fix is required, a different workflow should be followed.
 The contributer should clone the master branch and, after fixing the bug, it has
 to be merged in master and develop branch.
 
 First clone the master branch as following:
 
-.. code:: shell
+.. code:: bash
 
     git checkout -b issue-#001 master
     # Fix the bug
@@ -210,7 +208,7 @@ the changes from the main (upstream) repository:
 
        git branch -D my-fix-branch
 
--  If you haven't done it yet, add the *upstream* repository (only once):
+-  If you haven't done it yet, add the ``upstream`` repository (only once):
 
    .. code:: shell
 
@@ -223,8 +221,8 @@ the changes from the main (upstream) repository:
 
        git pull upstream develop
 
-Information about environment setup for developers can be found at the
-`HACKING.rst <HACKING.rst>`__ file.
+Information about environment setup for developers can be found in the
+:doc:`HACKING` section.
 
 Pull Request Pro Tips
 ~~~~~~~~~~~~~~~~~~~~~
@@ -289,8 +287,7 @@ This project tries to follow the TDD (Test Driven Development) process. Before
 writing code to contribute, write the tests related to the functionality you
 wish to implement and then write the code to pass this test.
 
-More info about the tests can be found on the
-`HACKING.rst <HACKING.rst#tdd-test-driven-development>`__ file.
+More info about the tests can be found in the :doc:`HACKING` section.
 
 Use the raw packet files
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -305,8 +302,6 @@ Signing the CLA
 Please sign our Contributor License Agreement (CLA) before sending pull
 requests. For any code changes to be accepted, the CLA must be signed. It's a
 quick process, we promise!
-
--  For individuals we have a [simple click-through form][individual-cla].
 
 IRC/Mailinglist
 ---------------
