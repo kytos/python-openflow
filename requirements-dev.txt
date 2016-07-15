@@ -1,0 +1,4 @@
+# For developers, the packages below are required.
+
+# For running doctests (during "python setup.py test")
+Sphinx~=1.4.5
