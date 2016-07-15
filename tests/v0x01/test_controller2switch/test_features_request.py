@@ -4,6 +4,7 @@ import os
 from pyof.v0x01.controller2switch import features_request
 from pyof.v0x01.common import header as of_header
 
+
 class TestFeaturesRequest(unittest.TestCase):
 
     def setUp(self):
