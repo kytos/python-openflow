@@ -1,15 +1,4 @@
-Welcome to python-openflow library's documentation!
-===================================================
-
-*python-openflow* is a low level library to parse OpenFlow messages. So if you
-open a socket and wanna read an OpenFlow packet, or wanna send a message to an
-OpenFlow switch, this is your best friend.
-
-This library is part of *Kytos* project and was developed to be used with
-*Kytos* controller, but feel free to use this library in your
-project/controller. Is a very intuitive and simple library.
-
-For more information about, please visit our |kytos-site|_.
+.. include:: ../README.rst
 
 Here you will find an extensive documentation of this library. If you wanna fix
 or improve this documentation, please read our |contrib|_ and feel free to
@@ -24,6 +13,9 @@ Table of Contents
   toc/introduction
   toc/install
   toc/usage
+  toc/CONTRIBUTE
+  toc/HACKING
+  toc/AUTHORS
 
 
 
@@ -33,10 +25,17 @@ API Reference
 .. toctree::
    :maxdepth: 9
    :titlesonly:
-   :caption: python-openflow packages
+   :caption: Documentation of classes and methods.
    :name: mastertoc
 
    modules
+
+Authors
+-------
+
+This is a collaborative project between SPRACE (From São Paulo State University,
+Unesp) and Caltech (California Institute of Technology). For a complete list of
+authors, please open ``AUTHORS.rst`` file.
 
 
 Indices and tables
