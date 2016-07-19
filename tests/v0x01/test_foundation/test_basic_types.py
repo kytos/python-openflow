@@ -68,6 +68,7 @@ class TestUBInt32(unittest.TestCase):
         # TODO
         pass
 
+
 class TestChar(unittest.TestCase):
 
     def setUp(self):

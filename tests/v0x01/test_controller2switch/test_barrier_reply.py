@@ -25,6 +25,6 @@ class TestBarrierReply(unittest.TestCase):
         """[Controller2Switch/BarrierReply] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_barrier_reply.dat')
-        with open(filename,'rb') as f:
+        with open(filename, 'rb') as f:
             self.head.unpack(f.read(8))
             self.assertEqual(self.message.unpack(f.read()), None)

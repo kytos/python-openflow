@@ -29,6 +29,6 @@ class TestEchoRequest(unittest.TestCase):
         """[Symmetric/EchoRequest] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_echo_request.dat')
-        with open(filename,'rb') as f:
+        with open(filename, 'rb') as f:
             self.header.unpack(f.read(8))
             self.assertEqual(self.message.unpack(f.read()), None)
