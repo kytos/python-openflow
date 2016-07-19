@@ -1,4 +1,4 @@
-"""Switch replies to controller"""
+"""Switch replies to controller."""
 
 # System imports
 
@@ -13,17 +13,18 @@ from pyof.v0x01.foundation import basic_types
 
 
 class QueueGetConfigReply(base.GenericMessage):
-    """Class implements the response to the config request
+    """Class implements the response to the config request.
 
-    :param xid -- xid of OpenFlow header
-    :param port -- Target port for the query
-    :param pad -- Pad to 64-bits
-    :param queue -- List of configured queues
-
+    Args:
+        xid (int): xid of OpenFlow header.
+        port (Port): Target port for the query.
+        queue (ListOfQueues): List of configured queues.
     """
+
     header = of_header.Header(
         message_type=of_header.Type.OFPT_GET_CONFIG_REPLY)
     port = basic_types.UBInt16(enum_ref=phy_port.Port)
+    #: Pad to 64-bits.
     pad = basic_types.PAD(6)
     queues = queue.ListOfQueues()
 

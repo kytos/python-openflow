@@ -1,2 +1,4 @@
-"""Foundation package is the base of python-openflow. Provides modules defining
-various utilities objects used in this library."""
+"""Foundation package is the base of python-openflow.
+
+It provides modules used throughout the whole library.
+"""

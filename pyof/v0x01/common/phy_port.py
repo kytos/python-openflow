@@ -1,4 +1,4 @@
-"""Defines physical port classes and related items"""
+"""Defines physical port classes and related items."""
 
 # System imports
 import enum
@@ -15,6 +15,7 @@ class Port(enum.Enum):
     Physical ports are numbered starting from 1. Port number 0 is reserved by
     the specification and must not be used for a switch physical port.
     """
+
     #: Maximum number of physical switch ports.
     OFPP_MAX = 0xff00
     #: Send the packet out the input port. This virtual port must be explicitly
@@ -42,21 +43,21 @@ class PortConfig(base.GenericBitMask):
 
     These flags are used in OFPPhyPort to describe the current configuration.
     They are used in the OFPPortMod message to configure the port's behavior.
-
-        OFPPC_PORT_DOWN     # Port is administratively down.
-        OFPPC_NO_STP        # Disable 802.1D spanning tree on port.
-        OFPPC_NO_RECV       # Drop all packets except 802.1D spanning tree.
-        OFPPC_NO_RECV_STP   # Drop received 802.1D STP packets.
-        OFPPC_NO_FLOOD      # Do not include this port when flooding.
-        OFPPC_NO_FWD        # Drop packets forwarded to port.
-        OFPPC_NO_PACKET_IN  # Do not send packet-in msgs for port.
     """
+
+    #: Port is administratively down.
     OFPC_PORT_DOWN = 1 << 0
+    #: Disable 802.1D spanning tree on port.
     OFPPC_NO_STP = 1 << 1
+    #: Drop all packets except 802.1D spanning tree.
     OFPPC_NO_RECV = 1 << 2
+    #: Drop received 802.1D STP packets.
     OFPPC_NO_RECV_STP = 1 << 3
+    #: Do not include this port when flooding.
     OFPPC_FLOOD = 1 << 4
+    #: Drop packets forwarded to port.
     OFPPC_NO_FWD = 1 << 5
+    #: Do not send packet-in msgs for port.
     OFPPC_NO_PACKET_IN = 1 << 6
 
 
@@ -66,30 +67,31 @@ class PortFeatures(base.GenericBitMask):
     The curr, advertised, supported, and peer fields indicate link modes
     (10M to 10G full and half-duplex), link type (copper/fiber) and
     link features (autone-gotiation and pause).
-
-        OFPPF_10MB_HD     # 10 Mb half-duplex rate support.
-        OFPPF_10MB_FD     # 10 Mb full-duplex rate support.
-        OFPPF_100MB_HD    # 100 Mb half-duplex rate support.
-        OFPPF_100MB_FD    # 100 Mb full-duplex rate support.
-        OFPPF_1GB_HD      # 1 Gb half-duplex rate support.
-        OFPPF_1GB_FD      # 1 Gb full-duplex rate support.
-        OFPPF_COPPER      # Copper medium.
-        OFPPF_FIBER       # Fiber medium.
-        OFPPF_AUTONEG     # Auto-negotiation.
-        OFPPF_PAUSE       # Pause.
-        OFPPF_PAUSE_ASYM  # Asymmetric pause.
     """
+
+    #: 10 Mb half-duplex rate support.
     OFPPF_10MB_HD = 1 << 0
+    #: 10 Mb full-duplex rate support.
     OFPPF_10MB_FD = 1 << 1
+    #: 100 Mb half-duplex rate support.
     OFPPF_100MB_HD = 1 << 2
+    #: 100 Mb full-duplex rate support.
     OFPPF_100MB_FD = 1 << 3
+    #: 1 Gb half-duplex rate support.
     OFPPF_1GB_HD = 1 << 4
+    #: 1 Gb full-duplex rate support.
     OFPPF_1GB_FD = 1 << 5
+    #: 10 Gb full-duplex rate support.
     OFPPF_10GB_FD = 1 << 6
+    #: Copper medium.
     OFPPF_COPPER = 1 << 11
+    #: Fiber medium.
     OFPPF_FIBER = 1 << 12
+    #: Auto-negotiation.
     OFPPF_AUTONEG = 1 << 13
+    #: Pause.
     OFPPF_PAUSE = 1 << 14
+    #: Asymmetric pause.
     OFPPF_PAUSE_ASYM = 1 << 15
 
 
@@ -98,23 +100,23 @@ class PortState(base.GenericBitMask):
 
     These are not configurable from the controller.
 
-    The OFPPS_STP_* bits have no effect on switch operation. The controller
-    must adjust OFPPC_NO_RECV, OFPPC_NO_FWD, and OFPPC_NO_PACKET_IN
-    appropriately to fully implement an 802.1D spanning tree.
-
-        OFPPS_LINK_DOWN    # Not learning or relaying frames.
-        OFPPS_STP_LISTEN   # Not learning or relaying frames.
-        OFPPS_STP_LEARN    # Learning but not relaying frames.
-        OFPPS_STP_FORWARD  # Learning and relaying frames.
-        OFPPS_STP_BLOCK    # Not part of spanning tree.
-        OFPPS_STP_MASK     # Bit mask for OFPPS_STP_* values.
+    The ``OFPPS_STP_*`` bits have no effect on switch operation. The controller
+    must adjust :attr:`PortConfig.OFPPC_NO_RECV`,
+    :attr:`~PortConfig.OFPPC_NO_FWD`, and
+    :attr:`~PortConfig.OFPPC_NO_PACKET_IN` appropriately to fully implement an
+    802.1D spanning tree.
     """
+
+    #: Not learning or relaying frames.
     OFPPS_LINK_DOWN = 1 << 0
+    #: Not learning or relaying frames.
     OFPPS_STP_LISTEN = 0 << 8
+    #: Learning but not relaying frames.
     OFPPS_STP_LEARN = 1 << 8
+    #: Learning and relaying frames.
     OFPPS_STP_FORWARD = 2 << 8
+    #: Not part of spanning tree.
     OFPPS_STP_BLOCK = 3 << 8
-    # OFPPS_STP_MASK = 3 << 8  - Refer to ISSUE #7
 
 
 # Classes
@@ -125,23 +127,26 @@ class PhyPort(base.GenericStruct):
 
     The port_no field is a value the datapath associates with a physical port.
     The hw_addr field typically is the MAC address for the port;
-    OFP_MAX_ETH_ALEN is 6. The name field is a null-terminated string
-    containing a human-readable name for the interface. The value of
-    OFP_MAX_PORT_NAME_LEN is 16.
+    :data:`.base.OFP_ETH_ALEN` is 6. The name field is a
+    null-terminated string containing a human-readable name for the interface.
+    The value of :data:`.base.OFP_MAX_PORT_NAME_LEN` is 16.
 
-    :param port_no
-    :param hw_addr
-    :param name:       Null-terminated
-    :param config:     Bitmap of OFPPC* flags.
-    :param state:      Bitmap of OFPPS* flags.
+    :attr:`curr`, :attr:`advertised`, :attr:`supported` and :attr:`peer` are
+    bitmaps of :class:`PortFeatures` enum values that describe features. If
+    unsupported or unavailable, set all bits to zero.
 
-    # Bitmaps of OFPPF_* that describe features. All bits zeroed if
-    # unsupported or unavailable.
-    :param curr:       Current features.
-    :param advertised: Features being advertised by the port.
-    :param supported:  Features supported by the port.
-    :param peer:       Features advertised by peer.
+    Args:
+        port_no (int): Port number.
+        hw_addr (HWAddress): Hardware address.
+        name(str): Null-terminated name.
+        config (PortConfig): Bitmap of OFPPC* flags.
+        state (PortState): Bitmap of OFPPS* flags.
+        curr (PortFeatures): Current features.
+        advertised (PortFeatures): Features being advertised by the port.
+        supported (PortFeatures): Features supported by the port.
+        peer (PortFeatures): Features advertised by peer.
     """
+
     port_no = basic_types.UBInt16()
     hw_addr = basic_types.HWAddress()
     name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
@@ -170,11 +175,14 @@ class PhyPort(base.GenericStruct):
 class ListOfPhyPorts(basic_types.FixedTypeList):
     """List of PhyPorts.
 
-    Represented by instances of PhyPort and
-    used on FeaturesReply/SwitchFeatures objects
+    Represented by instances of PhyPort and used on
+    :class:`.FeaturesReply`/:class:`.SwitchFeatures` objects.
 
-    :param items: (optional) Instance or a list of instances of PhyPort
+    Args:
+        items (:class:`list`, :class:`PhyPort`): One :class:`PhyPort` instance
+            or list.
     """
+
     def __init__(self, items=None):
         super().__init__(pyof_class=PhyPort,
                          items=items)

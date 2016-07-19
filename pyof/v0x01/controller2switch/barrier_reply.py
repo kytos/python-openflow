@@ -1,4 +1,4 @@
-"""Defines Barrier Reply message"""
+"""Defines Barrier Reply message."""
 
 # System imports
 
@@ -16,8 +16,10 @@ class BarrierReply(base.GenericMessage):
 
     This message does not contain a body beyond the OpenFlow Header.
 
-    :param xid: xid to be used on the message header
+    Args:
+        xid (int): Header's xid.
     """
+
     header = of_header.Header(message_type=of_header.Type.OFPT_BARRIER_REPLY)
 
     def __init__(self, xid=None):

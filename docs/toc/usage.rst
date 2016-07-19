@@ -13,10 +13,10 @@ Creating a message
 For example, let's create a feature request message. Tip: you can use ipython3
 for autocompletion:
 
+.. The code in this section is replicated in README.rst.
+
 >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
 >>> request = FeaturesRequest(xid = 100)
->>> print(request.header) #doctest: +ELLIPSIS
-<pyof...common.header.Header object at 0x...>
 >>> print(request.header.message_type)
 Type.OFPT_FEATURES_REQUEST
 >>> print(request.header.xid)

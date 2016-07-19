@@ -1,4 +1,4 @@
-"""Defines GetConfigReply message"""
+"""Defines Get Config Reply message."""
 
 # System imports
 
@@ -10,6 +10,14 @@ from pyof.v0x01.controller2switch import common
 
 
 class GetConfigReply(common.SwitchConfig):
+    """Get Config Reply message.
+
+    Args:
+        xid (int): xid to be used on the message header.
+        flags (ConfigFlags): OFPC_* flags.
+        miss_send_len (int): UBInt16 max bytes of new flow that the datapath
+            should send to the controller.
+    """
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
         self.__ordered__ = super().__ordered__  # pylint: disable=no-member

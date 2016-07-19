@@ -1,4 +1,4 @@
-"""The controller has requested to be notified when flows time out"""
+"""The controller has requested to be notified when flows time out."""
 
 # System imports
 import enum
@@ -15,16 +15,13 @@ from pyof.v0x01.foundation import basic_types
 
 
 class FlowRemovedReason(enum.Enum):
-    """
-    Reason field enum
+    """Why the flow was removed."""
 
-        OFPRR_IDLE_TIMEOUT      # Flow idle time exceeded idle_timeout
-        OFPRR_HARD_TIMEOUT      # Time exceeded hard_timeout
-        OFPRR_DELETE            # Evicted by a DELETE flow mod
-
-    """
+    #: Flow idle time exceeded idle_timeout
     OFPRR_IDLE_TIMEOUT = 1
+    #: Time exceeded hard_timeout
     OFPRR_HARD_TIMEOUT = 2
+    #: Evicted by a DELETE flow mod
     OFPRR_DELETE = 3
 
 
@@ -32,32 +29,35 @@ class FlowRemovedReason(enum.Enum):
 class FlowRemoved(base.GenericMessage):
     """Flow removed (datapath -> controller).
 
-    :param header:        Openflow Header
-    :param match:         Description of Fields
-    :param cookie:        Opaque controller-issued identifier
-    :param priority:      Priority level of flow entry
-    :param reason:        One of OFPRR_*
-    :param pad:           Align to 32-bits
-    :param duration_sec:  Time flow was alive in seconds
-    :param duration_nsec: Time flow was alive in nanoseconds beyond
-                          duration_sec
-    :param idle_timeout:  Idle timeout from original flow mod
-    :param pad2:          Align to 64-bits
-    :param packet_count:  Number of packets
-    :param byte_count:    Bytes count
+    Args:
+        xid (int): OpenFlow Header's xid.
+        match (Match): Fields' description.
+        cookie (int): Opaque controller-issued identifier.
+        priority (int): Priority level of flow entry.
+        reason (FlowRemovedReason): Why the flow was removed.
+        duration_sec (int): Time the flow was alive in seconds.
+        duration_nsec (int): Time the flow was alive in nanoseconds in addition
+            to duration_sec.
+        idle_timeout (int): Idle timeout from original flow mod.
+        packet_count (int): Number of packets.
+        byte_count (int): Byte count.
     """
+
+    #: :class:`~.header.Header`: OpenFlow Header
     header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_REMOVED)
     match = flow_match.Match()
     cookie = basic_types.UBInt64()
 
     priority = basic_types.UBInt16()
     reason = basic_types.UBInt8(enum_ref=FlowRemovedReason)
+    #: Align to 32-bits.
     pad = basic_types.PAD(1)
 
     duration_sec = basic_types.UBInt32()
     duration_nsec = basic_types.UBInt32()
 
     idle_timeout = basic_types.UBInt16()
+    #: Align to 64-bits.
     pad2 = basic_types.PAD(2)
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()

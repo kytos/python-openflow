@@ -1,4 +1,4 @@
-"""Query the switch for configured queues on a port"""
+"""Query the switch for configured queues on a port."""
 
 # System imports
 
@@ -12,16 +12,17 @@ from pyof.v0x01.foundation import basic_types
 
 
 class QueueGetConfigRequest(base.GenericMessage):
-    """Class implements the structure query for configured queues on a port.
+    """Query structure for configured queues on a port.
 
-    :param xid -- xid of OpenFlow header
-    :param port -- Target port for the query
-    :param pad -- Pad to 64-bits
-
+    Args:
+        xid (int): xid of OpenFlow header
+        port (Port): Target port for the query
     """
+
     header = of_header.Header(
         message_type=of_header.Type.OFPT_GET_CONFIG_REQUEST)
     port = basic_types.UBInt16(enum_ref=phy_port.Port)
+    #: Pad to 64-bits
     pad = basic_types.PAD(2)
 
     def __init__(self, xid=None, port=None):
