@@ -1,0 +1,3 @@
+# If you only want to use the library, you only need Python >= 3.5.
+# For python-openflow developers, check requirements-dev.txt.
+# To update the documentation, check requirements-docs.txt.

@@ -33,7 +33,7 @@ class TestHeader(unittest.TestCase):
         """[Common/Header] - unpacking Hello"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_hello.dat')
-        f = open(filename,'rb')
+        f = open(filename, 'rb')
         self.message.unpack(f.read(8))
 
         self.assertEqual(self.message.length, 8)

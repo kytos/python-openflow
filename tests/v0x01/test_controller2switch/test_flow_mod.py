@@ -50,7 +50,7 @@ class TestFlowMod(unittest.TestCase):
         """[Controller2Switch/FlowMod] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_flow_add.dat')
-        with open(filename,'rb') as f:
+        with open(filename, 'rb') as f:
             self.head.unpack(f.read(8))
             self.assertEqual(self.message.unpack(f.read()), None)
 
@@ -61,7 +61,7 @@ class TestFlowMod(unittest.TestCase):
         """[Controller2Switch/FlowMod] - unpacking"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x01/ofpt_flow_delete.dat')
-        with open(filename,'rb') as f:
+        with open(filename, 'rb') as f:
             self.head.unpack(f.read(8))
             self.assertEqual(self.message.unpack(f.read()), None)
 
