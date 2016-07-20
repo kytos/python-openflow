@@ -1,6 +1,6 @@
 import unittest
 
-from pyof.v0x01.controller2switch.common import PortStatsRequest 
+from pyof.v0x01.controller2switch.common import PortStatsRequest
 
 
 class TestPortStatsRequest(unittest.TestCase):

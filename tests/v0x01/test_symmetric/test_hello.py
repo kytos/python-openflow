@@ -4,6 +4,7 @@ import unittest
 from pyof.v0x01.symmetric import hello
 from pyof.v0x01.common import header as of_header
 
+
 class TestHello(unittest.TestCase):
 
     def setUp(self):

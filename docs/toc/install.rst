@@ -11,8 +11,18 @@ Installing from PyPI
 --------------------
 
 *python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
-for Python 3) and it is also possible to include this project in your
-`requirements.txt` (don't worry if you don't recognize this file):
+for Python 3) and also include this project in your `requirements.txt`
+(don't worry if you don't recognize this file).
+
+If you do not have `pip3` you can install it on Ubuntu-base machines by running:
+
+.. code-block:: shell
+
+    $ sudo add-apt-repository universe
+    $ sudo apt update
+    $ sudo apt install python3-pip
+
+Once you have `pip3`, execute:
 
 .. code-block:: shell
 
