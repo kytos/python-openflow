@@ -4,22 +4,22 @@ Contributing
 We'd love for you to contribute to our source code and to make Kytos even better
 than it is today! Here are the guidelines we follow:
 
--  `Got a Question or Problem? <#question>`__
--  `Found an Issue? <#issue>`__
--  `Want a Feature? <#feature>`__
--  `Want a Doc Fix? <#docs>`__
--  `Submission Guidelines <#submit>`__
--  `Coding Style <#style>`__
--  `Tests <#tests>`__
--  `Signing the CLA <#cla>`__
--  `IRC/Mailinglist <#contact>`__
+- `Got a Question or Problem?`_
+- `Found an Issue?`_
+- `Want a Feature?`_
+- `Want a Doc Fix?`_
+- `Submission Guidelines`_
+- `Coding Style`_
+- `Tests`_
+- `Signing the CLA`_
+- `Contact Us`_
 
 Got a Question or Problem?
 --------------------------
 
 If you have questions about how to use any component of Kytos project, please
-direct these to our `dev mailing list <#contact>`__. We are also available on
-`IRC <#contact>`__.
+direct these to our dev mailing list. We are also available on IRC. Check the
+details in the `Contact Us`_ section.
 
 Found an Issue?
 ---------------
@@ -28,7 +28,7 @@ If you find a bug in the source code or a mistake in the documentation, you can
 help us by submitting an issue to our `GitHub Repository <https://github.com/kytos/python-openflow/issues>`__. Even better,
 you can submit a Pull Request with a fix.
 
-**Please see the Submission `Guidelines <#submit>`__ below**.
+**Please see the** `Submission Guidelines`_ **below.**
 
 Want a Feature?
 ---------------
@@ -39,7 +39,7 @@ If you would like to implement a new feature, then consider what kind of change
 it is:
 
 - **Major Changes** that you wish to contribute to the project should be
-  discussed first on our `dev mailing list or IRC <#contact>`__, so that
+  discussed first on our `dev mailing list or IRC <Contact Us_>`_, so that
   we can better coordinate our efforts, prevent duplication of work, and help
   you to craft the change so that it is successfully accepted into the project.
 
@@ -49,7 +49,7 @@ it is:
 Want a Doc Fix?
 ---------------
 
-Feel free to `contact us <#contact>`__ or submit a pull request.
+Feel free to `contact us`_ or submit a pull request.
 
 Submission Guidelines
 ---------------------
@@ -98,7 +98,7 @@ Submitting a Pull Request
 If you’re able to patch the bug or add the feature yourself – fantastic, make a
 pull request with the code! Be sure you’ve read the documents on contributing,
 understand the license and have signed our `Contributor License Agreement
-(CLA) <#cla>`__. Once you’ve submitted a pull request, the maintainer(s) can
+(CLA) <Signing the CLA_>`_. Once you’ve submitted a pull request, the maintainer(s) can
 easily compare your branch to the existing one and decide whether or not to
 incorporate (pull in) your changes.
 
@@ -112,7 +112,7 @@ Before you submit your pull request consider the following guidelines:
 -  Search `GitHub <https://github.com/kytos/python-openflow/pulls>`__ for an open or
    closed Pull Request that relates to your submission. You don't want to
    duplicate effort;
--  Please sign our `CLA <#cla>`__ before sending pull requests. We cannot accept
+-  Please sign our `CLA <Signing the CLA_>`_ before sending pull requests. We cannot accept
    code without this;
 -  Make your changes in a new git branch, from ``develop`` branch:
 
@@ -121,7 +121,7 @@ Before you submit your pull request consider the following guidelines:
        git checkout -b my-fix-branch develop
 
 -  **Include appropriate test cases**;
--  Follow our `Coding Rules <#rules>`__;
+-  Follow our `Coding Style`_;
 -  Commit your changes using very good and descriptive commit messages;
 -  Please consider doing atomic commits (small changes in each commit).
 -  Run our test suit to check if anything is broken:
@@ -277,9 +277,24 @@ Code contribution steps review:
 Coding style
 ------------
 
-We follow `PEP8 <http://www.python.org/dev/peps/pep-0008/>`__,
-`PEP20 <http://www.python.org/dev/peps/pep-0020/>`__ and, as a short resume,
-`The Best of the Best Practices (BOBP) Guide for Python <https://gist.github.com/sloria/7001839>`__
+We follow `PEP8 <http://www.python.org/dev/peps/pep-0008/>`_,
+`PEP20 <http://www.python.org/dev/peps/pep-0020/>`_ and, as a short resume,
+`The Best of the Best Practices (BOBP) Guide for Python <https://gist.github.com/sloria/7001839>`_.
+
+We provide a setuptools command to check the style and also look for bugs in
+the code. Make sure you don't add errors to the output of (in root folder):
+
+.. code:: shell
+
+    python3 setup.py lint
+
+During development, you may prefer the faster version below. If you do, run the
+command above at least in the end, before submitting your contribution, to
+check for additional problems.
+
+.. code:: shell
+
+    python3 setup.py quick_lint
 
 Tests
 -----
@@ -304,8 +319,8 @@ Please sign our Contributor License Agreement (CLA) before sending pull
 requests. For any code changes to be accepted, the CLA must be signed. It's a
 quick process, we promise!
 
-IRC/Mailinglist
----------------
+Contact Us
+----------
 
 You can find us on the **#of-ng** IRC channel on **freenode.net** network.
 

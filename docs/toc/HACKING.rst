@@ -20,7 +20,7 @@ the command line (while in the repository root folder):
 Remember that every time you start a new shell instance you will have to repeat
 the command above, since this is an environment variable. To have it executed
 automatically in every shell, add it to ``~/.bashrc`` replacing ``pwd`` by the
-full of the repository (output of ``pwd``).
+full path of the repository (output of ``pwd``).
 
 Virtualenv
 ~~~~~~~~~~
@@ -68,7 +68,7 @@ required virtualenv with the same name as the repository directory:
 
 .. code:: shell
 
-    mkvirtualenv "${PWD##*/}" -r requirements.txt
+    mkvirtualenv "${PWD##*/}" -r requirements-dev.txt
 
 This will create the virtualenv with all project requirements and also activate
 it.
