@@ -85,6 +85,10 @@ class GenericType:
     def __le__(self, other):
         return self._value <= other
 
+    def __add__(self, other):
+        return self.value() + other
+    def __sub__(self, other):
+        return self.value - other
     @property
     def value(self):
         """Return this type's value.
