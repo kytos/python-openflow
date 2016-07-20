@@ -34,16 +34,17 @@ Want a Feature?
 ---------------
 
 You can also request a new feature by submitting an issue to our `GitHub
-  Repository <https://github.com/kytos/python-openflow/issues>`__. If you would like to implement a new feature, then
-consider what kind of change it is:
+Repository <https://github.com/kytos/python-openflow/issues>`__.
+If you would like to implement a new feature, then consider what kind of change
+it is:
 
--  | **Major Changes** that you wish to contribute to the project should be
-   | discussed first on our `dev mailing list or IRC <#contact>`__, so that
-   | we can better coordinate our efforts, prevent duplication of work, and help you
-   | to craft the change so that it is successfully accepted into the project.
+- **Major Changes** that you wish to contribute to the project should be
+  discussed first on our `dev mailing list or IRC <#contact>`__, so that
+  we can better coordinate our efforts, prevent duplication of work, and help
+  you to craft the change so that it is successfully accepted into the project.
 
--  **Small Changes** can be crafted and submitted to the `GitHub
-   Repository <github.com/kytos/python-openflow>`__ as a Pull Request.
+- **Small Changes** can be crafted and submitted to the `GitHub Repository
+  <github.com/kytos/python-openflow>`__ as a Pull Request.
 
 Want a Doc Fix?
 ---------------
@@ -97,7 +98,7 @@ Submitting a Pull Request
 If you’re able to patch the bug or add the feature yourself – fantastic, make a
 pull request with the code! Be sure you’ve read the documents on contributing,
 understand the license and have signed our `Contributor License Agreement
-  (CLA) <#cla>`__. Once you’ve submitted a pull request, the maintainer(s) can
+(CLA) <#cla>`__. Once you’ve submitted a pull request, the maintainer(s) can
 easily compare your branch to the existing one and decide whether or not to
 incorporate (pull in) your changes.
 
@@ -140,8 +141,8 @@ Before you submit your pull request consider the following guidelines:
 -  Make the required updates.
 -  Re-run the test suite to ensure tests are still passing.
 -  Commit your changes to your branch (e.g. ``my-fix-branch``).
--  | Push the changes to your GitHub repository (this will update your Pull
-   | Request).
+-  Push the changes to your GitHub repository (this will update your Pull
+   Request).
 
 If the PR gets too outdated we may ask you to rebase and force push to update
 the PR:
@@ -189,8 +190,8 @@ After your pull request is merged
 After your pull request is merged, you can safely delete your branch and pull
 the changes from the main (upstream) repository:
 
--  | Delete the remote branch on GitHub either through the GitHub web UI or your
-   | local shell as follows:
+-  Delete the remote branch on GitHub either through the GitHub web UI or your
+   local shell as follows:
 
    .. code:: shell
 
