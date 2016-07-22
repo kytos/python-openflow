@@ -25,4 +25,4 @@ class EchoReply(base.GenericMessage):
 
     def __init__(self, xid=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
