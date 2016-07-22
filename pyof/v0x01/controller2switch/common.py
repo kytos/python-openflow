@@ -12,6 +12,10 @@ from pyof.v0x01.common import flow_match
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ['ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
+           'AggregateStatsRequest', 'DescStats', 'FlowStatsRequest',
+           'PortStats', 'PortStatsRequest', 'QueueStats', 'QueueStatsRequest',
+           'TableStats']
 
 # Enums
 

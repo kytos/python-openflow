@@ -8,6 +8,9 @@ import enum
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ['PhyPort', 'ListOfPhyPorts', 'Port', 'PortConfig', 'PortFeatures',
+           'PortState']
+
 
 class Port(enum.Enum):
     """Port numbering.

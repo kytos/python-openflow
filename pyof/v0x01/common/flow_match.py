@@ -8,6 +8,8 @@
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ['Match', 'FlowWildCards']
+
 
 class FlowWildCards(base.GenericBitMask):
     """Wildcards used to identify flows.

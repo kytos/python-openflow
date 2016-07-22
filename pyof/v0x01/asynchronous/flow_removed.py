@@ -11,6 +11,8 @@ from pyof.v0x01.common import header as of_header
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ['FlowRemoved', 'FlowRemovedReason']
+
 # Enums
 
 
