@@ -49,7 +49,35 @@ it is:
 Want a Doc Fix?
 ---------------
 
-Feel free to `contact us`_ or submit a pull request.
+Updating Sphinx documentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To change the documentation that is created by Sphinx, in the `docs` folder,
+follow these instructions:
+
+1. In Python files, use
+   `Google-style docstrings <https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments>`_
+   (`Napoleon docs <http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`_
+   is also a useful resource);
+2. To generate the documentation, run `make` inside `docs` folder;
+3. Open `docs/_build/html/index.html` in your browser to check the output of
+   your changes;
+4. Repeat steps 2 and 3 until you are satisfied with the results (don't forget
+   to refresh the page in the browser);
+
+Tips and tricks
+~~~~~~~~~~~~~~~
+
+To automatically build the documentation and refresh the browser every time a
+file is changed:
+
+1. Install the required package: `sudo pip3 install sphinx-autobuild`
+2. In the `docs` folder, run `make livehtml`
+3. Go to http://127.0.0.1:8000/index.html
+
+Check before submitting
+~~~~~~~~~~~~~~~~~~~~~~~
+Before submitting a doc fix, please, see the section `Checking your code`_.
 
 Submission Guidelines
 ---------------------
@@ -102,8 +130,8 @@ understand the license and have signed our `Contributor License Agreement
 easily compare your branch to the existing one and decide whether or not to
 incorporate (pull in) your changes.
 
-All Kytos subproject uses uses the `Semantic Versioning <http://semver.org/>`__ and we follow
-the `Gitflow Workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow>`__. All contributors should create a fork from
+All Kytos subproject uses uses the `Semantic Versioning <http://semver.org/>`_ and we follow
+the `Gitflow Workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow>`_. All contributors should create a fork from
 ``develop`` branch with the feature's name. Once the feature is implemented the
 contributor should place a pull request to the ``develop`` branch.
 
@@ -162,9 +190,10 @@ That's it! Thank you for your contribution!
 Hot Fix and Security Fix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a Hot or Security fix is required, a different workflow should be followed.
-The contributer should clone the master branch and, after fixing the bug, it has
-to be merged in master and develop branch.
+To solve important problems like security issues or bugs, we follow a slightly
+different workflow to make sure the changes can be merged also in the master
+branch (production code). The contributer should clone the master branch and,
+after fixing the bug, it has to be merged in both master and develop branch.
 
 First clone the master branch as following:
 
@@ -277,9 +306,23 @@ Code contribution steps review:
 Coding style
 ------------
 
+Code
+~~~~
+
 We follow `PEP8 <http://www.python.org/dev/peps/pep-0008/>`_,
 `PEP20 <http://www.python.org/dev/peps/pep-0020/>`_ and, as a short resume,
 `The Best of the Best Practices (BOBP) Guide for Python <https://gist.github.com/sloria/7001839>`_.
+
+Documentation
+~~~~~~~~~~~~~
+
+For documentation, we follow pydocstyle (PEP257) and use Google-style
+docstrings. More information about Google-style docstrings can be found in
+the `Updating Sphinx documentation`_ section.
+
+
+Checking your code
+~~~~~~~~~~~~~~~~~~
 
 We provide a setuptools command to check the style and also look for bugs in
 the code. Make sure you don't add errors to the output of (in root folder):
