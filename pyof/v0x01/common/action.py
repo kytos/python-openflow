@@ -63,10 +63,6 @@ class ActionHeader(base.GenericStruct):
     #: Pad for 64-bit alignment.
     pad = basic_types.PAD(4)
 
-    # TODO: Implement is_valid specific method here to check length for
-    #       'This is the length of action, including
-    #        any padding to make it 64-bit aligned.'
-
     def __init__(self, action_type=None, length=None):
         super().__init__()
         self.action_type = action_type
@@ -86,8 +82,6 @@ class ActionOutput(base.GenericStruct):
         port (:class:`Port` or :class:`int`): Output port.
         max_length (int): Max length to send to controller.
     """
-
-    # TODO : Implement validations considering the description above.
 
     type = basic_types.UBInt16(ActionType.OFPAT_OUTPUT,
                                enum_ref=ActionType)
@@ -115,7 +109,6 @@ class ActionEnqueue(base.GenericStruct):
         queue_id (int): Where to enqueue the packets.
     """
 
-    # TODO : Validation
     type = basic_types.UBInt16(ActionType.OFPAT_ENQUEUE,
                                enum_ref=ActionType)
     length = basic_types.UBInt16(16)
@@ -186,7 +179,6 @@ class ActionDLAddr(base.GenericStruct):
             to None.
     """
 
-    # TODO: implement validation of OFPAT_SET_DL_SRC/DST
     dl_addr_type = basic_types.UBInt16(enum_ref=ActionType)
     length = basic_types.UBInt16(16)
     dl_addr = basic_types.HWAddress()
@@ -208,7 +200,6 @@ class ActionNWAddr(base.GenericStruct):
         nw_addr (int): IP Address.
     """
 
-    # TODO: implement validation of OFPAT_SET_TW_SRC/DST
     nw_addr_type = basic_types.UBInt16(enum_ref=ActionType)
     length = basic_types.UBInt16(8)
     nw_addr = basic_types.UBInt32()
@@ -231,11 +222,9 @@ class ActionNWTos(base.GenericStruct):
               in the original bit positions (shifted to the left by 2).
     """
 
-    # TODO: implement validation of OFPAT_SET_TW_SRC/DST
     nw_tos_type = basic_types.UBInt16(enum_ref=ActionType)
     length = basic_types.UBInt16(8)
     nw_tos = basic_types.UBInt8()
-    # TODO: Implement IPAddr field
     #: Pad for bit alignment.
     pad = basic_types.PAD(3)
 
@@ -254,7 +243,6 @@ class ActionTPPort(base.GenericStruct):
         tp_port (int): TCP/UDP/other port to set.
     """
 
-    # TODO: implement validation of OFPAT_SET_TP_SRC/DST
     tp_port_type = basic_types.UBInt16(enum_ref=ActionType)
     length = basic_types.UBInt16(8)
     tp_port = basic_types.UBInt16()
@@ -280,7 +268,6 @@ class ActionVendorHeader(base.GenericStruct):
 
     type = basic_types.UBInt16(ActionType.OFPAT_VENDOR,
                                enum_ref=ActionType)
-    # TODO: validate length
     length = basic_types.UBInt16()
     vendor = basic_types.UBInt32()
 

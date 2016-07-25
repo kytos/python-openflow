@@ -319,7 +319,6 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             Exception: If the struct is not valid.
         """
-        # TODO: raise the proper exception here
         if not GenericStruct.is_valid(self):
             raise Exception()
         else:
@@ -400,7 +399,6 @@ class GenericStruct(object, metaclass=MetaStruct):
         Returns:
             bool: Whether the struct is valid.
         """
-        # TODO: check for attribute types and overflow behaviour
         return True
         if not self._validate_attributes_type():
             return False
@@ -480,7 +478,6 @@ class GenericMessage(GenericStruct):
         Raises:
             Exception: If there are validation errors.
         """
-        # TODO: Raise a proper lib exception
         self.update_header_length()
         if not self.is_valid():
             raise Exception("Error on validate")

@@ -12,9 +12,6 @@ from pyof.v0x01.foundation import base, exceptions
 __all__ = ('UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'PAD',
            'HWAddress', 'BinaryData', 'FixedTypeList', 'ConstantTypeList')
 
-# TODO: Refactor unpack methods to return the unpacked object
-#       instead of being an inplace method.
-
 
 class PAD(base.GenericType):
     """Class for padding attributes."""
