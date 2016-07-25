@@ -9,8 +9,8 @@ import enum
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
-           'QueueProperties', 'ListOfProperties', 'ListOfQueues']
+__all__ = ('QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
+           'QueueProperties', 'ListOfProperties', 'ListOfQueues')
 
 # Enums
 

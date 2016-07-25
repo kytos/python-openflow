@@ -10,7 +10,7 @@ from pyof.v0x01.common import phy_port
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['FeaturesReply', 'Capabilities', 'SwitchFeatures']
+__all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
 
 
 class Capabilities(base.GenericBitMask):

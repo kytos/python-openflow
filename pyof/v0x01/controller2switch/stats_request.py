@@ -10,7 +10,7 @@ from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['StatsRequest']
+__all__ = ('StatsRequest')
 
 
 class StatsRequest(base.GenericMessage):

@@ -36,7 +36,7 @@ from pyof.v0x01.symmetric.vendor_header import VendorHeader
 from pyof.v0x01.symmetric.echo_request import EchoRequest
 
 
-__all__ = ['new_message_from_header', 'new_message_from_message_type']
+__all__ = ('new_message_from_header', 'new_message_from_message_type')
 
 
 def new_message_from_message_type(message_type):

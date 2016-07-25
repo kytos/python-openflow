@@ -11,9 +11,9 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 from pyof.v0x01.foundation import exceptions
 
-__all__ = ['ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
+__all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
            'FlowModFailedCode', 'HelloFailedCode', 'PortModFailedCode',
-           'QueueOpFailedCode']
+           'QueueOpFailedCode')
 
 # Enums
 

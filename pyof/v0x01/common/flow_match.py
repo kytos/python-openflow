@@ -8,7 +8,7 @@
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['Match', 'FlowWildCards']
+__all__ = ('Match', 'FlowWildCards')
 
 
 class FlowWildCards(base.GenericBitMask):

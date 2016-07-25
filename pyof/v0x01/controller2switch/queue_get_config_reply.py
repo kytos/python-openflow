@@ -11,7 +11,7 @@ from pyof.v0x01.common import queue
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['QueueGetConfigReply']
+__all__ = ('QueueGetConfigReply')
 
 
 class QueueGetConfigReply(base.GenericMessage):

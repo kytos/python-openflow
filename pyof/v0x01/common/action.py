@@ -9,9 +9,9 @@ import enum
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
-__all__ = ['ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
+__all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
            'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr', 'ActionNWAddr',
-           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader']
+           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader')
 
 # Enums
 
