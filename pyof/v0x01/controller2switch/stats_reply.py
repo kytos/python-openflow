@@ -4,11 +4,10 @@
 
 # Third-party imports
 
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
 from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
+
 
 __all__ = ('StatsReply')
 
@@ -16,13 +15,7 @@ __all__ = ('StatsReply')
 
 
 class StatsReply(base.GenericMessage):
-    """Class implements the response to the config request.
-
-    Args:
-        body_type (StatsTypes): One of the OFPST_* constants.
-        flags (int): OFPSF_REQ_* flags (none yet defined).
-        body (ConstantTypeList): Body of the request.
-    """
+    """Class implements the response to the config request."""
 
     #: OpenFlow :class:`.Header`
     header = of_header.Header(message_type=of_header.Type.OFPT_STATS_REPLY)
@@ -31,6 +24,13 @@ class StatsReply(base.GenericMessage):
     body = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, body_type=None, flags=None, body=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            body_type (StatsTypes): One of the OFPST_* constants.
+            flags (int): OFPSF_REQ_* flags (none yet defined).
+            body (ConstantTypeList): Body of the request.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.body_type = body_type

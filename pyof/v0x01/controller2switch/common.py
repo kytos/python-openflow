@@ -3,14 +3,13 @@
 # System imports
 import enum
 
-# Third-party imports
-
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import action
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+# Local source tree imports
+from pyof.v0x01.common import action, flow_match
+from pyof.v0x01.foundation import base, basic_types
+
+
+# Third-party imports
 
 __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
            'AggregateStatsRequest', 'DescStats', 'FlowStatsRequest',
@@ -62,20 +61,21 @@ class StatsTypes(enum.Enum):
 
 
 class SwitchConfig(base.GenericMessage):
-    """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages.
-
-    Args:
-        xid (int): xid to be used on the message header.
-        flags (ConfigFlags): OFPC_* flags.
-        miss_send_len (int): UBInt16 max bytes of new flow that the datapath
-            should send to the controller.
-    """
+    """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
 
     header = of_header.Header()
     flags = basic_types.UBInt16(enum_ref=ConfigFlags)
     miss_send_len = basic_types.UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            flags (ConfigFlags): OFPC_* flags.
+            miss_send_len (int): UBInt16 max bytes of new flow that the
+                datapath should send to the controller.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.flags = flags
@@ -86,23 +86,19 @@ class ListOfActions(basic_types.FixedTypeList):
     """List of actions.
 
     Represented by instances of ActionHeader and used on ActionHeader objects.
-
-    Args:
-        items (ActionHeader): Instance or a list of instances.
     """
 
     def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (ActionHeader): Instance or a list of instances.
+        """
         super().__init__(pyof_class=action.ActionHeader, items=items)
 
 
 class AggregateStatsReply(base.GenericStruct):
-    """Body of reply to OFPST_AGGREGATE request.
-
-    Args:
-        packet_count (int): Number of packets in flows
-        byte_count (int):   Number of bytes in flows
-        flow_count (int):   Number of flows
-    """
+    """Body of reply to OFPST_AGGREGATE request."""
 
     packet_count = basic_types.UBInt64()
     byte_count = basic_types.UBInt64()
@@ -111,6 +107,13 @@ class AggregateStatsReply(base.GenericStruct):
     pad = basic_types.PAD(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            packet_count (int): Number of packets in flows
+            byte_count (int):   Number of bytes in flows
+            flow_count (int):   Number of flows
+        """
         super().__init__()
         self.packet_count = packet_count
         self.byte_count = byte_count
@@ -118,15 +121,7 @@ class AggregateStatsReply(base.GenericStruct):
 
 
 class AggregateStatsRequest(base.GenericStruct):
-    """Body for ofp_stats_request of type OFPST_AGGREGATE.
-
-    Args:
-        match (Match): Fields to match.
-        table_id (int): ID of table to read (from pyof_table_stats) 0xff for
-            all tables or 0xfe for emergency.
-        out_port (int): Require matching entries to include this as an output
-            port. A value of OFPP_NONE indicates no restriction.
-    """
+    """Body for ofp_stats_request of type OFPST_AGGREGATE."""
 
     match = flow_match.Match()
     table_id = basic_types.UBInt8()
@@ -135,6 +130,15 @@ class AggregateStatsRequest(base.GenericStruct):
     out_port = basic_types.UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            match (Match): Fields to match.
+            table_id (int): ID of table to read (from pyof_table_stats) 0xff
+                for all tables or 0xfe for emergency.
+            out_port (int): Require matching entries to include this as an
+                output port. A value of OFPP_NONE indicates no restriction.
+        """
         super().__init__()
         self.match = match
         self.table_id = table_id
@@ -146,13 +150,6 @@ class DescStats(base.GenericStruct):
 
     Information about the switch manufacturer, hardware revision, software
     revision, serial number and a description field.
-
-    Args:
-        mfr_desc (str): Manufacturer description
-        hw_desc (str): Hardware description
-        sw_desc (str): Software description
-        serial_num (str): Serial number
-        dp_desc (str): Human readable description of datapath
     """
 
     mfr_desc = basic_types.Char(length=base.DESC_STR_LEN)
@@ -163,6 +160,15 @@ class DescStats(base.GenericStruct):
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            mfr_desc (str): Manufacturer description
+            hw_desc (str): Hardware description
+            sw_desc (str): Software description
+            serial_num (str): Serial number
+            dp_desc (str): Human readable description of datapath
+        """
         super().__init__()
         self.mfr_desc = mfr_desc
         self.hw_desc = hw_desc
@@ -172,24 +178,7 @@ class DescStats(base.GenericStruct):
 
 
 class FlowStats(base.GenericStruct):
-    """Body of reply to OFPST_FLOW request.
-
-    Args:
-        length (int): Length of this entry.
-        table_id (int): ID of table flow came from.
-        match (Match): Description of fields.
-        duration_sec (int): Time flow has been alive in seconds.
-        duration_nsec (int): Time flow has been alive in nanoseconds in
-            addition to duration_sec.
-        priority (int): Priority of the entry. Only meaningful when this
-            is not an exact-match entry.
-        idle_timeout (int): Number of seconds idle before expiration.
-        hard_timeout (int): Number of seconds before expiration.
-        cookie (int): Opaque controller-issued identifier.
-        packet_count (int): Number of packets in flow.
-        byte_count (int): Number of bytes in flow.
-        actions (ListOfActions): Actions.
-    """
+    """Body of reply to OFPST_FLOW request."""
 
     length = basic_types.UBInt16()
     table_id = basic_types.UBInt8()
@@ -212,6 +201,24 @@ class FlowStats(base.GenericStruct):
                  duration_sec=None, duration_nsec=None, priority=None,
                  idle_timeout=None, hard_timeout=None, cookie=None,
                  packet_count=None, byte_count=None, actions=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            length (int): Length of this entry.
+            table_id (int): ID of table flow came from.
+            match (Match): Description of fields.
+            duration_sec (int): Time flow has been alive in seconds.
+            duration_nsec (int): Time flow has been alive in nanoseconds in
+                addition to duration_sec.
+            priority (int): Priority of the entry. Only meaningful when this
+                is not an exact-match entry.
+            idle_timeout (int): Number of seconds idle before expiration.
+            hard_timeout (int): Number of seconds before expiration.
+            cookie (int): Opaque controller-issued identifier.
+            packet_count (int): Number of packets in flow.
+            byte_count (int): Number of bytes in flow.
+            actions (ListOfActions): Actions.
+        """
         super().__init__()
         self.length = length
         self.table_id = table_id
@@ -228,16 +235,7 @@ class FlowStats(base.GenericStruct):
 
 
 class FlowStatsRequest(base.GenericStruct):
-    """Body for ofp_stats_request of type OFPST_FLOW.
-
-    Args:
-        match (Match): Fields to match.
-        table_id (int): ID of table to read (from pyof_table_stats)
-            0xff for all tables or 0xfe for emergency.
-        out_port (:class:`int`, :class:`.Port`): Require matching entries to
-            include this as an output port. A value of :attr:`.Port.OFPP_NONE`
-            indicates no restriction.
-    """
+    """Body for ofp_stats_request of type OFPST_FLOW."""
 
     match = flow_match.Match()
     table_id = basic_types.UBInt8()
@@ -246,6 +244,16 @@ class FlowStatsRequest(base.GenericStruct):
     out_port = basic_types.UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            match (Match): Fields to match.
+            table_id (int): ID of table to read (from pyof_table_stats)
+                0xff for all tables or 0xfe for emergency.
+            out_port (:class:`int`, :class:`.Port`): Require matching entries
+                to include this as an output port. A value of
+                :attr:`.Port.OFPP_NONE` indicates no restriction.
+        """
         super().__init__()
         self.match = match
         self.table_id = table_id
@@ -256,25 +264,6 @@ class PortStats(base.GenericStruct):
     """Body of reply to OFPST_PORT request.
 
     If a counter is unsupported, set the field to all ones.
-
-    Args:
-        port_no (:class:`int`, :class:`.Port`): Port number.
-        rx_packets (int): Number of received packets.
-        tx_packets (int): Number of transmitted packets.
-        rx_bytes (int): Number of received bytes.
-        tx_bytes (int): Number of transmitted bytes.
-        rx_dropped (int): Number of packets dropped by RX.
-        tx_dropped (int): Number of packets dropped by TX.
-        rx_errors (int): Number of receive errors. This is a super-set of more
-            specific receive errors and should be greater than or equal to the
-            sum of all rx_*_err values.
-        tx_errors (int): Number of transmit errors.  This is a super-set of
-            more specific transmit errors and should be greater than or equal
-            to the sum of all tx_*_err values (none currently defined).
-        rx_frame_err (int): Number of frame alignment errors.
-        rx_over_err (int): Number of packets with RX overrun.
-        rx_crc_err (int): Number of CRC errors.
-        collisions (int): Number of collisions.
     """
 
     port_no = basic_types.UBInt16()
@@ -298,6 +287,28 @@ class PortStats(base.GenericStruct):
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
                  rx_crc_err=None, collisions=None):
+        """The constructor assigns parameters to object attributes.
+
+        Args:
+            port_no (:class:`int`, :class:`.Port`): Port number.
+            rx_packets (int): Number of received packets.
+            tx_packets (int): Number of transmitted packets.
+            rx_bytes (int): Number of received bytes.
+            tx_bytes (int): Number of transmitted bytes.
+            rx_dropped (int): Number of packets dropped by RX.
+            tx_dropped (int): Number of packets dropped by TX.
+            rx_errors (int): Number of receive errors. This is a super-set of
+                more specific receive errors and should be greater than or
+                equal to the sum of all rx_*_err values.
+            tx_errors (int): Number of transmit errors.  This is a super-set of
+                more specific transmit errors and should be greater than or
+                equal to the sum of all tx_*_err values (none currently
+                defined).
+            rx_frame_err (int): Number of frame alignment errors.
+            rx_over_err (int): Number of packets with RX overrun.
+            rx_crc_err (int): Number of CRC errors.
+            collisions (int): Number of collisions.
+        """
         super().__init__()
         self.port_no = port_no
         self.rx_packets = rx_packets
@@ -315,33 +326,27 @@ class PortStats(base.GenericStruct):
 
 
 class PortStatsRequest(base.GenericStruct):
-    """Body for ofp_stats_request of type OFPST_PORT.
-
-    Args:
-        port_no (:class:`int`, :class:`.Port`): OFPST_PORT message must request
-            statistics either for a single port (specified in port_no) or for
-            all ports (if port_no == :attr:`.Port.OFPP_NONE`).
-    """
+    """Body for ofp_stats_request of type OFPST_PORT."""
 
     port_no = basic_types.UBInt16()
     #: Align to 64-bits.
     pad = basic_types.PAD(6)
 
     def __init__(self, port_no=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            port_no (:class:`int`, :class:`.Port`): OFPST_PORT message must
+                request statistics either for a single port (specified in
+                ``port_no``) or for all ports (if port_no ==
+                :attr:`.Port.OFPP_NONE`).
+        """
         super().__init__()
         self.port_no = port_no
 
 
 class QueueStats(base.GenericStruct):
-    """Implements the reply body of a port_no.
-
-    Args:
-        port_no (:class:`int`, :class:`.Port`): Port Number.
-        queue_id (int): Queue ID.
-        tx_bytes (int): Number of transmitted bytes.
-        tx_packets (int): Number of transmitted packets.
-        tx_errors (int): Number of packets dropped due to overrun.
-    """
+    """Implements the reply body of a port_no."""
 
     port_no = basic_types.UBInt16()
     #: Align to 32-bits.
@@ -353,6 +358,15 @@ class QueueStats(base.GenericStruct):
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            port_no (:class:`int`, :class:`.Port`): Port Number.
+            queue_id (int): Queue ID.
+            tx_bytes (int): Number of transmitted bytes.
+            tx_packets (int): Number of transmitted packets.
+            tx_errors (int): Number of packets dropped due to overrun.
+        """
         super().__init__()
         self.port_no = port_no
         self.queue_id = queue_id
@@ -362,13 +376,7 @@ class QueueStats(base.GenericStruct):
 
 
 class QueueStatsRequest(base.GenericStruct):
-    """Implements the request body of a ``port_no``.
-
-    Args:
-        port_no (:class:`int`, :class:`.Port`): All ports if
-            :attr:`.Port.OFPP_ALL`.
-        queue_id (int): All queues if OFPQ_ALL.
-    """
+    """Implements the request body of a ``port_no``."""
 
     port_no = basic_types.UBInt16()
     #: Align to 32-bits
@@ -376,25 +384,20 @@ class QueueStatsRequest(base.GenericStruct):
     queue_id = basic_types.UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            port_no (:class:`int`, :class:`.Port`): All ports if
+                :attr:`.Port.OFPP_ALL`.
+            queue_id (int): All queues if OFPQ_ALL.
+        """
         super().__init__()
         self.port_no = port_no
         self.queue_id = queue_id
 
 
 class TableStats(base.GenericStruct):
-    """Body of reply to OFPST_TABLE request.
-
-    Args:
-        table_id (int): Identifier of table.  Lower numbered tables are
-            consulted first.
-        name (str): Table name.
-        wildcards (FlowWildCards): Bitmap of OFPFW_* wildcards that are
-            supported by the table.
-        max_entries (int): Max number of entries supported.
-        active_count (int): Number of active entries.
-        count_lookup (int): Number of packets looked up in table.
-        count_matched (int): Number of packets that hit table.
-    """
+    """Body of reply to OFPST_TABLE request."""
 
     table_id = basic_types.UBInt8()
     #: Align to 32-bits.
@@ -409,6 +412,19 @@ class TableStats(base.GenericStruct):
     def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            table_id (int): Identifier of table.  Lower numbered tables are
+                consulted first.
+            name (str): Table name.
+            wildcards (FlowWildCards): Bitmap of OFPFW_* wildcards that are
+                supported by the table.
+            max_entries (int): Max number of entries supported.
+            active_count (int): Number of active entries.
+            count_lookup (int): Number of packets looked up in table.
+            count_matched (int): Number of packets that hit table.
+        """
         super().__init__()
         self.table_id = table_id
         self.name = name

@@ -2,11 +2,12 @@
 
 # System imports
 import enum
-# Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
+
+
+# Third-party imports
 
 __all__ = ('PhyPort', 'ListOfPhyPorts', 'Port', 'PortConfig', 'PortFeatures',
            'PortState')
@@ -137,17 +138,6 @@ class PhyPort(base.GenericStruct):
     :attr:`curr`, :attr:`advertised`, :attr:`supported` and :attr:`peer` are
     bitmaps of :class:`PortFeatures` enum values that describe features. If
     unsupported or unavailable, set all bits to zero.
-
-    Args:
-        port_no (int): Port number.
-        hw_addr (HWAddress): Hardware address.
-        name(str): Null-terminated name.
-        config (PortConfig): Bitmap of OFPPC* flags.
-        state (PortState): Bitmap of OFPPS* flags.
-        curr (PortFeatures): Current features.
-        advertised (PortFeatures): Features being advertised by the port.
-        supported (PortFeatures): Features supported by the port.
-        peer (PortFeatures): Features advertised by peer.
     """
 
     port_no = basic_types.UBInt16()
@@ -163,6 +153,19 @@ class PhyPort(base.GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None):
+        """The constructor takes the optional parameters below.
+
+        Args:
+            port_no (int): Port number.
+            hw_addr (HWAddress): Hardware address.
+            name(str): Null-terminated name.
+            config (PortConfig): Bitmap of OFPPC* flags.
+            state (PortState): Bitmap of OFPPS* flags.
+            curr (PortFeatures): Current features.
+            advertised (PortFeatures): Features being advertised by the port.
+            supported (PortFeatures): Features supported by the port.
+            peer (PortFeatures): Features advertised by peer.
+        """
         super().__init__()
         self.port_no = port_no
         self.hw_addr = hw_addr
@@ -180,12 +183,14 @@ class ListOfPhyPorts(basic_types.FixedTypeList):
 
     Represented by instances of PhyPort and used on
     :class:`.FeaturesReply`/:class:`.SwitchFeatures` objects.
-
-    Args:
-        items (:class:`list`, :class:`PhyPort`): One :class:`PhyPort` instance
-            or list.
     """
 
     def __init__(self, items=None):
+        """The constructor takes the optional parameter below.
+
+        Args:
+            items (:class:`list`, :class:`PhyPort`): One :class:`PhyPort`
+                instance or list.
+        """
         super().__init__(pyof_class=PhyPort,
                          items=items)

@@ -68,7 +68,7 @@ class GenericType:
         return '{}'.format(str(self._value))
 
     def __eq__(self, other):
-        if isinstance(other, self):
+        if isinstance(other, self.__class__):
             return self.pack() == other.pack()
         elif self.isenum() and isinstance(other, self.enum_ref):
             return self.value == other.value

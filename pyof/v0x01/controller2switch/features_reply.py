@@ -4,11 +4,10 @@
 
 # Third-party imports
 
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
+# Local source tree imports
 from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
 
@@ -42,17 +41,6 @@ class SwitchFeatures(base.GenericMessage):
     This message is the response for a features_request message, sent by the
     controller to the switch device. The 'OFPT_FEATURES_REPLY' message inherits
     from this class, despite the strange name.
-
-    Args:
-        xid (int): xid to be used on the message header.
-        datapath_id (int): UBInt64 datapath unique ID.
-            The lower 48-bits are for MAC address, while
-            the upper 16-bits are implementer-defined
-        n_buffers (int): UBInt32 max packets buffered at once
-        n_tables (int): UBInt8 number of tables supported by datapath
-        capabilities (int): UBInt32 bitmap of supported capabilities
-        actions (int): UBInt32 Bitmap of supported "action_type"s
-        ports (int): Port definitions
     """
 
     header = of_header.Header(message_type=of_header.Type.OFPT_FEATURES_REPLY)
@@ -68,6 +56,19 @@ class SwitchFeatures(base.GenericMessage):
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            datapath_id (int): UBInt64 datapath unique ID.
+                The lower 48-bits are for MAC address, while
+                the upper 16-bits are implementer-defined.
+            n_buffers (int): UBInt32 max packets buffered at once.
+            n_tables (int): UBInt8 number of tables supported by datapath.
+            capabilities (int): UBInt32 bitmap of supported capabilities.
+            actions (int): UBInt32 Bitmap of supported "action_type"s.
+            ports (int): Port definitions.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.datapath_id = datapath_id
@@ -83,6 +84,19 @@ class FeaturesReply(SwitchFeatures):
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            datapath_id (int): UBInt64 datapath unique ID.
+                The lower 48-bits are for MAC address, while
+                the upper 16-bits are implementer-defined.
+            n_buffers (int): UBInt32 max packets buffered at once.
+            n_tables (int): UBInt8 number of tables supported by datapath.
+            capabilities (int): UBInt32 bitmap of supported capabilities.
+            actions (int): UBInt32 Bitmap of supported "action_type"s.
+            ports (int): Port definitions.
+        """
         self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, datapath_id, n_buffers, n_tables, capabilities,
                          actions, ports)

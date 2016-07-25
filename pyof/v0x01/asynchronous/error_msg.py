@@ -3,13 +3,12 @@
 # System imports
 import enum
 
+from pyof.v0x01.common import header as of_header
+from pyof.v0x01.foundation import base, basic_types, exceptions
+
+
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
-from pyof.v0x01.foundation import exceptions
 
 __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
            'FlowModFailedCode', 'HelloFailedCode', 'PortModFailedCode',
@@ -156,12 +155,6 @@ class ErrorMsg(base.GenericMessage):
     """OpenFlow Error Message.
 
     This message does not contain a body in addition to the OpenFlow Header.
-
-    Args:
-        xid (int): To be included in the message header.
-        error_type (ErrorType): Error type.
-        code (enum.Enum): Error code.
-        data: Its content is specified in the error code documentation.
     """
 
     #: :class:`~.header.Header`: OpenFlow Header
@@ -171,6 +164,14 @@ class ErrorMsg(base.GenericMessage):
     data = basic_types.ConstantTypeList()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
+        """Assign parameters to object attributes.
+
+        Args:
+            xid (int): To be included in the message header.
+            error_type (ErrorType): Error type.
+            code (enum.Enum): Error code.
+            data: Its content is specified in the error code documentation.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.error_type = error_type

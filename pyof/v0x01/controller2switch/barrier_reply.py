@@ -4,7 +4,6 @@
 
 # Third-party imports
 
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
 from pyof.v0x01.foundation import base
 
@@ -17,13 +16,15 @@ class BarrierReply(base.GenericMessage):
     """OpenFlow Barrier Reply Message.
 
     This message does not contain a body beyond the OpenFlow Header.
-
-    Args:
-        xid (int): Header's xid.
     """
 
     header = of_header.Header(message_type=of_header.Type.OFPT_BARRIER_REPLY)
 
     def __init__(self, xid=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): Header's xid.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid

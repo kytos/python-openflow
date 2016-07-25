@@ -5,8 +5,7 @@
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
 
 __all__ = ('Match', 'FlowWildCards')
 
@@ -87,30 +86,34 @@ class Match(base.GenericStruct):
                  dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
                  nw_tos=None, nw_proto=None, nw_src=None,
                  nw_dst=None, tp_src=None, tp_dst=None):
+        """All the constructor parameters below are optional.
+
+        Args:
+            wildcards (FlowWildCards): Wildcards fields.
+            in_port (int): Input switch port.
+            dl_src (HWAddress): Ethernet source address.
+            dl_dst (HWAddress): Ethernet destination address.
+            dl_vlan (int): Input VLAN id.
+            dl_vlan_pcp (int): Input VLAN priority.
+            dl_type (int): Ethernet frame type.
+            nw_tos (int): IP ToS (actually DSCP field, 6 bits).
+            nw_proto (int): IP protocol or lower 8 bits of ARP opcode.
+            nw_src (int): IP source address.
+            nw_dst (int): IP destination address.
+            tp_src (int): TCP/UDP source port.
+            tp_dst (int): TCP/UDP destination port.
+        """
         super().__init__()
-        #: Wildcard fields.
         self.wildcards = wildcards
-        #: Input switch port.
         self.in_port = in_port
-        #: Ethernet source address.
         self.dl_src = dl_src
-        #: Ethernet destination address.
         self.dl_dst = dl_dst
-        #: Input VLAN id.
         self.dl_vlan = dl_vlan
-        #: Input VLAN priority.
         self.dl_vlan_pcp = dl_vlan_pcp
-        #: Ethernet frame type.
         self.dl_type = dl_type
-        #: IP ToS (actually DSCP field, 6 bits).
         self.nw_tos = nw_tos
-        #: IP protocol or lower 8 bits of ARP opcode.
         self.nw_proto = nw_proto
-        #: IP source address.
         self.nw_src = nw_src
-        #: IP destination address.
         self.nw_dst = nw_dst
-        #: TCP/UDP source port.
         self.tp_src = tp_src
-        #: TCP/UDP destination port.
         self.tp_dst = tp_dst

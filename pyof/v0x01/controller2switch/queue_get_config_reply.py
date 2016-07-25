@@ -4,24 +4,16 @@
 
 # Third-party imports
 
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.common import queue
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+# Local source tree imports
+from pyof.v0x01.common import phy_port, queue
+from pyof.v0x01.foundation import base, basic_types
 
 __all__ = ('QueueGetConfigReply')
 
 
 class QueueGetConfigReply(base.GenericMessage):
-    """Class implements the response to the config request.
-
-    Args:
-        xid (int): xid of OpenFlow header.
-        port (Port): Target port for the query.
-        queue (ListOfQueues): List of configured queues.
-    """
+    """Class implements the response to the config request."""
 
     header = of_header.Header(
         message_type=of_header.Type.OFPT_GET_CONFIG_REPLY)
@@ -31,6 +23,13 @@ class QueueGetConfigReply(base.GenericMessage):
     queues = queue.ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid of OpenFlow header.
+            port (Port): Target port for the query.
+            queue (ListOfQueues): List of configured queues.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.port = port
