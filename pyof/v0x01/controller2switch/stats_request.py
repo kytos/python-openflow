@@ -8,7 +8,7 @@ from pyof.v0x01.common import header as of_header
 from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base, basic_types
 
-__all__ = ('StatsRequest')
+__all__ = ('StatsRequest',)
 
 
 class StatsRequest(base.GenericMessage):

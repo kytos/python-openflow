@@ -9,7 +9,7 @@ from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base, basic_types
 
 
-__all__ = ('StatsReply')
+__all__ = ('StatsReply',)
 
 # Classes
 

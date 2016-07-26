@@ -9,7 +9,7 @@ from pyof.v0x01.common import header as of_header
 from pyof.v0x01.common import phy_port
 from pyof.v0x01.foundation import base, basic_types
 
-__all__ = ('QueueGetConfigRequest')
+__all__ = ('QueueGetConfigRequest',)
 
 
 class QueueGetConfigRequest(base.GenericMessage):

@@ -7,7 +7,7 @@
 from pyof.v0x01.common import header as of_header
 from pyof.v0x01.controller2switch import common
 
-__all__ = ('GetConfigReply')
+__all__ = ('GetConfigReply',)
 
 
 class GetConfigReply(common.SwitchConfig):

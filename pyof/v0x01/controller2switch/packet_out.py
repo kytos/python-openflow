@@ -9,7 +9,7 @@ from pyof.v0x01.controller2switch import common
 from pyof.v0x01.foundation import base, basic_types
 from pyof.v0x01.foundation.exceptions import ValidationError
 
-__all__ = ('PacketOut')
+__all__ = ('PacketOut',)
 
 # Classes
 
