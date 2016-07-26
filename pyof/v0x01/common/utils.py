@@ -103,7 +103,7 @@ def new_message_from_header(header):
     if not isinstance(message_type, Type):
         try:
             if isinstance(message_type, str):
-                message_type = Type(message_type)
+                message_type = Type[message_type]
             elif isinstance(message_type, int):
                 message_type = Type(message_type)
         except ValueError:
