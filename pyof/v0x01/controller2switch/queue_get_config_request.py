@@ -10,6 +10,8 @@ from pyof.v0x01.common import phy_port
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ('QueueGetConfigRequest')
+
 
 class QueueGetConfigRequest(base.GenericMessage):
     """Query structure for configured queues on a port.

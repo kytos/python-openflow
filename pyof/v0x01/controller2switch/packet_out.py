@@ -11,6 +11,8 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 from pyof.v0x01.foundation.exceptions import ValidationError
 
+__all__ = ('PacketOut')
+
 # Classes
 
 #: in_port valid virtual port values, for validation

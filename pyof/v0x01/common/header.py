@@ -10,6 +10,8 @@ from random import randint
 from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
+__all__ = ('Header', 'Type')
+
 # Max xid of a message considering it's size (UBInt32 on v0x01)
 MAXID = 2147483647
 
