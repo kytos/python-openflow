@@ -77,7 +77,7 @@ class SwitchConfig(base.GenericMessage):
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.flags = flags
         self.miss_send_len = miss_send_len
 

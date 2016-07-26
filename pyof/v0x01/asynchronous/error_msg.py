@@ -172,7 +172,7 @@ class ErrorMsg(base.GenericMessage):
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.error_type = error_type
         self.code = code
         self.data = [] if data is None else data

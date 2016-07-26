@@ -32,6 +32,6 @@ class QueueGetConfigReply(base.GenericMessage):
 
     def __init__(self, xid=None, port=None, queues=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.port = port
         self.queues = [] if queues is None else queues

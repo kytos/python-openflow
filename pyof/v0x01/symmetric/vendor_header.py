@@ -31,5 +31,5 @@ class VendorHeader(base.GenericMessage):
 
     def __init__(self, xid=None, vendor=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.vendor = vendor

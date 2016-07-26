@@ -2,6 +2,7 @@
 
 # System imports
 import enum
+from random import randint
 
 # Third-party imports
 
@@ -10,6 +11,9 @@ from pyof.v0x01.foundation import base
 from pyof.v0x01.foundation import basic_types
 
 __all__ = ('Header', 'Type')
+
+# Max xid of a message considering it's size (UBInt32 on v0x01)
+MAXID = 2147483647
 
 # Enums
 
@@ -76,7 +80,7 @@ class Header(base.GenericStruct):
     length = basic_types.UBInt16()
     xid = basic_types.UBInt32()
 
-    def __init__(self, message_type=None, xid=None, length=None):
+    def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
         super().__init__()
         self.message_type = message_type
         self.length = length

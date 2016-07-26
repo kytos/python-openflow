@@ -32,7 +32,7 @@ class StatsReply(base.GenericMessage):
 
     def __init__(self, xid=None, body_type=None, flags=None, body=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.body_type = body_type
         self.flags = flags
         self.body = [] if body is None else body

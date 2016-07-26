@@ -82,7 +82,7 @@ class FlowMod(base.GenericMessage):
                  idle_timeout=None, hard_timeout=None, priority=None,
                  buffer_id=None, out_port=None, flags=None, actions=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.match = match
         self.cookie = cookie
         self.command = command

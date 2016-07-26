@@ -46,7 +46,7 @@ class PacketOut(base.GenericMessage):
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, actions=None, data=b''):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len

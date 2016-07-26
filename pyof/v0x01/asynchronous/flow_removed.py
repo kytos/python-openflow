@@ -47,6 +47,7 @@ class FlowRemoved(base.GenericMessage):
 
     #: :class:`~.header.Header`: OpenFlow Header
     header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_REMOVED)
+    #: :class:`~.flow_match.Match`: OpenFlow Header
     match = flow_match.Match()
     cookie = basic_types.UBInt64()
 
@@ -68,7 +69,7 @@ class FlowRemoved(base.GenericMessage):
                  reason=None, duration_sec=None, duration_nsec=None,
                  idle_timeout=None, packet_count=None, byte_count=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.match = match
         self.cookie = cookie
         self.priority = priority
