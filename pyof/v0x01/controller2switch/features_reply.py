@@ -67,7 +67,7 @@ class SwitchFeatures(base.GenericMessage):
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):
         super().__init__()
-        self.header.xid = xid
+        self.header.xid = xid if xid else self.header.xid
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables

@@ -42,7 +42,8 @@ class PortStatus(base.GenericMessage):
     pad = basic_types.PAD(7)
     desc = phy_port.PhyPort()
 
-    def __init__(self, reason=None, desc=None):
+    def __init__(self, xid=None, reason=None, desc=None):
         super().__init__()
+        self.header.xid = xid if xid else self.header.xid
         self.reason = reason
         self.desc = desc
