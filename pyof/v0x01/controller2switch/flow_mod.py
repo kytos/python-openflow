@@ -16,6 +16,7 @@ __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
 
 # Enums
 
+
 class FlowModCommand(enum.Enum):
     """List the possible commands for a flow."""
 
