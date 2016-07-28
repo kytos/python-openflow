@@ -3,13 +3,14 @@
 # System imports
 import enum
 
+from pyof.v0x01.common import header as of_header
+# Local source tree imports
+from pyof.v0x01.common import phy_port
+from pyof.v0x01.foundation import base, basic_types
+
+
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
 
 __all__ = ('PortStatus', 'PortReason')
 
@@ -30,12 +31,7 @@ class PortReason(enum.Enum):
 # Classes
 
 class PortStatus(base.GenericMessage):
-    """A physical port has changed in the datapath.
-
-    Args:
-        reason (PortReason): Addition, deletion or modification.
-        desc (PhyPort): Port description.
-    """
+    """A physical port has changed in the datapath."""
 
     #: :class:`~.header.Header`: OpenFlow Header
     header = of_header.Header(message_type=of_header.Type.OFPT_PORT_STATUS)
@@ -45,6 +41,13 @@ class PortStatus(base.GenericMessage):
     desc = phy_port.PhyPort()
 
     def __init__(self, xid=None, reason=None, desc=None):
+        """Assign parameters to object attributes.
+
+        Args:
+            xid (int): Header's xid.
+            reason (PortReason): Addition, deletion or modification.
+            desc (PhyPort): Port description.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.reason = reason

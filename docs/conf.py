@@ -308,3 +308,8 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3',
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 napoleon_include_special_with_doc = False  # Sphinx's default
+
+# As pylint warns when the public __init__ is not documented (according to a
+# PEP), we should document __init__ and the option below appends its docstring
+# to the class'.
+autoclass_content = 'both'

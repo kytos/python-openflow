@@ -2,15 +2,15 @@
 
 # System imports
 import enum
-# Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import flow_match
 from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import phy_port
+# Local source tree imports
+from pyof.v0x01.common import flow_match, phy_port
 from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
+
+
+# Third-party imports
 
 __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
 
@@ -46,25 +46,7 @@ class FlowModFlags(base.GenericBitMask):
 
 
 class FlowMod(base.GenericMessage):
-    """Modifies the flow table from the controller.
-
-    Args:
-        xid (int): xid to be used on the message header.
-        match (Match): Fields to match.
-        cookie (int): Opaque controller-issued identifier.
-        command (FlowModCommand): One of OFPFC_*.
-        idle_timeout (int): Idle time before discarding (seconds).
-        hard_timeout (int): Max time before discarding (seconds).
-        priority (int): Priority level of flow entry.
-        buffer_idle (int): Buffered packet to apply to (or -1).
-            Not meaningful for OFPFC_DELETE*.
-        out_port (Port): For OFPFC_DELETE* commands, require matching entries
-            to include this as an output port.
-            A value of OFPP_NONE indicates no restriction.
-        flags (FlowModFlags): One of OFPFF_*.
-        actions (ListOfActions): The action length is inferred from the length
-            field in the header.
-    """
+    """Modifies the flow table from the controller."""
 
     header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_MOD)
     match = flow_match.Match()
@@ -81,6 +63,25 @@ class FlowMod(base.GenericMessage):
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,
                  buffer_id=None, out_port=None, flags=None, actions=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            match (Match): Fields to match.
+            cookie (int): Opaque controller-issued identifier.
+            command (FlowModCommand): One of OFPFC_*.
+            idle_timeout (int): Idle time before discarding (seconds).
+            hard_timeout (int): Max time before discarding (seconds).
+            priority (int): Priority level of flow entry.
+            buffer_idle (int): Buffered packet to apply to (or -1).
+                Not meaningful for OFPFC_DELETE*.
+            out_port (Port): For OFPFC_DELETE* commands, require matching
+                entries to include this as an output port.
+                A value of OFPP_NONE indicates no restriction.
+            flags (FlowModFlags): One of OFPFF_*.
+            actions (ListOfActions): The action length is inferred from the
+                length field in the header.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.match = match

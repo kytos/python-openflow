@@ -3,13 +3,14 @@
 # System imports
 import enum
 
-# Third-party imports
-
+from pyof.v0x01.common import header as of_header
 # Local source tree imports
 from pyof.v0x01.common import flow_match
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
+
+
+# Third-party imports
+
 
 __all__ = ('FlowRemoved', 'FlowRemovedReason')
 
@@ -29,21 +30,7 @@ class FlowRemovedReason(enum.Enum):
 
 # Classes
 class FlowRemoved(base.GenericMessage):
-    """Flow removed (datapath -> controller).
-
-    Args:
-        xid (int): OpenFlow Header's xid.
-        match (Match): Fields' description.
-        cookie (int): Opaque controller-issued identifier.
-        priority (int): Priority level of flow entry.
-        reason (FlowRemovedReason): Why the flow was removed.
-        duration_sec (int): Time the flow was alive in seconds.
-        duration_nsec (int): Time the flow was alive in nanoseconds in addition
-            to duration_sec.
-        idle_timeout (int): Idle timeout from original flow mod.
-        packet_count (int): Number of packets.
-        byte_count (int): Byte count.
-    """
+    """Flow removed (datapath -> controller)."""
 
     #: :class:`~.header.Header`: OpenFlow Header
     header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_REMOVED)
@@ -68,6 +55,21 @@ class FlowRemoved(base.GenericMessage):
     def __init__(self, xid=None, match=None, cookie=None, priority=None,
                  reason=None, duration_sec=None, duration_nsec=None,
                  idle_timeout=None, packet_count=None, byte_count=None):
+        """Assign parameters to object attributes.
+
+        Args:
+            xid (int): OpenFlow Header's xid.
+            match (Match): Fields' description.
+            cookie (int): Opaque controller-issued identifier.
+            priority (int): Priority level of flow entry.
+            reason (FlowRemovedReason): Why the flow was removed.
+            duration_sec (int): Time the flow was alive in seconds.
+            duration_nsec (int): Time the flow was alive in nanoseconds in
+                addition to duration_sec.
+            idle_timeout (int): Idle timeout from original flow mod.
+            packet_count (int): Number of packets.
+            byte_count (int): Byte count.
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.match = match

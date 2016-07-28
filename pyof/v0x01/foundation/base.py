@@ -15,15 +15,16 @@ These classes are used in all parts of this library.
 """
 
 # System imports
-from collections import OrderedDict
 import enum
 import struct
+from collections import OrderedDict
 from copy import deepcopy
-
-# Third-party imports
 
 # Local source tree imports
 from pyof.v0x01.foundation import exceptions
+
+# Third-party imports
+
 
 # This will determine the order on sphinx documentation.
 __all__ = ('GenericStruct', 'GenericMessage', 'GenericType', 'GenericBitMask',
@@ -43,17 +44,20 @@ DESC_STR_LEN = 256
 class GenericType:
     """This is a foundation class for all custom attributes.
 
-    Base class for :class:`~.basic_types.UBInt8`,
-    :class:`~.basic_types.Char` and others.
-
-    :param value: The type's value
-    :param enum_ref: If :attr:`value` is from an Enum, specify its type
-    :type enum_ref: :class:`type`
+    Base class for :class:`~.basic_types.UBInt8`, :class:`~.basic_types.Char`
+    and others.
     """
 
     _fmt = None
 
     def __init__(self, value=None, enum_ref=None):
+        """The constructor takes the optional parameters below.
+
+        Args:
+            value: The type's value.
+            enum_ref (:class:`type`): If :attr:`value` is from an Enum, specify
+                its type.
+        """
         self._value = value
         self.enum_ref = enum_ref
 
@@ -64,9 +68,9 @@ class GenericType:
         return '{}'.format(str(self._value))
 
     def __eq__(self, other):
-        if type(other) == type(self):
+        if isinstance(other, self.__class__):
             return self.pack() == other.pack()
-        elif self.isenum() and type(other) is self.enum_ref:
+        elif self.isenum() and isinstance(other, self.enum_ref):
             return self.value == other.value
         return self.value == other
 
@@ -86,9 +90,11 @@ class GenericType:
         return self._value <= other
 
     def __add__(self, other):
-        return self.value() + other
+        return self.value + other
+
     def __sub__(self, other):
         return self.value - other
+
     @property
     def value(self):
         """Return this type's value.
@@ -107,10 +113,12 @@ class GenericType:
     def pack(self):
         """Pack the value as a binary representation.
 
-        :return: The binary representation
-        :rtype: bytes
-        :raise: :exc:`~.exceptions.BadValueException` - if the value does not
-            fit the binary format
+        Returns:
+            bytes: The binary representation.
+
+        Raises:
+            :exc:`~.exceptions.BadValueException`: If the value does not
+                fit the binary format.
         """
         try:
             return struct.pack(self._fmt, self.value)
@@ -126,9 +134,12 @@ class GenericType:
         This method will convert a binary data into a readable value according
         to the attribute format.
 
-        :param bytes buff: binary buffer
-        :param int offset: where to begin unpacking
-        :raise: :exc:`~.exceptions.UnpackException` - if unpack fails
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
@@ -141,8 +152,8 @@ class GenericType:
     def get_size(self):
         """Return the size in bytes of this type.
 
-        :return: Size in bytes
-        :rtype: int
+        Returns:
+            int: Size in bytes.
         """
         return struct.calcsize(self._fmt)
 
@@ -151,8 +162,8 @@ class GenericType:
 
         Assert that :func:`pack` succeeds.
 
-        :return: Whether the value is valid for this type
-        :rtype: bool
+        Returns:
+            bool: Whether the value is valid for this type.
         """
         try:
             self.pack()
@@ -163,16 +174,16 @@ class GenericType:
     def isenum(self):
         """Test whether it is an :class:`~enum.Enum`.
 
-        :return: whether it is an :class:`~enum.Enum`
-        :rtype: bool
+        Returns:
+            bool: Whether it is an :class:`~enum.Enum`.
         """
         return self.enum_ref and issubclass(self.enum_ref, enum.Enum)
 
     def is_bitmask(self):
         """Test whether it is a :class:`GenericBitMask`.
 
-        :return: whether it is a :class:`GenericBitMask`.
-        :rtype: bool
+        Returns:
+            bool: Whether it is a :class:`GenericBitMask`.
         """
         return self._value and issubclass(type(self._value), GenericBitMask)
 
@@ -189,6 +200,7 @@ class MetaStruct(type):
         return OrderedDict()
 
     def __new__(mcs, name, bases, classdict):
+        """Add ``__ordered__`` attribute with attributes in declared order."""
         # Skip methods and private attributes
         classdict['__ordered__'] = OrderedDict([(key, type(value)) for
                                                 key, value in classdict.items()
@@ -209,6 +221,7 @@ class GenericStruct(object, metaclass=MetaStruct):
     """
 
     def __init__(self):
+        """Contructor takes no argument and stores attributes' deep copies."""
         for attribute_name, class_attribute in self.get_class_attributes():
             setattr(self, attribute_name, deepcopy(class_attribute))
 
@@ -218,23 +231,26 @@ class GenericStruct(object, metaclass=MetaStruct):
         Compare the binary representation of structs to decide whether they
         are equal or not.
 
-            :param GenricStruct other: the struct we want to compare with
+        Args:
+            other (GenericStruct): The struct to be compared with.
         """
         return self.pack() == other.pack()
 
     @staticmethod
-    def _attr_fits_into_class(attr, _class):
-        if not isinstance(attr, _class):
+    def _attr_fits_into_class(attr, cls):
+        if not isinstance(attr, cls):
             try:
-                struct.pack(_class._fmt, attr)
+                struct.pack(cls._fmt, attr)
             except struct.error:
                 return False
         return True
 
+    # linter cannot detect attribute added by metaclass
+    # pylint: disable=no-member
     def _validate_attributes_type(self):
         """Validate the type of each attribute."""
-        for _attr in self.__ordered__:        # pylint: disable=no-member
-            _class = self.__ordered__[_attr]  # pylint: disable=no-member
+        for _attr in self.__ordered__:
+            _class = self.__ordered__[_attr]
             attr = getattr(self, _attr)
             if isinstance(attr, _class):
                 return True
@@ -254,8 +270,8 @@ class GenericStruct(object, metaclass=MetaStruct):
                 print("Attribute name: {}".format(_name))
                 print("Attribute type: {}".format(_type))
 
-        :return: Tuples with attribute name and type.
-        :rtype: generator
+        Returns:
+            generator: Tuples with attribute name and type.
         """
         for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (attribute_name, getattr(type(self), attribute_name))
@@ -269,8 +285,8 @@ class GenericStruct(object, metaclass=MetaStruct):
                 print("Attribute name: {}".format(_name))
                 print("Attribute value: {}".format(_value))
 
-        :return: Tuples with attribute name and value.
-        :rtype: generator
+        Returns:
+            generator: Tuples with attribute name and value.
         """
         for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (attribute_name, getattr(self, attribute_name))
@@ -284,8 +300,8 @@ class GenericStruct(object, metaclass=MetaStruct):
                 print("Attribute value: {}".format(_value))
                 print("Attribute type: {}".format(_type))
 
-        :return: Tuples with attribute value and type.
-        :rtype: generator
+        Returns:
+            generator: Tuples with attribute value and type.
         """
         for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (getattr(self, attribute_name),
@@ -297,12 +313,12 @@ class GenericStruct(object, metaclass=MetaStruct):
         For each struct attribute, sum the result of each one's ``get_size()``
         method.
 
-        :return: Total number of bytes used by the struct
-        :rtype: int
-        :raise Exception: if the struct is not valid
+        Returns:
+            int: Total number of bytes used by the struct.
 
+        Raises:
+            Exception: If the struct is not valid.
         """
-        # TODO: raise the proper exception here
         if not GenericStruct.is_valid(self):
             raise Exception()
         else:
@@ -329,9 +345,11 @@ class GenericStruct(object, metaclass=MetaStruct):
         order of definition, and then convert each attribute to its byte
         representation using its own ``pack`` method.
 
-        :return: binary representation of the struct object
-        :rtype: bytes
-        :raise: :exc:`~.exceptions.ValidationError` - if validation fails
+        Returns:
+            bytes: Binary representation of the struct object.
+
+        Raises:
+            :exc:`~.exceptions.ValidationError`: If validation fails.
         """
         if not self.is_valid():
             error_msg = "Erro on validation prior to pack() on class "
@@ -359,8 +377,9 @@ class GenericStruct(object, metaclass=MetaStruct):
         Update this object attributes based on the unpacked values of *buff*.
         It is an inplace method and it receives the binary data of the struct.
 
-        :param bytes buff: binary data package to be unpacked
-        :param int offset: where to begin unpacking
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
         """
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
@@ -377,10 +396,9 @@ class GenericStruct(object, metaclass=MetaStruct):
         have a struct with an attribute of type :class:`basic_types.UBInt8()`
         and you assign a string value to it, this method will return False.
 
-        :return: Whether the struct is valid
-        :rtype: bool
+        Returns:
+            bool: Whether the struct is valid.
         """
-        # TODO: check for attribute types and overflow behaviour
         return True
         if not self._validate_attributes_type():
             return False
@@ -405,9 +423,10 @@ class GenericMessage(GenericStruct):
         on the results. It is an inplace method and it receives the binary data
         of the message **without the header**.
 
-        :param bytes buff: binary data package to be unpacked, without the
-            header
-        :param int offset: where to begin unpacking
+        Args:
+            buff (bytes): Binary data package to be unpacked, without the
+                header.
+            offset (int): Where to begin unpacking.
         """
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
@@ -430,8 +449,8 @@ class GenericMessage(GenericStruct):
         the OpenFlow specification. Call this method if you want to verify
         whether the message is ready to pack.
 
-        :return: Whether the message is valid
-        :rtype: bool
+        Returns:
+            bool: Whether the message is valid.
         """
         return True
         if not super().is_valid():
@@ -453,11 +472,12 @@ class GenericMessage(GenericStruct):
         .. seealso:: This method call its parent's :meth:`GenericStruct.pack`
             after :meth:`update_header_length`.
 
-        :return: A binary data thats represents the Message
-        :rtype: bytes
-        :raise Exception: if there are validation errors
+        Returns:
+            bytes: A binary data thats represents the Message.
+
+        Raises:
+            Exception: If there are validation errors.
         """
-        # TODO: Raise a proper lib exception
         self.update_header_length()
         if not self.is_valid():
             raise Exception("Error on validate")
@@ -485,6 +505,7 @@ class MetaBitMask(type):
     """
 
     def __new__(mcs, name, bases, classdict):
+        """Convert class attributes into enum elements."""
         _enum = OrderedDict([(key, value) for key, value in classdict.items()
                              if key[0] != '_' and not
                              hasattr(value, '__call__') and not
@@ -510,6 +531,11 @@ class GenericBitMask(object, metaclass=MetaBitMask):
     """Base class for enums that use bitmask values."""
 
     def __init__(self, bitmask=None):
+        """The constructor has the optional parameter below.
+
+        Args:
+            bitmask: Bitmask value.
+        """
         self.bitmask = bitmask
         self._enum = {}
 
@@ -523,8 +549,8 @@ class GenericBitMask(object, metaclass=MetaBitMask):
     def names(self):
         """List of selected enum names.
 
-        :return: Enum names
-        :rtype: list
+        Returns:
+            list: Enum names.
         """
         result = []
         for key, value in self.iteritems():
@@ -535,8 +561,8 @@ class GenericBitMask(object, metaclass=MetaBitMask):
     def iteritems(self):
         """Generator for attributes' name-value pairs.
 
-        :return: attributes' (name, value) tuples
-        :rtype: generator
+        Returns:
+            generator: Attributes' (name, value) tuples.
         """
         for key, value in self._enum.items():
             yield (key, value)

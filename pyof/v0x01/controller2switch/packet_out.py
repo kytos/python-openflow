@@ -3,15 +3,13 @@
 
 # Third-party imports
 
-# Local source tree imports
 from pyof.v0x01.common import header as of_header
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.foundation import base, basic_types
 from pyof.v0x01.foundation.exceptions import ValidationError
 
-__all__ = ('PacketOut')
+__all__ = ('PacketOut',)
 
 # Classes
 
@@ -20,21 +18,7 @@ _VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
 
 
 class PacketOut(base.GenericMessage):
-    """Send packet (controller -> datapath).
-
-    Args:
-        xid (int): xid of the message header.
-        buffer_id (int): ID assigned by datapath (-1 if none).
-        in_port (:class:`int`, :class:`.Port`): Packet's input port
-            (:attr:`.Port.OFPP_NONE` if none). Virtual ports OFPP_IN_PORT,
-            OFPP_TABLE, OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be used as
-            input port.
-        actions_len (int): Size of action array in bytes.
-        actions (ListOfActions): Actions (class ActionHeader).
-        data (bytes): Packet data. The length is inferred from the length
-            field in the header. (Only meaningful if
-            buffer_id == -1).
-    """
+    """Send packet (controller -> datapath)."""
 
     header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_OUT)
     buffer_id = basic_types.UBInt32()
@@ -45,6 +29,20 @@ class PacketOut(base.GenericMessage):
 
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, actions=None, data=b''):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid of the message header.
+            buffer_id (int): ID assigned by datapath (-1 if none).
+            in_port (:class:`int`, :class:`.Port`): Packet's input port
+                (:attr:`.Port.OFPP_NONE` if none). Virtual ports OFPP_IN_PORT,
+                OFPP_TABLE, OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be
+                used as input port.
+            actions_len (int): Size of action array in bytes.
+            actions (ListOfActions): Actions (class ActionHeader).
+            data (bytes): Packet data. The length is inferred from the length
+                field in the header. (Only meaningful if buffer_id == -1).
+        """
         super().__init__()
         self.header.xid = xid if xid else self.header.xid
         self.buffer_id = buffer_id

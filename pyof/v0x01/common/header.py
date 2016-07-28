@@ -4,11 +4,12 @@
 import enum
 from random import randint
 
+# Local source tree imports
+from pyof.v0x01.foundation import base, basic_types
+
+
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
 
 __all__ = ('Header', 'Type')
 
@@ -67,13 +68,7 @@ class Type(enum.Enum):
 
 
 class Header(base.GenericStruct):
-    """Representation of an OpenFlow message Header.
-
-    Args:
-        message_type (Type): Type of the message.
-        xid (int): ID of the message.
-        length (int): Length of the message, including the header itself.
-    """
+    """Representation of an OpenFlow message Header."""
 
     version = basic_types.UBInt8(base.OFP_VERSION)
     message_type = basic_types.UBInt8(enum_ref=Type)
@@ -81,6 +76,13 @@ class Header(base.GenericStruct):
     xid = basic_types.UBInt32()
 
     def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
+        """The constructor takes the optional parameters below.
+
+        Args:
+            message_type (Type): Type of the message.
+            xid (int): ID of the message. Defaults to a random integer.
+            length (int): Length of the message, including the header itself.
+        """
         super().__init__()
         self.message_type = message_type
         self.length = length
