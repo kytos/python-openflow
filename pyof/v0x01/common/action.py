@@ -1,11 +1,6 @@
 """Defines actions that may be associated with flows packets."""
-
-# System imports
-import enum
-
 # Local source tree imports
 from pyof.v0x01.foundation import base, basic_types
-
 
 # Third-party imports
 
@@ -17,7 +12,7 @@ __all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
 # Enums
 
 
-class ActionType(enum.Enum):
+class ActionType(base.GenericBitMask):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.
