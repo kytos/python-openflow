@@ -22,7 +22,7 @@ class PacketOut(base.GenericMessage):
 
     header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_OUT)
     buffer_id = basic_types.UBInt32()
-    in_port = basic_types.UBInt16()
+    in_port = basic_types.UBInt16(enum_ref=Port)
     actions_len = basic_types.UBInt16()
     actions = common.ListOfActions()
     data = basic_types.BinaryData()
