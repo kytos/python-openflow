@@ -69,8 +69,7 @@ class SwitchFeatures(base.GenericMessage):
             actions (int): UBInt32 Bitmap of supported "action_type"s.
             ports (int): Port definitions.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables

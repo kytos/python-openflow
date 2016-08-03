@@ -416,6 +416,11 @@ class GenericMessage(GenericStruct):
 
     header = None
 
+    def __init__(self, xid):
+        super().__init__()
+        if xid is not None:
+            self.header.xid = xid
+
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
 

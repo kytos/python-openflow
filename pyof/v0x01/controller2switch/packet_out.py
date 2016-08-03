@@ -43,8 +43,7 @@ class PacketOut(base.GenericMessage):
             data (bytes): Packet data. The length is inferred from the length
                 field in the header. (Only meaningful if buffer_id == -1).
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len

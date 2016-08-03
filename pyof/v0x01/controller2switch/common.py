@@ -76,8 +76,7 @@ class SwitchConfig(base.GenericMessage):
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.flags = flags
         self.miss_send_len = miss_send_len
 
