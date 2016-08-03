@@ -1,42 +1,46 @@
+"""Packet out message tests."""
 import unittest
 
-from pyof.v0x01.common import phy_port
 from pyof.v0x01.common.phy_port import Port
-from pyof.v0x01.controller2switch import packet_out
+from pyof.v0x01.controller2switch.packet_out import PacketOut
 from pyof.v0x01.foundation.exceptions import ValidationError
+from tests.teststruct import TestStruct
 
 
-class TestPacketOut(unittest.TestCase):
+class TestPacketOut(TestStruct):
+    """Packet out message tests (also those in :class:`.TestDump`).
+
+    Attributes:
+        message (PacketOut): The message configured in :meth:`setUpClass`.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_packet_out')
+        super().set_raw_dump_object(PacketOut, xid=80, buffer_id=5,
+                                    in_port=Port.OFPP_NONE, actions_len=0)
+        super().set_minimum_size(16)
+
     def setUp(self):
-        self.message = packet_out.PacketOut()
-        self.message.header.xid = 80
-        self.message.buffer_id = 5
-        self.message.in_port = phy_port.Port.OFPP_NONE
-        self.message.actions_len = 0
+        """Run before every test."""
+        self.message = self.get_raw_object()
 
-    def test_get_size(self):
-        """[Controller2Switch/PacketOut] - size 16"""
-        self.assertEqual(self.message.get_size(), 16)
-
-    @unittest.skip('Not yet implemented')
+    @unittest.skip('Need to recover dump contents.')
     def test_pack(self):
-        """[Controller2Switch/PacketOut] - packing"""
-        # TODO
         pass
 
-    @unittest.skip('Not yet implemented')
+    @unittest.skip('Need to recover dump contents.')
     def test_unpack(self):
-        """[Controller2Switch/PacketOut] - unpacking"""
-        # TODO
         pass
 
     def test_valid_virtual_in_ports(self):
         """Valid virtual ports as defined in 1.0.1 spec."""
         valid = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
-        msg = packet_out.PacketOut()
         for in_port in valid:
-            msg.in_port = in_port
-            self.assertTrue(msg.is_valid())
+            self.message.in_port = in_port
+            self.assertTrue(self.message.is_valid())
 
     def test_invalid_virtual_in_ports(self):
         """Invalid virtual ports as defined in 1.0.1 spec."""

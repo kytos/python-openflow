@@ -1,14 +1,17 @@
-"""Automate raw dump file testing."""
+"""Automate struct tests."""
 import unittest
 from tests.rawdump import RawDump
 
 
-class TestDump(unittest.TestCase):
-    """Run tests related to raw dump files.
+class TestStruct(unittest.TestCase):
+    """Run tests related to struct packing and unpacking.
 
     Test the lib with raw dump files from an OpenFlow switch. We assume the
     raw files are valid according to the OF specs to check whether our pack and
     unpack implementations are correct.
+
+    Also, check the minimum size of the struct by instantiating an object with
+    no parameters.
 
     To run these tests, just extends this class and call 2 methods in the
     ``setUp`` method like the example.
@@ -23,6 +26,8 @@ class TestDump(unittest.TestCase):
                     super().set_raw_dump_file('v0x01', 'ofpt_barrier_reply')
                     # Create BarrierReply(xid=5) when needed
                     super().set_raw_dump_object(BarrierReply, xid=5)
+                    # As in spec: ``FP_ASSERT(sizeof(struct ...) == ...);``
+                    super().set_minimum_size(8)
     """
 
     def __init__(self, *args, **kwargs):
@@ -34,11 +39,13 @@ class TestDump(unittest.TestCase):
         super().__init__(*args, **kwargs)
         # Override the run method, so it does nothing instead of running the
         # tests (again).
-        if self.__class__ == TestDump:
+        if self.__class__ == TestStruct:
             self.run = lambda self, *args, **kwargs: None
 
     _new_raw_dump = None
     _new_raw_object = None
+    _msg_cls = None
+    _min_size = None
 
     @classmethod
     def set_raw_dump_file(cls, version, basename):
@@ -77,6 +84,7 @@ class TestDump(unittest.TestCase):
             ``super().__init__(BarrierReply, xid=5)`` will create
             ``BarrierReply(xid=5)``.
         """
+        TestStruct._msg_cls = msg_cls
         cls._new_raw_object = lambda: msg_cls(*args, **kwargs)
 
     @classmethod
@@ -91,15 +99,35 @@ class TestDump(unittest.TestCase):
         """
         return cls._new_raw_object()
 
+    @classmethod
+    def set_minimum_size(cls, size):
+        """Set the struct minimum size.
+
+        The minimum size can be found in OF spec. For example,
+        :class:`.PhyPort` minimum size is 48 because of
+        ``FP_ASSERT(sizeof(struct ofp_phy_port) == 48);`` (spec 1.0.0).
+
+        Args:
+            size (int): The minimum size of the struct, in bytes.
+        """
+        cls._min_size = size
+
     def test_pack(self):
-        """Check whether packed objects equals to the dumped file."""
+        """Check whether packed objects equals to dump file."""
         msg = self.get_raw_object()
         packed_obj = msg.pack()
         raw_file = self.get_raw_dump().read()
         self.assertEqual(packed_obj, raw_file)
 
     def test_unpack(self):
-        """Check whether the dumped file equals to the object when unpacked."""
+        """Check whether the dump file equals to unpacked object."""
         obj = self.get_raw_object()
         unpacked = self.get_raw_dump().unpack()
         self.assertEqual(unpacked, obj)
+
+    def test_minimum_size(self):
+        """Test struct minimum size."""
+        if self._min_size is None:
+            raise self.skipTest('minimum size not set.')
+        obj = TestStruct._msg_cls()
+        self.assertEqual(obj.get_size(), self._min_size)

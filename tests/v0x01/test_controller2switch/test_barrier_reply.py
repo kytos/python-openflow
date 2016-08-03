@@ -1,13 +1,9 @@
 """Barrier reply message tests."""
-
 from pyof.v0x01.controller2switch.barrier_reply import BarrierReply
-from tests.testdump import TestDump
+from tests.teststruct import TestStruct
 
 
-__all__ = ('TestBarrierReply',)
-
-
-class TestBarrierReply(TestDump):
+class TestBarrierReply(TestStruct):
     """Barrier reply message tests (also those in :class:`.TestDump`)."""
 
     @classmethod
@@ -16,8 +12,4 @@ class TestBarrierReply(TestDump):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_barrier_reply')
         super().set_raw_dump_object(BarrierReply, xid=5)
-
-    def test_get_size(self):
-        """Test the message size."""
-        message = BarrierReply()
-        self.assertEqual(message.get_size(), 8)
+        super().set_minimum_size(8)

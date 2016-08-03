@@ -1,39 +1,30 @@
+"""Echo request message tests."""
 import unittest
-import os
+from pyof.v0x01.common.action import ActionType
+from pyof.v0x01.controller2switch.features_reply import (Capabilities,
+                                                         FeaturesReply)
+from tests.teststruct import TestStruct
 
-from pyof.v0x01.common import action
-from pyof.v0x01.controller2switch import features_reply
-from pyof.v0x01.common import header as of_header
 
+class TestFeaturesReply(TestStruct):
+    """Feature reply message tests (also those in :class:`.TestDump`)."""
 
-class TestSwitchFeatures(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_features_reply')
+        super().set_raw_dump_object(FeaturesReply, xid=1, datapath_id=1,
+                                    n_buffers=1, n_tables=1,
+                                    capabilities=Capabilities.OFPC_TABLE_STATS,
+                                    actions=ActionType.OFPAT_SET_DL_SRC,
+                                    ports=[])
+        super().set_minimum_size(32)
 
-    def setUp(self):
-        self.head = of_header.Header()
-        self.message = features_reply.SwitchFeatures()
-        self.message.header.xid = 1
-        self.message.datapath_id = 1
-        self.message.n_buffers = 1
-        self.message.n_tables = 1
-        self.message.capabilities = \
-            features_reply.Capabilities.OFPC_TABLE_STATS
-        self.message.actions = action.ActionType.OFPAT_SET_DL_SRC
-        self.message.ports = []
-
-    def test_get_size(self):
-        """[Controller2Switch/FeaturesReply] - size 32"""
-        self.assertEqual(self.message.get_size(), 32)
-
-    @unittest.skip('Not yet implemented')
+    @unittest.skip('Need to recover dump contents.')
     def test_pack(self):
-        """[Controller2Switch/FeaturesReply] - packing"""
-        # TODO
         pass
 
+    @unittest.skip('Need to recover dump contents.')
     def test_unpack(self):
-        """[Controller2Switch/FeaturesReply] - unpacking"""
-        filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
-                                'raw/v0x01/ofpt_features_reply.dat')
-        with open(filename, 'rb') as f:
-            self.head.unpack(f.read(8))
-            self.assertEqual(self.message.unpack(f.read()), None)
+        pass
