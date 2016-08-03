@@ -15,10 +15,10 @@ These classes are used in all parts of this library.
 """
 
 # System imports
-import enum
 import struct
 from collections import OrderedDict
 from copy import deepcopy
+from enum import Enum
 
 # Local source tree imports
 from pyof.v0x01.foundation import exceptions
@@ -44,7 +44,7 @@ DESC_STR_LEN = 256
 class GenericType:
     """This is a foundation class for all custom attributes.
 
-    Base class for :class:`~.basic_types.UBInt8`, :class:`~.basic_types.Char`
+    Base class for :class:`~.UBInt8`, :class:`~.Char`
     and others.
     """
 
@@ -172,12 +172,12 @@ class GenericType:
             return False
 
     def isenum(self):
-        """Test whether it is an :class:`~enum.Enum`.
+        """Test whether it is an :class:`~Enum`.
 
         Returns:
-            bool: Whether it is an :class:`~enum.Enum`.
+            bool: Whether it is an :class:`~Enum`.
         """
-        return self.enum_ref and issubclass(self.enum_ref, enum.Enum)
+        return self.enum_ref and issubclass(self.enum_ref, Enum)
 
     def is_bitmask(self):
         """Test whether it is a :class:`GenericBitMask`.
@@ -393,7 +393,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         This method will check whether all struct attributes have a proper
         value according to the OpenFlow specification. For instance, if you
-        have a struct with an attribute of type :class:`basic_types.UBInt8()`
+        have a struct with an attribute of type :class:`UBInt8()`
         and you assign a string value to it, this method will return False.
 
         Returns:
@@ -500,7 +500,7 @@ class MetaBitMask(type):
 
     This metaclass converts the declared class attributes into elements of an
     enum. It also replaces the :meth:`__dir__` and :meth:`__getattr__` methods,
-    so the resulting class will behave as an :class:`~enum.Enum` class (you can
+    so the resulting class will behave as an :class:`~Enum` class (you can
     access object.ELEMENT and recover either values or names).
     """
 

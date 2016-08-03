@@ -3,10 +3,11 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
-from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base, basic_types
+from pyof.v0x01.controller2switch.common import ListOfActions
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import BinaryData, UBInt16, UBInt32
 from pyof.v0x01.foundation.exceptions import ValidationError
 
 __all__ = ('PacketOut',)
@@ -17,15 +18,15 @@ __all__ = ('PacketOut',)
 _VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
 
 
-class PacketOut(base.GenericMessage):
+class PacketOut(GenericMessage):
     """Send packet (controller -> datapath)."""
 
-    header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_OUT)
-    buffer_id = basic_types.UBInt32()
-    in_port = basic_types.UBInt16()
-    actions_len = basic_types.UBInt16()
-    actions = common.ListOfActions()
-    data = basic_types.BinaryData()
+    header = Header(message_type=Type.OFPT_PACKET_OUT)
+    buffer_id = UBInt32()
+    in_port = UBInt16()
+    actions_len = UBInt16()
+    actions = ListOfActions()
+    data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, in_port=None,
                  actions_len=None, actions=None, data=b''):

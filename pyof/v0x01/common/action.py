@@ -1,14 +1,14 @@
 """Defines actions that may be associated with flows packets."""
 
 # System imports
-import enum
+from enum import Enum
 
 # Local source tree imports
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.foundation.base import GenericStruct
+from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
+                                               UBInt32)
 
 # Third-party imports
-
 
 __all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
            'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr', 'ActionNWAddr',
@@ -17,7 +17,7 @@ __all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
 # Enums
 
 
-class ActionType(enum.Enum):
+class ActionType(Enum):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.
@@ -51,13 +51,13 @@ class ActionType(enum.Enum):
 # Classes
 
 
-class ActionHeader(base.GenericStruct):
+class ActionHeader(GenericStruct):
     """Defines the Header that is common to all actions."""
 
-    action_type = basic_types.UBInt16(enum_ref=ActionType)
-    length = basic_types.UBInt16()
+    action_type = UBInt16(enum_ref=ActionType)
+    length = UBInt16()
     #: Pad for 64-bit alignment.
-    pad = basic_types.PAD(4)
+    pad = PAD(4)
 
     def __init__(self, action_type=None, length=None):
         """The following constructor parameters are optional.
@@ -71,7 +71,7 @@ class ActionHeader(base.GenericStruct):
         self.length = length
 
 
-class ActionOutput(base.GenericStruct):
+class ActionOutput(GenericStruct):
     """Defines the actions output.
 
     Action structure for :attr:`ActionType.OFPAT_OUTPUT`, which sends packets
@@ -81,11 +81,10 @@ class ActionOutput(base.GenericStruct):
     should be sent.
     """
 
-    type = basic_types.UBInt16(ActionType.OFPAT_OUTPUT,
-                               enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    port = basic_types.UBInt16()
-    max_length = basic_types.UBInt16()
+    type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
+    length = UBInt16(8)
+    port = UBInt16()
+    max_length = UBInt16()
 
     def __init__(self, port=None, max_length=None):
         """The following constructor parameters are optional.
@@ -99,7 +98,7 @@ class ActionOutput(base.GenericStruct):
         self.max_length = max_length
 
 
-class ActionEnqueue(base.GenericStruct):
+class ActionEnqueue(GenericStruct):
     """Send packets to a queue's port.
 
     A switch may support only queues that are tied to specific PCP/TOS bits.
@@ -109,13 +108,12 @@ class ActionEnqueue(base.GenericStruct):
     (TOS, VLAN PCP).
     """
 
-    type = basic_types.UBInt16(ActionType.OFPAT_ENQUEUE,
-                               enum_ref=ActionType)
-    length = basic_types.UBInt16(16)
-    port = basic_types.UBInt16()
+    type = UBInt16(ActionType.OFPAT_ENQUEUE, enum_ref=ActionType)
+    length = UBInt16(16)
+    port = UBInt16()
     #: Pad for 64-bit alignment.
-    pad = basic_types.PAD(6)
-    queue_id = basic_types.UBInt32()
+    pad = PAD(6)
+    queue_id = UBInt32()
 
     def __init__(self, port=None, queue_id=None):
         """The following constructor parameters are optional.
@@ -129,7 +127,7 @@ class ActionEnqueue(base.GenericStruct):
         self.queue_id = queue_id
 
 
-class ActionVlanVid(base.GenericStruct):
+class ActionVlanVid(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
 
     .. note:: The vlan_vid field is 16 bits long,
@@ -137,12 +135,11 @@ class ActionVlanVid(base.GenericStruct):
               The value 0xffff is used to indicate that no VLAN id was set
     """
 
-    type = basic_types.UBInt16(ActionType.OFPAT_SET_VLAN_PCP,
-                               enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    vlan_id = basic_types.UBInt16()
+    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+    length = UBInt16(8)
+    vlan_id = UBInt16()
     #: Pad for bit alignment.
-    pad2 = basic_types.PAD(2)
+    pad2 = PAD(2)
 
     def __init__(self, vlan_id=None):
         """The following constructor parameters are optional.
@@ -154,15 +151,14 @@ class ActionVlanVid(base.GenericStruct):
         self.vlan_id = vlan_id
 
 
-class ActionVlanPCP(base.GenericStruct):
+class ActionVlanPCP(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_PCP`."""
 
-    type = basic_types.UBInt16(ActionType.OFPAT_SET_VLAN_PCP,
-                               enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    vlan_pcp = basic_types.UBInt8()
+    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+    length = UBInt16(8)
+    vlan_pcp = UBInt8()
     #: Pad for bit alignment.
-    pad = basic_types.PAD(3)
+    pad = PAD(3)
 
     def __init__(self, vlan_pcp=None):
         """The following constructor parameters are optional.
@@ -177,14 +173,14 @@ class ActionVlanPCP(base.GenericStruct):
         self.vlan_pcp = vlan_pcp
 
 
-class ActionDLAddr(base.GenericStruct):
+class ActionDLAddr(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or _DST."""
 
-    dl_addr_type = basic_types.UBInt16(enum_ref=ActionType)
-    length = basic_types.UBInt16(16)
-    dl_addr = basic_types.HWAddress()
+    dl_addr_type = UBInt16(enum_ref=ActionType)
+    length = UBInt16(16)
+    dl_addr = HWAddress()
     #: Pad for bit alignment.
-    pad = basic_types.PAD(6)
+    pad = PAD(6)
 
     def __init__(self, dl_addr_type=None, dl_addr=None):
         """The following constructor parameters are optional.
@@ -192,7 +188,7 @@ class ActionDLAddr(base.GenericStruct):
         Args:
             dl_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_DL_SRC` or
                 :attr:`~ActionType.OFPAT_SET_DL_DST`.
-            dl_addr (:class:`~.basic_types.HWAddress`): Ethernet address.
+            dl_addr (:class:`~.HWAddress`): Ethernet address.
                 Defaults to None.
         """
         super().__init__()
@@ -200,12 +196,12 @@ class ActionDLAddr(base.GenericStruct):
         self.dl_addr = dl_addr
 
 
-class ActionNWAddr(base.GenericStruct):
+class ActionNWAddr(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST."""
 
-    nw_addr_type = basic_types.UBInt16(enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    nw_addr = basic_types.UBInt32()
+    nw_addr_type = UBInt16(enum_ref=ActionType)
+    length = UBInt16(8)
+    nw_addr = UBInt32()
 
     def __init__(self, nw_addr_type=None, nw_addr=None):
         """The following constructor parameters are optional.
@@ -220,18 +216,18 @@ class ActionNWAddr(base.GenericStruct):
         self.nw_addr = nw_addr
 
 
-class ActionNWTos(base.GenericStruct):
+class ActionNWTos(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_TOS`.
 
     .. note:: The nw_tos field is the 6 upper bits of the ToS field to set,
               in the original bit positions (shifted to the left by 2).
     """
 
-    nw_tos_type = basic_types.UBInt16(enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    nw_tos = basic_types.UBInt8()
+    nw_tos_type = UBInt16(enum_ref=ActionType)
+    length = UBInt16(8)
+    nw_tos = UBInt8()
     #: Pad for bit alignment.
-    pad = basic_types.PAD(3)
+    pad = PAD(3)
 
     def __init__(self, nw_tos_type=None, nw_tos=None):
         """The following constructor parameters are optional.
@@ -246,14 +242,14 @@ class ActionNWTos(base.GenericStruct):
         self.nw_tos = nw_tos
 
 
-class ActionTPPort(base.GenericStruct):
+class ActionTPPort(GenericStruct):
     """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or _DST."""
 
-    tp_port_type = basic_types.UBInt16(enum_ref=ActionType)
-    length = basic_types.UBInt16(8)
-    tp_port = basic_types.UBInt16()
+    tp_port_type = UBInt16(enum_ref=ActionType)
+    length = UBInt16(8)
+    tp_port = UBInt16()
     #: Pad for bit alignment.
-    pad = basic_types.PAD(2)
+    pad = PAD(2)
 
     def __init__(self, tp_port_type=None, tp_port=None):
         """The following constructor parameters are optional.
@@ -268,16 +264,15 @@ class ActionTPPort(base.GenericStruct):
         self.tp_port = tp_port
 
 
-class ActionVendorHeader(base.GenericStruct):
+class ActionVendorHeader(GenericStruct):
     """Action header for :attr:`ActionType.OFPAT_VENDOR`.
 
     The rest of the body is vendor-defined.
     """
 
-    type = basic_types.UBInt16(ActionType.OFPAT_VENDOR,
-                               enum_ref=ActionType)
-    length = basic_types.UBInt16()
-    vendor = basic_types.UBInt32()
+    type = UBInt16(ActionType.OFPAT_VENDOR, enum_ref=ActionType)
+    length = UBInt16()
+    vendor = UBInt32()
 
     def __init__(self, length=None, vendor=None):
         """The following constructor parameters are optional.

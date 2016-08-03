@@ -4,22 +4,22 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base, basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt16
 
 __all__ = ('QueueGetConfigRequest',)
 
 
-class QueueGetConfigRequest(base.GenericMessage):
+class QueueGetConfigRequest(GenericMessage):
     """Query structure for configured queues on a port."""
 
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REQUEST)
-    port = basic_types.UBInt16(enum_ref=phy_port.Port)
+    header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
+    port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits
-    pad = basic_types.PAD(2)
+    pad = PAD(2)
 
     def __init__(self, xid=None, port=None):
         """The constructor just assings parameters to object attributes.

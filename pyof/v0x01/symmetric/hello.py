@@ -4,21 +4,21 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
 
 __all__ = ('Hello',)
 
 # Classes
 
 
-class Hello(base.GenericMessage):
+class Hello(GenericMessage):
     """OpenFlow Hello Message.
 
     This message does not contain a body beyond the OpenFlow Header.
     """
 
-    header = of_header.Header(message_type=of_header.Type.OFPT_HELLO, length=8)
+    header = Header(message_type=Type.OFPT_HELLO, length=8)
 
     def __init__(self, xid=None):
         """The constructor takes the parameters below.

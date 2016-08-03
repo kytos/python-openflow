@@ -1,23 +1,22 @@
 """Defines an Error Message."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import PhyPort
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt8
 
 # Third-party imports
-
 
 __all__ = ('PortStatus', 'PortReason')
 
 # Enums
 
 
-class PortReason(enum.Enum):
+class PortReason(Enum):
     """What changed about the physical port."""
 
     #: The port was added
@@ -30,15 +29,15 @@ class PortReason(enum.Enum):
 
 # Classes
 
-class PortStatus(base.GenericMessage):
+class PortStatus(GenericMessage):
     """A physical port has changed in the datapath."""
 
     #: :class:`~.header.Header`: OpenFlow Header
-    header = of_header.Header(message_type=of_header.Type.OFPT_PORT_STATUS)
-    reason = basic_types.UBInt8(enum_ref=PortReason)
+    header = Header(message_type=Type.OFPT_PORT_STATUS)
+    reason = UBInt8(enum_ref=PortReason)
     #: Align to 32-bits.
-    pad = basic_types.PAD(7)
-    desc = phy_port.PhyPort()
+    pad = PAD(7)
+    desc = PhyPort()
 
     def __init__(self, xid=None, reason=None, desc=None):
         """Assign parameters to object attributes.

@@ -1,21 +1,21 @@
 """Defines Features Request classes and related items."""
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
 
 __all__ = ('FeaturesRequest',)
 
 # Classes
 
 
-class FeaturesRequest(base.GenericMessage):
+class FeaturesRequest(GenericMessage):
     """Features request message.
 
     This message does not contain a body in addition to the OpenFlow Header.
     """
 
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_FEATURES_REQUEST)
+    header = Header(
+        message_type=Type.OFPT_FEATURES_REQUEST)
 
     def __init__(self, xid=None):
         """The constructor takes the optional parameter below.

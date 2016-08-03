@@ -1,23 +1,21 @@
 """The controller has requested to be notified when flows time out."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.foundation import base, basic_types
-
-
-# Third-party imports
-
+from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import (PAD, UBInt8, UBInt16, UBInt32,
+                                               UBInt64)
 
 __all__ = ('FlowRemoved', 'FlowRemovedReason')
 
 # Enums
 
 
-class FlowRemovedReason(enum.Enum):
+class FlowRemovedReason(Enum):
     """Why the flow was removed."""
 
     #: Flow idle time exceeded idle_timeout
@@ -29,28 +27,28 @@ class FlowRemovedReason(enum.Enum):
 
 
 # Classes
-class FlowRemoved(base.GenericMessage):
+class FlowRemoved(GenericMessage):
     """Flow removed (datapath -> controller)."""
 
     #: :class:`~.header.Header`: OpenFlow Header
-    header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_REMOVED)
+    header = Header(message_type=Type.OFPT_FLOW_REMOVED)
     #: :class:`~.flow_match.Match`: OpenFlow Header
-    match = flow_match.Match()
-    cookie = basic_types.UBInt64()
+    match = Match()
+    cookie = UBInt64()
 
-    priority = basic_types.UBInt16()
-    reason = basic_types.UBInt8(enum_ref=FlowRemovedReason)
+    priority = UBInt16()
+    reason = UBInt8(enum_ref=FlowRemovedReason)
     #: Align to 32-bits.
-    pad = basic_types.PAD(1)
+    pad = PAD(1)
 
-    duration_sec = basic_types.UBInt32()
-    duration_nsec = basic_types.UBInt32()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
 
-    idle_timeout = basic_types.UBInt16()
+    idle_timeout = UBInt16()
     #: Align to 64-bits.
-    pad2 = basic_types.PAD(2)
-    packet_count = basic_types.UBInt64()
-    byte_count = basic_types.UBInt64()
+    pad2 = PAD(2)
+    packet_count = UBInt64()
+    byte_count = UBInt64()
 
     def __init__(self, xid=None, match=None, cookie=None, priority=None,
                  reason=None, duration_sec=None, duration_nsec=None,

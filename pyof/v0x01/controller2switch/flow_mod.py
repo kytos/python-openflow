@@ -1,14 +1,15 @@
 """Modifications to the flow table from the controller."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import flow_match, phy_port
-from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.controller2switch.common import ListOfActions
+from pyof.v0x01.foundation.base import GenericBitMask, GenericMessage
+from pyof.v0x01.foundation.basic_types import UBInt16, UBInt32, UBInt64
 
 # Third-party imports
 
@@ -17,7 +18,7 @@ __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
 # Enums
 
 
-class FlowModCommand(enum.Enum):
+class FlowModCommand(Enum):
     """List the possible commands for a flow."""
 
     #: New flow
@@ -32,7 +33,7 @@ class FlowModCommand(enum.Enum):
     OFPFC_DELETE_STRICT = 4
 
 
-class FlowModFlags(base.GenericBitMask):
+class FlowModFlags(GenericBitMask):
     """Types to be used in Flags field."""
 
     #: Send flow removed message when flow expires or is deleted
@@ -46,20 +47,20 @@ class FlowModFlags(base.GenericBitMask):
 # Classes
 
 
-class FlowMod(base.GenericMessage):
+class FlowMod(GenericMessage):
     """Modifies the flow table from the controller."""
 
-    header = of_header.Header(message_type=of_header.Type.OFPT_FLOW_MOD)
-    match = flow_match.Match()
-    cookie = basic_types.UBInt64()
-    command = basic_types.UBInt16(enum_ref=FlowModCommand)
-    idle_timeout = basic_types.UBInt16()
-    hard_timeout = basic_types.UBInt16()
-    priority = basic_types.UBInt16()
-    buffer_id = basic_types.UBInt32()
-    out_port = basic_types.UBInt16(enum_ref=phy_port.Port)
-    flags = basic_types.UBInt16(enum_ref=FlowModFlags)
-    actions = common.ListOfActions()
+    header = Header(message_type=Type.OFPT_FLOW_MOD)
+    match = Match()
+    cookie = UBInt64()
+    command = UBInt16(enum_ref=FlowModCommand)
+    idle_timeout = UBInt16()
+    hard_timeout = UBInt16()
+    priority = UBInt16()
+    buffer_id = UBInt32()
+    out_port = UBInt16(enum_ref=Port)
+    flags = UBInt16(enum_ref=FlowModFlags)
+    actions = ListOfActions()
 
     def __init__(self, xid=None, match=None, cookie=None, command=None,
                  idle_timeout=None, hard_timeout=None, priority=None,

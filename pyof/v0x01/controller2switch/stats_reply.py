@@ -4,24 +4,25 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.controller2switch import common
-from pyof.v0x01.foundation import base, basic_types
-
+# Local imports
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.controller2switch.common import StatsTypes
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import ConstantTypeList, UBInt16
 
 __all__ = ('StatsReply',)
 
 # Classes
 
 
-class StatsReply(base.GenericMessage):
+class StatsReply(GenericMessage):
     """Class implements the response to the config request."""
 
     #: OpenFlow :class:`.Header`
-    header = of_header.Header(message_type=of_header.Type.OFPT_STATS_REPLY)
-    body_type = basic_types.UBInt16(enum_ref=common.StatsTypes)
-    flags = basic_types.UBInt16()
-    body = basic_types.ConstantTypeList()
+    header = Header(message_type=Type.OFPT_STATS_REPLY)
+    body_type = UBInt16(enum_ref=StatsTypes)
+    flags = UBInt16()
+    body = ConstantTypeList()
 
     def __init__(self, xid=None, body_type=None, flags=None, body=None):
         """The constructor just assings parameters to object attributes.

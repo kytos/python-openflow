@@ -4,7 +4,8 @@
 import struct
 
 # Local source tree imports
-from pyof.v0x01.foundation import base, exceptions
+from pyof.v0x01.foundation import exceptions
+from pyof.v0x01.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 
@@ -13,7 +14,7 @@ __all__ = ('UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'PAD',
            'HWAddress', 'BinaryData', 'FixedTypeList', 'ConstantTypeList')
 
 
-class PAD(base.GenericType):
+class PAD(GenericType):
     """Class for padding attributes."""
 
     _fmt = ''
@@ -64,7 +65,7 @@ class PAD(base.GenericType):
         return b'\x00' * self._length
 
 
-class UBInt8(base.GenericType):
+class UBInt8(GenericType):
     """Format character for an Unsigned Char.
 
     Class for an 8-bit (1-byte) Unsigned Integer.
@@ -73,7 +74,7 @@ class UBInt8(base.GenericType):
     _fmt = "!B"
 
 
-class UBInt16(base.GenericType):
+class UBInt16(GenericType):
     """Format character for an Unsigned Short.
 
     Class for an 16-bit (2-byte) Unsigned Integer.
@@ -82,7 +83,7 @@ class UBInt16(base.GenericType):
     _fmt = "!H"
 
 
-class UBInt32(base.GenericType):
+class UBInt32(GenericType):
     """Format character for an Unsigned Int.
 
     Class for an 32-bit (4-byte) Unsigned Integer.
@@ -91,7 +92,7 @@ class UBInt32(base.GenericType):
     _fmt = "!I"
 
 
-class UBInt64(base.GenericType):
+class UBInt64(GenericType):
     """Format character for an Unsigned Long Long.
 
     Class for an 64-bit (8-byte) Unsigned Integer.
@@ -100,7 +101,7 @@ class UBInt64(base.GenericType):
     _fmt = "!Q"
 
 
-class Char(base.GenericType):
+class Char(GenericType):
     """Build a double char type according to the length."""
 
     def __init__(self, value=None, length=0):
@@ -149,7 +150,7 @@ class Char(base.GenericType):
         self._value = unpacked_data.decode('ascii').rstrip('\0')
 
 
-class HWAddress(base.GenericType):
+class HWAddress(GenericType):
     """Defines a hardware address."""
 
     def __init__(self, hw_address=b'000000'):
@@ -201,7 +202,7 @@ class HWAddress(base.GenericType):
         return 6
 
 
-class BinaryData(base.GenericType):
+class BinaryData(GenericType):
     """Class to create objects that represent binary data.
 
     This is used in the ``data`` attribute from :class:`.PacketIn` and
@@ -256,7 +257,7 @@ class BinaryData(base.GenericType):
         return len(self._value)
 
 
-class FixedTypeList(list, base.GenericStruct):
+class FixedTypeList(list, GenericStruct):
     """A list that stores instances of one pyof class."""
 
     _pyof_class = None
@@ -338,7 +339,7 @@ class FixedTypeList(list, base.GenericStruct):
         """
         if len(self) == 0:
             return 0
-        elif issubclass(self._pyof_class, base.GenericType):
+        elif issubclass(self._pyof_class, GenericType):
             return len(self) * self._pyof_class().get_size()
         else:
             size = 0
@@ -377,7 +378,7 @@ class FixedTypeList(list, base.GenericStruct):
             self.append(item)
 
 
-class ConstantTypeList(list, base.GenericStruct):
+class ConstantTypeList(list, GenericStruct):
     """List that contains only objects of the same type (class).
 
     The types of all items are expected to be the same as the first item's.
@@ -466,7 +467,7 @@ class ConstantTypeList(list, base.GenericStruct):
         if len(self) == 0:
             # If this is a empty list, then returns zero
             return 0
-        elif issubclass(self[0].__class__, base.GenericType):
+        elif issubclass(self[0].__class__, GenericType):
             # If the type of the elements is GenericType, then returns the
             # length of the list multiplied by the size of the GenericType.
             return len(self) * self[0].__class__().get_size()

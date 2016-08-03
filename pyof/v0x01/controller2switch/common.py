@@ -1,13 +1,18 @@
 """Defines common structures and enums for controller2switch."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import action, flow_match
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.common.action import ActionHeader
+from pyof.v0x01.common.flow_match import FlowWildCards, Match
+from pyof.v0x01.common.header import Header
+from pyof.v0x01.foundation.base import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
+                                        SERIAL_NUM_LEN, GenericMessage,
+                                        GenericStruct)
+from pyof.v0x01.foundation.basic_types import (PAD, Char, FixedTypeList,
+                                               UBInt8, UBInt16, UBInt32,
+                                               UBInt64)
 
 # Third-party imports
 
@@ -19,7 +24,7 @@ __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
 # Enums
 
 
-class ConfigFlags(enum.Enum):
+class ConfigFlags(Enum):
     """Configuration Flags. Handling of IP Fragments."""
 
     #: No special handling for fragments
@@ -31,7 +36,7 @@ class ConfigFlags(enum.Enum):
     OFPC_FRAG_MASK = 3
 
 
-class StatsTypes(enum.Enum):
+class StatsTypes(Enum):
     """Type field to be used both in both request and reply.
 
     It specifies the kind of information being passed and determines how the
@@ -60,12 +65,12 @@ class StatsTypes(enum.Enum):
 # Classes
 
 
-class SwitchConfig(base.GenericMessage):
+class SwitchConfig(GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
 
-    header = of_header.Header()
-    flags = basic_types.UBInt16(enum_ref=ConfigFlags)
-    miss_send_len = basic_types.UBInt16()
+    header = Header()
+    flags = UBInt16(enum_ref=ConfigFlags)
+    miss_send_len = UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
         """The constructor just assings parameters to object attributes.
@@ -82,7 +87,7 @@ class SwitchConfig(base.GenericMessage):
         self.miss_send_len = miss_send_len
 
 
-class ListOfActions(basic_types.FixedTypeList):
+class ListOfActions(FixedTypeList):
     """List of actions.
 
     Represented by instances of ActionHeader and used on ActionHeader objects.
@@ -94,17 +99,17 @@ class ListOfActions(basic_types.FixedTypeList):
         Args:
             items (ActionHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=action.ActionHeader, items=items)
+        super().__init__(pyof_class=ActionHeader, items=items)
 
 
-class AggregateStatsReply(base.GenericStruct):
+class AggregateStatsReply(GenericStruct):
     """Body of reply to OFPST_AGGREGATE request."""
 
-    packet_count = basic_types.UBInt64()
-    byte_count = basic_types.UBInt64()
-    flow_count = basic_types.UBInt32()
+    packet_count = UBInt64()
+    byte_count = UBInt64()
+    flow_count = UBInt32()
     #: Align to 64 bits
-    pad = basic_types.PAD(4)
+    pad = PAD(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
         """The constructor just assings parameters to object attributes.
@@ -120,14 +125,14 @@ class AggregateStatsReply(base.GenericStruct):
         self.flow_count = flow_count
 
 
-class AggregateStatsRequest(base.GenericStruct):
+class AggregateStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_AGGREGATE."""
 
-    match = flow_match.Match()
-    table_id = basic_types.UBInt8()
+    match = Match()
+    table_id = UBInt8()
     #: Align to 32 bits
-    pad = basic_types.PAD(1)
-    out_port = basic_types.UBInt16()
+    pad = PAD(1)
+    out_port = UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
         """The constructor just assings parameters to object attributes.
@@ -145,18 +150,18 @@ class AggregateStatsRequest(base.GenericStruct):
         self.out_port = out_port
 
 
-class DescStats(base.GenericStruct):
+class DescStats(GenericStruct):
     """Information available from the OFPST_DESC stats request.
 
     Information about the switch manufacturer, hardware revision, software
     revision, serial number and a description field.
     """
 
-    mfr_desc = basic_types.Char(length=base.DESC_STR_LEN)
-    hw_desc = basic_types.Char(length=base.DESC_STR_LEN)
-    sw_desc = basic_types.Char(length=base.DESC_STR_LEN)
-    serial_num = basic_types.Char(length=base.SERIAL_NUM_LEN)
-    dp_desc = basic_types.Char(length=base.DESC_STR_LEN)
+    mfr_desc = Char(length=DESC_STR_LEN)
+    hw_desc = Char(length=DESC_STR_LEN)
+    sw_desc = Char(length=DESC_STR_LEN)
+    serial_num = Char(length=SERIAL_NUM_LEN)
+    dp_desc = Char(length=DESC_STR_LEN)
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
@@ -177,24 +182,24 @@ class DescStats(base.GenericStruct):
         self.dp_desc = dp_desc
 
 
-class FlowStats(base.GenericStruct):
+class FlowStats(GenericStruct):
     """Body of reply to OFPST_FLOW request."""
 
-    length = basic_types.UBInt16()
-    table_id = basic_types.UBInt8()
+    length = UBInt16()
+    table_id = UBInt8()
     #: Align to 32 bits.
-    pad = basic_types.PAD(1)
-    match = flow_match.Match()
-    duration_sec = basic_types.UBInt32()
-    duration_nsec = basic_types.UBInt32()
-    priority = basic_types.UBInt16()
-    idle_timeout = basic_types.UBInt16()
-    hard_timeout = basic_types.UBInt16()
+    pad = PAD(1)
+    match = Match()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
+    priority = UBInt16()
+    idle_timeout = UBInt16()
+    hard_timeout = UBInt16()
     #: Align to 64-bits
-    pad2 = basic_types.PAD(6)
-    cookie = basic_types.UBInt64()
-    packet_count = basic_types.UBInt64()
-    byte_count = basic_types.UBInt64()
+    pad2 = PAD(6)
+    cookie = UBInt64()
+    packet_count = UBInt64()
+    byte_count = UBInt64()
     actions = ListOfActions()
 
     def __init__(self, length=None, table_id=None, match=None,
@@ -234,14 +239,14 @@ class FlowStats(base.GenericStruct):
         self.actions = [] if actions is None else actions
 
 
-class FlowStatsRequest(base.GenericStruct):
+class FlowStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_FLOW."""
 
-    match = flow_match.Match()
-    table_id = basic_types.UBInt8()
+    match = Match()
+    table_id = UBInt8()
     #: Align to 32 bits.
-    pad = basic_types.PAD(1)
-    out_port = basic_types.UBInt16()
+    pad = PAD(1)
+    out_port = UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
         """The constructor just assings parameters to object attributes.
@@ -260,27 +265,27 @@ class FlowStatsRequest(base.GenericStruct):
         self.out_port = out_port
 
 
-class PortStats(base.GenericStruct):
+class PortStats(GenericStruct):
     """Body of reply to OFPST_PORT request.
 
     If a counter is unsupported, set the field to all ones.
     """
 
-    port_no = basic_types.UBInt16()
+    port_no = UBInt16()
     #: Align to 64-bits.
-    pad = basic_types.PAD(6)
-    rx_packets = basic_types.UBInt64()
-    tx_packets = basic_types.UBInt64()
-    rx_bytes = basic_types.UBInt64()
-    tx_bytes = basic_types.UBInt64()
-    rx_dropped = basic_types.UBInt64()
-    tx_dropped = basic_types.UBInt64()
-    rx_errors = basic_types.UBInt64()
-    tx_errors = basic_types.UBInt64()
-    rx_frame_err = basic_types.UBInt64()
-    rx_over_err = basic_types.UBInt64()
-    rx_crc_err = basic_types.UBInt64()
-    collisions = basic_types.UBInt64()
+    pad = PAD(6)
+    rx_packets = UBInt64()
+    tx_packets = UBInt64()
+    rx_bytes = UBInt64()
+    tx_bytes = UBInt64()
+    rx_dropped = UBInt64()
+    tx_dropped = UBInt64()
+    rx_errors = UBInt64()
+    tx_errors = UBInt64()
+    rx_frame_err = UBInt64()
+    rx_over_err = UBInt64()
+    rx_crc_err = UBInt64()
+    collisions = UBInt64()
 
     def __init__(self, port_no=None, rx_packets=None,
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
@@ -325,12 +330,12 @@ class PortStats(base.GenericStruct):
         self.collisions = collisions
 
 
-class PortStatsRequest(base.GenericStruct):
+class PortStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_PORT."""
 
-    port_no = basic_types.UBInt16()
+    port_no = UBInt16()
     #: Align to 64-bits.
-    pad = basic_types.PAD(6)
+    pad = PAD(6)
 
     def __init__(self, port_no=None):
         """The constructor just assings parameters to object attributes.
@@ -345,16 +350,16 @@ class PortStatsRequest(base.GenericStruct):
         self.port_no = port_no
 
 
-class QueueStats(base.GenericStruct):
+class QueueStats(GenericStruct):
     """Implements the reply body of a port_no."""
 
-    port_no = basic_types.UBInt16()
+    port_no = UBInt16()
     #: Align to 32-bits.
-    pad = basic_types.PAD(2)
-    queue_id = basic_types.UBInt32()
-    tx_bytes = basic_types.UBInt64()
-    tx_packets = basic_types.UBInt64()
-    tx_errors = basic_types.UBInt64()
+    pad = PAD(2)
+    queue_id = UBInt32()
+    tx_bytes = UBInt64()
+    tx_packets = UBInt64()
+    tx_errors = UBInt64()
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
@@ -375,13 +380,13 @@ class QueueStats(base.GenericStruct):
         self.tx_errors = tx_errors
 
 
-class QueueStatsRequest(base.GenericStruct):
+class QueueStatsRequest(GenericStruct):
     """Implements the request body of a ``port_no``."""
 
-    port_no = basic_types.UBInt16()
+    port_no = UBInt16()
     #: Align to 32-bits
-    pad = basic_types.PAD(2)
-    queue_id = basic_types.UBInt32()
+    pad = PAD(2)
+    queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
         """The constructor just assings parameters to object attributes.
@@ -396,18 +401,18 @@ class QueueStatsRequest(base.GenericStruct):
         self.queue_id = queue_id
 
 
-class TableStats(base.GenericStruct):
+class TableStats(GenericStruct):
     """Body of reply to OFPST_TABLE request."""
 
-    table_id = basic_types.UBInt8()
+    table_id = UBInt8()
     #: Align to 32-bits.
-    pad = basic_types.PAD(3)
-    name = basic_types.Char(length=base.OFP_MAX_TABLE_NAME_LEN)
-    wildcards = basic_types.UBInt32(enum_ref=flow_match.FlowWildCards)
-    max_entries = basic_types.UBInt32()
-    active_count = basic_types.UBInt32()
-    count_lookup = basic_types.UBInt64()
-    count_matched = basic_types.UBInt64()
+    pad = PAD(3)
+    name = Char(length=OFP_MAX_TABLE_NAME_LEN)
+    wildcards = UBInt32(enum_ref=FlowWildCards)
+    max_entries = UBInt32()
+    active_count = UBInt32()
+    count_lookup = UBInt64()
+    count_matched = UBInt64()
 
     def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,

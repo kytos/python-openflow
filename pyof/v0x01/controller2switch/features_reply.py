@@ -4,15 +4,16 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base, basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import ListOfPhyPorts
+from pyof.v0x01.foundation.base import GenericBitMask, GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt8, UBInt32, UBInt64
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
 
 
-class Capabilities(base.GenericBitMask):
+class Capabilities(GenericBitMask):
     """Capabilities supported by the datapath."""
 
     #: Flow statistics
@@ -35,7 +36,7 @@ class Capabilities(base.GenericBitMask):
 
 # Classes
 
-class SwitchFeatures(base.GenericMessage):
+class SwitchFeatures(GenericMessage):
     """Message sent by the switch device to the controller.
 
     This message is the response for a features_request message, sent by the
@@ -43,16 +44,16 @@ class SwitchFeatures(base.GenericMessage):
     from this class, despite the strange name.
     """
 
-    header = of_header.Header(message_type=of_header.Type.OFPT_FEATURES_REPLY)
-    datapath_id = basic_types.UBInt64()
-    n_buffers = basic_types.UBInt32()
-    n_tables = basic_types.UBInt8()
+    header = Header(message_type=Type.OFPT_FEATURES_REPLY)
+    datapath_id = UBInt64()
+    n_buffers = UBInt32()
+    n_tables = UBInt8()
     #: Align to 64-bits.
-    pad = basic_types.PAD(3)
+    pad = PAD(3)
     # Features
-    capabilities = basic_types.UBInt32(enum_ref=Capabilities)
-    actions = basic_types.UBInt32()
-    ports = phy_port.ListOfPhyPorts()
+    capabilities = UBInt32(enum_ref=Capabilities)
+    actions = UBInt32()
+    ports = ListOfPhyPorts()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):

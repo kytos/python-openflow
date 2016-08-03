@@ -1,11 +1,12 @@
 """Defines an Error Message."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base, basic_types, exceptions
-
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation import exceptions
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import ConstantTypeList, UBInt16
 
 # Third-party imports
 
@@ -17,7 +18,7 @@ __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
 # Enums
 
 
-class ErrorType(enum.Enum):
+class ErrorType(Enum):
     """Values for ’type’ in ofp_error_message.
 
     These values are immutable: they will not change in future versions of the
@@ -38,7 +39,7 @@ class ErrorType(enum.Enum):
     OFPET_QUEUE_OP_FAILED = 6
 
 
-class HelloFailedCode(enum.Enum):
+class HelloFailedCode(Enum):
     """Error_msg 'code' values for OFPET_HELLO_FAILED.
 
     'data' contains an ASCII text string that may give failure details.
@@ -50,7 +51,7 @@ class HelloFailedCode(enum.Enum):
     OFPHFC_EPERM = 2
 
 
-class BadRequestCode(enum.Enum):
+class BadRequestCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_REQUEST.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -77,7 +78,7 @@ class BadRequestCode(enum.Enum):
     OFPBRC_BUFFER_UNKNOWN = 9
 
 
-class BadActionCode(enum.Enum):
+class BadActionCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -103,7 +104,7 @@ class BadActionCode(enum.Enum):
     OFPBAC_BAD_QUEUE = 9
 
 
-class FlowModFailedCode(enum.Enum):
+class FlowModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -123,7 +124,7 @@ class FlowModFailedCode(enum.Enum):
     OFPFMFC_UNSUPPORTED = 6
 
 
-class PortModFailedCode(enum.Enum):
+class PortModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_PORT_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -135,7 +136,7 @@ class PortModFailedCode(enum.Enum):
     OFPPMFC_BAD_HW_ADDR = 2
 
 
-class QueueOpFailedCode(enum.Enum):
+class QueueOpFailedCode(Enum):
     """Error msg 'code' values for OFPET_QUEUE_OP_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -151,17 +152,17 @@ class QueueOpFailedCode(enum.Enum):
 
 # Classes
 
-class ErrorMsg(base.GenericMessage):
+class ErrorMsg(GenericMessage):
     """OpenFlow Error Message.
 
     This message does not contain a body in addition to the OpenFlow Header.
     """
 
     #: :class:`~.header.Header`: OpenFlow Header
-    header = of_header.Header(message_type=of_header.Type.OFPT_ERROR)
-    error_type = basic_types.UBInt16(enum_ref=ErrorType)
-    code = basic_types.UBInt16()
-    data = basic_types.ConstantTypeList()
+    header = Header(message_type=Type.OFPT_ERROR)
+    error_type = UBInt16(enum_ref=ErrorType)
+    code = UBInt16()
+    data = ConstantTypeList()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         """Assign parameters to object attributes.
@@ -169,7 +170,7 @@ class ErrorMsg(base.GenericMessage):
         Args:
             xid (int): To be included in the message header.
             error_type (ErrorType): Error type.
-            code (enum.Enum): Error code.
+            code (Enum): Error code.
             data: Its content is specified in the error code documentation.
         """
         super().__init__()
