@@ -123,9 +123,8 @@ class GenericType:
         try:
             return struct.pack(self._fmt, self.value)
         except struct.error as err:
-            message = "Value out of the possible range to basic type "
-            message = message + type(self).__name__ + ". "
-            message = message + str(err)
+            message = 'Value is not {}. Struct error: {}.'.format(
+                type(self).__name__, str(err))
             raise exceptions.BadValueException(message)
 
     def unpack(self, buff, offset=0):
@@ -362,12 +361,26 @@ class GenericStruct(object, metaclass=MetaStruct):
                 attr = getattr(self, attr_name)
                 class_attr = getattr(type(self), attr_name)
                 if isinstance(attr, attr_class):
-                    message += attr.pack()
-                elif class_attr.isenum():
-                    message += attr_class(value=attr,
-                                          enum_ref=class_attr.enum_ref).pack()
+                    pack_me = attr
+                elif isinstance(class_attr, GenericType) and \
+                        class_attr.isenum():
+                    pack_me = attr_class(value=attr,
+                                         enum_ref=class_attr.enum_ref)
                 else:
-                    message += attr_class(attr).pack()
+                    pack_me = attr_class(attr)
+
+                try:
+                    message += pack_me.pack()
+                except exceptions.BadValueException as e:
+                    err_msg = 'Error while packing "{}" attribute = "{}"'. \
+                        format(attr_name, str(pack_me))
+                    raise exceptions.BadValueException(err_msg)
+                # Give more details to the user and raise the same exception
+                # (e.g. BadValueException, AttributeError)
+                except Exception as e:
+                    err_msg = 'Error while packing "{}" attribute = "{}"'. \
+                        format(attr_name, str(pack_me))
+                    raise e.__class__(err_msg)
 
             return message
 
