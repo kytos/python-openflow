@@ -145,8 +145,9 @@ class GenericType:
             if self.enum_ref:
                 self._value = self.enum_ref(self._value)
         except struct.error:
-            raise exceptions.UnpackException("Error while unpacking data from "
-                                             "buffer")
+            msg = 'fmt: {}, buff: {}, offset: {}.'.format(
+                self._fmt, buff, offset)
+            raise exceptions.UnpackException(msg)
 
     def get_size(self):
         """Return the size in bytes of this type.
@@ -397,7 +398,12 @@ class GenericStruct(object, metaclass=MetaStruct):
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
             attribute = deepcopy(class_attribute)
-            attribute.unpack(buff, begin)
+            try:
+                attribute.unpack(buff, begin)
+            except exceptions.UnpackException:
+                msg = 'Attribute name: {}, type: {}.'.format(
+                    attribute_name, type(class_attribute).__name__)
+                raise exceptions.UnpackException(msg)
             setattr(self, attribute_name, attribute)
             begin += attribute.get_size()
 
