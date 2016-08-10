@@ -70,8 +70,7 @@ class FlowRemoved(base.GenericMessage):
             packet_count (int): Number of packets.
             byte_count (int): Byte count.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.match = match
         self.cookie = cookie
         self.priority = priority

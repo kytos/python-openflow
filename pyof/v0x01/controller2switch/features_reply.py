@@ -7,6 +7,7 @@
 from pyof.v0x01.common import header as of_header
 # Local source tree imports
 from pyof.v0x01.common import phy_port
+from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.foundation import base, basic_types
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
@@ -51,7 +52,7 @@ class SwitchFeatures(base.GenericMessage):
     pad = basic_types.PAD(3)
     # Features
     capabilities = basic_types.UBInt32(enum_ref=Capabilities)
-    actions = basic_types.UBInt32()
+    actions = basic_types.UBInt32(enum_ref=ActionType)
     ports = phy_port.ListOfPhyPorts()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
@@ -69,8 +70,7 @@ class SwitchFeatures(base.GenericMessage):
             actions (int): UBInt32 Bitmap of supported "action_type"s.
             ports (int): Port definitions.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables
