@@ -102,6 +102,7 @@ class UBInt64(base.GenericType):
 
 class Char(base.GenericType):
     """Build a double char type according to the length."""
+
     def __init__(self, value=None, length=0):
         """The constructor takes the optional parameters below.
 
