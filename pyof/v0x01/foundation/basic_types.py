@@ -163,11 +163,12 @@ class Char(base.GenericType):
 class HWAddress(base.GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address=b'000000'):
+    def __init__(self, hw_address='00:00:00:00:00:00'):
         """The constructor takes the parameters below.
 
         Args:
-            hw_address (bytes): Hardware address. Defaults to b'000000'.
+            hw_address (bytes): Hardware address. Defaults to
+                '00:00:00:00:00:00'.
         """
         super().__init__(hw_address)
 
