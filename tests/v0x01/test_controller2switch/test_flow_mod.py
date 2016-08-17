@@ -2,9 +2,7 @@
 import unittest
 
 from pyof.v0x01.common.flow_match import Match
-from pyof.v0x01.common.phy_port import Port
-from pyof.v0x01.controller2switch.flow_mod import (FlowMod, FlowModCommand,
-                                                   FlowModFlags)
+from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
 from tests.teststruct import TestStruct
 
 
@@ -41,32 +39,33 @@ class TestFlowDelete(TestStruct):
         super().set_raw_dump_object(FlowMod, **kwargs)
         # No need to test minimum size again.
 
-    @unittest.skip('Need to recover dump contents.')
-    def test_pack(self):
-        pass
-
-    @unittest.skip('Need to recover dump contents.')
-    def test_unpack(self):
-        pass
-
 
 def _get_flowmod_kwargs(command):
     """Return parameters for FlowMod object."""
-    return {'xid': 1,
+    return {'xid': 4,
             'command': command,
             'match': _get_match(),
             'cookie': 0,
-            'idle_timeout': 300,
-            'hard_timeout': 6000,
-            'priority': 1,
-            'buffer_id': 1,
-            'out_port': Port.OFPP_NONE,
-            'flags': FlowModFlags.OFPFF_EMERG}
+            'idle_timeout': 0,
+            'hard_timeout': 0,
+            'priority': 32768,
+            'buffer_id': 4294967295,
+            'out_port': 65535,
+            'flags': 0}
 
 
 def _get_match():
     """Return a Match object."""
-    return Match(wildcards=0, in_port=80, dl_src='1a:2b:3c:4d:5e:6f',
-                 dl_dst='6a:5b:4c:43:2e:1f', dl_vlan=1, dl_vlan_pcp=1,
-                 dl_type=1, nw_tos=1, nw_proto=1, nw_src=10000,
-                 nw_dst=10000, tp_src=80, tp_dst=80)
+    return Match(wildcards=0x000000000010001f,
+                 in_port=0,
+                 dl_src='00:00:00:00:00:00',
+                 dl_dst='00:00:00:00:00:00',
+                 dl_vlan=0,
+                 dl_vlan_pcp=0,
+                 dl_type=0,
+                 nw_tos=0,
+                 nw_proto=0,
+                 nw_src=0,
+                 nw_dst=0,
+                 tp_src=0,
+                 tp_dst=0)
