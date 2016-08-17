@@ -363,7 +363,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         if value is None:
             if not self.is_valid():
-                error_msg = "Erro on validation prior to pack() on class "
+                error_msg = "Error on validation prior to pack() on class "
                 error_msg += "{}.".format(type(self).__name__)
                 raise exceptions.ValidationError(error_msg)
             else:

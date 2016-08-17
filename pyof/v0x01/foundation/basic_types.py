@@ -126,10 +126,9 @@ class Char(base.GenericType):
             return value.pack()
 
         try:
-            if value is not None:
-                packed = struct.pack(self._fmt, bytes(value, 'ascii'))
-            else:
-                packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
+            if value is None:
+                value = self.value
+            packed = struct.pack(self._fmt, bytes(value, 'ascii'))
             return packed[:-1] + b'\0'  # null-terminated
         except struct.error as err:
             msg = "Char Pack error. "
