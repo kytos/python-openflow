@@ -1,6 +1,6 @@
 """Automate struct tests."""
 import unittest
-from tests.rawdump import RawDump
+from tests.raw_dump import RawDump
 
 
 class TestStruct(unittest.TestCase):

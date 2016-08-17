@@ -1,6 +1,6 @@
 """Hello message tests."""
 from pyof.v0x01.symmetric.hello import Hello
-from tests.teststruct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestHello(TestStruct):

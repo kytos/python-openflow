@@ -3,7 +3,7 @@ import unittest
 
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
-from tests.teststruct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestFlowAdd(TestStruct):

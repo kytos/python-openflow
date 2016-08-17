@@ -2,7 +2,7 @@
 import unittest
 
 from pyof.v0x01.asynchronous.packet_in import PacketIn, PacketInReason
-from tests.teststruct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestPacketIn(TestStruct):

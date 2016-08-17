@@ -1,6 +1,6 @@
 """Echo reply message tests."""
 from pyof.v0x01.symmetric.echo_reply import EchoReply
-from tests.teststruct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestEchoReply(TestStruct):
