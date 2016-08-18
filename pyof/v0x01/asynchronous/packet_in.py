@@ -19,9 +19,9 @@ class PacketInReason(enum.Enum):
     """Reason why this packet is being sent to the controller."""
 
     #: No matching flow
-    OFPR_NO_MATCH = 1
+    OFPR_NO_MATCH = 0
     #: Action explicitly output to controller
-    OFPR_ACTION = 2
+    OFPR_ACTION = 1
 
 
 # Classes
