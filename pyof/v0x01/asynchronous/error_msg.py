@@ -45,9 +45,9 @@ class HelloFailedCode(enum.Enum):
     """
 
     #: No compatible version
-    OFPHFC_INCOMPATIBLE = 1,
+    OFPHFC_INCOMPATIBLE = 0,
     #: Permissions error
-    OFPHFC_EPERM = 2
+    OFPHFC_EPERM = 1
 
 
 class BadRequestCode(enum.Enum):
