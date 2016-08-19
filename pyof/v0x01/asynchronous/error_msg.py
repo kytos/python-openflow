@@ -142,11 +142,11 @@ class QueueOpFailedCode(enum.Enum):
     """
 
     #: Invalid port (or port does not exist)
-    OFPQOFC_BAD_PORT = 1,
+    OFPQOFC_BAD_PORT = 0,
     #: Queue does not exist
-    OFPQOFC_BAD_QUEUE = 2,
+    OFPQOFC_BAD_QUEUE = 1,
     #: Permissions error
-    OFPQOFC_EPERM = 3
+    OFPQOFC_EPERM = 2
 
 
 # Classes
