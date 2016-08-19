@@ -57,24 +57,24 @@ class BadRequestCode(enum.Enum):
     """
 
     #: ofp_header.version not supported.
-    OFPBRC_BAD_VERSION = 1
+    OFPBRC_BAD_VERSION = 0
     #: ofp_header.type not supported.
-    OFPBRC_BAD_TYPE = 2
+    OFPBRC_BAD_TYPE = 1
     #: ofp_stats_request.type not supported.
-    OFPBRC_BAD_STAT = 3
+    OFPBRC_BAD_STAT = 2
     #: Vendor not supported (in ofp_vendor_header or ofp_stats_request or
     #: ofp_stats_reply).
-    OFPBRC_BAD_VENDOR = 4
+    OFPBRC_BAD_VENDOR = 3
     #: Vendor subtype not supported.
-    OFPBRC_BAD_SUBTYPE = 5
+    OFPBRC_BAD_SUBTYPE = 4
     #: Permissions error.
-    OFPBRC_EPERM = 6
+    OFPBRC_EPERM = 5
     #: Wrong request length for type.
-    OFPBRC_BAD_LEN = 7
+    OFPBRC_BAD_LEN = 6
     #: Specified buffer has already been used.
-    OFPBRC_BUFFER_EMPTY = 8
+    OFPBRC_BUFFER_EMPTY = 7
     #: Specified buffer does not exist.
-    OFPBRC_BUFFER_UNKNOWN = 9
+    OFPBRC_BUFFER_UNKNOWN = 8
 
 
 class BadActionCode(enum.Enum):
