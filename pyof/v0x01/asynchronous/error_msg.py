@@ -130,9 +130,9 @@ class PortModFailedCode(enum.Enum):
     """
 
     #: Specified port does not exist
-    OFPPMFC_BAD_PORT = 1,
+    OFPPMFC_BAD_PORT = 0,
     #: Specified hardware address is wrong
-    OFPPMFC_BAD_HW_ADDR = 2
+    OFPPMFC_BAD_HW_ADDR = 1
 
 
 class QueueOpFailedCode(enum.Enum):
