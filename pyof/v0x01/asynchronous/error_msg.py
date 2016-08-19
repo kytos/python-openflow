@@ -110,17 +110,17 @@ class FlowModFailedCode(enum.Enum):
     """
 
     #: Flow not added because of full tables
-    OFPFMFC_ALL_TABLES_FULL = 1
+    OFPFMFC_ALL_TABLES_FULL = 0
     #: Attempted to add overlapping flow with CHECK_OVERLAP flag set
-    OFPFMFC_OVERLAP = 2
+    OFPFMFC_OVERLAP = 1
     #: Permissions error
-    OFPFMFC_EPERM = 3
+    OFPFMFC_EPERM = 2
     #: Flow not added because of non-zero idle/hard timeout
-    OFPFMFC_BAD_EMERG_TIMEOUT = 4
+    OFPFMFC_BAD_EMERG_TIMEOUT = 3
     #: Unknown command
-    OFPFMFC_BAD_COMMAND = 5
+    OFPFMFC_BAD_COMMAND = 4
     #: Unsupported action list - cannot process in the order specified
-    OFPFMFC_UNSUPPORTED = 6
+    OFPFMFC_UNSUPPORTED = 5
 
 
 class PortModFailedCode(enum.Enum):
