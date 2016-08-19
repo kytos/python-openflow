@@ -25,17 +25,17 @@ class ErrorType(enum.Enum):
     """
 
     #: Hello protocol failed
-    OFPET_HELLO_FAILED = 1,
+    OFPET_HELLO_FAILED = 0,
     #: Request was not understood
-    OFPET_BAD_REQUEST = 2,
+    OFPET_BAD_REQUEST = 1,
     #: Error in action description
-    OFPET_BAD_ACTION = 3,
+    OFPET_BAD_ACTION = 2,
     #: Problem in modifying Flow entry
-    OFPET_FLOW_MOD_FAILED = 4,
+    OFPET_FLOW_MOD_FAILED = 3,
     #: Problem in modifying Port entry
-    OFPET_PORT_MOD_FAILED = 5,
+    OFPET_PORT_MOD_FAILED = 4,
     #: Problem in modifying Queue entry
-    OFPET_QUEUE_OP_FAILED = 6
+    OFPET_QUEUE_OP_FAILED = 5
 
 
 class HelloFailedCode(enum.Enum):
