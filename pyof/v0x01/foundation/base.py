@@ -131,10 +131,10 @@ class GenericType:
 
         try:
             return struct.pack(self._fmt, value)
-        except struct.error as err:
-            msg = "{} error: ".format(type(self).__name__)
-            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
-                                                         err)
+        except struct.error:
+            msg = '{} could not pack {} = {}.'.format(type(self).__name__,
+                                                      type(value).__name__,
+                                                      value)
             raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
