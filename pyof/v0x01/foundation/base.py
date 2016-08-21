@@ -159,7 +159,7 @@ class GenericType:
                 self._fmt, buff, offset)
             raise exceptions.UnpackException(msg)
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the size in bytes of this type.
 
         Returns:
@@ -317,11 +317,15 @@ class GenericStruct(object, metaclass=MetaStruct):
             yield (getattr(self, attribute_name),
                    getattr(type(self), attribute_name))
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Calculate the total struct size in bytes.
 
         For each struct attribute, sum the result of each one's ``get_size()``
         method.
+
+        Args:
+            value: In structs, the user can assign other value instead of a
+                class' instance.
 
         Returns:
             int: Total number of bytes used by the struct.
@@ -329,24 +333,14 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             Exception: If the struct is not valid.
         """
-        if not GenericStruct.is_valid(self):
-            raise Exception()
+        if value is None:
+            return sum(cls.get_size(obj) for obj, cls in self.get_attributes())
+        elif isinstance(value, type(self)):
+            return value.get_size()
         else:
-            size = 0
-            # pylint: disable=no-member
-            for _attr, _class in self.__ordered__.items():
-                attr = getattr(self, _attr)
-                if _class.__name__ is 'PAD':
-                    size += attr.get_size()
-                elif _class.__name__ is 'Char':
-                    size += getattr(type(self), _attr).get_size()
-                elif issubclass(_class, GenericType):
-                    size += _class().get_size()
-                elif isinstance(attr, _class):
-                    size += attr.get_size()
-                else:
-                    size += _class(attr).get_size()
-            return size
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise exceptions.PackException(msg)
 
     def pack(self, value=None):
         """Pack the struct in a binary representation.

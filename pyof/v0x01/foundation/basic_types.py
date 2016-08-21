@@ -33,13 +33,18 @@ class PAD(base.GenericType):
     def __str__(self):
         return self.pack()
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the type size in bytes.
+
+        Args:
+            value (int): In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
 
         Returns:
             int: Size in bytes.
         """
-        return struct.calcsize("!{:d}B".format(self._length))
+        return self._length
 
     def unpack(self, buff, offset=0):
         """Unpack *buff* into this object.
@@ -56,10 +61,13 @@ class PAD(base.GenericType):
     def pack(self, value=None):
         """Pack the object.
 
-        Return the byte 0 (zero) *length* times.
+        Args:
+            value (int): In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
 
         Returns:
-            bytes: A sequence of zeros.
+            bytes: the byte 0 (zero) *length* times.
         """
         return b'\x00' * self._length
 
@@ -217,8 +225,13 @@ class HWAddress(base.GenericType):
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the address size in bytes.
+
+        Args:
+            value: In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
 
         Returns:
             int: The address size in bytes.
@@ -283,13 +296,23 @@ class BinaryData(base.GenericType):
         """
         self._value = buff
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the size in bytes.
+
+        Args:
+            value (bytes): In structs, the user can assign other value instead
+                of this class' instance. Here, in such cases, ``self`` is a
+                class attribute of the struct.
 
         Returns:
             int: The address size in bytes.
         """
-        return len(self._value)
+        if value is None:
+            return len(self._value)
+        elif isinstance(value, type(self)):
+            return value.get_size()
+        else:
+            return len(value)
 
 
 class FixedTypeList(list, base.GenericStruct):
@@ -366,21 +389,26 @@ class FixedTypeList(list, base.GenericStruct):
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self._pyof_class.__name__)
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the size in bytes.
+
+        Args:
+            value: In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
 
         Returns:
             int: The size in bytes.
         """
-        if len(self) == 0:
-            return 0
-        elif issubclass(self._pyof_class, base.GenericType):
-            return len(self) * self._pyof_class().get_size()
+        if value is None:
+            if len(self) == 0:
+                return 0
+            elif issubclass(self._pyof_class, base.GenericType):
+                return len(self) * self[0].get_size()
+            else:
+                return sum(item.get_size() for item in self)
         else:
-            size = 0
-            for item in self:
-                size += item.get_size()
-            return size
+            return type(self)(value).get_size()
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
@@ -508,25 +536,30 @@ class ConstantTypeList(list, base.GenericStruct):
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the size in bytes.
+
+        Args:
+            value: In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
 
         Returns:
             int: The size in bytes.
         """
-        if len(self) == 0:
-            # If this is a empty list, then returns zero
-            return 0
-        elif issubclass(self[0].__class__, base.GenericType):
-            # If the type of the elements is GenericType, then returns the
-            # length of the list multiplied by the size of the GenericType.
-            return len(self) * self[0].__class__().get_size()
+        if value is None:
+            if len(self) == 0:
+                # If this is a empty list, then returns zero
+                return 0
+            elif issubclass(type(self[0]), base.GenericType):
+                # If the type of the elements is GenericType, then returns the
+                # length of the list multiplied by the size of the GenericType.
+                return len(self) * self[0].get_size()
+            else:
+                # Otherwise iter over the list accumulating the sizes.
+                return sum(item.get_size() for item in self)
         else:
-            # Otherwise iter over the list accumulating the sizes.
-            size = 0
-            for item in self:
-                size += item.get_size()
-            return size
+            return type(self)(value).get_size()
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
