@@ -19,11 +19,11 @@ class FlowRemovedReason(Enum):
     """Why the flow was removed."""
 
     #: Flow idle time exceeded idle_timeout
-    OFPRR_IDLE_TIMEOUT = 1
+    OFPRR_IDLE_TIMEOUT = 0
     #: Time exceeded hard_timeout
-    OFPRR_HARD_TIMEOUT = 2
+    OFPRR_HARD_TIMEOUT = 1
     #: Evicted by a DELETE flow mod
-    OFPRR_DELETE = 3
+    OFPRR_DELETE = 2
 
 
 # Classes
@@ -68,8 +68,7 @@ class FlowRemoved(GenericMessage):
             packet_count (int): Number of packets.
             byte_count (int): Byte count.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.match = match
         self.cookie = cookie
         self.priority = priority

@@ -90,15 +90,15 @@ class PortFeatures(GenericBitMask):
     #: 10 Gb full-duplex rate support.
     OFPPF_10GB_FD = 1 << 6
     #: Copper medium.
-    OFPPF_COPPER = 1 << 11
+    OFPPF_COPPER = 1 << 7
     #: Fiber medium.
-    OFPPF_FIBER = 1 << 12
+    OFPPF_FIBER = 1 << 8
     #: Auto-negotiation.
-    OFPPF_AUTONEG = 1 << 13
+    OFPPF_AUTONEG = 1 << 9
     #: Pause.
-    OFPPF_PAUSE = 1 << 14
+    OFPPF_PAUSE = 1 << 10
     #: Asymmetric pause.
-    OFPPF_PAUSE_ASYM = 1 << 15
+    OFPPF_PAUSE_ASYM = 1 << 11
 
 
 class PortState(GenericBitMask):

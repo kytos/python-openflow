@@ -5,6 +5,7 @@
 # Third-party imports
 
 # Local source tree imports
+from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import ListOfPhyPorts
 from pyof.v0x01.foundation.base import GenericBitMask, GenericMessage
@@ -52,7 +53,7 @@ class SwitchFeatures(GenericMessage):
     pad = PAD(3)
     # Features
     capabilities = UBInt32(enum_ref=Capabilities)
-    actions = UBInt32()
+    actions = UBInt32(enum_ref=ActionType)
     ports = ListOfPhyPorts()
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
@@ -70,8 +71,7 @@ class SwitchFeatures(GenericMessage):
             actions (int): UBInt32 Bitmap of supported "action_type"s.
             ports (int): Port definitions.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.datapath_id = datapath_id
         self.n_buffers = n_buffers
         self.n_tables = n_tables

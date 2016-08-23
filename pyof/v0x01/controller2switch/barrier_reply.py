@@ -26,5 +26,4 @@ class BarrierReply(GenericMessage):
         Args:
             xid (int): Header's xid.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)

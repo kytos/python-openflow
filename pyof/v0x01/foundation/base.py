@@ -110,8 +110,26 @@ class GenericType:
         else:
             return self._value
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
+
+        Considering an example with UBInt8 class, that inherits from
+        GenericType:
+
+        .. code-block:: python3
+            objectA = UBInt8(1)
+            objectB = 5
+            objectA.pack()
+            >>> b'\x01'
+            objectA.pack(objectB)
+            >>> b'\x05'
+
+        Args:
+            value: If the value is None, then we will pack the value of the
+                current instance. Otherwise, if value is an instance of the
+                same type as the current instance, then we call the pack of the
+                value object. Otherwise, we will use the current instance pack
+                method on the passed value.
 
         Returns:
             bytes: The binary representation.
@@ -120,13 +138,22 @@ class GenericType:
             :exc:`~.exceptions.BadValueException`: If the value does not
                 fit the binary format.
         """
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self.value
+        elif 'value' in dir(value):
+            # if it is enum or bitmask gets only the 'int' value
+            value = value.value
+
         try:
-            return struct.pack(self._fmt, self.value)
-        except struct.error as err:
-            message = "Value out of the possible range to basic type "
-            message = message + type(self).__name__ + ". "
-            message = message + str(err)
-            raise exceptions.BadValueException(message)
+            return struct.pack(self._fmt, value)
+        except struct.error:
+            msg = '{} could not pack {} = {}.'.format(type(self).__name__,
+                                                      type(value).__name__,
+                                                      value)
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack *buff* into this object.
@@ -146,10 +173,11 @@ class GenericType:
             if self.enum_ref:
                 self._value = self.enum_ref(self._value)
         except struct.error:
-            raise exceptions.UnpackException("Error while unpacking data from "
-                                             "buffer")
+            msg = 'fmt: {}, buff: {}, offset: {}.'.format(
+                self._fmt, buff, offset)
+            raise exceptions.UnpackException(msg)
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Return the size in bytes of this type.
 
         Returns:
@@ -292,26 +320,30 @@ class GenericStruct(object, metaclass=MetaStruct):
             yield (attribute_name, getattr(self, attribute_name))
 
     def get_attributes(self):
-        """Return a generator for attributes' values and types.
+        """Return a generator for instance and class attribute.
 
         .. code-block:: python3
 
-            for _value, _type in self.get_attributes():
-                print("Attribute value: {}".format(_value))
-                print("Attribute type: {}".format(_type))
+            for instance_attribute, class_attribute in self.get_attributes():
+                print("Instance Attribute: {}".format(instance_attribute))
+                print("Class Attribute: {}".format(class_attribute))
 
         Returns:
-            generator: Tuples with attribute value and type.
+            generator: Tuples with instance attribute and class attribute
         """
         for attribute_name in self.__ordered__:  # pylint: disable=no-member
             yield (getattr(self, attribute_name),
                    getattr(type(self), attribute_name))
 
-    def get_size(self):
+    def get_size(self, value=None):
         """Calculate the total struct size in bytes.
 
         For each struct attribute, sum the result of each one's ``get_size()``
         method.
+
+        Args:
+            value: In structs, the user can assign other value instead of a
+                class' instance.
 
         Returns:
             int: Total number of bytes used by the struct.
@@ -319,26 +351,16 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             Exception: If the struct is not valid.
         """
-        if not GenericStruct.is_valid(self):
-            raise Exception()
+        if value is None:
+            return sum(cls.get_size(obj) for obj, cls in self.get_attributes())
+        elif isinstance(value, type(self)):
+            return value.get_size()
         else:
-            size = 0
-            # pylint: disable=no-member
-            for _attr, _class in self.__ordered__.items():
-                attr = getattr(self, _attr)
-                if _class.__name__ is 'PAD':
-                    size += attr.get_size()
-                elif _class.__name__ is 'Char':
-                    size += getattr(type(self), _attr).get_size()
-                elif issubclass(_class, GenericType):
-                    size += _class().get_size()
-                elif isinstance(attr, _class):
-                    size += attr.get_size()
-                else:
-                    size += _class(attr).get_size()
-            return size
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise exceptions.PackException(msg)
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the struct in a binary representation.
 
         Iterate over the class attributes, according to the
@@ -351,25 +373,23 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             :exc:`~.exceptions.ValidationError`: If validation fails.
         """
-        if not self.is_valid():
-            error_msg = "Erro on validation prior to pack() on class "
-            error_msg += "{}.".format(type(self).__name__)
-            raise exceptions.ValidationError(error_msg)
+        if value is None:
+            if not self.is_valid():
+                error_msg = "Error on validation prior to pack() on class "
+                error_msg += "{}.".format(type(self).__name__)
+                raise exceptions.ValidationError(error_msg)
+            else:
+                message = b''
+                # pylint: disable=no-member
+                for instance_attr, class_attr in self.get_attributes():
+                    message += class_attr.pack(instance_attr)
+                return message
+        elif isinstance(value, type(self)):
+            return value.pack()
         else:
-            message = b''
-            # pylint: disable=no-member
-            for attr_name, attr_class in self.__ordered__.items():
-                attr = getattr(self, attr_name)
-                class_attr = getattr(type(self), attr_name)
-                if isinstance(attr, attr_class):
-                    message += attr.pack()
-                elif class_attr.isenum():
-                    message += attr_class(value=attr,
-                                          enum_ref=class_attr.enum_ref).pack()
-                else:
-                    message += attr_class(attr).pack()
-
-            return message
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -384,7 +404,12 @@ class GenericStruct(object, metaclass=MetaStruct):
         begin = offset
         for attribute_name, class_attribute in self.get_class_attributes():
             attribute = deepcopy(class_attribute)
-            attribute.unpack(buff, begin)
+            try:
+                attribute.unpack(buff, begin)
+            except exceptions.UnpackException:
+                msg = 'Attribute name: {}, type: {}.'.format(
+                    attribute_name, type(class_attribute).__name__)
+                raise exceptions.UnpackException(msg)
             setattr(self, attribute_name, attribute)
             begin += attribute.get_size()
 
@@ -415,6 +440,12 @@ class GenericMessage(GenericStruct):
     """
 
     header = None
+
+    def __init__(self, xid):
+        """Initialize header's xid."""
+        super().__init__()
+        if xid is not None:
+            self.header.xid = xid
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -459,7 +490,7 @@ class GenericMessage(GenericStruct):
             return False
         return True
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the message into a binary data.
 
         One of the basic operations on a Message is the pack operation. During
@@ -478,10 +509,15 @@ class GenericMessage(GenericStruct):
         Raises:
             Exception: If there are validation errors.
         """
-        self.update_header_length()
-        if not self.is_valid():
-            raise Exception("Error on validate")
-        return super().pack()
+        if value is None:
+            self.update_header_length()
+            return super().pack()
+        elif isinstance(value, type(self)):
+            return value.pack()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise exceptions.PackException(msg)
 
     def update_header_length(self):
         """Update the header length attribute based on current message size.

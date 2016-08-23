@@ -5,8 +5,8 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.v0x01.foundation.base import GenericStruct
-from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
-                                               UBInt32)
+from pyof.v0x01.foundation.basic_types import (GenericBitMask, PAD, HWAddress,
+                                               UBInt8, UBInt16, UBInt32)
 
 # Third-party imports
 
@@ -17,7 +17,7 @@ __all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
 # Enums
 
 
-class ActionType(Enum):
+class ActionType(GenericBitMask):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.

@@ -4,33 +4,22 @@
 class ValidationError(Exception):
     """Can be used directly or inherited by mpre specific validation errors."""
 
-    pass
+    def __str__(self):
+        return "Validation error: " + super().__str__()
 
 
 class MethodNotImplemented(Exception):
     """Exception to be raised when a method is not implemented."""
 
-    def __init__(self, message=None):
-        """The constructor takes an optional message.
-
-        Args:
-            message (str): The error message. Defaults to "Method not yet
-                implemented".
-        """
-        super().__init__()
-        self.message = message
-
     def __str__(self):
-        if self.message:
-            return self.message
-        else:
-            return "Method not yet implemented"
+        return "Method not yet implemented" + super().__str__()
 
 
 class BadValueException(Exception):
     """Attribute has an unexpected value."""
 
-    pass
+    def __str__(self):
+        return "BadValue error: " + super().__str__()
 
 
 class WrongListItemType(Exception):
@@ -59,14 +48,15 @@ class WrongListItemType(Exception):
                                                       self.expected_class)
 
 
-class NotBinaryData(Exception):
-    """The content of a BinaryData attribute is not binary."""
-
-    def __str__(self):
-        return "The content of this variable needs to be binary data"
-
-
 class UnpackException(Exception):
     """Error while unpacking."""
 
-    pass
+    def __str__(self):
+        return "Unpack error: " + super().__str__()
+
+
+class PackException(Exception):
+    """Error while unpacking."""
+
+    def __str__(self):
+        return "Pack error: " + super().__str__()

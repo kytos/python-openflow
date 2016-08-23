@@ -31,6 +31,5 @@ class VendorHeader(GenericMessage):
                 MSB 0: low-order bytes are IEEE OUI.
                 MSB != 0: defined by OpenFlow consortium.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.vendor = vendor

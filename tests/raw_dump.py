@@ -40,8 +40,8 @@ class RawDump:
         """
         content = self.read()
         raw_header = content[:self._HEADER_BYTES]
-        raw_msg = content[self._HEADER_BYTES:]
         header = _unpack_header(raw_header)
+        raw_msg = content[self._HEADER_BYTES:header.length.value]
         return _unpack_message(header, raw_msg)
 
 

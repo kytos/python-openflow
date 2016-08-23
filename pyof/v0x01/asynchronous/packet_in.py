@@ -20,9 +20,9 @@ class PacketInReason(Enum):
     """Reason why this packet is being sent to the controller."""
 
     #: No matching flow
-    OFPR_NO_MATCH = 1
+    OFPR_NO_MATCH = 0
     #: Action explicitly output to controller
-    OFPR_ACTION = 2
+    OFPR_ACTION = 1
 
 
 # Classes
@@ -57,8 +57,7 @@ class PacketIn(GenericMessage):
                 offsetof(struct ofp_packet_in, data) ==
                 sizeof(struct ofp_packet_in) - 2.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.buffer_id = buffer_id
         self.total_len = total_len
         self.in_port = in_port

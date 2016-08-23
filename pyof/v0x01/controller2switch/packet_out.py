@@ -1,7 +1,5 @@
 """For the controller to send a packet out through the datapath."""
-# System imports
-
-# Third-party imports
+from copy import deepcopy
 
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
@@ -23,7 +21,7 @@ class PacketOut(GenericMessage):
 
     header = Header(message_type=Type.OFPT_PACKET_OUT)
     buffer_id = UBInt32()
-    in_port = UBInt16()
+    in_port = UBInt16(enum_ref=Port)
     actions_len = UBInt16()
     actions = ListOfActions()
     data = BinaryData()
@@ -44,8 +42,7 @@ class PacketOut(GenericMessage):
             data (bytes): Packet data. The length is inferred from the length
                 field in the header. (Only meaningful if buffer_id == -1).
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions_len = actions_len
@@ -65,6 +62,34 @@ class PacketOut(GenericMessage):
             return True
         except ValidationError:
             return False
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results. It is an inplace method and it receives the binary data
+        of the message **without the header**.
+
+        This class' unpack method is like the :meth:`.GenericMessage.unpack`
+        one, except for the ``actions`` attribute which has a length determined
+        by the ``actions_len`` attribute.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked, without the
+                header.
+            offset (int): Where to begin unpacking.
+        """
+        begin = offset
+        for attribute_name, class_attribute in self.get_class_attributes():
+            if type(class_attribute).__name__ != "Header":
+                attribute = deepcopy(class_attribute)
+                if attribute_name == 'actions':
+                    length = self.actions_len.value
+                    attribute.unpack(buff[begin:begin+length])
+                else:
+                    attribute.unpack(buff, begin)
+                setattr(self, attribute_name, attribute)
+                begin += attribute.get_size()
 
     def _validate_in_port(self):
         port = self.in_port

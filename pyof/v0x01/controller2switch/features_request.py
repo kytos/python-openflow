@@ -23,5 +23,4 @@ class FeaturesRequest(GenericMessage):
         Args:
             xid (int): xid to be used on the message header.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
