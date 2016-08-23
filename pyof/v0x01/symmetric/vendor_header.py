@@ -4,23 +4,23 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import UBInt32
 
 __all__ = ('VendorHeader',)
 
 # Classes
 
 
-class VendorHeader(base.GenericMessage):
+class VendorHeader(GenericMessage):
     """OpenFlow Vendor message.
 
     This message does not contain a body beyond the OpenFlow Header.
     """
 
-    header = of_header.Header(message_type=of_header.Type.OFPT_VENDOR)
-    vendor = basic_types.UBInt32()
+    header = Header(message_type=Type.OFPT_VENDOR)
+    vendor = UBInt32()
 
     def __init__(self, xid=None, vendor=None):
         """The constructor takes the parameters below.

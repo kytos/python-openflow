@@ -5,12 +5,15 @@
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.foundation import base, basic_types
+from pyof.v0x01.foundation.base import (GenericBitMask, GenericMessage,
+                                        GenericStruct)
+from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
+                                               UBInt32)
 
 __all__ = ('Match', 'FlowWildCards')
 
 
-class FlowWildCards(base.GenericBitMask):
+class FlowWildCards(GenericBitMask):
     """Wildcards used to identify flows.
 
     ``OFPFW_NW_SRC_*``: IP source address wildcard bit count. 0 is exact match,
@@ -61,26 +64,26 @@ class FlowWildCards(base.GenericBitMask):
 # Classes
 
 
-class Match(base.GenericStruct):
+class Match(GenericStruct):
     """Describes a flow entry. Fields to match against flows."""
 
-    wildcards = basic_types.UBInt32(enum_ref=FlowWildCards)
-    in_port = basic_types.UBInt16()
-    dl_src = basic_types.HWAddress()
-    dl_dst = basic_types.HWAddress()
-    dl_vlan = basic_types.UBInt16()
-    dl_vlan_pcp = basic_types.UBInt8()
+    wildcards = UBInt32(enum_ref=FlowWildCards)
+    in_port = UBInt16()
+    dl_src = HWAddress()
+    dl_dst = HWAddress()
+    dl_vlan = UBInt16()
+    dl_vlan_pcp = UBInt8()
     #: Align to 64-bits.
-    pad1 = basic_types.PAD(1)
-    dl_type = basic_types.UBInt16()
-    nw_tos = basic_types.UBInt8()
-    nw_proto = basic_types.UBInt8()
+    pad1 = PAD(1)
+    dl_type = UBInt16()
+    nw_tos = UBInt8()
+    nw_proto = UBInt8()
     #: Align to 64-bits.
-    pad2 = basic_types.PAD(2)
-    nw_src = basic_types.UBInt32()
-    nw_dst = basic_types.UBInt32()
-    tp_src = basic_types.UBInt16()
-    tp_dst = basic_types.UBInt16()
+    pad2 = PAD(2)
+    nw_src = UBInt32()
+    nw_dst = UBInt32()
+    tp_src = UBInt16()
+    tp_dst = UBInt16()
 
     def __init__(self, wildcards=None, in_port=None, dl_src=None, dl_dst=None,
                  dl_vlan=None, dl_vlan_pcp=None, dl_type=None,

@@ -1,18 +1,17 @@
 """Defines Get Config Request classes and related items."""
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
 
 __all__ = ('GetConfigRequest',)
 
 # Classe
 
 
-class GetConfigRequest(base.GenericMessage):
+class GetConfigRequest(GenericMessage):
     """Get Config Request message."""
 
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REQUEST)
+    header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
 
     def __init__(self, xid=None):
         """The constructor just assings parameters to object attributes.

@@ -4,14 +4,14 @@
 
 # Third-party imports
 
+# Local source tree imports
 # Importing asynchronous messages
 from pyof.v0x01.asynchronous.error_msg import ErrorMsg
 from pyof.v0x01.asynchronous.flow_removed import FlowRemoved
 from pyof.v0x01.asynchronous.packet_in import PacketIn
 from pyof.v0x01.asynchronous.port_status import PortStatus
-# Local source tree imports
-from pyof.v0x01.common.header import Type
 # Importing controller2switch messages
+from pyof.v0x01.common.header import Type
 from pyof.v0x01.controller2switch.barrier_reply import BarrierReply
 from pyof.v0x01.controller2switch.barrier_request import BarrierRequest
 from pyof.v0x01.controller2switch.features_reply import FeaturesReply

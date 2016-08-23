@@ -1,12 +1,12 @@
 """Defines Header classes and related items."""
 
 # System imports
-import enum
+from enum import Enum
 from random import randint
 
 # Local source tree imports
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.foundation.base import OFP_VERSION, GenericStruct
+from pyof.v0x01.foundation.basic_types import UBInt8, UBInt16, UBInt32
 
 # Third-party imports
 
@@ -19,7 +19,7 @@ MAXID = 2147483647
 # Enums
 
 
-class Type(enum.Enum):
+class Type(Enum):
     """Enumeration of Message Types."""
 
     # Symetric/Immutable messages
@@ -67,13 +67,13 @@ class Type(enum.Enum):
 # Classes
 
 
-class Header(base.GenericStruct):
+class Header(GenericStruct):
     """Representation of an OpenFlow message Header."""
 
-    version = basic_types.UBInt8(base.OFP_VERSION)
-    message_type = basic_types.UBInt8(enum_ref=Type)
-    length = basic_types.UBInt16()
-    xid = basic_types.UBInt32()
+    version = UBInt8(OFP_VERSION)
+    message_type = UBInt8(enum_ref=Type)
+    length = UBInt16()
+    xid = UBInt32()
 
     def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
         """The constructor takes the optional parameters below.

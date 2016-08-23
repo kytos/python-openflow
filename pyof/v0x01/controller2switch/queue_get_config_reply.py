@@ -4,23 +4,25 @@
 
 # Third-party imports
 
-from pyof.v0x01.common import header as of_header
 # Local source tree imports
-from pyof.v0x01.common import phy_port, queue
-from pyof.v0x01.foundation import base, basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.common.queue import ListOfQueues
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt16
 
 __all__ = ('QueueGetConfigReply',)
 
 
-class QueueGetConfigReply(base.GenericMessage):
+class QueueGetConfigReply(GenericMessage):
     """Class implements the response to the config request."""
 
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REPLY)
-    port = basic_types.UBInt16(enum_ref=phy_port.Port)
+    header = Header(
+        message_type=Type.OFPT_GET_CONFIG_REPLY)
+    port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits.
-    pad = basic_types.PAD(6)
-    queues = queue.ListOfQueues()
+    pad = PAD(6)
+    queues = ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):
         """The constructor just assings parameters to object attributes.

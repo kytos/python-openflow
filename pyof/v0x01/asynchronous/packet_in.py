@@ -1,11 +1,12 @@
 """For packets received by the datapath and sent to the controller."""
 
 # System imports
-import enum
+from enum import Enum
 
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import (PAD, BinaryData, UBInt8,
+                                               UBInt16, UBInt32)
 
 # Third-party imports
 
@@ -15,7 +16,7 @@ __all__ = ('PacketIn', 'PacketInReason')
 # Enums
 
 
-class PacketInReason(enum.Enum):
+class PacketInReason(Enum):
     """Reason why this packet is being sent to the controller."""
 
     #: No matching flow
@@ -27,18 +28,18 @@ class PacketInReason(enum.Enum):
 # Classes
 
 
-class PacketIn(base.GenericMessage):
+class PacketIn(GenericMessage):
     """Packet received on port (datapath -> controller)."""
 
     #: :class:`~.header.Header`: OpenFlow Header
-    header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_IN)
-    buffer_id = basic_types.UBInt32()
-    total_len = basic_types.UBInt16()
-    in_port = basic_types.UBInt16()
-    reason = basic_types.UBInt8(enum_ref=PacketInReason)
+    header = Header(message_type=Type.OFPT_PACKET_IN)
+    buffer_id = UBInt32()
+    total_len = UBInt16()
+    in_port = UBInt16()
+    reason = UBInt8(enum_ref=PacketInReason)
     #: Align to 32-bits.
-    pad = basic_types.PAD(1)
-    data = basic_types.BinaryData()
+    pad = PAD(1)
+    data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, data=b''):

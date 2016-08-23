@@ -1,11 +1,13 @@
 """Defines physical port classes and related items."""
 
 # System imports
-import enum
+from enum import Enum
 
 # Local source tree imports
-from pyof.v0x01.foundation import base, basic_types
-
+from pyof.v0x01.foundation.base import (OFP_MAX_PORT_NAME_LEN, GenericBitMask,
+                                        GenericStruct)
+from pyof.v0x01.foundation.basic_types import (Char, FixedTypeList, HWAddress,
+                                               UBInt16, UBInt32)
 
 # Third-party imports
 
@@ -13,7 +15,7 @@ __all__ = ('PhyPort', 'ListOfPhyPorts', 'Port', 'PortConfig', 'PortFeatures',
            'PortState')
 
 
-class Port(enum.Enum):
+class Port(Enum):
     """Port numbering.
 
     Physical ports are numbered starting from 1. Port number 0 is reserved by
@@ -42,7 +44,7 @@ class Port(enum.Enum):
     OFPP_NONE = 0xffff
 
 
-class PortConfig(base.GenericBitMask):
+class PortConfig(GenericBitMask):
     """Flags to indicate behavior of the physical port.
 
     These flags are used in OFPPhyPort to describe the current configuration.
@@ -65,7 +67,7 @@ class PortConfig(base.GenericBitMask):
     OFPPC_NO_PACKET_IN = 1 << 6
 
 
-class PortFeatures(base.GenericBitMask):
+class PortFeatures(GenericBitMask):
     """Physical ports features.
 
     The curr, advertised, supported, and peer fields indicate link modes
@@ -99,7 +101,7 @@ class PortFeatures(base.GenericBitMask):
     OFPPF_PAUSE_ASYM = 1 << 11
 
 
-class PortState(base.GenericBitMask):
+class PortState(GenericBitMask):
     """Current state of the physical port.
 
     These are not configurable from the controller.
@@ -126,29 +128,29 @@ class PortState(base.GenericBitMask):
 # Classes
 
 
-class PhyPort(base.GenericStruct):
+class PhyPort(GenericStruct):
     """Description of a physical port.
 
     The port_no field is a value the datapath associates with a physical port.
     The hw_addr field typically is the MAC address for the port;
-    :data:`.base.OFP_ETH_ALEN` is 6. The name field is a
+    :data:`.OFP_ETH_ALEN` is 6. The name field is a
     null-terminated string containing a human-readable name for the interface.
-    The value of :data:`.base.OFP_MAX_PORT_NAME_LEN` is 16.
+    The value of :data:`.OFP_MAX_PORT_NAME_LEN` is 16.
 
     :attr:`curr`, :attr:`advertised`, :attr:`supported` and :attr:`peer` are
     bitmaps of :class:`PortFeatures` enum values that describe features. If
     unsupported or unavailable, set all bits to zero.
     """
 
-    port_no = basic_types.UBInt16()
-    hw_addr = basic_types.HWAddress()
-    name = basic_types.Char(length=base.OFP_MAX_PORT_NAME_LEN)
-    config = basic_types.UBInt32(enum_ref=PortConfig)
-    state = basic_types.UBInt32(enum_ref=PortState)
-    curr = basic_types.UBInt32(enum_ref=PortFeatures)
-    advertised = basic_types.UBInt32(enum_ref=PortFeatures)
-    supported = basic_types.UBInt32(enum_ref=PortFeatures)
-    peer = basic_types.UBInt32(enum_ref=PortFeatures)
+    port_no = UBInt16()
+    hw_addr = HWAddress()
+    name = Char(length=OFP_MAX_PORT_NAME_LEN)
+    config = UBInt32(enum_ref=PortConfig)
+    state = UBInt32(enum_ref=PortState)
+    curr = UBInt32(enum_ref=PortFeatures)
+    advertised = UBInt32(enum_ref=PortFeatures)
+    supported = UBInt32(enum_ref=PortFeatures)
+    peer = UBInt32(enum_ref=PortFeatures)
 
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
@@ -178,7 +180,7 @@ class PhyPort(base.GenericStruct):
         self.peer = peer
 
 
-class ListOfPhyPorts(basic_types.FixedTypeList):
+class ListOfPhyPorts(FixedTypeList):
     """List of PhyPorts.
 
     Represented by instances of PhyPort and used on
