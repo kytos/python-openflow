@@ -542,7 +542,7 @@ class ConstantTypeList(list, base.GenericStruct):
         else:
             container = type(self)()
             container.extend(value)
-            value = value
+            value = container
 
         bin_message = b''
         try:
