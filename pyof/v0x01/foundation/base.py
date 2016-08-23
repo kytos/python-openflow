@@ -113,6 +113,24 @@ class GenericType:
     def pack(self, value=None):
         """Pack the value as a binary representation.
 
+        Considering an example with UBInt8 class, that inherits from
+        GenericType:
+
+        .. code-block:: python3
+            objectA = UBInt8(1)
+            objectB = 5
+            objectA.pack()
+            >>> b'\x01'
+            objectA.pack(objectB)
+            >>> b'\x05'
+
+        Args:
+            value: If the value is None, then we will pack the value of the
+                current instance. Otherwise, if value is an instance of the
+                same type as the current instance, then we call the pack of the
+                value object. Otherwise, we will use the current instance pack
+                method on the passed value.
+
         Returns:
             bytes: The binary representation.
 
