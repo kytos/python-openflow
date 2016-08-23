@@ -21,11 +21,11 @@ class PortReason(enum.Enum):
     """What changed about the physical port."""
 
     #: The port was added
-    OFPPR_ADD = 1
+    OFPPR_ADD = 0
     #: The port was removed
-    OFPPR_DELETE = 2
+    OFPPR_DELETE = 1
     #: Some attribute of the port has changed
-    OFPPR_MODIFY = 3
+    OFPPR_MODIFY = 2
 
 
 # Classes
