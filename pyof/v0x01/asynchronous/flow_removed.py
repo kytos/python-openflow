@@ -21,11 +21,11 @@ class FlowRemovedReason(enum.Enum):
     """Why the flow was removed."""
 
     #: Flow idle time exceeded idle_timeout
-    OFPRR_IDLE_TIMEOUT = 1
+    OFPRR_IDLE_TIMEOUT = 0
     #: Time exceeded hard_timeout
-    OFPRR_HARD_TIMEOUT = 2
+    OFPRR_HARD_TIMEOUT = 1
     #: Evicted by a DELETE flow mod
-    OFPRR_DELETE = 3
+    OFPRR_DELETE = 2
 
 
 # Classes

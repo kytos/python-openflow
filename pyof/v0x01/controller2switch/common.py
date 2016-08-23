@@ -39,19 +39,19 @@ class StatsTypes(enum.Enum):
     """
 
     #: Description of this OpenFlow switch. The request body is empty.
-    OFPST_DESC = 1
+    OFPST_DESC = 0
     #: Individual flow statistics. The request body is struct
     #: ofp_flow_stats_request.
-    OFPST_FLOW = 2
+    OFPST_FLOW = 1
     #: Aggregate flow statistics. The request body is struct
     #: ofp_aggregate_stats_request.
-    OFPST_AGGREGATE = 3
+    OFPST_AGGREGATE = 2
     #: Flow table statistics. The request body is empty.
-    OFPST_TABLE = 4
+    OFPST_TABLE = 3
     #: Physical port statistics. The request body is empty.
-    OFPST_PORT = 5
+    OFPST_PORT = 4
     #: Queue statistics for a port. The request body defines the port
-    OFPST_QUEUE = 6
+    OFPST_QUEUE = 5
     #: Vendor extension. The request and reply bodies begin with a 32-bit
     #: vendor ID
     OFPST_VENDOR = 0xffff
