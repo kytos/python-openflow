@@ -111,18 +111,18 @@ class GenericType:
             return self._value
 
     def pack(self, value=None):
-        """Pack the value as a binary representation.
+        r"""Pack the value as a binary representation.
 
         Considering an example with UBInt8 class, that inherits from
         GenericType:
 
-        .. code-block:: python3
-            objectA = UBInt8(1)
-            objectB = 5
-            objectA.pack()
-            >>> b'\x01'
-            objectA.pack(objectB)
-            >>> b'\x05'
+        >>> from pyof.v0x01.foundation.basic_types import UBInt8
+        >>> objectA = UBInt8(1)
+        >>> objectB = 5
+        >>> objectA.pack()
+        b'\x01'
+        >>> objectA.pack(objectB)
+        b'\x05'
 
         Args:
             value: If the value is None, then we will pack the value of the
