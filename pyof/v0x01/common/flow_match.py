@@ -5,8 +5,7 @@
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.foundation.base import (GenericBitMask, GenericMessage,
-                                        GenericStruct)
+from pyof.v0x01.foundation.base import GenericBitMask, GenericStruct
 from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
                                                UBInt32)
 

@@ -1,7 +1,6 @@
 """Defines actions that may be associated with flows packets."""
 
 # System imports
-from enum import Enum
 
 # Local source tree imports
 from pyof.v0x01.foundation.base import GenericBitMask, GenericStruct
