@@ -316,7 +316,7 @@ class BinaryData(GenericType):
             return len(value)
 
 
-class TypeList(list, base.GenericStruct):
+class TypeList(list, GenericStruct):
     """Base class for lists that store objects of one single type."""
 
     def __init__(self, items):
@@ -404,7 +404,7 @@ class TypeList(list, base.GenericStruct):
             if len(self) == 0:
                 # If this is a empty list, then returns zero
                 return 0
-            elif issubclass(type(self[0]), base.GenericType):
+            elif issubclass(type(self[0]), GenericType):
                 # If the type of the elements is GenericType, then returns the
                 # length of the list multiplied by the size of the GenericType.
                 return len(self) * self[0].get_size()
