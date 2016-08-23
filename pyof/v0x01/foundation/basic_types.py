@@ -210,6 +210,14 @@ class HWAddress(base.GenericType):
         Raises:
             Exception: If there is a struct unpacking error.
         """
+
+        def _int2hex(n):
+            h = hex(n)[2:]  # remove '0x' prefix
+            if len(h) == 1:
+                return '0' + h
+            else:
+                return h
+
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
         except:
@@ -224,14 +232,6 @@ class HWAddress(base.GenericType):
             int: The address size in bytes.
         """
         return 6
-
-
-def _int2hex(n):
-    h = hex(n)[2:]  # remove '0x' prefix
-    if len(h) == 1:
-        return '0' + h
-    else:
-        return h
 
 
 class BinaryData(base.GenericType):
