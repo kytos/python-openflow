@@ -77,7 +77,7 @@ the ``LICENSE`` file.
    :target: https://github.com/kytos/python-openflow/tags
 .. |Release| image:: https://img.shields.io/github/release/kytos/python-openvpn.svg
    :target: https://github.com/kytos/python-openflow/releases
-.. |Tests| image:: http://kytos.io/imgs/tests-status.svg
+.. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=develop
    :target: https://github.com/kytos/python-openflow
 .. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/blob/master/LICENSE
