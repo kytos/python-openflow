@@ -31,8 +31,7 @@ class StatsReply(base.GenericMessage):
             flags (int): OFPSF_REQ_* flags (none yet defined).
             body (ConstantTypeList): Body of the request.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.body_type = body_type
         self.flags = flags
         self.body = [] if body is None else body

@@ -56,8 +56,7 @@ class PacketIn(base.GenericMessage):
                 offsetof(struct ofp_packet_in, data) ==
                 sizeof(struct ofp_packet_in) - 2.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.buffer_id = buffer_id
         self.total_len = total_len
         self.in_port = in_port

@@ -30,7 +30,6 @@ class QueueGetConfigReply(base.GenericMessage):
             port (Port): Target port for the query.
             queue (ListOfQueues): List of configured queues.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.port = port
         self.queues = [] if queues is None else queues

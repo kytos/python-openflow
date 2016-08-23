@@ -43,8 +43,7 @@ class PortMod(base.GenericMessage):
             mask (PortConfig): Bitmap of OFPPC_* flags to be changed
             advertise (PortFeatures): Bitmap of "ofp_port_features"s
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.port_no = port_no
         self.hw_addr = hw_addr
         self.config = config

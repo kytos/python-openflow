@@ -24,7 +24,7 @@ class TestGenericStruct(unittest.TestCase):
             i = basic_types.UBInt32(5)
 
             def __init__(self):
-                base.GenericStruct.__init__(self)
+                super().__init__(None)
 
         self.MyMessage = MyMessage
 

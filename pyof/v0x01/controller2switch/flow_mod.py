@@ -83,8 +83,7 @@ class FlowMod(base.GenericMessage):
             actions (ListOfActions): The action length is inferred from the
                 length field in the header.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.match = match
         self.cookie = cookie
         self.command = command

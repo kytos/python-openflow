@@ -172,8 +172,7 @@ class ErrorMsg(base.GenericMessage):
             code (enum.Enum): Error code.
             data: Its content is specified in the error code documentation.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.error_type = error_type
         self.code = code
         self.data = [] if data is None else data

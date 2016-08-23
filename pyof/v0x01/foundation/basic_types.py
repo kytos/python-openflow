@@ -53,7 +53,7 @@ class PAD(base.GenericType):
         """
         pass
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the object.
 
         Return the byte 0 (zero) *length* times.
@@ -114,7 +114,7 @@ class Char(base.GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         Returns:
@@ -123,8 +123,19 @@ class Char(base.GenericType):
         Raises:
             struct.error: If the value does not fit the binary format.
         """
-        packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
-        return packed[:-1] + b'\0'  # null-terminated
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        try:
+            if value is None:
+                value = self.value
+            packed = struct.pack(self._fmt, bytes(value, 'ascii'))
+            return packed[:-1] + b'\0'  # null-terminated
+        except struct.error as err:
+            msg = "Char Pack error. "
+            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
+                                                         err)
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -152,15 +163,16 @@ class Char(base.GenericType):
 class HWAddress(base.GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address=b'000000'):
+    def __init__(self, hw_address='00:00:00:00:00:00'):
         """The constructor takes the parameters below.
 
         Args:
-            hw_address (bytes): Hardware address. Defaults to b'000000'.
+            hw_address (bytes): Hardware address. Defaults to
+                '00:00:00:00:00:00'.
         """
         super().__init__(hw_address)
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         Returns
@@ -169,8 +181,21 @@ class HWAddress(base.GenericType):
         Raises:
             struct.error: If the value does not fit the binary format.
         """
-        value = self._value.split(':')
-        return struct.pack('!6B', *[int(x, 16) for x in value])
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is not None:
+            value = value.split(':')
+        else:
+            value = self._value.split(':')
+
+        try:
+            return struct.pack('!6B', *[int(x, 16) for x in value])
+        except struct.error as err:
+            msg = "HWAddress error. "
+            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
+                                                         err)
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -185,11 +210,19 @@ class HWAddress(base.GenericType):
         Raises:
             Exception: If there is a struct unpacking error.
         """
+
+        def _int2hex(n):
+            h = hex(n)[2:]  # remove '0x' prefix
+            if len(h) == 1:
+                return '0' + h
+            else:
+                return h
+
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
         except:
             raise Exception("%s: %s" % (offset, buff))
-        transformed_data = ':'.join([hex(x)[2:] for x in unpacked_data])
+        transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
 
     def get_size(self):
@@ -218,7 +251,7 @@ class BinaryData(base.GenericType):
         """
         super().__init__(value)
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         Returns:
@@ -227,13 +260,16 @@ class BinaryData(base.GenericType):
         Raises:
             :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
         """
-        if isinstance(self._value, bytes):
-            if len(self._value) > 0:
-                return self._value
-            else:
-                return b''
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self._value
+
+        if isinstance(value, bytes) and len(value) > 0:
+            return value
         else:
-            raise exceptions.NotBinaryData()
+            return b''
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -346,16 +382,31 @@ class FixedTypeList(list, base.GenericStruct):
                 size += item.get_size()
             return size
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         Returns:
             bytes: The binary representation.
         """
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self
+        else:
+            container = type(self)()
+            container.extend(value)
+            value = container
+
         bin_message = b''
-        for item in self:
-            bin_message += item.pack()
-        return bin_message
+        try:
+            for item in value:
+                bin_message += item.pack()
+            return bin_message
+        except exceptions.PackException as err:
+            msg = "{} pack error: ".format(type(self).__name__)
+            msg += err
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack the elements of the list.
@@ -477,16 +528,31 @@ class ConstantTypeList(list, base.GenericStruct):
                 size += item.get_size()
             return size
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         Returns:
             bytes: The binary representation.
         """
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self
+        else:
+            container = type(self)()
+            container.extend(value)
+            value = container
+
         bin_message = b''
-        for item in self:
-            bin_message += item.pack()
-        return bin_message
+        try:
+            for item in value:
+                bin_message += item.pack()
+            return bin_message
+        except exceptions.PackException as err:
+            msg = "{} pack error: ".format(type(self).__name__)
+            msg += err
+            raise exceptions.PackException(msg)
 
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.

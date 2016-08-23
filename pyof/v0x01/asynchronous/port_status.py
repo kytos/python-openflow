@@ -48,7 +48,6 @@ class PortStatus(base.GenericMessage):
             reason (PortReason): Addition, deletion or modification.
             desc (PhyPort): Port description.
         """
-        super().__init__()
-        self.header.xid = xid if xid else self.header.xid
+        super().__init__(xid)
         self.reason = reason
         self.desc = desc
