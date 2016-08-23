@@ -2,6 +2,7 @@
 import unittest
 
 from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
 from tests.test_struct import TestStruct
 
@@ -50,7 +51,7 @@ def _get_flowmod_kwargs(command):
             'hard_timeout': 0,
             'priority': 32768,
             'buffer_id': 4294967295,
-            'out_port': 65535,
+            'out_port': Port.OFPP_NONE,
             'flags': 0}
 
 

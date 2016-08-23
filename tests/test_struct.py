@@ -120,7 +120,7 @@ class TestStruct(unittest.TestCase):
         self.assertEqual(packed_obj, raw_file)
 
     def test_unpack(self):
-        """Check whether the dump file equals to unpacked object."""
+        """Check whether the unpacked dump equals to expected object."""
         obj = self.get_raw_object()
         unpacked = self.get_raw_dump().unpack()
         self.assertEqual(unpacked, obj)
