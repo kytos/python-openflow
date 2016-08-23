@@ -1,35 +1,29 @@
+"""Packet in message tests."""
 import unittest
 
-from pyof.v0x01.asynchronous import packet_in
+from pyof.v0x01.asynchronous.packet_in import PacketIn, PacketInReason
+from tests.test_struct import TestStruct
 
 
-class TestPacketIn(unittest.TestCase):
-    """Test the PacketIn message"""
+class TestPacketIn(TestStruct):
+    """Packet in message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        """Setup the TestPacketIn Class instantiating a PacketIn message"""
-        self.message = packet_in.PacketIn()
-        self.message.header.xid = 1
-        self.message.buffer_id = 1
-        self.message.total_len = 1
-        self.message.in_port = 1
-        self.message.reason = packet_in.PacketInReason.OFPR_ACTION
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_packet_in')
+        super().set_raw_dump_object(PacketIn, xid=1, buffer_id=1, total_len=1,
+                                    in_port=1,
+                                    reason=PacketInReason.OFPR_ACTION)
+        # Different from the specification, the minimum size of this class is
+        # 18, not 20.
+        super().set_minimum_size(18)
 
-    def test_size(self):
-        """[Asynchronous/PacketIn] - size 18
-
-        Different from the specification, the minimum size of this class is 18,
-        not 20."""
-        self.assertEqual(self.message.get_size(), 18)
-
-    @unittest.skip('Not yet implemented')
+    @unittest.skip('Need to recover dump contents.')
     def test_pack(self):
-        """[Asynchronous/PacketIn] - packing"""
-        # TODO
         pass
 
-    @unittest.skip('Not yet implemented')
+    @unittest.skip('Need to recover dump contents.')
     def test_unpack(self):
-        """[Asynchronous/PacketIn] - unpacking"""
-        # TODO
         pass

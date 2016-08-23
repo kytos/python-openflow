@@ -1,107 +1,128 @@
-"""Defines OpenFlow queues structures and related items"""
+"""Defines OpenFlow queues structures and related items."""
 
 # System imports
-import enum
+from enum import Enum
+
+# Local source tree imports
+from pyof.v0x01.foundation.base import GenericStruct
+from pyof.v0x01.foundation.basic_types import (PAD, FixedTypeList, UBInt16,
+                                               UBInt32)
 
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+
+__all__ = ('QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
+           'QueueProperties', 'ListOfProperties', 'ListOfQueues')
 
 # Enums
 
 
-class QueueProperties(enum.Enum):
-    """
-    Describes the queue properties.
+class QueueProperties(Enum):
+    """Describe queue properties."""
 
-    Enums:
-        OFPQT_NONE      # No property defined for queue (default)
-        OFPQT_MIN_RATE  # Minimum datarate guaranteed
-    """
+    #: No property defined for queue (default)
     OFPQT_NONE = 0
+    #: Minimum datarate guaranteed
     OFPQT_MIN_RATE = 1
 
 
 # Classes
 
 
-class ListOfProperties(basic_types.FixedTypeList):
+class ListOfProperties(FixedTypeList):
     """List of properties.
 
-    Represented by instances of QueuePropHeader and
-    used on PacketQueue objects
-
-    :param items: (optional) Instance or a list of instances of QueuePropHeader
+    Represented by instances of :class:`QueuePropHeader` and used on
+    :class:`PacketQueue` objects.
     """
+
     def __init__(self, items=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            items (:class:`list` of/or :class:`QueuePropHeader`):
+                :class:`QueuePropHeader` instance or list of instances.
+        """
         super().__init__(pyof_class=QueuePropHeader,
                          items=items)
 
 
-class QueuePropHeader(base.GenericStruct):
-    """This class describes the header of each queue property.
+class QueuePropHeader(GenericStruct):
+    """Describe the header of each queue property."""
 
-        :param property: One of OFPQT\_.
-        :param len:      Length of property, including this header.
-        :param pad:      64-bit alignment.
-    """
-    property = basic_types.UBInt16(enum_ref=QueueProperties)
-    len = basic_types.UBInt16()
-    pad = basic_types.PAD(4)
+    property = UBInt16(enum_ref=QueueProperties)
+    len = UBInt16()
+    #: 64-bit alignment
+    pad = PAD(4)
 
-    def __init__(self, property=None, len=None):
+    def __init__(self, prop=None, length=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            property (QueueProperties): The queue property.
+            len (int): Length of property, including this header.
+        """
         super().__init__()
-        self.property = property
-        self.len = len
+        self.property = prop
+        self.len = length
 
 
-class PacketQueue(base.GenericStruct):
-    """This class describes a queue.
+class PacketQueue(GenericStruct):
+    """Describe a queue."""
 
-    :param queue_id:   id for the specific queue
-    :param length:     Length in bytes of this queue desc
-    :param pad:        64-bit alignment
-    :param properties: List of properties
-    """
-    queue_id = basic_types.UBInt32()
-    length = basic_types.UBInt16()
-    pad = basic_types.PAD(2)
+    queue_id = UBInt32()
+    length = UBInt16()
+    #: 64-bit alignment.
+    pad = PAD(2)
     properties = ListOfProperties()
 
     def __init__(self, queue_id=None, length=None, properties=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            queue_id (int): ID of the specific queue.
+            length (int): Length in bytes of this queue desc.
+            properties(ListOfProperties): Queue's list of properties. Default
+                is an empty list.
+        """
         super().__init__()
         self.queue_id = queue_id
         self.length = length
         self.properties = [] if properties is None else properties
 
 
-class QueuePropMinRate(base.GenericStruct):
-    """This class defines the minimum-rate type queue.
+class QueuePropMinRate(GenericStruct):
+    """Define the minimum-rate type queue."""
 
-    :param prop_header: prop: OFPQT_MIN_RATE, len: 16.
-    :param rate:        In 1/10 of a percent; >1000 -> disabled.
-    :param pad:         64-bit alignmet.
-    """
-    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MIN_RATE,
-                                  len=16)
-    rate = basic_types.UBInt16()
-    pad = basic_types.PAD(6)
+    prop_header = QueuePropHeader(prop=QueueProperties.OFPQT_MIN_RATE,
+                                  length=16)
+    rate = UBInt16()
+    #: 64-bit alignmet.
+    pad = PAD(6)
 
     def __init__(self, rate=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
+        """
         super().__init__()
         self.rate = rate
 
 
-class ListOfQueues(basic_types.FixedTypeList):
+class ListOfQueues(FixedTypeList):
     """List of queues.
 
-    Represented by instances of PacketQueue and
-    used on QueueGetConfigReply objects
-
-    :param items: (optional) Instance or a list of instances of PacketQueue
+    Represented by instances of :class:`PacketQueue` and used on
+    :class:`QueueGetConfigReply` objects.
     """
+
     def __init__(self, items=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            items (:class:`list` of/or :class:`PacketQueue`):
+                :class:`PacketQueue` instance or list of instances.
+        """
         super().__init__(pyof_class=PacketQueue,
                          items=items)

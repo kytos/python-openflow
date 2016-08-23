@@ -1,19 +1,27 @@
-"""Defines Header classes and related items"""
+"""Defines Header classes and related items."""
 
 # System imports
-import enum
+from enum import Enum
+from random import randint
+
+# Local source tree imports
+from pyof.v0x01.foundation.base import OFP_VERSION, GenericStruct
+from pyof.v0x01.foundation.basic_types import UBInt8, UBInt16, UBInt32
 
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+
+__all__ = ('Header', 'Type')
+
+# Max xid of a message considering it's size (UBInt32 on v0x01)
+MAXID = 2147483647
 
 # Enums
 
 
-class Type(enum.Enum):
-    """Enumeration of Message Types"""
+class Type(Enum):
+    """Enumeration of Message Types."""
+
     # Symetric/Immutable messages
     OFPT_HELLO = 0
     OFPT_ERROR = 1
@@ -59,19 +67,22 @@ class Type(enum.Enum):
 # Classes
 
 
-class Header(base.GenericStruct):
-    """Representation of an OpenFlow message Header
+class Header(GenericStruct):
+    """Representation of an OpenFlow message Header."""
 
-    :param message_type: Type of  the message
-    :param xid:          id of the message
-    :param length:       Length of the message, including the header itself
-    """
-    version = basic_types.UBInt8(base.OFP_VERSION)
-    message_type = basic_types.UBInt8(enum_ref=Type)
-    length = basic_types.UBInt16()
-    xid = basic_types.UBInt32()
+    version = UBInt8(OFP_VERSION)
+    message_type = UBInt8(enum_ref=Type)
+    length = UBInt16()
+    xid = UBInt32()
 
-    def __init__(self, message_type=None, xid=None, length=None):
+    def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
+        """The constructor takes the optional parameters below.
+
+        Args:
+            message_type (Type): Type of the message.
+            xid (int): ID of the message. Defaults to a random integer.
+            length (int): Length of the message, including the header itself.
+        """
         super().__init__()
         self.message_type = message_type
         self.length = length

@@ -1,30 +1,32 @@
-"""Query the switch for configured queues on a port"""
+"""Query the switch for configured queues on a port."""
 
 # System imports
 
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt16
+
+__all__ = ('QueueGetConfigRequest',)
 
 
-class QueueGetConfigRequest(base.GenericMessage):
-    """Class implements the structure query for configured queues on a port.
+class QueueGetConfigRequest(GenericMessage):
+    """Query structure for configured queues on a port."""
 
-    :param xid -- xid of OpenFlow header
-    :param port -- Target port for the query
-    :param pad -- Pad to 64-bits
-
-    """
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REQUEST)
-    port = basic_types.UBInt16(enum_ref=phy_port.Port)
-    pad = basic_types.PAD(2)
+    header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
+    port = UBInt16(enum_ref=Port)
+    #: Pad to 64-bits
+    pad = PAD(2)
 
     def __init__(self, xid=None, port=None):
-        super().__init__()
-        self.header.xid = xid
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid of OpenFlow header
+            port (Port): Target port for the query
+        """
+        super().__init__(xid)
         self.port = port

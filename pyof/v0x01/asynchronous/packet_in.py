@@ -1,64 +1,63 @@
-"""When packets are received by the datapath and sent to the controller,
-they use the OFPT_PACKET_IN message"""
+"""For packets received by the datapath and sent to the controller."""
 
 # System imports
-import enum
+from enum import Enum
+
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import (PAD, BinaryData, UBInt8,
+                                               UBInt16, UBInt32)
 
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+
+__all__ = ('PacketIn', 'PacketInReason')
 
 # Enums
 
 
-class PacketInReason(enum.Enum):
-    """
-    Why is this packet being sent to the controller?
+class PacketInReason(Enum):
+    """Reason why this packet is being sent to the controller."""
 
-        OFPR_NO_MATCH # No matching flow
-        OFPR_ACTION   # Action explicitly output to controller
-
-    """
-    OFPR_NO_MATCH = 1
-    OFPR_ACTION = 2
+    #: No matching flow
+    OFPR_NO_MATCH = 0
+    #: Action explicitly output to controller
+    OFPR_ACTION = 1
 
 
 # Classes
 
 
-class PacketIn(base.GenericMessage):
-    """
-    Packet received on port (datapath -> controller)
+class PacketIn(GenericMessage):
+    """Packet received on port (datapath -> controller)."""
 
-    :param xid:       Openflow xid of the Header
-    :param buffer_id: ID assigned by datapath
-    :param total_len: Full length of frame
-    :param in_port:   Port on which frame was received
-    :param reason:    Reason packet is being sent (one of OFPR_*)
-    :param pad:       Align to 32-bits
-    :param data:      Ethernet frame, halfway through 32-bit word,
-                      so the IP header is 32-bit aligned.  The
-                      amount of data is inferred from the length
-                      field in the header.  Because of padding,
-                      offsetof(struct ofp_packet_in, data) ==
-                      sizeof(struct ofp_packet_in) - 2.
-
-    """
-    header = of_header.Header(message_type=of_header.Type.OFPT_PACKET_IN)
-    buffer_id = basic_types.UBInt32()
-    total_len = basic_types.UBInt16()
-    in_port = basic_types.UBInt16()
-    reason = basic_types.UBInt8(enum_ref=PacketInReason)
-    pad = basic_types.PAD(1)
-    data = basic_types.BinaryData()
+    #: :class:`~.header.Header`: OpenFlow Header
+    header = Header(message_type=Type.OFPT_PACKET_IN)
+    buffer_id = UBInt32()
+    total_len = UBInt16()
+    in_port = UBInt16()
+    reason = UBInt8(enum_ref=PacketInReason)
+    #: Align to 32-bits.
+    pad = PAD(1)
+    data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
                  reason=None, data=b''):
-        super().__init__()
-        self.header.xid = xid
+        """Assign parameters to object attributes.
+
+        Args:
+            xid (int): Header's xid.
+            buffer_id (int): ID assigned by datapath.
+            total_len (int): Full length of frame.
+            in_port (int): Port on which frame was received.
+            reason (PacketInReason): The reason why the packet is being sent
+            data (bytes): Ethernet frame, halfway through 32-bit word, so the
+                IP header is 32-bit aligned. The amount of data is inferred
+                from the length field in the header. Because of padding,
+                offsetof(struct ofp_packet_in, data) ==
+                sizeof(struct ofp_packet_in) - 2.
+        """
+        super().__init__(xid)
         self.buffer_id = buffer_id
         self.total_len = total_len
         self.in_port = in_port

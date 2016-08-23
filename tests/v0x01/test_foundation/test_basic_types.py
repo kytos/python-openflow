@@ -68,6 +68,7 @@ class TestUBInt32(unittest.TestCase):
         # TODO
         pass
 
+
 class TestChar(unittest.TestCase):
 
     def setUp(self):
@@ -93,3 +94,21 @@ class TestChar(unittest.TestCase):
 
         self.assertEqual(char1.value, 'fo')
         self.assertEqual(char2.value, 'foo')
+
+
+class TestHWaddress(unittest.TestCase):
+    def test_unpack_packed(self):
+        mac = '0a:d3:98:a5:30:47'
+        hw_addr = basic_types.HWAddress(mac)
+        packed = hw_addr.pack()
+        unpacked = basic_types.HWAddress()
+        unpacked.unpack(packed)
+        self.assertEqual(mac, unpacked.value)
+
+    def test_default_value(self):
+        mac = '00:00:00:00:00:00'
+        hw_addr = basic_types.HWAddress()
+        packed = hw_addr.pack()
+        unpacked = basic_types.HWAddress()
+        unpacked.unpack(packed)
+        self.assertEqual(mac, unpacked.value)

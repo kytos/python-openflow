@@ -1,34 +1,37 @@
-"""Switch replies to controller"""
+"""Switch replies to controller."""
 
 # System imports
 
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.common import phy_port
-from pyof.v0x01.common import queue
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.common.queue import ListOfQueues
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import PAD, UBInt16
+
+__all__ = ('QueueGetConfigReply',)
 
 
-class QueueGetConfigReply(base.GenericMessage):
-    """Class implements the response to the config request
+class QueueGetConfigReply(GenericMessage):
+    """Class implements the response to the config request."""
 
-    :param xid -- xid of OpenFlow header
-    :param port -- Target port for the query
-    :param pad -- Pad to 64-bits
-    :param queue -- List of configured queues
-
-    """
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REPLY)
-    port = basic_types.UBInt16(enum_ref=phy_port.Port)
-    pad = basic_types.PAD(6)
-    queues = queue.ListOfQueues()
+    header = Header(
+        message_type=Type.OFPT_GET_CONFIG_REPLY)
+    port = UBInt16(enum_ref=Port)
+    #: Pad to 64-bits.
+    pad = PAD(6)
+    queues = ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):
-        super().__init__()
-        self.header.xid = xid
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid of OpenFlow header.
+            port (Port): Target port for the query.
+            queue (ListOfQueues): List of configured queues.
+        """
+        super().__init__(xid)
         self.port = port
         self.queues = [] if queues is None else queues

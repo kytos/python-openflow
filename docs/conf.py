@@ -30,7 +30,10 @@ sys.path.insert(0, os.path.abspath('../'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.coverage',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -113,6 +116,7 @@ todo_include_todos = False
 # a list of builtin themes.
 #html_theme = 'alabaster'
 html_theme = 'sphinx_rtd_theme'
+#html_theme = 'bizstyle'
 
 html_context = {
     'css_files': ['_static/custom.css'],
@@ -292,3 +296,20 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# Example configuration for intersphinx: refer to the Python standard library.
+# Note: links to Python doc only work if you are online or have python.inv
+#     file. To download it, run:
+#     curl https://docs.python.org/3/objects.inv >python.inv
+intersphinx_mapping = {'python': ('https://docs.python.org/3',
+                                  (None, 'python.inv'))}
+
+# Napoleon settings from http://www.sphinx-doc.org/en/stable/ext/napoleon.html
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_special_with_doc = False  # Sphinx's default
+
+# As pylint warns when the public __init__ is not documented (according to a
+# PEP), we should document __init__ and the option below appends its docstring
+# to the class'.
+autoclass_content = 'both'

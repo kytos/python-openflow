@@ -1,30 +1,35 @@
-"""Defines Vendor message"""
+"""Defines Vendor message."""
 
 # System imports
 
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+from pyof.v0x01.foundation.basic_types import UBInt32
+
+__all__ = ('VendorHeader',)
 
 # Classes
 
 
-class VendorHeader(base.GenericMessage):
-    """OpenFlow Vendor message
+class VendorHeader(GenericMessage):
+    """OpenFlow Vendor message.
 
-    This message does not contain a body beyond the OpenFlow Header
-        :param xid:    xid to be used on the message header
-        :param vendor: Vendor ID:
-                       MSB 0: low-order bytes are IEEE OUI.
-                       MSB != 0: defined by OpenFlow consortium
+    This message does not contain a body beyond the OpenFlow Header.
     """
-    header = of_header.Header(message_type=of_header.Type.OFPT_ECHO_REQUEST)
-    vendor = basic_types.UBInt32()
+
+    header = Header(message_type=Type.OFPT_VENDOR)
+    vendor = UBInt32()
 
     def __init__(self, xid=None, vendor=None):
-        super().__init__()
-        self.header.xid = xid
+        """The constructor takes the parameters below.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            vendor (int): Vendor ID:
+                MSB 0: low-order bytes are IEEE OUI.
+                MSB != 0: defined by OpenFlow consortium.
+        """
+        super().__init__(xid)
         self.vendor = vendor

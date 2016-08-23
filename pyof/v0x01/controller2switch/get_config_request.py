@@ -1,21 +1,24 @@
-"""Defines Get Config Request classes and related items"""
+"""Defines Get Config Request classes and related items."""
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.foundation import base
+from pyof.v0x01.common.header import Header, Type
+from pyof.v0x01.foundation.base import GenericMessage
+
+__all__ = ('GetConfigRequest',)
 
 # Classe
 
 
-class GetConfigRequest(base.GenericMessage):
-    """Get Config Request message.
+class GetConfigRequest(GenericMessage):
+    """Get Config Request message."""
 
-    This message does not contain a body beyond the OpenFlow Header
-        :param xid: xid to be used on the message header
-    """
-    header = of_header.Header(
-        message_type=of_header.Type.OFPT_GET_CONFIG_REQUEST)
+    header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
 
     def __init__(self, xid=None):
-        super().__init__()
-        self.header.xid = xid
+        """The constructor just assings parameters to object attributes.
+
+        This message does not contain a body beyond the OpenFlow Header.
+
+        Args:
+            xid (int): xid to be used on the message header.
+        """
+        super().__init__(xid)

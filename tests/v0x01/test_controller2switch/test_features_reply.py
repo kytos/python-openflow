@@ -1,38 +1,55 @@
-import unittest
-import os
+"""Echo request message tests."""
+from pyof.v0x01.common.phy_port import PhyPort, PortConfig, PortState
+from pyof.v0x01.controller2switch.features_reply import FeaturesReply
+from pyof.v0x01.foundation.basic_types import HWAddress
+from tests.test_struct import TestStruct
 
-from pyof.v0x01.common import action
-from pyof.v0x01.controller2switch import features_reply
-from pyof.v0x01.common import header as of_header
+
+class TestFeaturesReply(TestStruct):
+    """Feature reply message tests (also those in :class:`.TestDump`)."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_features_reply')
+        kwargs = _get_kwargs()
+        super().set_raw_dump_object(FeaturesReply, **kwargs)
+        super().set_minimum_size(32)
 
 
-class TestSwitchFeatures(unittest.TestCase):
+def _get_kwargs():
+    return {'xid': 2, 'datapath_id': 1, 'n_buffers': 256, 'n_tables': 254,
+            'capabilities': 0x000000c7, 'actions': 4095, 'ports': _get_ports()}
 
-    def setUp(self):
-        self.head = of_header.Header()
-        self.message = features_reply.SwitchFeatures()
-        self.message.header.xid = 1
-        self.message.datapath_id = 1
-        self.message.n_buffers = 1
-        self.message.n_tables = 1
-        self.message.capabilities = features_reply.Capabilities.OFPC_TABLE_STATS
-        self.message.actions = action.ActionType.OFPAT_SET_DL_SRC
-        self.message.ports = []
 
-    def test_get_size(self):
-        """[Controller2Switch/FeaturesReply] - size 32"""
-        self.assertEqual(self.message.get_size(), 32)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/FeaturesReply] - packing"""
-        # TODO
-        pass
-
-    def test_unpack(self):
-        """[Controller2Switch/FeaturesReply] - unpacking"""
-        filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
-                                'raw/v0x01/ofpt_features_reply.dat')
-        with open(filename, 'rb') as f:
-            self.head.unpack(f.read(8))
-            self.assertEqual(self.message.unpack(f.read()), None)
+def _get_ports():
+    return [
+        PhyPort(port_no=65534,
+                hw_addr=HWAddress('0e:d3:98:a5:30:47'),
+                name='s1',
+                config=PortConfig.OFPC_PORT_DOWN,
+                state=PortState.OFPPS_LINK_DOWN,
+                curr=0,
+                advertised=0,
+                supported=0,
+                peer=0),
+        PhyPort(port_no=1,
+                hw_addr=HWAddress('0a:54:cf:fc:4e:6d'),
+                name='s1-eth1',
+                config=0,
+                state=PortState.OFPPS_STP_LISTEN,
+                curr=0x000000c0,
+                advertised=0,
+                supported=0,
+                peer=0),
+        PhyPort(port_no=2,
+                hw_addr=HWAddress('f6:b6:ab:cc:f8:4f'),
+                name='s1-eth2',
+                config=0,
+                state=PortState.OFPPS_STP_LISTEN,
+                curr=0x000000c0,
+                advertised=0,
+                supported=0,
+                peer=0)
+    ]

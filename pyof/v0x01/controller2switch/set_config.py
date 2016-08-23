@@ -1,17 +1,28 @@
-"""Defines SetConfig message"""
+"""Define SetConfig message."""
 
 # System imports
 
 # Third-party imports
 
-# Local source tree imports
-from pyof.v0x01.common import header as of_header
-from pyof.v0x01.controller2switch import common
+# Local imports
+from pyof.v0x01.common.header import Type
+from pyof.v0x01.controller2switch.common import SwitchConfig
+
+__all__ = ('SetConfig',)
 
 
-class SetConfig(common.SwitchConfig):
+class SetConfig(SwitchConfig):
+    """Set config message."""
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
-        self.__ordered__ = super().__ordered__
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            flags (ConfigFlags): OFPC_* flags.
+            miss_send_len (int): UBInt16 max bytes of new flow that the
+                datapath should send to the controller.
+        """
+        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, flags, miss_send_len)
-        self.header.message_type = of_header.Type.OFPT_SET_CONFIG
+        self.header.message_type = Type.OFPT_SET_CONFIG
