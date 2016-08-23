@@ -66,7 +66,7 @@ class FastLinter(Linter):
 
 
 setup(name='python-openflow',
-      version='1.1.0a0',
+      version='1.1.0a2',
       description='Library to parse and generate OpenFlow messages',
       url='http://github.com/kytos/python-openflow',
       author='Kytos Team',
