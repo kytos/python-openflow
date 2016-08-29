@@ -18,8 +18,7 @@ class EchoReply(GenericMessage):
     This message does not contain a body beyond the OpenFlow Header.
     """
 
-    header = Header(message_type=Type.OFPT_ECHO_REPLY,
-                              length=8)
+    header = Header(message_type=Type.OFPT_ECHO_REPLY, length=8)
 
     def __init__(self, xid=None):
         """The constructor takes the parameters below.

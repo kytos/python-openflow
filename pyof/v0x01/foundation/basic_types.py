@@ -219,7 +219,6 @@ class HWAddress(GenericType):
         Raises:
             Exception: If there is a struct unpacking error.
         """
-
         def _int2hex(n):
             h = hex(n)[2:]  # remove '0x' prefix
             if len(h) == 1:
