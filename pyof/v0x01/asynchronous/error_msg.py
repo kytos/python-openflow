@@ -26,15 +26,15 @@ class ErrorType(Enum):
     """
 
     #: Hello protocol failed
-    OFPET_HELLO_FAILED = 0,
+    OFPET_HELLO_FAILED = 0
     #: Request was not understood
-    OFPET_BAD_REQUEST = 1,
+    OFPET_BAD_REQUEST = 1
     #: Error in action description
-    OFPET_BAD_ACTION = 2,
+    OFPET_BAD_ACTION = 2
     #: Problem in modifying Flow entry
-    OFPET_FLOW_MOD_FAILED = 3,
+    OFPET_FLOW_MOD_FAILED = 3
     #: Problem in modifying Port entry
-    OFPET_PORT_MOD_FAILED = 4,
+    OFPET_PORT_MOD_FAILED = 4
     #: Problem in modifying Queue entry
     OFPET_QUEUE_OP_FAILED = 5
 
@@ -46,7 +46,7 @@ class HelloFailedCode(Enum):
     """
 
     #: No compatible version
-    OFPHFC_INCOMPATIBLE = 0,
+    OFPHFC_INCOMPATIBLE = 0
     #: Permissions error
     OFPHFC_EPERM = 1
 
@@ -85,21 +85,21 @@ class BadActionCode(Enum):
     """
 
     #: Unknown action type
-    OFPBAC_BAD_TYPE = 0,
+    OFPBAC_BAD_TYPE = 0
     #: Length problem in actions
-    OFPBAC_BAD_LEN = 1,
+    OFPBAC_BAD_LEN = 1
     #: Unknown vendor id specified
-    OFPBAC_BAD_VENDOR = 2,
+    OFPBAC_BAD_VENDOR = 2
     #: Unknown action type for vendor id
-    OFPBAC_BAD_VENDOR_TYPE = 3,
+    OFPBAC_BAD_VENDOR_TYPE = 3
     #: Problem validating output action
-    OFPBAC_BAD_OUT_PORT = 4,
+    OFPBAC_BAD_OUT_PORT = 4
     #: Bad action argument
-    OFPBAC_BAD_ARGUMENT = 5,
+    OFPBAC_BAD_ARGUMENT = 5
     #: Permissions error
-    OFPBAC_EPERM = 6,
+    OFPBAC_EPERM = 6
     #: Can’t handle this many actions
-    OFPBAC_TOO_MANY = 7,
+    OFPBAC_TOO_MANY = 7
     #: Problem validating output queue
     OFPBAC_BAD_QUEUE = 8
 
@@ -131,7 +131,7 @@ class PortModFailedCode(Enum):
     """
 
     #: Specified port does not exist
-    OFPPMFC_BAD_PORT = 0,
+    OFPPMFC_BAD_PORT = 0
     #: Specified hardware address is wrong
     OFPPMFC_BAD_HW_ADDR = 1
 
@@ -143,9 +143,9 @@ class QueueOpFailedCode(Enum):
     """
 
     #: Invalid port (or port does not exist)
-    OFPQOFC_BAD_PORT = 0,
+    OFPQOFC_BAD_PORT = 0
     #: Queue does not exist
-    OFPQOFC_BAD_QUEUE = 1,
+    OFPQOFC_BAD_QUEUE = 1
     #: Permissions error
     OFPQOFC_EPERM = 2
 
