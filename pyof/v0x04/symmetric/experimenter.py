@@ -46,4 +46,5 @@ class ExperimenterHeader(GenericMessage):
             exp_type (int): Experimenter defined.
         """
         super().__init__(xid)
-        self.vendor = vendor
+        self.experimenter = experimenter
+        self.exp_type = exp_type
