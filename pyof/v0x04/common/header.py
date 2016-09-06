@@ -25,7 +25,7 @@ class Type(Enum):
     OFPT_ERROR = 1
     OFPT_ECHO_REQUEST = 2
     OFPT_ECHO_REPLY = 3
-    OFPT_VENDOR = 4
+    OFPT_EXPERIMENTER = 4
 
     # Switch configuration messages
     # Controller/Switch messages
@@ -41,25 +41,42 @@ class Type(Enum):
     OFPT_PORT_STATUS = 12
 
     # Controller command messages
-    # Controller/switch message
+    # Controller/Switch message
     OFPT_PACKET_OUT = 13
     OFPT_FLOW_MOD = 14
-    OFPT_PORT_MOD = 15
+    OFPT_GROUP_MOD = 15
+    OFPT_PORT_MOD = 16
+    OFPT_TABLE_MOD = 17
 
-    # Statistics messages
+    # Multipart messages.
     # Controller/Switch message
-    OFPT_STATS_REQUEST = 16
-    OFPT_STATS_REPLY = 17
+    OFPT_MULTIPART_REQUEST = 18
+    OFPT_MULTIPART_REPLY = 19
 
     # Barrier messages
     # Controller/Switch message
-    OFPT_BARRIER_REQUEST = 18
-    OFPT_BARRIER_REPLY = 19
+    OFPT_BARRIER_REQUEST = 20
+    OFPT_BARRIER_REPLY = 21
 
     # Queue Configuration messages
     # Controller/Switch message
-    OFPT_QUEUE_GET_CONFIG_REQUEST = 20
-    OFPT_QUEUE_GET_CONFIG_REPLY = 21
+    OFPT_QUEUE_GET_CONFIG_REQUEST = 22
+    OFPT_QUEUE_GET_CONFIG_REPLY = 23
+
+    # Controller role change request message
+    # Controller/Switch message
+    OFPT_ROLE_REQUEST = 24
+    OFPT_ROLE_REPLY = 25
+
+    # Asynchronous message configuration
+    # Controller/Switch message
+    OFPT_GET_ASYNC_REQUEST = 26
+    OFPT_GET_ASYNC_REPLY = 27
+    OFPT_SET_ASYNC = 28
+
+    # Meters and rate limiters configuration messages
+    # Controller/Switch message
+    OFPT_METER_MOD = 29
 
 
 # Classes
@@ -77,9 +94,10 @@ class Header(GenericStruct):
         """The constructor takes the optional parameters below.
 
         Args:
-            message_type (Type): Type of the message.
-            xid (int): ID of the message. Defaults to a random integer.
-            length (int): Length of the message, including the header itself.
+            message_type (Type): One of the OFPT_ constants.
+            length (int): Length including this ofp_header.
+            xid (int): Transaction id associated with this packet. Replies use
+                the same id as was in the request to facilitate pairing.
         """
         super().__init__()
         self.message_type = message_type
