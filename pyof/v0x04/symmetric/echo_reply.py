@@ -6,6 +6,7 @@
 
 from pyof.v0x04.common.header import Header, Type
 from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import BinaryData
 
 __all__ = ('EchoReply',)
 
@@ -19,11 +20,14 @@ class EchoReply(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_ECHO_REPLY, length=8)
+    data = BinaryData()
 
-    def __init__(self, xid=None):
+    def __init__(self, xid=None, data=None):
         """The constructor takes the parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
+            data (bytes): arbitrary-length data field.
         """
         super().__init__(xid)
+        self.data = data
