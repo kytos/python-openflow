@@ -10,7 +10,7 @@ from pyof.v0x01.common.header import Header
 from pyof.v0x01.foundation.base import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
                                         SERIAL_NUM_LEN, GenericMessage,
                                         GenericStruct)
-from pyof.v0x01.foundation.basic_types import (Pad, Char, FixedTypeList,
+from pyof.v0x01.foundation.basic_types import (Char, FixedTypeList, Pad,
                                                UBInt8, UBInt16, UBInt32,
                                                UBInt64)
 
