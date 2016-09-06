@@ -6,7 +6,7 @@
 
 # Local source tree imports
 from pyof.v0x01.foundation.base import GenericBitMask, GenericStruct
-from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
+from pyof.v0x01.foundation.basic_types import (HWAddress, Pad, UBInt8, UBInt16,
                                                UBInt32)
 
 __all__ = ('Match', 'FlowWildCards')
@@ -73,12 +73,12 @@ class Match(GenericStruct):
     dl_vlan = UBInt16()
     dl_vlan_pcp = UBInt8()
     #: Align to 64-bits.
-    pad1 = PAD(1)
+    pad1 = Pad(1)
     dl_type = UBInt16()
     nw_tos = UBInt8()
     nw_proto = UBInt8()
     #: Align to 64-bits.
-    pad2 = PAD(2)
+    pad2 = Pad(2)
     nw_src = UBInt32()
     nw_dst = UBInt32()
     tp_src = UBInt16()

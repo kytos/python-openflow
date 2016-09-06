@@ -10,7 +10,7 @@ from pyof.v0x01.common.header import Header
 from pyof.v0x01.foundation.base import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
                                         SERIAL_NUM_LEN, GenericMessage,
                                         GenericStruct)
-from pyof.v0x01.foundation.basic_types import (PAD, Char, FixedTypeList,
+from pyof.v0x01.foundation.basic_types import (Char, FixedTypeList, Pad,
                                                UBInt8, UBInt16, UBInt32,
                                                UBInt64)
 
@@ -108,7 +108,7 @@ class AggregateStatsReply(GenericStruct):
     byte_count = UBInt64()
     flow_count = UBInt32()
     #: Align to 64 bits
-    pad = PAD(4)
+    pad = Pad(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
         """The constructor just assings parameters to object attributes.
@@ -130,7 +130,7 @@ class AggregateStatsRequest(GenericStruct):
     match = Match()
     table_id = UBInt8()
     #: Align to 32 bits
-    pad = PAD(1)
+    pad = Pad(1)
     out_port = UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
@@ -187,7 +187,7 @@ class FlowStats(GenericStruct):
     length = UBInt16()
     table_id = UBInt8()
     #: Align to 32 bits.
-    pad = PAD(1)
+    pad = Pad(1)
     match = Match()
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
@@ -195,7 +195,7 @@ class FlowStats(GenericStruct):
     idle_timeout = UBInt16()
     hard_timeout = UBInt16()
     #: Align to 64-bits
-    pad2 = PAD(6)
+    pad2 = Pad(6)
     cookie = UBInt64()
     packet_count = UBInt64()
     byte_count = UBInt64()
@@ -244,7 +244,7 @@ class FlowStatsRequest(GenericStruct):
     match = Match()
     table_id = UBInt8()
     #: Align to 32 bits.
-    pad = PAD(1)
+    pad = Pad(1)
     out_port = UBInt16()
 
     def __init__(self, match=None, table_id=None, out_port=None):
@@ -272,7 +272,7 @@ class PortStats(GenericStruct):
 
     port_no = UBInt16()
     #: Align to 64-bits.
-    pad = PAD(6)
+    pad = Pad(6)
     rx_packets = UBInt64()
     tx_packets = UBInt64()
     rx_bytes = UBInt64()
@@ -334,7 +334,7 @@ class PortStatsRequest(GenericStruct):
 
     port_no = UBInt16()
     #: Align to 64-bits.
-    pad = PAD(6)
+    pad = Pad(6)
 
     def __init__(self, port_no=None):
         """The constructor just assings parameters to object attributes.
@@ -354,7 +354,7 @@ class QueueStats(GenericStruct):
 
     port_no = UBInt16()
     #: Align to 32-bits.
-    pad = PAD(2)
+    pad = Pad(2)
     queue_id = UBInt32()
     tx_bytes = UBInt64()
     tx_packets = UBInt64()
@@ -384,7 +384,7 @@ class QueueStatsRequest(GenericStruct):
 
     port_no = UBInt16()
     #: Align to 32-bits
-    pad = PAD(2)
+    pad = Pad(2)
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
@@ -405,7 +405,7 @@ class TableStats(GenericStruct):
 
     table_id = UBInt8()
     #: Align to 32-bits.
-    pad = PAD(3)
+    pad = Pad(3)
     name = Char(length=OFP_MAX_TABLE_NAME_LEN)
     wildcards = UBInt32(enum_ref=FlowWildCards)
     max_entries = UBInt32()

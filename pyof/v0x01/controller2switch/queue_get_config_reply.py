@@ -9,7 +9,7 @@ from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.common.queue import ListOfQueues
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import PAD, UBInt16
+from pyof.v0x01.foundation.basic_types import Pad, UBInt16
 
 __all__ = ('QueueGetConfigReply',)
 
@@ -21,7 +21,7 @@ class QueueGetConfigReply(GenericMessage):
         message_type=Type.OFPT_GET_CONFIG_REPLY)
     port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits.
-    pad = PAD(6)
+    pad = Pad(6)
     queues = ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):

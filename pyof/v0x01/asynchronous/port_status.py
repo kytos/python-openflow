@@ -7,7 +7,7 @@ from enum import Enum
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import PhyPort
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import PAD, UBInt8
+from pyof.v0x01.foundation.basic_types import Pad, UBInt8
 
 # Third-party imports
 
@@ -36,7 +36,7 @@ class PortStatus(GenericMessage):
     header = Header(message_type=Type.OFPT_PORT_STATUS)
     reason = UBInt8(enum_ref=PortReason)
     #: Align to 32-bits.
-    pad = PAD(7)
+    pad = Pad(7)
     desc = PhyPort()
 
     def __init__(self, xid=None, reason=None, desc=None):

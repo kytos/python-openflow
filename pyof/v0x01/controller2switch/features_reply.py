@@ -9,7 +9,7 @@ from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import ListOfPhyPorts
 from pyof.v0x01.foundation.base import GenericBitMask, GenericMessage
-from pyof.v0x01.foundation.basic_types import PAD, UBInt8, UBInt32, UBInt64
+from pyof.v0x01.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
 
@@ -50,7 +50,7 @@ class SwitchFeatures(GenericMessage):
     n_buffers = UBInt32()
     n_tables = UBInt8()
     #: Align to 64-bits.
-    pad = PAD(3)
+    pad = Pad(3)
     # Features
     capabilities = UBInt32(enum_ref=Capabilities)
     actions = UBInt32(enum_ref=ActionType)

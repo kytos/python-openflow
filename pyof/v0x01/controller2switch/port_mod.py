@@ -8,7 +8,7 @@
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import PortConfig, PortFeatures
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import PAD, HWAddress, UBInt16, UBInt32
+from pyof.v0x01.foundation.basic_types import HWAddress, Pad, UBInt16, UBInt32
 
 __all__ = ('PortMod',)
 
@@ -25,7 +25,7 @@ class PortMod(GenericMessage):
     mask = UBInt32(enum_ref=PortConfig)
     advertise = UBInt32(enum_ref=PortFeatures)
     #: Pad to 64-bits.
-    pad = PAD(4)
+    pad = Pad(4)
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None):
