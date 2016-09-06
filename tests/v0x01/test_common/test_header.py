@@ -1,7 +1,7 @@
 import unittest
 
 import os
-from pyof.v0x01.common import header as of_header
+from pyof.v0x01.common.header import Header, Type
 
 
 class TestHeader(unittest.TestCase):
@@ -9,8 +9,8 @@ class TestHeader(unittest.TestCase):
 
     def setUp(self):
         """Setup the TestHeader Class instantiating a HELLO header"""
-        self.message = of_header.Header()
-        self.message.message_type = of_header.Type.OFPT_HELLO
+        self.message = Header()
+        self.message.message_type = Type.OFPT_HELLO
         self.message.xid = 1
         self.message.length = 0
 
@@ -22,7 +22,7 @@ class TestHeader(unittest.TestCase):
     def test_pack_empty(self):
         """[Common/Header] - packing empty header"""
         self.assertRaises(TypeError,
-                          of_header.Header().pack())
+                          Header().pack())
 
     def test_pack(self):
         """[Common/Header] - packing Hello"""
@@ -38,7 +38,7 @@ class TestHeader(unittest.TestCase):
 
         self.assertEqual(self.message.length, 8)
         self.assertEqual(self.message.xid, 1)
-        self.assertEqual(self.message.message_type, of_header.Type.OFPT_HELLO)
+        self.assertEqual(self.message.message_type, Type.OFPT_HELLO)
         self.assertEqual(self.message.version, 1)
 
         f.close()

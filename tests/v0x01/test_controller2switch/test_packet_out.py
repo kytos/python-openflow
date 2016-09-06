@@ -1,9 +1,9 @@
 """Packet out message tests."""
 import unittest
 
+from pyof.foundation.exceptions import ValidationError
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.packet_out import PacketOut
-from pyof.v0x01.foundation.exceptions import ValidationError
 from tests.test_struct import TestStruct
 
 
