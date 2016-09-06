@@ -3,7 +3,7 @@ from enum import Enum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8, UBInt32
-from pyof.v0x01.common.header import Header
+from pyof.v0x04.common.header import Header, Type
 
 
 __all__ = ('Table', 'TableMod')
@@ -22,7 +22,7 @@ class Table(Enum):
 class TableMod(GenericMessage):
     """Configure/Modify behavior of a flow table."""
 
-    header = Header()
+    header = Header(message_type=Type.OFPT_TABLE_MOD)
     table_id = UBInt8()
     #: Pad to 32 bits
     pad = Pad(3)
