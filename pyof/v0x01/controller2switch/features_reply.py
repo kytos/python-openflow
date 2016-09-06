@@ -8,8 +8,8 @@
 from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import ListOfPhyPorts
-from pyof.v0x01.foundation.base import GenericBitMask, GenericMessage
-from pyof.v0x01.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64
+from pyof.foundation.base import GenericBitMask, GenericMessage
+from pyof.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
 

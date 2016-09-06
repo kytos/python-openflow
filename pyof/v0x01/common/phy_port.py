@@ -4,10 +4,10 @@
 from enum import Enum
 
 # Local source tree imports
-from pyof.v0x01.foundation.base import (OFP_MAX_PORT_NAME_LEN, GenericBitMask,
-                                        GenericStruct)
-from pyof.v0x01.foundation.basic_types import (Char, FixedTypeList, HWAddress,
-                                               UBInt16, UBInt32)
+from pyof.foundation.base import GenericBitMask, GenericStruct
+from pyof.foundation.basic_types import (Char, FixedTypeList, HWAddress,
+                                         UBInt16, UBInt32)
+from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 
 # Third-party imports
 
