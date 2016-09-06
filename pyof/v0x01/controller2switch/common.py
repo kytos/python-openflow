@@ -7,12 +7,11 @@ from enum import Enum
 from pyof.v0x01.common.action import ActionHeader
 from pyof.v0x01.common.flow_match import FlowWildCards, Match
 from pyof.v0x01.common.header import Header
-from pyof.v0x01.foundation.base import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
-                                        SERIAL_NUM_LEN, GenericMessage,
-                                        GenericStruct)
-from pyof.v0x01.foundation.basic_types import (Char, FixedTypeList, Pad,
-                                               UBInt8, UBInt16, UBInt32,
-                                               UBInt64)
+from pyof.foundation.base import GenericMessage, GenericStruct
+from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
+                                         UBInt16, UBInt32, UBInt64)
+from pyof.foundation.constants import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
+                                       SERIAL_NUM_LEN)
 
 # Third-party imports
 

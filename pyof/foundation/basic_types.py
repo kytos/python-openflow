@@ -4,8 +4,8 @@
 import struct
 
 # Local source tree imports
-from pyof.v0x01.foundation import exceptions
-from pyof.v0x01.foundation.base import GenericStruct, GenericType
+from pyof.foundation import exceptions
+from pyof.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 

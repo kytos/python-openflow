@@ -5,16 +5,14 @@ from enum import Enum
 from random import randint
 
 # Local source tree imports
-from pyof.v0x01.foundation.base import OFP_VERSION, GenericStruct
-from pyof.v0x01.foundation.basic_types import UBInt8, UBInt16, UBInt32
+from pyof.foundation.base import GenericStruct
+from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32
+from pyof.foundation.constants import UBINT32_MAX_VALUE as MAXID
+from pyof.v0x01.common.constants import OFP_VERSION
 
 # Third-party imports
 
-
 __all__ = ('Header', 'Type')
-
-# Max xid of a message considering it's size (UBInt32 on v0x01)
-MAXID = 2147483647
 
 # Enums
 

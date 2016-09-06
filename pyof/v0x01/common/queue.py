@@ -4,9 +4,8 @@
 from enum import Enum
 
 # Local source tree imports
-from pyof.v0x01.foundation.base import GenericStruct
-from pyof.v0x01.foundation.basic_types import (FixedTypeList, Pad, UBInt16,
-                                               UBInt32)
+from pyof.foundation.base import GenericStruct
+from pyof.foundation.basic_types import FixedTypeList, Pad, UBInt16, UBInt32
 
 # Third-party imports
 

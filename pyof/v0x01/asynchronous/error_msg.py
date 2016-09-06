@@ -4,9 +4,9 @@
 from enum import Enum
 
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.foundation import exceptions
-from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import ConstantTypeList, UBInt16
+from pyof.foundation import exceptions
+from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import ConstantTypeList, UBInt16
 
 # Third-party imports
 

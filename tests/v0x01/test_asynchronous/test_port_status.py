@@ -1,11 +1,11 @@
 """Port Status message tests."""
 import unittest
 
+from pyof.foundation.basic_types import HWAddress
+from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 from pyof.v0x01.asynchronous.port_status import PortReason, PortStatus
 from pyof.v0x01.common.phy_port import (PhyPort, PortConfig, PortFeatures,
                                         PortState)
-from pyof.v0x01.foundation.base import OFP_MAX_PORT_NAME_LEN
-from pyof.v0x01.foundation.basic_types import HWAddress
 from tests.test_struct import TestStruct
 
 

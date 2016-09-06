@@ -4,9 +4,9 @@
 from enum import Enum
 
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import (BinaryData, Pad, UBInt8,
-                                               UBInt16, UBInt32)
+from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import (BinaryData, Pad, UBInt8, UBInt16,
+                                         UBInt32)
 
 # Third-party imports
 

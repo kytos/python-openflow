@@ -1,7 +1,7 @@
 import unittest
 
-from pyof.v0x01.foundation import base
-from pyof.v0x01.foundation import basic_types
+from pyof.foundation import base
+from pyof.foundation import basic_types
 
 
 class TestGenericStruct(unittest.TestCase):

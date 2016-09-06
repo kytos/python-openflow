@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.foundation.base import GenericMessage
+from pyof.foundation.base import GenericMessage
 
 __all__ = ('BarrierReply',)
 

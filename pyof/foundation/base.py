@@ -21,7 +21,7 @@ from copy import deepcopy
 from enum import Enum
 
 # Local source tree imports
-from pyof.v0x01.foundation import exceptions
+from pyof.foundation import exceptions
 
 # Third-party imports
 
@@ -29,14 +29,6 @@ from pyof.v0x01.foundation import exceptions
 # This will determine the order on sphinx documentation.
 __all__ = ('GenericStruct', 'GenericMessage', 'GenericType', 'GenericBitMask',
            'MetaStruct', 'MetaBitMask')
-
-# Constants
-OFP_ETH_ALEN = 6
-OFP_MAX_PORT_NAME_LEN = 16
-OFP_VERSION = 0x01
-OFP_MAX_TABLE_NAME_LEN = 32
-SERIAL_NUM_LEN = 32
-DESC_STR_LEN = 256
 
 # Classes
 
