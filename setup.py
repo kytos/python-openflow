@@ -7,7 +7,7 @@ import sys
 from subprocess import call
 
 from setuptools import Command, find_packages, setup
-
+from pyof import __version__
 
 class Doctest(Command):
     """Run Sphinx doctest."""
@@ -66,7 +66,7 @@ class FastLinter(Linter):
 
 
 setup(name='python-openflow',
-      version='1.1.0a2',
+      version=__version__,
       description='Library to parse and generate OpenFlow messages',
       url='http://github.com/kytos/python-openflow',
       author='Kytos Team',
