@@ -8,7 +8,7 @@
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import PAD, UBInt16
+from pyof.v0x01.foundation.basic_types import Pad, UBInt16
 
 __all__ = ('QueueGetConfigRequest',)
 
@@ -19,7 +19,7 @@ class QueueGetConfigRequest(GenericMessage):
     header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
     port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits
-    pad = PAD(2)
+    pad = Pad(2)
 
     def __init__(self, xid=None, port=None):
         """The constructor just assings parameters to object attributes.

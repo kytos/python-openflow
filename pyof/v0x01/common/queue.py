@@ -5,7 +5,7 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.v0x01.foundation.base import GenericStruct
-from pyof.v0x01.foundation.basic_types import (PAD, FixedTypeList, UBInt16,
+from pyof.v0x01.foundation.basic_types import (Pad, FixedTypeList, UBInt16,
                                                UBInt32)
 
 # Third-party imports
@@ -53,7 +53,7 @@ class QueuePropHeader(GenericStruct):
     property = UBInt16(enum_ref=QueueProperties)
     len = UBInt16()
     #: 64-bit alignment
-    pad = PAD(4)
+    pad = Pad(4)
 
     def __init__(self, prop=None, length=None):
         """The contructor takes the paremeters below.
@@ -73,7 +73,7 @@ class PacketQueue(GenericStruct):
     queue_id = UBInt32()
     length = UBInt16()
     #: 64-bit alignment.
-    pad = PAD(2)
+    pad = Pad(2)
     properties = ListOfProperties()
 
     def __init__(self, queue_id=None, length=None, properties=None):
@@ -98,7 +98,7 @@ class QueuePropMinRate(GenericStruct):
                                   length=16)
     rate = UBInt16()
     #: 64-bit alignmet.
-    pad = PAD(6)
+    pad = Pad(6)
 
     def __init__(self, rate=None):
         """The contructor takes the paremeters below.

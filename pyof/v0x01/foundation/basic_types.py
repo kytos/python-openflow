@@ -10,11 +10,11 @@ from pyof.v0x01.foundation.base import GenericStruct, GenericType
 # Third-party imports
 
 
-__all__ = ('UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'PAD',
+__all__ = ('UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'Pad',
            'HWAddress', 'BinaryData', 'FixedTypeList', 'ConstantTypeList')
 
 
-class PAD(GenericType):
+class Pad(GenericType):
     """Class for padding attributes."""
 
     _fmt = ''
@@ -50,7 +50,7 @@ class PAD(GenericType):
     def unpack(self, buff, offset=0):
         """Unpack *buff* into this object.
 
-        Do nothing, since the _length is already defined and it is just a PAD.
+        Do nothing, since the _length is already defined and it is just a Pad.
         Keep buff and offset just for compability with other unpack methods.
 
         Args:

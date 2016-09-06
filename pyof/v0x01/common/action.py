@@ -4,7 +4,7 @@
 
 # Local source tree imports
 from pyof.v0x01.foundation.base import GenericBitMask, GenericStruct
-from pyof.v0x01.foundation.basic_types import (PAD, HWAddress, UBInt8, UBInt16,
+from pyof.v0x01.foundation.basic_types import (Pad, HWAddress, UBInt8, UBInt16,
                                                UBInt32)
 
 # Third-party imports
@@ -56,7 +56,7 @@ class ActionHeader(GenericStruct):
     action_type = UBInt16(enum_ref=ActionType)
     length = UBInt16()
     #: Pad for 64-bit alignment.
-    pad = PAD(4)
+    pad = Pad(4)
 
     def __init__(self, action_type=None, length=None):
         """The following constructor parameters are optional.
@@ -111,7 +111,7 @@ class ActionEnqueue(GenericStruct):
     length = UBInt16(16)
     port = UBInt16()
     #: Pad for 64-bit alignment.
-    pad = PAD(6)
+    pad = Pad(6)
     queue_id = UBInt32()
 
     def __init__(self, port=None, queue_id=None):
@@ -138,7 +138,7 @@ class ActionVlanVid(GenericStruct):
     length = UBInt16(8)
     vlan_id = UBInt16()
     #: Pad for bit alignment.
-    pad2 = PAD(2)
+    pad2 = Pad(2)
 
     def __init__(self, vlan_id=None):
         """The following constructor parameters are optional.
@@ -157,7 +157,7 @@ class ActionVlanPCP(GenericStruct):
     length = UBInt16(8)
     vlan_pcp = UBInt8()
     #: Pad for bit alignment.
-    pad = PAD(3)
+    pad = Pad(3)
 
     def __init__(self, vlan_pcp=None):
         """The following constructor parameters are optional.
@@ -179,7 +179,7 @@ class ActionDLAddr(GenericStruct):
     length = UBInt16(16)
     dl_addr = HWAddress()
     #: Pad for bit alignment.
-    pad = PAD(6)
+    pad = Pad(6)
 
     def __init__(self, dl_addr_type=None, dl_addr=None):
         """The following constructor parameters are optional.
@@ -226,7 +226,7 @@ class ActionNWTos(GenericStruct):
     length = UBInt16(8)
     nw_tos = UBInt8()
     #: Pad for bit alignment.
-    pad = PAD(3)
+    pad = Pad(3)
 
     def __init__(self, nw_tos_type=None, nw_tos=None):
         """The following constructor parameters are optional.
@@ -248,7 +248,7 @@ class ActionTPPort(GenericStruct):
     length = UBInt16(8)
     tp_port = UBInt16()
     #: Pad for bit alignment.
-    pad = PAD(2)
+    pad = Pad(2)
 
     def __init__(self, tp_port_type=None, tp_port=None):
         """The following constructor parameters are optional.

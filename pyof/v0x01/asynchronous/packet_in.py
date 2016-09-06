@@ -5,7 +5,7 @@ from enum import Enum
 
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import (PAD, BinaryData, UBInt8,
+from pyof.v0x01.foundation.basic_types import (Pad, BinaryData, UBInt8,
                                                UBInt16, UBInt32)
 
 # Third-party imports
@@ -38,7 +38,7 @@ class PacketIn(GenericMessage):
     in_port = UBInt16()
     reason = UBInt8(enum_ref=PacketInReason)
     #: Align to 32-bits.
-    pad = PAD(1)
+    pad = Pad(1)
     data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,

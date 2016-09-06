@@ -7,7 +7,7 @@ from enum import Enum
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.foundation.base import GenericMessage
-from pyof.v0x01.foundation.basic_types import (PAD, UBInt8, UBInt16, UBInt32,
+from pyof.v0x01.foundation.basic_types import (Pad, UBInt8, UBInt16, UBInt32,
                                                UBInt64)
 
 __all__ = ('FlowRemoved', 'FlowRemovedReason')
@@ -39,14 +39,14 @@ class FlowRemoved(GenericMessage):
     priority = UBInt16()
     reason = UBInt8(enum_ref=FlowRemovedReason)
     #: Align to 32-bits.
-    pad = PAD(1)
+    pad = Pad(1)
 
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
 
     idle_timeout = UBInt16()
     #: Align to 64-bits.
-    pad2 = PAD(2)
+    pad2 = Pad(2)
     packet_count = UBInt64()
     byte_count = UBInt64()
 
