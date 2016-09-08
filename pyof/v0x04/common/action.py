@@ -1,17 +1,17 @@
 """Defines actions that may be associated with flows packets."""
-
 # System imports
+from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (HWAddress, Pad, UBInt8, UBInt16,
-                                         UBInt32)
+from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32
 
 # Third-party imports
 
-__all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
-           'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr', 'ActionNWAddr',
-           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader')
+__all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
+           'ActionMPLSTTL', 'ActionNWTTL', 'ActionOutput', 'ActionPopMPLS',
+           'ActionPush', 'ActionSetField', 'ActionSetQueue', 'ActionType',
+           'ControllerMaxLen')
 
 # Enums
 
@@ -21,39 +21,108 @@ class ActionType(GenericBitMask):
 
     #: Output to switch port.
     OFPAT_OUTPUT = 0
-    #: Set the 802.1q VLAN id.
-    OFPAT_SET_VLAN_VID = 1
-    #: Set the 802.1q priority.
-    OFPAT_SET_VLAN_PCP = 2
-    #: Strip the 802.1q header.
-    OFPAT_STRIP_VLAN = 3
-    #: Ethernet source address.
-    OFPAT_SET_DL_SRC = 4
-    #: Ethernet destination address.
-    OFPAT_SET_DL_DST = 5
-    #: IP source address.
-    OFPAT_SET_NW_SRC = 6
-    #: IP destination address.
-    OFPAT_SET_NW_DST = 7
-    #: IP ToS (DSCP field, 6 bits).
-    OFPAT_SET_NW_TOS = 8
-    #: TCP/UDP source port.
-    OFPAT_SET_TP_SRC = 9
-    #: TCP/UDP destination port.
-    OFPAT_SET_TP_DST = 10
-    #: Output to queue.
-    OFPAT_ENQUEUE = 11
-    #: Vendor specific.
-    OFPAT_VENDOR = 0xffff
+    #: Copy TTL "outwards" -- from next-to-outermost to outermost
+    OFPAT_COPY_TTL_OUT = 11
+    #: Copy TTL "inwards" -- from outermost to next-to-outermost
+    OFPAT_COPY_TTL_IN = 12
+    #: MPLS TTL
+    OFPAT_SET_MPLS_TTL = 15
+    #: Decrement MPLS TTL
+    OFPAT_DEC_MPLS_TTL = 16
+    #: Push a new VLAN tag
+    OFPAT_PUSH_VLAN = 17
+    #: Pop the outer VLAN tag
+    OFPAT_POP_VLAN = 18
+    #: Push a new MPLS tag
+    OFPAT_PUSH_MPLS = 19
+    #: Pop the outer MPLS tag
+    OFPAT_POP_MPLS = 20
+    #: Set queue id when outputting to a port
+    OFPAT_SET_QUEUE = 21
+    #: Apply group.
+    OFPAT_GROUP = 22
+    #: IP TTL.
+    OFPAT_SET_NW_TTL = 23
+    #: Decrement IP TTL.
+    OFPAT_DEC_NW_TTL = 24
+    #: Set a header field using OXM TLV format.
+    OFPAT_SET_FIELD = 25
+    #: Push a new PBB service tag (I-TAG)
+    OFPAT_PUSH_PBB = 26
+    #: Pop the outer PBB service tag (I-TAG)
+    OFPAT_POP_PBB = 27
+    #: Experimenter type
+    OFPAT_EXPERIMENTER = 0xffff
+
+
+class ControllerMaxLen(Enum):
+    """A max_len of OFPCML_NO_BUFFER means that the complete packet should be
+    sent, and it should not be buffered."""
+    #: maximum max_len value which can be used to request a specific byte
+    #:     length.
+    OFPCML_MAX = 0xffe5
+    #: indicates that no buffering should be applied and the whole packet is to
+    #:     be sent to the controller.
+    OFPCML_NO_BUFFER = 0xffff
 
 
 # Classes
 
 
-class ActionHeader(GenericStruct):
-    """Defines the Header that is common to all actions."""
+class ActionExperimenterHeader(GenericStruct):
+    """Action structure for OFPAT_EXPERIMENTER."""
+    #: OFPAT_EXPERIMENTER.
+    action_type = UBInt16(ActionType.OFPAT_EXPERIMENTER, enum_ref=ActionType)
+    #: Length is multiple of 8.
+    length = UBInt16()
+    #: Experimenter ID which takes the same form as in struct
+    #:     ofp_experimenter_header
+    experimenter = UBInt32()
 
+    def __init__(self, length=None, experimenter=None):
+        """Action structure for OFPAT_EXPERIMENTER.
+
+        Args:
+            experimenter (int): The experimenter field is the Experimenter ID,
+                which takes the same form as in struct ofp_experimenter.
+        """
+        super().__init__()
+        self.length = length
+        self.experimenter = experimenter
+
+
+class ActionGroup(GenericStruct):
+    """Action structure for OFPAT_GROUP."""
+    #: OFPAT_GROUP.
+    action_type = UBInt16(ActionType.OFPAT_GROUP, enum_ref=ActionType)
+    #: Length is 8.
+    length = UBInt16(8)
+    #: Group identifier.
+    group_id = UBInt32()
+
+    def __init__(self, group_id=None):
+        """Action structure for OFPAT_GROUP.
+
+        Args:
+            group_id (int): The group_id indicates the group used to process
+                this packet. The set of buckets to apply depends on the group
+                type.
+        """
+        super().__init__()
+        self.group_id = group_id
+
+
+class ActionHeader(GenericStruct):
+    """Action header that is common to all actions.
+
+    The length includes the header and any padding used to make the action
+    64-bit aligned.
+    NB: The length of an action *must* always be a multiple of eight.
+    """
+    #: One of OFPAT_*.
     action_type = UBInt16(enum_ref=ActionType)
+    #: Length of action, including this header. This is the length of actions,
+    #:    including any padding to make it 64-bit aligned.
     length = UBInt16()
     #: Pad for 64-bit alignment.
     pad = Pad(4)
@@ -70,6 +139,48 @@ class ActionHeader(GenericStruct):
         self.length = length
 
 
+class ActionMPLSTTL(GenericStruct):
+    """Action structure for OFPAT_SET_MPLS_TTL."""
+    #: OFPAT_SET_MPLS_TTL.
+    action_type = UBInt16(ActionType.OFPAT_SET_MPLS_TTL, enum_ref=ActionType)
+    #: Length is 8.
+    length = UBInt16(8)
+    #: MPLS TTL
+    mpls_ttl = UBInt8()
+    #: Padding
+    pad = Pad(3)
+
+    def __init__(self, mpls_ttl=None):
+        """Action structure for OFPAT_SET_MPLS_TTL.
+
+        Args:
+            mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
+        """
+        super().__init__()
+        self.mpls_ttl = mpls_ttl
+
+
+class ActionNWTTL(GenericStruct):
+    """Action structure for OFPAT_SET_NW_TTL."""
+    #: OFPAT_SET_NW_TTL.
+    action_type = UBInt16(ActionType.OFPAT_SET_NW_TTL, enum_ref=ActionType)
+    #: Length is 8.
+    length = UBInt16(8)
+    #: IP TTL
+    nw_ttl = UBInt8()
+    #: Padding
+    pad = Pad(3)
+
+    def __init__(self, nw_ttl=None):
+        """Action structure for OFPAT_SET_NW_TTL.
+
+        Args:
+            nw_ttl (int): the TTL address to set in the IP header.
+        """
+        super().__init__()
+        self.nw_ttl = nw_ttl
+
+
 class ActionOutput(GenericStruct):
     """Defines the actions output.
 
@@ -80,10 +191,16 @@ class ActionOutput(GenericStruct):
     should be sent.
     """
 
-    type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
-    length = UBInt16(8)
+    #: OFPAT_OUTPUT.
+    action_type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
+    #: Length is 16.
+    length = UBInt16(16)
+    #: Output port.
     port = UBInt16()
+    #: Max length to send to controller.
     max_length = UBInt16()
+    #: Pad to 64 bits.
+    pad = Pad(6)
 
     def __init__(self, port=None, max_length=None):
         """The following constructor parameters are optional.
@@ -97,22 +214,6 @@ class ActionOutput(GenericStruct):
         self.max_length = max_length
 
 
-class ActionEnqueue(GenericStruct):
-    """Send packets to a queue's port.
-
-    A switch may support only queues that are tied to specific PCP/TOS bits.
-    In that case, we cannot map an arbitrary flow to a specific queue,
-    therefore the action ENQUEUE is not supported. The user can still use
-    these queues and map flows to them by setting the relevant fields
-    (TOS, VLAN PCP).
-    """
-
-    type = UBInt16(ActionType.OFPAT_ENQUEUE, enum_ref=ActionType)
-    length = UBInt16(16)
-    port = UBInt16()
-    #: Pad for 64-bit alignment.
-    pad = Pad(6)
-    queue_id = UBInt32()
 
     def __init__(self, port=None, queue_id=None):
         """The following constructor parameters are optional.
@@ -126,161 +227,96 @@ class ActionEnqueue(GenericStruct):
         self.queue_id = queue_id
 
 
-class ActionVlanVid(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
-
-    .. note:: The vlan_vid field is 16 bits long,
-              when an actual VLAN id is only 12 bits.
-              The value 0xffff is used to indicate that no VLAN id was set
-    """
-
-    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+class ActionPopMPLS(GenericStruct):
+    """Action structure for OFPAT_POP_MPLS."""
+    #: OFPAT_POP_MPLS.
+    action_type = UBInt16(ActionType.OFPAT_POP_MPLS, enum_ref=ActionType)
+    #: Length is 8.
     length = UBInt16(8)
-    vlan_id = UBInt16()
-    #: Pad for bit alignment.
-    pad2 = Pad(2)
+    #: Ethertype
+    ethertype = UBInt16()
 
-    def __init__(self, vlan_id=None):
-        """The following constructor parameters are optional.
+    def __init__(self, ethertype=None):
+        """Action structure for OFPAT_POP_MPLS.
 
         Args:
-            vlan_id (int): VLAN priority.
+            ethertype (int): indicates the Ethertype of the payload.
         """
         super().__init__()
-        self.vlan_id = vlan_id
+        self.ethertype = ethertype
 
 
-class ActionVlanPCP(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_PCP`."""
-
-    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+class ActionPush(GenericStruct):
+    """Action structure for OFPAT_PUSH_VLAN/MPLS/PBB."""
+    #: OFPAT_PUSH_VLAN/MPLS/PBB.
+    action_type = UBInt16(enum_ref=ActionType)
+    #: Length is 8.
     length = UBInt16(8)
-    vlan_pcp = UBInt8()
-    #: Pad for bit alignment.
-    pad = Pad(3)
-
-    def __init__(self, vlan_pcp=None):
-        """The following constructor parameters are optional.
-
-        Args:
-            vlan_pcp (int): VLAN Priority.
-
-        .. note:: The vlan_pcp field is 8 bits long,
-                  but only the lower 3 bits have meaning.
-        """
-        super().__init__()
-        self.vlan_pcp = vlan_pcp
-
-
-class ActionDLAddr(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or _DST."""
-
-    dl_addr_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(16)
-    dl_addr = HWAddress()
-    #: Pad for bit alignment.
-    pad = Pad(6)
-
-    def __init__(self, dl_addr_type=None, dl_addr=None):
-        """The following constructor parameters are optional.
-
-        Args:
-            dl_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_DL_SRC` or
-                :attr:`~ActionType.OFPAT_SET_DL_DST`.
-            dl_addr (:class:`~.HWAddress`): Ethernet address.
-                Defaults to None.
-        """
-        super().__init__()
-        self.dl_addr_type = dl_addr_type
-        self.dl_addr = dl_addr
-
-
-class ActionNWAddr(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST."""
-
-    nw_addr_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
-    nw_addr = UBInt32()
-
-    def __init__(self, nw_addr_type=None, nw_addr=None):
-        """The following constructor parameters are optional.
-
-        Args:
-            nw_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
-                :attr:`~ActionType.OFPAT_SET_NW_DST`.
-            nw_addr (int): IP Address.
-        """
-        super().__init__()
-        self.nw_addr_type = nw_addr_type
-        self.nw_addr = nw_addr
-
-
-class ActionNWTos(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_NW_TOS`.
-
-    .. note:: The nw_tos field is the 6 upper bits of the ToS field to set,
-              in the original bit positions (shifted to the left by 2).
-    """
-
-    nw_tos_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
-    nw_tos = UBInt8()
-    #: Pad for bit alignment.
-    pad = Pad(3)
-
-    def __init__(self, nw_tos_type=None, nw_tos=None):
-        """The following constructor parameters are optional.
-
-        Args:
-            nw_tos_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
-                :attr:`~ActionType.OFPAT_SET_NW_SRC`.
-            nw_tos (int): IP ToS (DSCP field, 6 bits).
-        """
-        super().__init__()
-        self.nw_tos_type = nw_tos_type
-        self.nw_tos = nw_tos
-
-
-class ActionTPPort(GenericStruct):
-    """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or _DST."""
-
-    tp_port_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
-    tp_port = UBInt16()
-    #: Pad for bit alignment.
+    #: Ethertype
+    ethertype = UBInt16()
+    #: Padding
     pad = Pad(2)
 
-    def __init__(self, tp_port_type=None, tp_port=None):
-        """The following constructor parameters are optional.
+    def __init__(self, ethertype=None):
+        """Action structure for OFPAT_PUSH_VLAN/MPLS/PBB.
 
         Args:
-            tp_port_type (ActionType): :attr:`~ActionType.OFPAT_SET_TP_SRC` or
-                :attr:`~ActionType.OFPAT_SET_TP_DST`.
-            tp_port (int): TCP/UDP/other port to set.
+            ethertype (int): indicates the Ethertype of the new tag.
         """
         super().__init__()
-        self.tp_port_type = tp_port_type
-        self.tp_port = tp_port
+        self.ethertype = ethertype
 
 
-class ActionVendorHeader(GenericStruct):
-    """Action header for :attr:`ActionType.OFPAT_VENDOR`.
-
-    The rest of the body is vendor-defined.
-    """
-
-    type = UBInt16(ActionType.OFPAT_VENDOR, enum_ref=ActionType)
+class ActionSetField(GenericStruct):
+    """Action structure for OFPAT_SER_FIELD."""
+    #: OFPAT_SER_FIELD.
+    action_type = UBInt16(ActionType.OFPAT_SER_FIELD, enum_ref=ActionType)
+    #: Length is padded to 64 bits.
     length = UBInt16()
-    vendor = UBInt32()
+    #: Followed by:
+    #:     - Exactly oxm_len bytes containing a single OXM TLV, then
+    #:     - Exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4) (between 0 and 7)
+    #:       bytes of all-zero bytes
 
-    def __init__(self, length=None, vendor=None):
-        """The following constructor parameters are optional.
+    #: OXM TLV - Make compiler happy
+    #: TODO: This seems to be wrong....
+    field1 = UBInt8()
+    field2 = UBInt8()
+    field3 = UBInt8()
+    field4 = UBInt8()
+
+    def __init__(self, length=None, field1=None, field2=None, field3=None,
+                 field4=None):
+        """Action structure for OFPAT_SER_FIELD.
 
         Args:
-            length (int): Length is a multiple of 8.
-            vender (int): Vendor ID with the same form as in VendorHeader.
-                Defaults to None.
+            length (int): length padded to 64 bits.
+            # TODO: It just seems to be wrong here...
+            field1 (int): .
         """
         super().__init__()
         self.length = length
-        self.vendor = vendor
+        self.field1 = field1
+        self.field2 = field2
+        self.field3 = field3
+        self.field4 = field4
+
+
+class ActionSetQueue(GenericStruct):
+    """Action structure for OFPAT_SET_QUEUE."""
+    #: OFPAT_SET_QUEUE.
+    action_type = UBInt16(ActionType.OFPAT_SET_QUEUE, enum_ref=ActionType)
+    #: Length is 8.
+    length = UBInt16(8)
+    #: Queue id for the packets.
+    queue_id = UBInt32()
+
+    def __init__(self, queue_id=None):
+        """Action structure for OFPAT_SET_QUEUE.
+
+        Args:
+            queue_id (int): The queue_id send packets to given queue on port.
+        """
+        super().__init__()
+        self.queue_id = queue_id
+
