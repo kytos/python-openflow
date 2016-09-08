@@ -25,7 +25,7 @@ class TestHeader(unittest.TestCase):
 
     def test_pack(self):
         """[Common/Header] - packing Hello"""
-        packed_header = b'\x01\x00\x00\x00\x00\x00\x00\x01'
+        packed_header = b'\x04\x00\x00\x00\x00\x00\x00\x01'
         self.assertEqual(self.message.pack(), packed_header)
 
     def test_unpack(self):
