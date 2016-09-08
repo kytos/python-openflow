@@ -1,6 +1,10 @@
 """Automate struct tests."""
+import logging
 import unittest
 from tests.raw_dump import RawDump
+
+log = logging.getLogger()
+RAW_DUMP_ERR = '\n>>>> Raw dump file for this test need to be generated <<<<\n'
 
 
 class TestStruct(unittest.TestCase):
@@ -114,20 +118,33 @@ class TestStruct(unittest.TestCase):
 
     def test_pack(self):
         """Check whether packed objects equals to dump file."""
-        msg = self.get_raw_object()
-        packed_obj = msg.pack()
-        raw_file = self.get_raw_dump().read()
-        self.assertEqual(packed_obj, raw_file)
+        try:
+            raw_file = self.get_raw_dump().read()
+            msg = self.get_raw_object()
+            packed_obj = msg.pack()
+            self.assertEqual(packed_obj, raw_file)
+        except FileNotFoundError:
+            log.warning(RAW_DUMP_ERR)
+            raise self.skipTest('There is no raw dump file for this test')
+        except:
+            self.fail()
 
     def test_unpack(self):
         """Check whether the unpacked dump equals to expected object."""
-        obj = self.get_raw_object()
-        unpacked = self.get_raw_dump().unpack()
-        self.assertEqual(unpacked, obj)
+        try:
+            obj = self.get_raw_object()
+            unpacked = self.get_raw_dump().unpack()
+            self.assertEqual(unpacked, obj)
+        except FileNotFoundError:
+            log.error(RAW_DUMP_ERR)
+            raise self.skipTest('There is no raw dump file for this test')
 
     def test_minimum_size(self):
         """Test struct minimum size."""
         if self._min_size is None:
             raise self.skipTest('minimum size not set.')
-        obj = TestStruct._msg_cls()
-        self.assertEqual(obj.get_size(), self._min_size)
+        try:
+            obj = TestStruct._msg_cls()
+            self.assertEqual(obj.get_size(), self._min_size)
+        except:
+            raise self.skipTest('There is no raw dump file for this test')
