@@ -218,7 +218,8 @@ class Match(GenericStruct):
 class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
     #: oxm_class = OFPXMC_EXPERIMENTER
-    oxm_header = UBInt32(OxmOfbMatchField.OFPXMC_EXPERIMENTER)
+    oxm_header = UBInt32(OxmOfbMatchField.OFPXMC_EXPERIMENTER,
+                         enum_ref=OxmOfbMatchField)
     #: Experimenter ID which takes the same form as in struct
     #:     ofp_experimenter_header
     experimenter = UBInt32()

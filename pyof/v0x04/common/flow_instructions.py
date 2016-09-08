@@ -45,7 +45,8 @@ class InstructionApplyAction(GenericStruct):
     applied to the packet in-order
     """
     #: OFPIT_APPLY_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_APPLY_ACTIONS)
+    instruction_type = UBInt16(InstructionType.OFPIT_APPLY_ACTIONS,
+                               enum_ref=InstructionType)
     #: Length of this struct in bytes.
     length = UBInt16()
     #: Align to 64-bits
@@ -70,7 +71,8 @@ class InstructionClearAction(GenericStruct):
 
     This structure does not contain any actions"""
     #: OFPIT_CLEAR_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_CLEAR_ACTIONS)
+    instruction_type = UBInt16(InstructionType.OFPIT_CLEAR_ACTIONS,
+                               enum_ref=InstructionType)
     #: Length of this struct in bytes.
     length = UBInt16(8)
     #: Align to 64-bits
@@ -82,7 +84,8 @@ class InstructionClearAction(GenericStruct):
 class InstructionGotoTable(GenericStruct):
     """Instruction structure for OFPIT_GOTO_TABLE."""
     #: OFPIT_GOTO_TABLE.
-    instruction_type = UBInt16(InstructionType.OFPIT_GOTO_TABLE)
+    instruction_type = UBInt16(InstructionType.OFPIT_GOTO_TABLE,
+                               enum_ref=InstructionType)
     #: Length of this struct in bytes.
     length = UBInt16()
     #: Set next table in the lookup pipeline.
@@ -106,7 +109,8 @@ class InstructionMeter(GenericStruct):
 
     meter_id indicates which meter to apply on the packet."""
     #: OFPIT_METER.
-    instruction_type = UBInt16(InstructionType.OFPIT_METER)
+    instruction_type = UBInt16(InstructionType.OFPIT_METER,
+                               enum_ref=InstructionType)
     #: Length is 8.
     length = UBInt16(8)
     #: Meter instance.
@@ -127,7 +131,8 @@ class InstructionWriteAction(GenericStruct):
     The actions field must be treated as a SET, so the actions are not repeated
     """
     #: OFPIT_WRITE_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_ACTIONS)
+    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_ACTIONS,
+                               enum_ref=InstructionType)
     #: Length of this struct in bytes.
     length = UBInt16()
     #: Align to 64-bits
@@ -150,7 +155,8 @@ class InstructionWriteAction(GenericStruct):
 class InstructionWriteMetadata(GenericStruct):
     """Instruction structure for OFPIT_WRITE_METADATA."""
     #: OFPIT_WRITE_METADATA
-    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_METADATA)
+    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_METADATA,
+                               enum_ref=InstructionType)
     #: Length of this struct in bytes
     length = UBInt16()
     #: Align to 64-bits
