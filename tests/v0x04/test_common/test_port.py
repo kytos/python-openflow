@@ -11,8 +11,8 @@ class TestPort(TestCase):
         self.message.port_no = 2
         self.message.hw_addr = '1a:2b:3c:4d:5e:6f'
         self.message.name = 'eth1-s1'
-        self.message.config = PortConfig.OFPPC_NO_STP
-        self.message.state = PortState.OFPPS_STP_FORWARD
+        self.message.config = PortConfig.OFPPC_NO_FWD
+        self.message.state = PortState.OFPPS_LIVE
         self.message.curr = PortFeatures.OFPPF_1TB_FD +\
             PortFeatures.OFPPF_FIBER
         self.message.advertised = PortFeatures.OFPPF_PAUSE
