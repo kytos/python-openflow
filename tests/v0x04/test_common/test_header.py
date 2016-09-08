@@ -32,12 +32,15 @@ class TestHeader(unittest.TestCase):
         """[Common/Header] - unpacking Hello"""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
                                 'raw/v0x04/ofpt_hello.dat')
-        f = open(filename, 'rb')
-        self.message.unpack(f.read(8))
+        try:
+            f = open(filename, 'rb')
+            self.message.unpack(f.read(8))
 
-        self.assertEqual(self.message.length, 8)
-        self.assertEqual(self.message.xid, 1)
-        self.assertEqual(self.message.message_type, Type.OFPT_HELLO)
-        self.assertEqual(self.message.version, 0x04)
+            self.assertEqual(self.message.length, 8)
+            self.assertEqual(self.message.xid, 1)
+            self.assertEqual(self.message.message_type, Type.OFPT_HELLO)
+            self.assertEqual(self.message.version, 0x04)
 
-        f.close()
+            f.close()
+        except FileNotFoundError:
+            raise self.skipTest('There is no raw dump file for this test')
