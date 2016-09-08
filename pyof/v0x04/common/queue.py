@@ -5,13 +5,14 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import FixedTypeList, Pad, UBInt16, UBInt32
+from pyof.foundation.basic_types import (BinaryData, FixedTypeList, Pad,
+                                         UBInt16, UBInt32)
 
 # Third-party imports
 
-
-__all__ = ('QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
-           'QueueProperties', 'ListOfProperties', 'ListOfQueues')
+__all__ = ('ListOfProperties', 'ListOfQueues', 'PacketQueue',
+           'QueueProperties', 'QueuePropExperimenter', 'QueuePropHeader',
+           'QueuePropMaxRate', 'QueuePropMinRate')
 
 # Enums
 
@@ -19,13 +20,37 @@ __all__ = ('QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
 class QueueProperties(Enum):
     """Describe queue properties."""
 
-    #: No property defined for queue (default)
-    OFPQT_NONE = 0
     #: Minimum datarate guaranteed
     OFPQT_MIN_RATE = 1
+    #: Maximum datarate guaranteed
+    OFPQT_MAX_RATE = 2
+    #: Experimenter defined property
+    OFPQT_EXPERIMENTER = 0xffff
 
 
 # Classes
+
+
+class QueuePropHeader(GenericStruct):
+    """Describe the header of each queue property."""
+
+    #: One of OFPQT_*
+    property = UBInt16(enum_ref=QueueProperties)
+    #: Length of property, including this header
+    length = UBInt16()
+    #: 64-bit alignment
+    pad = Pad(4)
+
+    def __init__(self, property=None, length=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            property (QueueProperties): The queue property.
+            len (int): Length of property, including this header.
+        """
+        super().__init__()
+        self.property = property
+        self.length = length
 
 
 class ListOfProperties(FixedTypeList):
@@ -46,67 +71,35 @@ class ListOfProperties(FixedTypeList):
                          items=items)
 
 
-class QueuePropHeader(GenericStruct):
-    """Describe the header of each queue property."""
-
-    property = UBInt16(enum_ref=QueueProperties)
-    len = UBInt16()
-    #: 64-bit alignment
-    pad = Pad(4)
-
-    def __init__(self, prop=None, length=None):
-        """The contructor takes the paremeters below.
-
-        Args:
-            property (QueueProperties): The queue property.
-            len (int): Length of property, including this header.
-        """
-        super().__init__()
-        self.property = prop
-        self.len = length
-
-
 class PacketQueue(GenericStruct):
     """Describe a queue."""
 
+    #: id for the specific queue
     queue_id = UBInt32()
+    #: Port this queue is attached to.
+    port = UBInt32()
+    #: Length, in bytes, of this queue desc.
     length = UBInt16()
     #: 64-bit alignment.
-    pad = Pad(2)
+    pad = Pad(6)
+    #: List of properties
     properties = ListOfProperties()
 
-    def __init__(self, queue_id=None, length=None, properties=None):
+    def __init__(self, queue_id=None, port=None, length=None, properties=None):
         """The contructor takes the paremeters below.
 
         Args:
             queue_id (int): ID of the specific queue.
+            port (int): Port his queue is attached to.
             length (int): Length in bytes of this queue desc.
             properties(ListOfProperties): Queue's list of properties. Default
                 is an empty list.
         """
         super().__init__()
         self.queue_id = queue_id
+        self.port = port
         self.length = length
         self.properties = [] if properties is None else properties
-
-
-class QueuePropMinRate(GenericStruct):
-    """Define the minimum-rate type queue."""
-
-    prop_header = QueuePropHeader(prop=QueueProperties.OFPQT_MIN_RATE,
-                                  length=16)
-    rate = UBInt16()
-    #: 64-bit alignmet.
-    pad = Pad(6)
-
-    def __init__(self, rate=None):
-        """The contructor takes the paremeters below.
-
-        Args:
-            rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
-        """
-        super().__init__()
-        self.rate = rate
 
 
 class ListOfQueues(FixedTypeList):
@@ -125,3 +118,69 @@ class ListOfQueues(FixedTypeList):
         """
         super().__init__(pyof_class=PacketQueue,
                          items=items)
+
+
+class QueuePropExperimenter(GenericStruct):
+    """A experimenter queue property uses the following structure and fields"""
+
+    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_EXPERIMENTER,
+                                  length=16)
+    #: Experimenter ID which takes the same form as in struct
+    #:     ofp_experimenter_header
+    experimenter = UBInt32()
+    #: 64-bit alignmet.
+    pad = Pad(4)
+    #: Experimenter defined data.
+    data = BinaryData()
+
+    def __init__(self, experimenter=None, data=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            experimenter (int): Experimenter ID which takes the same form as in
+                struct ofp_experimenter_header.
+            data (bytes): Experimenter defined data.
+        """
+        super().__init__()
+        self.experimenter = experimenter
+        self.data = data
+
+
+class QueuePropMaxRate(GenericStruct):
+    """A maximum-rate queue property uses the following structure and fields"""
+
+    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MAX_RATE,
+                                  length=16)
+    #: In 1/10 of a percent; >1000 -> disabled.
+    rate = UBInt16()
+    #: 64-bit alignmet.
+    pad = Pad(6)
+
+    def __init__(self, rate=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
+        """
+        super().__init__()
+        self.rate = rate
+
+
+class QueuePropMinRate(GenericStruct):
+    """A minimum-rate queue property uses the following structure and fields"""
+
+    prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MIN_RATE,
+                                  length=16)
+    #: In 1/10 of a percent; >1000 -> disabled.
+    rate = UBInt16()
+    #: 64-bit alignmet.
+    pad = Pad(6)
+
+    def __init__(self, rate=None):
+        """The contructor takes the paremeters below.
+
+        Args:
+            rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
+        """
+        super().__init__()
+        self.rate = rate
