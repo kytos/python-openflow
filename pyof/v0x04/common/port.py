@@ -70,7 +70,7 @@ class PortConfig(GenericBitMask):
     """
 
     #: Port is administratively down.
-    OFPC_PORT_DOWN = 1 << 0
+    OFPPC_PORT_DOWN = 1 << 0
     #: Drop all packets received by port.
     OFPPC_NO_RECV = 1 << 2
     #: Drop packets forwarded to port.
