@@ -60,6 +60,7 @@ class InstructionApplyAction(GenericStruct):
             - actions (:class:`~.actions.ListOfActions`): Actions associated
                 with OFPIT_APPLY_ACTIONS
         """
+        super().__init__()
         self.length = length
         self.actions = actions if actions is not None else []
 
@@ -95,6 +96,7 @@ class InstructionGotoTable(GenericStruct):
             - length (int): Length of this struct in bytes
             - table_id (int): set next table in the lookup pipeline
         """
+        super().__init__()
         self.length = length
         self.table_id = table_id
 
@@ -115,6 +117,7 @@ class InstructionMeter(GenericStruct):
         Args:
             - meter_id (int): Meter instance
         """
+        super().__init__()
         self.meter_id = meter_id
 
 
@@ -139,6 +142,7 @@ class InstructionWriteAction(GenericStruct):
             - actions (:class:`~.actions.ListOfActions`): Actions associated
                 with OFPIT_WRITE_ACTIONS
         """
+        super().__init__()
         self.length = length
         self.actions = actions if actions is not None else []
 
@@ -163,6 +167,7 @@ class InstructionWriteMetadata(GenericStruct):
             - metadata (int): Metadata value to write
             - metadata_mask (int): Metadata write bitmask
         """
+        super().__init__()
         self.length = length
         self.metadata = metadata
         self.metadata_mask = metadata_mask
