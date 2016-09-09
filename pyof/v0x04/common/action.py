@@ -3,7 +3,7 @@
 from enum import Enum
 
 # Local source tree imports
-from pyof.foundation.base import GenericBitMask, GenericStruct
+from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32
 
 # Third-party imports
@@ -16,11 +16,29 @@ __all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
 # Enums
 
 
-class ActionType(GenericBitMask):
+class ActionType(Enum):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.
     OFPAT_OUTPUT = 0
+    #: Set the 802.1q VLAN id.
+    OFPAT_SET_VLAN_VID = 1
+    #: Set the 802.1q priority.
+    OFPAT_SET_VLAN_PCP = 2
+    #: Strip the 802.1q header.
+    OFPAT_STRIP_VLAN = 3
+    #: Ethernet source address.
+    OFPAT_SET_DL_SRC = 4
+    #: Ethernet destination address.
+    OFPAT_SET_DL_DST = 5
+    #: IP source address.
+    OFPAT_SET_NW_SRC = 6
+    #: IP destination address.
+    OFPAT_SET_NW_DST = 7
+    #: TCP/UDP source port.
+    OFPAT_SET_TP_SRC = 8
+    #: TCP/UDP destination port.
+    OFPAT_SET_TP_DST = 9
     #: Copy TTL "outwards" -- from next-to-outermost to outermost
     OFPAT_COPY_TTL_OUT = 11
     #: Copy TTL "inwards" -- from outermost to next-to-outermost
@@ -53,11 +71,15 @@ class ActionType(GenericBitMask):
     OFPAT_POP_PBB = 27
     #: Experimenter type
     OFPAT_EXPERIMENTER = 0xffff
+    OFPAT_VENDOR = 0xffff
 
 
 class ControllerMaxLen(Enum):
-    """A max_len of OFPCML_NO_BUFFER means that the complete packet should be
-    sent, and it should not be buffered."""
+    """A max_len of OFPCML_NO_BUFFER means not to buffer.
+
+    The packet should be sent.
+    """
+
     #: maximum max_len value which can be used to request a specific byte
     #:     length.
     OFPCML_MAX = 0xffe5
@@ -71,6 +93,7 @@ class ControllerMaxLen(Enum):
 
 class ActionExperimenterHeader(GenericStruct):
     """Action structure for OFPAT_EXPERIMENTER."""
+
     #: OFPAT_EXPERIMENTER.
     action_type = UBInt16(ActionType.OFPAT_EXPERIMENTER, enum_ref=ActionType)
     #: Length is multiple of 8.
@@ -93,6 +116,7 @@ class ActionExperimenterHeader(GenericStruct):
 
 class ActionGroup(GenericStruct):
     """Action structure for OFPAT_GROUP."""
+
     #: OFPAT_GROUP.
     action_type = UBInt16(ActionType.OFPAT_GROUP, enum_ref=ActionType)
     #: Length is 8.
@@ -119,6 +143,7 @@ class ActionHeader(GenericStruct):
     64-bit aligned.
     NB: The length of an action *must* always be a multiple of eight.
     """
+
     #: One of OFPAT_*.
     action_type = UBInt16(enum_ref=ActionType)
     #: Length of action, including this header. This is the length of actions,
@@ -141,6 +166,7 @@ class ActionHeader(GenericStruct):
 
 class ActionMPLSTTL(GenericStruct):
     """Action structure for OFPAT_SET_MPLS_TTL."""
+
     #: OFPAT_SET_MPLS_TTL.
     action_type = UBInt16(ActionType.OFPAT_SET_MPLS_TTL, enum_ref=ActionType)
     #: Length is 8.
@@ -162,6 +188,7 @@ class ActionMPLSTTL(GenericStruct):
 
 class ActionNWTTL(GenericStruct):
     """Action structure for OFPAT_SET_NW_TTL."""
+
     #: OFPAT_SET_NW_TTL.
     action_type = UBInt16(ActionType.OFPAT_SET_NW_TTL, enum_ref=ActionType)
     #: Length is 8.
@@ -202,7 +229,8 @@ class ActionOutput(GenericStruct):
     #: Pad to 64 bits.
     pad = Pad(6)
 
-    def __init__(self, port=None, max_length=None):
+    def __init__(self, action_type=None, length=None, port=None,
+                 max_length=None):
         """The following constructor parameters are optional.
 
         Args:
@@ -210,25 +238,15 @@ class ActionOutput(GenericStruct):
             max_length (int): Max length to send to controller.
         """
         super().__init__()
+        self.action_type = action_type
+        self.length = length
         self.port = port
         self.max_length = max_length
 
 
-
-    def __init__(self, port=None, queue_id=None):
-        """The following constructor parameters are optional.
-
-        Args:
-            port (physical port or :attr:`.Port.OFPP_IN_PORT`): Queue's port.
-            queue_id (int): Where to enqueue the packets.
-        """
-        super().__init__()
-        self.port = port
-        self.queue_id = queue_id
-
-
 class ActionPopMPLS(GenericStruct):
     """Action structure for OFPAT_POP_MPLS."""
+
     #: OFPAT_POP_MPLS.
     action_type = UBInt16(ActionType.OFPAT_POP_MPLS, enum_ref=ActionType)
     #: Length is 8.
@@ -248,6 +266,7 @@ class ActionPopMPLS(GenericStruct):
 
 class ActionPush(GenericStruct):
     """Action structure for OFPAT_PUSH_VLAN/MPLS/PBB."""
+
     #: OFPAT_PUSH_VLAN/MPLS/PBB.
     action_type = UBInt16(enum_ref=ActionType)
     #: Length is 8.
@@ -268,9 +287,10 @@ class ActionPush(GenericStruct):
 
 
 class ActionSetField(GenericStruct):
-    """Action structure for OFPAT_SER_FIELD."""
-    #: OFPAT_SER_FIELD.
-    action_type = UBInt16(ActionType.OFPAT_SER_FIELD, enum_ref=ActionType)
+    """Action structure for OFPAT_SET_FIELD."""
+
+    #: OFPAT_SET_FIELD.
+    action_type = UBInt16(ActionType.OFPAT_SET_FIELD, enum_ref=ActionType)
     #: Length is padded to 64 bits.
     length = UBInt16()
     #: Followed by:
@@ -279,7 +299,6 @@ class ActionSetField(GenericStruct):
     #:       bytes of all-zero bytes
 
     #: OXM TLV - Make compiler happy
-    #: TODO: This seems to be wrong....
     field1 = UBInt8()
     field2 = UBInt8()
     field3 = UBInt8()
@@ -287,12 +306,14 @@ class ActionSetField(GenericStruct):
 
     def __init__(self, length=None, field1=None, field2=None, field3=None,
                  field4=None):
-        """Action structure for OFPAT_SER_FIELD.
+        """Action structure for OFPAT_SET_FIELD.
 
         Args:
             length (int): length padded to 64 bits.
-            # TODO: It just seems to be wrong here...
-            field1 (int): .
+            field1 (int): OXM field.
+            field2 (int): OXM field.
+            field3 (int): OXM field.
+            field4 (int): OXM field.
         """
         super().__init__()
         self.length = length
@@ -304,6 +325,7 @@ class ActionSetField(GenericStruct):
 
 class ActionSetQueue(GenericStruct):
     """Action structure for OFPAT_SET_QUEUE."""
+
     #: OFPAT_SET_QUEUE.
     action_type = UBInt16(ActionType.OFPAT_SET_QUEUE, enum_ref=ActionType)
     #: Length is 8.
@@ -319,4 +341,3 @@ class ActionSetQueue(GenericStruct):
         """
         super().__init__()
         self.queue_id = queue_id
-
