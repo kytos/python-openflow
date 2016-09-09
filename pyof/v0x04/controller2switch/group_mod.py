@@ -47,20 +47,25 @@ class Bucket(GenericStruct):
 
     def __init__(self, length=None, weight=None, watch_port=None,
                  watch_group=None, actions=None):
-        """Initialize all instance variables."""
+        """Initialize all instance variables.
+
+        Args:
+            length (int): Length the bucket in bytes, including this header and
+                any padding to make it 64-bit aligned.
+            weight (int): Relative weight of bucket. Only defined for select
+                groups.
+            watch_port (int): Port whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            watch_group (int): Group whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            actions (:func:`list` of :class:`.ActionHeader`): The action length
+                is inferred from the length field in the header.
+        """
         super().__init__()
-        #: Length the bucket in bytes, including this header and any padding to
-        #: make it 64-bit aligned.
         self.length = length
-        #: Relative weight of bucket. Only defined for select groups.
         self.weight = weight
-        #: Port whose state affects whether this bucket is live. Only required
-        #: for fast failover groups.
         self.watch_port = watch_port
-        #: Group whose state affects whether this bucket is live. Only required
-        #: for fast failover groups.
         self.watch_group = watch_group
-        #: The action length is inferred from the length field in the header.
         self.actions = actions
 
 
@@ -77,14 +82,18 @@ class GroupMod(GenericMessage):
 
     def __init__(self, xid=None, command=None, group_type=None, group_id=None,
                  buckets=None):
-        """Initialize all instance variables."""
+        """Initialize all instance variables.
+
+        Args:
+            xid (int): Header's transaction id. Defaults to random.
+            command (GroupModCommand): One of OFPGC_*.
+            group_type (GroupType): One of OFPGT_*.
+            group_id (int): Group identifier.
+            buckets (:func:`list` of :class:`Bucket`): The length of the bucket
+                array is inferred from the length field in the header.
+        """
         super().__init__(xid)
-        #: GroupModCommand: One of OFPGC_*.
         self.command = command
-        #: GroupType: One of OFPGT_*.
         self.group_type = group_type
-        #: int: Group identifier.
         self.group_id = group_id
-        #: (:func:`list` of :class:`.Bucket`): The length of the bucket array
-        #: is inferred from the length field in the header.
         self.buckets = buckets
