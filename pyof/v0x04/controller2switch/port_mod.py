@@ -5,10 +5,10 @@
 # Third-party imports
 
 # Local source tree imports
-from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.phy_port import PortConfig, PortFeatures
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import HWAddress, Pad, UBInt16, UBInt32
+from pyof.foundation.basic_types import HWAddress, Pad, UBInt32
+from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.port import PortConfig, PortFeatures
 
 __all__ = ('PortMod',)
 
@@ -19,13 +19,15 @@ class PortMod(GenericMessage):
     """Implement messages to modify the physical port behavior."""
 
     header = Header(message_type=Type.OFPT_PORT_MOD)
-    port_no = UBInt16()
+    port_no = UBInt32()
+    pad = Pad(4)
     hw_addr = HWAddress()
+    pad2 = Pad(2)
     config = UBInt32(enum_ref=PortConfig)
     mask = UBInt32(enum_ref=PortConfig)
     advertise = UBInt32(enum_ref=PortFeatures)
     #: Pad to 64-bits.
-    pad = Pad(4)
+    pad3 = Pad(4)
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None):
@@ -39,7 +41,8 @@ class PortMod(GenericMessage):
                 so it must be the same as returned in an ofp_phy_port struct.
             config (PortConfig): Bitmap of OFPPC_* flags
             mask (PortConfig): Bitmap of OFPPC_* flags to be changed
-            advertise (PortFeatures): Bitmap of "ofp_port_features"s
+            advertise (PortFeatures): Bitmap of OFPPF_*. Zero all bits to
+                prevent any action taking place.
         """
         super().__init__(xid)
         self.port_no = port_no
