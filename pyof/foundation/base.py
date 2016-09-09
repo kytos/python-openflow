@@ -108,7 +108,7 @@ class GenericType:
         Considering an example with UBInt8 class, that inherits from
         GenericType:
 
-        >>> from pyof.v0x01.foundation.basic_types import UBInt8
+        >>> from pyof.foundation.basic_types import UBInt8
         >>> objectA = UBInt8(1)
         >>> objectB = 5
         >>> objectA.pack()
