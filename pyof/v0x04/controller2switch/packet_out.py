@@ -1,12 +1,12 @@
 """For the controller to send a packet out through the datapath."""
 from copy import deepcopy
 
-from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.phy_port import Port
-from pyof.v0x04.controller2switch.common import ListOfActions
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16, UBInt32
 from pyof.foundation.exceptions import ValidationError
+from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.phy_port import Port
+from pyof.v0x04.controller2switch.common import ListOfActions
 
 __all__ = ('PacketOut',)
 

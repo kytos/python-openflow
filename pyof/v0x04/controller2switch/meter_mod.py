@@ -6,7 +6,6 @@ from pyof.foundation.basic_types import (FixedTypeList, GenericStruct, Pad,
                                          UBInt8, UBInt16, UBInt32)
 from pyof.v0x04.common.header import Header, Type
 
-
 __all__ = ('MeterMod', 'Meter', 'MeterModCommand', 'MeterFlags',
            'MeterBandHeader', 'MeterBandType', 'MeterBandDrop',
            'MeterBandDscpRemark', 'MeterBandExperimenter')

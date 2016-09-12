@@ -4,8 +4,8 @@
 
 # Third-party imports
 
-from pyof.v0x04.common.header import Header, Type
 from pyof.foundation.base import GenericMessage
+from pyof.v0x04.common.header import Header, Type
 
 __all__ = ('BarrierRequest',)
 

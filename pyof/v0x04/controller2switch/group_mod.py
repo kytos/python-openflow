@@ -7,7 +7,6 @@ from pyof.foundation.basic_types import (FixedTypeList, GenericStruct, Pad,
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.header import Header, Type
 
-
 _all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Bucket')
 
 

@@ -5,10 +5,10 @@
 # Third-party imports
 
 # Local imports
-from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.controller2switch.common import StatsTypes
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import ConstantTypeList, UBInt16
+from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.controller2switch.common import StatsTypes
 
 __all__ = ('StatsRequest',)
 
