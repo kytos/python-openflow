@@ -1,38 +1,15 @@
-"""Test of Port class from common module"""
-from unittest import TestCase, skip
+"""Test of Port class from common module."""
+from pyof.v0x04.common.port import Port
+from tests.test_struct import TestStruct
 
-from pyof.v0x04.common.port import Port, PortConfig, PortFeatures, PortState
 
+class TestPort(TestStruct):
+    """Port structure tests (also those in :class:`.TestDump`)."""
 
-class TestPort(TestCase):
-
-    def setUp(self):
-        self.message = Port()
-        self.message.port_no = 2
-        self.message.hw_addr = '1a:2b:3c:4d:5e:6f'
-        self.message.name = 'eth1-s1'
-        self.message.config = PortConfig.OFPPC_NO_FWD
-        self.message.state = PortState.OFPPS_LIVE
-        self.message.curr = PortFeatures.OFPPF_1TB_FD +\
-            PortFeatures.OFPPF_FIBER
-        self.message.advertised = PortFeatures.OFPPF_PAUSE
-        self.message.supported = PortFeatures.OFPPF_AUTONEG
-        self.message.peer = PortFeatures.OFPPF_AUTONEG
-        self.message.curr_speed = 100
-        self.message.max_speed = 1000
-
-    def test_get_size(self):
-        """[Common/PhyPort] - size 48"""
-        self.assertEqual(self.message.get_size(), 64)
-
-    @skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/PhyPort] - packing"""
-        # TODO
-        pass
-
-    @skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/PhyPort] - unpacking"""
-        # TODO
-        pass
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x04', 'port')
+        super().set_raw_dump_object(Port)
+        super().set_minimum_size(64)
