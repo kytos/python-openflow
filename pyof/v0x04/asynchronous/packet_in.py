@@ -3,11 +3,11 @@
 # System imports
 from enum import Enum
 
-from pyof.v0x04.common.flow_match import Match
-from pyof.v0x04.common.header import Header, Type
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import (BinaryData, Pad, UBInt8, UBInt16,
                                          UBInt32, UBInt64)
+from pyof.v0x04.common.flow_match import Match
+from pyof.v0x04.common.header import Header, Type
 
 # Third-party imports
 
@@ -57,7 +57,6 @@ class PacketIn(GenericMessage):
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, reason=None,
                  table_id=None, cookie=None, match=None, data=b''):
-
         """Assign parameters to object attributes.
 
         Args:
