@@ -38,6 +38,19 @@ class ConfigFlags(Enum):
     OFPC_FRAG_MASK = 3
 
 
+class ControllerRole(Enum):
+    """Controller roles."""
+
+    #: Don’t change current role.
+    OFPCR_ROLE_NOCHANGE = 0
+    #: Default role, full access.
+    OFPCR_ROLE_EQUAL = 1
+    #: Full access, at most one master.
+    OFPCR_ROLE_MASTER = 2
+    #: Read-only access.
+    OFPCR_ROLE_SLAVE = 3
+
+
 class StatsTypes(Enum):
     """Type field to be used both in both request and reply.
 
@@ -115,6 +128,32 @@ class AsyncConfig(GenericMessage):
         self.port_status_mask2 = port_status_mask2
         self.flow_removed_mask1 = flow_removed_mask1
         self.flow_removed_mask2 = flow_removed_mask2
+
+
+class RoleBaseMessage(GenericMessage):
+    """Role basic structure for RoleRequest and RoleReply messages."""
+
+    #: :class:`~.common.header.Header`
+    #: Type OFPT_ROLE_REQUEST/OFPT_ROLE_REPLY.
+    header = Header()
+    #: One of NX_ROLE_*. (:class:`~.controller2switch.common.ControllerRole`)
+    role = UBInt32(enum_ref=ControllerRole)
+    #: Align to 64 bits.
+    pad = Pad(4)
+    #: Master Election Generation Id.
+    generation_id = UBInt64()
+
+    def __init__(self, xid=None, role=None, generation_id=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            xid (int): OpenFlow xid to the header.
+            role (:class:`~.controller2switch.common.ControllerRole`): .
+            generation_id (int): Master Election Generation Id.
+        """
+        super().__init__(xid)
+        self.role = role
+        self.generation_id = generation_id
 
 
 class SwitchConfig(GenericMessage):
