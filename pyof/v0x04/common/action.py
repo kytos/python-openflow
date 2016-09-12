@@ -4,7 +4,8 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32
+from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
+                                         UBInt32)
 
 # Third-party imports
 
@@ -341,3 +342,18 @@ class ActionSetQueue(GenericStruct):
         """
         super().__init__()
         self.queue_id = queue_id
+
+
+class ListOfActions(FixedTypeList):
+    """List of actions.
+
+    Represented by instances of ActionHeader and used on ActionHeader objects.
+    """
+
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (ActionHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=ActionHeader, items=items)
