@@ -1,13 +1,12 @@
-"""Defines an Error Message."""
-
+"""Defines an PortStatus Message."""
 # System imports
 from enum import Enum
 
 # Local source tree imports
-from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.phy_port import PhyPort
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8
+from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.port import Port
 
 # Third-party imports
 
@@ -34,18 +33,20 @@ class PortStatus(GenericMessage):
 
     #: :class:`~.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_PORT_STATUS)
+    #: One of OFPPR_*.
     reason = UBInt8(enum_ref=PortReason)
     #: Align to 32-bits.
     pad = Pad(7)
-    desc = PhyPort()
+    #: :class:`~.common.port.Port`
+    desc = Port()
 
     def __init__(self, xid=None, reason=None, desc=None):
         """Assign parameters to object attributes.
 
         Args:
             xid (int): Header's xid.
-            reason (PortReason): Addition, deletion or modification.
-            desc (PhyPort): Port description.
+            reason (:class:`~PortReason`): Addition, deletion or modification.
+            desc (Port): Port description.
         """
         super().__init__(xid)
         self.reason = reason
