@@ -121,7 +121,7 @@ class ListOfQueues(FixedTypeList):
 
 
 class QueuePropExperimenter(GenericStruct):
-    """A experimenter queue property uses the following structure and fields"""
+    """Experimenter queue property uses the following structure and fields."""
 
     prop_header = QueuePropHeader(property=QueueProperties.OFPQT_EXPERIMENTER,
                                   length=16)
@@ -147,7 +147,7 @@ class QueuePropExperimenter(GenericStruct):
 
 
 class QueuePropMaxRate(GenericStruct):
-    """A maximum-rate queue property uses the following structure and fields"""
+    """Maximum-rate queue property uses the following structure and fields."""
 
     prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MAX_RATE,
                                   length=16)
@@ -167,7 +167,7 @@ class QueuePropMaxRate(GenericStruct):
 
 
 class QueuePropMinRate(GenericStruct):
-    """A minimum-rate queue property uses the following structure and fields"""
+    """Minimum-rate queue property uses the following structure and fields."""
 
     prop_header = QueuePropHeader(property=QueueProperties.OFPQT_MIN_RATE,
                                   length=16)
