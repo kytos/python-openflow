@@ -18,8 +18,8 @@ from pyof.v0x04.common.header import Header
 
 # Third-party imports
 
-__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'AsyncConfig',
-           'ConfigFlags', 'DescStats', 'FlowStatsRequest', 'PortStats',
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
+           'ControllerRole', 'DescStats', 'FlowStatsRequest', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
            'TableStats')
 
@@ -77,7 +77,7 @@ class StatsTypes(Enum):
     OFPST_VENDOR = 0xffff
 
 
-# Classes
+# Base Classes for other messages - not meant to be directly used.
 
 
 class AsyncConfig(GenericMessage):
@@ -176,6 +176,9 @@ class SwitchConfig(GenericMessage):
         super().__init__(xid)
         self.flags = flags
         self.miss_send_len = miss_send_len
+
+
+# Classes
 
 
 class ListOfActions(FixedTypeList):
