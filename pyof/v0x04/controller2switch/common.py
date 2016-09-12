@@ -3,21 +3,24 @@
 # System imports
 from enum import Enum
 
+# Local source tree imports
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
                                        SERIAL_NUM_LEN)
-# Local source tree imports
+from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
+from pyof.v0x04.asynchronous.packet_in import PacketInReason
+from pyof.v0x04.asynchronous.port_status import PortReason
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import FlowWildCards, Match
 from pyof.v0x04.common.header import Header
 
 # Third-party imports
 
-__all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
-           'AggregateStatsRequest', 'DescStats', 'FlowStatsRequest',
-           'PortStats', 'PortStatsRequest', 'QueueStats', 'QueueStatsRequest',
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'AsyncConfig',
+           'ConfigFlags', 'DescStats', 'FlowStatsRequest', 'PortStats',
+           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
            'TableStats')
 
 # Enums
@@ -64,9 +67,60 @@ class StatsTypes(Enum):
 # Classes
 
 
+class AsyncConfig(GenericMessage):
+    """Asynchronous message configuration base class.
+
+    Common structure for SetAsync and GetAsyncReply messages.
+
+    AsyncConfig contains three 2-element arrays. Each array controls whether
+    the controller receives asynchronous messages with a specific
+    :class:`~.common.header.Type`. Within each array, element 0 specifies
+    messages of interest when the controller has a OFPCR_ROLE_EQUAL or
+    OFPCR_ROLE_MASTER role; element 1, when the controller has a
+    OFPCR_ROLE_SLAVE role. Each array element is a bit-mask in which a 0-bit
+    disables receiving a message sent with the reason code corresponding to the
+    bit index and a 1-bit enables receiving it.
+    """
+
+    #: OpenFlow :class:`~common.header.Header`
+    #: OFPT_GET_ASYNC_REPLY or OFPT_SET_ASYNC.
+    header = Header()
+    packet_in_mask1 = UBInt32(enum_ref=PacketInReason)
+    packet_in_mask2 = UBInt32(enum_ref=PacketInReason)
+    port_status_mask1 = UBInt32(enum_ref=PortReason)
+    port_status_mask2 = UBInt32(enum_ref=PortReason)
+    flow_removed_mask1 = UBInt32(enum_ref=FlowRemovedReason)
+    flow_removed_mask2 = UBInt32(enum_ref=FlowRemovedReason)
+
+    def __init__(self, xid=None, packet_in_mask1=None, packet_in_mask2=None,
+                 port_status_mask1=None, port_status_mask2=None,
+                 flow_removed_mask1=None, flow_removed_mask2=None):
+        """Base class for Asynchronous configuration messages.
+
+        Common structure for SetAsync and GetAsyncReply messages.
+
+        Args:
+            xid (int): xid to be used on the message header.
+            packet_in_mask1 (): .
+            packet_in_mask2 (): .
+            port_status_mask1 (): .
+            port_status_mask2 (): .
+            flow_removed_mask1 (): .
+            flow_removed_mask2 (): .
+        """
+        super().__init__(xid)
+        self.packet_in_mask1 = packet_in_mask1
+        self.packet_in_mask2 = packet_in_mask2
+        self.port_status_mask1 = port_status_mask1
+        self.port_status_mask2 = port_status_mask2
+        self.flow_removed_mask1 = flow_removed_mask1
+        self.flow_removed_mask2 = flow_removed_mask2
+
+
 class SwitchConfig(GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
 
+    #: OpenFlow :class:`~common.header.Header`
     header = Header()
     flags = UBInt16(enum_ref=ConfigFlags)
     miss_send_len = UBInt16()
