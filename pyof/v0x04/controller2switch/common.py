@@ -13,7 +13,7 @@ from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
 from pyof.v0x04.common.action import ActionHeader
-from pyof.v0x04.common.flow_match import FlowWildCards, Match
+from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
 
 # Third-party imports
@@ -460,14 +460,13 @@ class TableStats(GenericStruct):
     #: Align to 32-bits.
     pad = Pad(3)
     name = Char(length=OFP_MAX_TABLE_NAME_LEN)
-    wildcards = UBInt32(enum_ref=FlowWildCards)
     max_entries = UBInt32()
     active_count = UBInt32()
     count_lookup = UBInt64()
     count_matched = UBInt64()
 
-    def __init__(self, table_id=None, name=None, wildcards=None,
-                 max_entries=None, active_count=None, count_lookup=None,
+    def __init__(self, table_id=None, name=None, max_entries=None,
+                 active_count=None, count_lookup=None,
                  count_matched=None):
         """The constructor just assings parameters to object attributes.
 
@@ -475,8 +474,6 @@ class TableStats(GenericStruct):
             table_id (int): Identifier of table.  Lower numbered tables are
                 consulted first.
             name (str): Table name.
-            wildcards (FlowWildCards): Bitmap of OFPFW_* wildcards that are
-                supported by the table.
             max_entries (int): Max number of entries supported.
             active_count (int): Number of active entries.
             count_lookup (int): Number of packets looked up in table.
@@ -485,7 +482,6 @@ class TableStats(GenericStruct):
         super().__init__()
         self.table_id = table_id
         self.name = name
-        self.wildcards = wildcards
         self.max_entries = max_entries
         self.active_count = active_count
         self.count_lookup = count_lookup
