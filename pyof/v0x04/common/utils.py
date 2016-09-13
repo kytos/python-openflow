@@ -32,7 +32,7 @@ from pyof.v0x04.controller2switch.stats_request import StatsRequest
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
 from pyof.v0x04.symmetric.hello import Hello
-from pyof.v0x04.symmetric.vendor_header import VendorHeader
+from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
 
 __all__ = ('new_message_from_header', 'new_message_from_message_type')
 
@@ -56,7 +56,7 @@ def new_message_from_message_type(message_type):
         str(Type.OFPT_ERROR): ErrorMsg,
         str(Type.OFPT_ECHO_REQUEST): EchoRequest,
         str(Type.OFPT_ECHO_REPLY): EchoReply,
-        str(Type.OFPT_VENDOR): VendorHeader,
+        str(Type.OFPT_VENDOR): ExperimenterHeader,
         str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
         str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
         str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,

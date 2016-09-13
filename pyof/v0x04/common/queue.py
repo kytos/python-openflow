@@ -41,6 +41,7 @@ class QueuePropHeader(GenericStruct):
     #: 64-bit alignment
     pad = Pad(4)
 
+    # pylint: disable=redefined-builtin
     def __init__(self, property=None, length=None):
         """The contructor takes the paremeters below.
 
