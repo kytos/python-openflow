@@ -16,8 +16,8 @@ class TestActionOutput(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_output')
-        super().set_raw_dump_object(ActionOutput, xid=1,
-                                    port=Port.OFPP_CONTROLLER, max_len=8)
+        super().set_raw_dump_object(ActionOutput, port=Port.OFPP_CONTROLLER,
+                                    max_length=8)
         super().set_minimum_size(8)
 
 
@@ -29,8 +29,8 @@ class TestActionEnqueue(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_enqueue')
-        super().set_raw_dump_object(ActionEnqueue, xid=1,
-                                    port=Port.OFPP_CONTROLLER, queue_id=4)
+        super().set_raw_dump_object(ActionEnqueue, port=Port.OFPP_CONTROLLER,
+                                    queue_id=4)
         super().set_minimum_size(16)
 
 
@@ -42,7 +42,7 @@ class TestActionVlanVid(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_vid')
-        super().set_raw_dump_object(ActionVlanVid, xid=1, length=2, vlan_vid=5)
+        super().set_raw_dump_object(ActionVlanVid, vlan_id=5)
         super().set_minimum_size(8)
 
 
@@ -54,7 +54,7 @@ class TestActionVlanPCP(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_pcp')
-        super().set_raw_dump_object(ActionVlanPCP, xid=1, vlan_pcp=2)
+        super().set_raw_dump_object(ActionVlanPCP, vlan_pcp=2)
         super().set_minimum_size(8)
 
 
@@ -66,7 +66,7 @@ class TestActionDLAddr(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_dl_addr')
-        super().set_raw_dump_object(ActionDLAddr, xid=1,
+        super().set_raw_dump_object(ActionDLAddr,
                                     dl_addr_type=ActionType.OFPAT_SET_DL_SRC,
                                     dl_addr=[12, 12, 12, 12, 12, 12])
         super().set_minimum_size(16)
@@ -80,7 +80,7 @@ class TestActionNWAddr(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_nw_addr')
-        super().set_raw_dump_object(ActionNWAddr, xid=1,
+        super().set_raw_dump_object(ActionNWAddr,
                                     nw_addr_type=ActionType.OFPAT_SET_NW_SRC,
                                     nw_addr=[12, 12, 12, 12, 12, 12])
         super().set_minimum_size(8)
@@ -94,7 +94,7 @@ class TestActionNWTos(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_nw_tos')
-        super().set_raw_dump_object(ActionNWTos, xid=1,
+        super().set_raw_dump_object(ActionNWTos,
                                     nw_tos_type=ActionType.OFPAT_SET_NW_SRC,
                                     nw_tos=123456)
         super().set_minimum_size(8)
@@ -108,7 +108,7 @@ class TestActionTPPort(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_tp_port')
-        super().set_raw_dump_object(ActionTPPort, xid=1,
+        super().set_raw_dump_object(ActionTPPort,
                                     tp_port_type=ActionType.OFPAT_SET_TP_SRC,
                                     tp_port=8888)
         super().set_minimum_size(8)
@@ -122,6 +122,5 @@ class TestActionVendorHeader(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_vendor_header')
-        super().set_raw_dump_object(ActionVendorHeader, xid=1, length=16,
-                                    vendor=1)
+        super().set_raw_dump_object(ActionVendorHeader, length=16, vendor=1)
         super().set_minimum_size(8)

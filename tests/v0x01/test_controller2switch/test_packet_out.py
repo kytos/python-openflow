@@ -55,3 +55,9 @@ class TestPacketOut(TestStruct):
             self.message.in_port = in_port
             self.assertFalse(self.message.is_valid())
             self.assertRaises(ValidationError, self.message.validate)
+
+    def test_pack(self):
+        self.skipTest('Need to recover dump contents.')
+
+    def test_unpack(self):
+        self.skipTest('Need to recover dump contents.')
