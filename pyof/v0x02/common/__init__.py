@@ -1,1 +1,1 @@
-"""Common Messages from OpenFlow Protocol."""
+"""Common structures used on OpenFlow Protocol."""
