@@ -6,9 +6,9 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt16
+from pyof.foundation.basic_types import Pad, UBInt32
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.phy_port import Port
+from pyof.v0x04.common.port import PortNo
 
 __all__ = ('QueueGetConfigRequest',)
 
@@ -16,17 +16,19 @@ __all__ = ('QueueGetConfigRequest',)
 class QueueGetConfigRequest(GenericMessage):
     """Query structure for configured queues on a port."""
 
+    #: :class:`~.common.header.Header`.
     header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
-    port = UBInt16(enum_ref=Port)
-    #: Pad to 64-bits
-    pad = Pad(2)
+    #: Port to be queried. Should refer to a valid physical port
+    #: (i.e. < OFPP_MAX), or OFPP_ANY to request all configured queues.
+    port = UBInt32(enum_ref=PortNo)
+    pad = Pad(4)
 
     def __init__(self, xid=None, port=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
             xid (int): xid of OpenFlow header
-            port (Port): Target port for the query
+            port (:class:`~.common.port.PortNo`): Target port for the query.
         """
         super().__init__(xid)
         self.port = port
