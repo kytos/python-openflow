@@ -260,7 +260,7 @@ class GenericStruct(object, metaclass=MetaStruct):
     def _attr_fits_into_class(attr, cls):
         if not isinstance(attr, cls):
             try:
-                struct.pack(cls._fmt, attr)
+                struct.pack(cls._fmt, attr)  # pylint: disable=protected-access
             except struct.error:
                 return False
         return True
@@ -417,6 +417,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             bool: Whether the struct is valid.
         """
         return True
+        # pylint: disable=unreachable
         if not self._validate_attributes_type():
             return False
         return True
@@ -476,6 +477,7 @@ class GenericMessage(GenericStruct):
             bool: Whether the message is valid.
         """
         return True
+        # pylint: disable=unreachable
         if not super().is_valid():
             return False
         if not self._validate_message_length():
