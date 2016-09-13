@@ -3,13 +3,13 @@
 # System imports
 from enum import Enum
 
+from pyof.foundation.base import GenericBitMask, GenericMessage
+from pyof.foundation.basic_types import UBInt16, UBInt32, UBInt64
 # Local source tree imports
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.common import ListOfActions
-from pyof.foundation.base import GenericBitMask, GenericMessage
-from pyof.foundation.basic_types import UBInt16, UBInt32, UBInt64
 
 # Third-party imports
 

@@ -1,7 +1,6 @@
 import unittest
 
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.common import phy_port
+from pyof.v0x01.common import flow_match, phy_port
 from pyof.v0x01.controller2switch.common import AggregateStatsRequest
 
 

@@ -1,7 +1,6 @@
 import unittest
 
-from pyof.v0x01.common import action
-from pyof.v0x01.common import phy_port
+from pyof.v0x01.common import action, phy_port
 
 
 class TestActionHeader(unittest.TestCase):

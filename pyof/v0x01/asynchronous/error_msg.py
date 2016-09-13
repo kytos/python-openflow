@@ -3,10 +3,10 @@
 # System imports
 from enum import Enum
 
-from pyof.v0x01.common.header import Header, Type
 from pyof.foundation import exceptions
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import ConstantTypeList, UBInt16
+from pyof.v0x01.common.header import Header, Type
 
 # Third-party imports
 

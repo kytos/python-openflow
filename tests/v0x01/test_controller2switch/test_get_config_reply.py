@@ -1,7 +1,6 @@
 import unittest
 
-from pyof.v0x01.controller2switch import flow_mod
-from pyof.v0x01.controller2switch import get_config_reply
+from pyof.v0x01.controller2switch import flow_mod, get_config_reply
 
 
 class TestGetConfigReply(unittest.TestCase):

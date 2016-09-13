@@ -1,7 +1,6 @@
 import unittest
 
-from pyof.v0x01.controller2switch import common
-from pyof.v0x01.controller2switch import stats_request
+from pyof.v0x01.controller2switch import common, stats_request
 
 
 class TestStatsRequest(unittest.TestCase):

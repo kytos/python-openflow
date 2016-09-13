@@ -1,6 +1,6 @@
+import os
 import unittest
 
-import os
 from pyof.v0x01.common.header import Header, Type
 
 
