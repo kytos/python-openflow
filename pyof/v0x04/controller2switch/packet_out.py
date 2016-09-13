@@ -2,10 +2,10 @@
 from copy import deepcopy
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import BinaryData, UBInt16, UBInt32
+from pyof.foundation.basic_types import BinaryData, Pad, UBInt16, UBInt32
 from pyof.foundation.exceptions import ValidationError
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.phy_port import Port
+from pyof.v0x04.common.port import Port, PortNo
 from pyof.v0x04.controller2switch.common import ListOfActions
 
 __all__ = ('PacketOut',)
@@ -13,17 +13,27 @@ __all__ = ('PacketOut',)
 # Classes
 
 #: in_port valid virtual port values, for validation
-_VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
+_VIRT_IN_PORTS = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER, PortNo.OFPP_NONE)
 
 
 class PacketOut(GenericMessage):
     """Send packet (controller -> datapath)."""
 
+    #: :class:`~.common.header.Header`
     header = Header(message_type=Type.OFPT_PACKET_OUT)
+    #: ID assigned by datapath (OFP_NO_BUFFER if none).
     buffer_id = UBInt32()
-    in_port = UBInt16(enum_ref=Port)
+    #: Packet’s input port or OFPP_CONTROLLER.
+    #: TODO: This field have a enum_ref ?
+    in_port = UBInt16(enum_ref=PortNo)
+    #: Size of action array in bytes.
     actions_len = UBInt16()
+    #: Padding
+    pad = Pad(6)
+    #: Action List.
     actions = ListOfActions()
+    #: Packet data. The length is inferred from the length field in the header.
+    #:    (Only meaningful if buffer_id == -1.)
     data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, in_port=None,
@@ -94,7 +104,8 @@ class PacketOut(GenericMessage):
     def _validate_in_port(self):
         port = self.in_port
         valid = True
-        if isinstance(port, int) and (port < 1 or port >= Port.OFPP_MAX.value):
+        if isinstance(port, int) and (port < 1 or
+                                      port >= PortNo.OFPP_MAX.value):
             valid = False
         elif isinstance(port, Port) and port not in _VIRT_IN_PORTS:
             valid = False
