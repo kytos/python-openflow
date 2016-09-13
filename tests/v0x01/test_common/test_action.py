@@ -1,229 +1,127 @@
-import unittest
-
-from pyof.v0x01.common import action, phy_port
-
-
-class TestActionHeader(unittest.TestCase):
-    """Test the ActionHeader message"""
-
-    def setUp(self):
-        self.message = action.ActionHeader()
-        self.message.action_type = action.ActionType.OFPAT_SET_TP_SRC
-        self.message.len = 1
-
-    def test_get_size(self):
-        """[Common/ActionHeader] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionHeader] - packing"""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionHeader] - unpacking"""
-        # TODO
-        pass
+"""Testing Port structures."""
+from pyof.v0x01.common.action import (ActionDLAddr, ActionEnqueue,
+                                      ActionNWAddr, ActionNWTos, ActionOutput,
+                                      ActionTPPort, ActionType,
+                                      ActionVendorHeader, ActionVlanPCP,
+                                      ActionVlanVid)
+from pyof.v0x01.common.phy_port import Port
+from tests.test_struct import TestStruct
 
 
-class TestActionOutput(unittest.TestCase):
+class TestActionOutput(TestStruct):
+    """ActionOutput message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionOutput()
-        self.message.port = phy_port.Port.OFPP_CONTROLLER
-        self.message.max_len = 8
-
-    def test_get_size(self):
-        """[Common/ActionOutput] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionOutput] - packing"""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionOutput] - packing"""
-        # TODO
-        pass
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_output')
+        super().set_raw_dump_object(ActionOutput, xid=1,
+                                    port=Port.OFPP_CONTROLLER, max_len=8)
+        super().set_minimum_size(8)
 
 
-class TestActionEnqueue(unittest.TestCase):
+class TestActionEnqueue(TestStruct):
+    """ActionEnqueue message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionEnqueue()
-        self.message.port = phy_port.Port.OFPP_CONTROLLER
-        self.message.queue_id = 4
-
-    def test_get_size(self):
-        """[Common/ActionEnqueue] - size 16"""
-        self.assertEqual(self.message.get_size(), 16)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionEnqueue] - packing"""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionEnqueue] - unpacking"""
-        # TODO
-        pass
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_enqueue')
+        super().set_raw_dump_object(ActionEnqueue, xid=1,
+                                    port=Port.OFPP_CONTROLLER, queue_id=4)
+        super().set_minimum_size(16)
 
 
-class TestActionVlanVid(unittest.TestCase):
+class TestActionVlanVid(TestStruct):
+    """ActionVlanVid message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionVlanVid()
-        self.message.length = 2
-        self.message.vlan_vid = 5
-
-    def test_get_size(self):
-        """[Common/ActionVlanVid] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionVlanVid] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionVlanVid] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_vid')
+        super().set_raw_dump_object(ActionVlanVid, xid=1, length=2, vlan_vid=5)
+        super().set_minimum_size(8)
 
 
-class TestActionVlanPCP(unittest.TestCase):
+class TestActionVlanPCP(TestStruct):
+    """ActionVlanPCP message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionVlanPCP()
-        self.message.vlan_pcp = 2
-
-    def test_get_size(self):
-        """[Common/ActionVlanPCP] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/Actionvlanpcp] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionVlanVid] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_pcp')
+        super().set_raw_dump_object(ActionVlanPCP, xid=1, vlan_pcp=2)
+        super().set_minimum_size(8)
 
 
-class TestActionDLAddr(unittest.TestCase):
+class TestActionDLAddr(TestStruct):
+    """ActionDLAddr message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionDLAddr()
-        self.message.dl_addr_type = action.ActionType.OFPAT_SET_DL_SRC
-        self.message.dl_addr = [12, 12, 12, 12, 12, 12]
-
-    def test_get_size(self):
-        """[Common/ActionDLAddr] - size 16"""
-        self.assertEqual(self.message.get_size(), 16)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionDLAddr] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionDLAddr] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_dl_addr')
+        super().set_raw_dump_object(ActionDLAddr, xid=1,
+                                    dl_addr_type=ActionType.OFPAT_SET_DL_SRC,
+                                    dl_addr=[12, 12, 12, 12, 12, 12])
+        super().set_minimum_size(16)
 
 
-class TestActionNWAddr(unittest.TestCase):
+class TestActionNWAddr(TestStruct):
+    """ActionNWAddr message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionNWAddr()
-        self.message.nw_addr_type = action.ActionType.OFPAT_SET_NW_SRC
-        self.message.nw_addr = [12, 12, 12, 12, 12, 12]
-
-    def test_get_size(self):
-        """[Common/ActionNWAddr] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionNWAddr] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionNWAddr] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_nw_addr')
+        super().set_raw_dump_object(ActionNWAddr, xid=1,
+                                    nw_addr_type=ActionType.OFPAT_SET_NW_SRC,
+                                    nw_addr=[12, 12, 12, 12, 12, 12])
+        super().set_minimum_size(8)
 
 
-class TestActionNWTos(unittest.TestCase):
+class TestActionNWTos(TestStruct):
+    """ActionNWTos message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionNWTos()
-        self.message.nw_tos_type = action.ActionType.OFPAT_SET_NW_SRC
-        self.message.nw_tos = 123456
-
-    def test_get_size(self):
-        """[Common/ActionNWTos] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionNWTos] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionNWTos] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_nw_tos')
+        super().set_raw_dump_object(ActionNWTos, xid=1,
+                                    nw_tos_type=ActionType.OFPAT_SET_NW_SRC,
+                                    nw_tos=123456)
+        super().set_minimum_size(8)
 
 
-class TestActionTPPort(unittest.TestCase):
+class TestActionTPPort(TestStruct):
+    """ActionTPPort message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionTPPort()
-        self.message.tp_port_type = action.ActionType.OFPAT_SET_TP_SRC
-        self.message.tp_port = 8888
-
-    def test_get_size(self):
-        """[Common/ActionTPPort] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionTPPort] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionTPPort] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_tp_port')
+        super().set_raw_dump_object(ActionTPPort, xid=1,
+                                    tp_port_type=ActionType.OFPAT_SET_TP_SRC,
+                                    tp_port=8888)
+        super().set_minimum_size(8)
 
 
-class TestActionVendorHeader(unittest.TestCase):
+class TestActionVendorHeader(TestStruct):
+    """ActionVendorHeader message tests (also those in :class:`.TestDump`)."""
 
-    def setUp(self):
-        self.message = action.ActionVendorHeader()
-        self.message.length = 16
-        self.message.vendor = 1
-
-    def test_get_size(self):
-        """[Common/ActionVendorHeader] - size 8"""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/ActionVendorHeader] - packing"""
-        # TODO
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/ActionVendorHeader] - unpacking"""
-        # TODO
+    @classmethod
+    def setUpClass(cls):
+        """Configure raw file and its object in parent class (TestDump)."""
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_action_vendor_header')
+        super().set_raw_dump_object(ActionVendorHeader, xid=1, length=16,
+                                    vendor=1)
+        super().set_minimum_size(8)
