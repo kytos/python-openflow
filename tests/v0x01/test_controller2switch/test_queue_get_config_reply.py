@@ -1,3 +1,4 @@
+"""Test for QueueGetConfigReply message."""
 import unittest
 
 from pyof.v0x01.common import queue
@@ -5,8 +6,10 @@ from pyof.v0x01.controller2switch import queue_get_config_reply
 
 
 class TestQueueGetConfigReply(unittest.TestCase):
+    """Test for QueueGetConfigReply message."""
 
     def setUp(self):
+        """Basic test setup."""
         propertie01 = queue.QueuePropHeader()
         propertie01.property = queue.QueueProperties.OFPQT_MIN_RATE
         propertie01.len = 12
@@ -20,17 +23,17 @@ class TestQueueGetConfigReply(unittest.TestCase):
         self.message.queue = packet_queue
 
     def test_get_size(self):
-        """[Controller2Switch/QueueGetConfigReply] - size 16"""
+        """[Controller2Switch/QueueGetConfigReply] - size 16."""
         self.assertEqual(self.message.get_size(), 16)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """[Controller2Switch/QueueGetConfigReply] - packing"""
+        """[Controller2Switch/QueueGetConfigReply] - packing."""
         # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        """[Controller2Switch/QueueGetConfigReply] - unpacking"""
+        """[Controller2Switch/QueueGetConfigReply] - unpacking."""
         # TODO
         pass

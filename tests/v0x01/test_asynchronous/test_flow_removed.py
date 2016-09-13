@@ -1,3 +1,4 @@
+"""Testing FlowRemoved message."""
 import unittest
 
 from pyof.v0x01.asynchronous import flow_removed
@@ -5,10 +6,10 @@ from pyof.v0x01.common import flow_match
 
 
 class TestFlowRemoved(unittest.TestCase):
-    """Test the FlowRemoved message"""
+    """Test the FlowRemoved message."""
 
     def setUp(self):
-        """Setup the TestFlowremoved Class instantiating"""
+        """Setup the TestFlowremoved Class instantiating."""
         self.message = flow_removed.FlowRemoved()
         self.message.header.xid = 1
         self.message.match = flow_match.Match()
@@ -35,17 +36,17 @@ class TestFlowRemoved(unittest.TestCase):
         self.message.match.tp_dst = 80
 
     def test_size(self):
-        """[Asynchronous/FlowRemoved] - size 88"""
+        """[Asynchronous/FlowRemoved] - size 88."""
         self.assertEqual(self.message.get_size(), 88)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """[Asynchronous/FlowRemoved] - packing"""
+        """[Asynchronous/FlowRemoved] - packing."""
         # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        """[Asynchronous/FlowRemoved] - unpacking"""
+        """[Asynchronous/FlowRemoved] - unpacking."""
         # TODO
         pass

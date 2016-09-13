@@ -1,6 +1,4 @@
 """Port Status message tests."""
-import unittest
-
 from pyof.foundation.basic_types import HWAddress
 from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 from pyof.v0x01.asynchronous.port_status import PortReason, PortStatus
@@ -19,14 +17,6 @@ class TestPortStatus(TestStruct):
         super().set_raw_dump_file('v0x01', 'ofpt_port_status')
         super().set_raw_dump_object(_new_portstatus)
         super().set_minimum_size(64)
-
-    @unittest.skip('Need to recover dump contents.')
-    def test_pack(self):
-        pass
-
-    @unittest.skip('Need to recover dump contents.')
-    def test_unpack(self):
-        pass
 
 
 def _new_portstatus():

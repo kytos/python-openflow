@@ -1,11 +1,14 @@
+"""Test for StatsRequest message."""
 import unittest
 
 from pyof.v0x01.controller2switch import common, stats_request
 
 
 class TestStatsRequest(unittest.TestCase):
+    """Test for StatsRequest message."""
 
     def setUp(self):
+        """Basic test setup."""
         self.message = stats_request.StatsRequest()
         self.message.header.xid = 1
         self.message.type = common.StatsTypes.OFPST_FLOW
@@ -13,17 +16,17 @@ class TestStatsRequest(unittest.TestCase):
         self.message.body = []
 
     def test_get_size(self):
-        """[Controller2Switch/StatsRequest] - size 12"""
+        """[Controller2Switch/StatsRequest] - size 12."""
         self.assertEqual(self.message.get_size(), 12)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """[Controller2Switch/StatsRequest] - packing"""
+        """[Controller2Switch/StatsRequest] - packing."""
         # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        """[Controller2Switch/StatsRequest] - unpacking"""
+        """[Controller2Switch/StatsRequest] - unpacking."""
         # TODO
         pass
