@@ -448,9 +448,9 @@ class PortStats(GenericStruct):
     If a counter is unsupported, set the field to all ones.
     """
 
-    port_no = UBInt16()
+    port_no = UBInt32()
     #: Align to 64-bits.
-    pad = Pad(6)
+    pad = Pad(4)
     rx_packets = UBInt64()
     tx_packets = UBInt64()
     rx_bytes = UBInt64()
@@ -463,12 +463,15 @@ class PortStats(GenericStruct):
     rx_over_err = UBInt64()
     rx_crc_err = UBInt64()
     collisions = UBInt64()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
 
     def __init__(self, port_no=None, rx_packets=None,
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
-                 rx_crc_err=None, collisions=None):
+                 rx_crc_err=None, collisions=None, duration_sec=None,
+                 duration_nsec=None):
         """The constructor assigns parameters to object attributes.
 
         Args:
@@ -490,6 +493,8 @@ class PortStats(GenericStruct):
             rx_over_err (int): Number of packets with RX overrun.
             rx_crc_err (int): Number of CRC errors.
             collisions (int): Number of collisions.
+            duration_sec (int): Time port has been alive in seconds
+            duration_nsec (int): Time port has been alive in nanoseconds beyond duration_sec
         """
         super().__init__()
         self.port_no = port_no
@@ -505,6 +510,8 @@ class PortStats(GenericStruct):
         self.rx_over_err = rx_over_err
         self.rx_crc_err = rx_crc_err
         self.collisions = collisions
+        self.duration_sec = duration_sec
+        self.duration_nsec = duration_nsec
 
 
 class PortStatsRequest(GenericStruct):
