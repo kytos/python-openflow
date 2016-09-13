@@ -1,12 +1,14 @@
+"""Test Base module of python-openflow."""
 import unittest
 
-from pyof.foundation import base
-from pyof.foundation import basic_types
+from pyof.foundation import base, basic_types
 
 
 class TestGenericStruct(unittest.TestCase):
+    """Testing GenericStruct class."""
 
     def setUp(self):
+        """Basic Test Setup."""
         class AttributeA(base.GenericStruct):
             a1 = basic_types.UBInt8(1)
             a2 = basic_types.UBInt16(2)
@@ -29,7 +31,7 @@ class TestGenericStruct(unittest.TestCase):
         self.MyMessage = MyMessage
 
     def test_basic_attributes(self):
-        """[Foundation/Base/GenericStruct] - Attributes Creation"""
+        """[Foundation/Base/GenericStruct] - Attributes Creation."""
         message1 = self.MyMessage()
         message2 = self.MyMessage()
         self.assertIsNot(message1, message2)
