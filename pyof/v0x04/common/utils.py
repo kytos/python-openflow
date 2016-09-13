@@ -31,8 +31,8 @@ from pyof.v0x04.controller2switch.stats_request import StatsRequest
 # Importing symmetric messages
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
-from pyof.v0x04.symmetric.hello import Hello
 from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
+from pyof.v0x04.symmetric.hello import Hello
 
 __all__ = ('new_message_from_header', 'new_message_from_message_type')
 
