@@ -366,29 +366,28 @@ class FlowStats(GenericStruct):
     table_id = UBInt8()
     #: Align to 32 bits.
     pad = Pad(1)
-    match = Match()
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
     priority = UBInt16()
     idle_timeout = UBInt16()
     hard_timeout = UBInt16()
+    flags = UBInt16()
     #: Align to 64-bits
-    pad2 = Pad(6)
+    pad2 = Pad(4)
     cookie = UBInt64()
     packet_count = UBInt64()
     byte_count = UBInt64()
-    actions = ListOfActions()
+    match = Match()
 
-    def __init__(self, length=None, table_id=None, match=None,
-                 duration_sec=None, duration_nsec=None, priority=None,
-                 idle_timeout=None, hard_timeout=None, cookie=None,
-                 packet_count=None, byte_count=None, actions=None):
+    def __init__(self, length=None, table_id=None, duration_sec=None,
+                 duration_nsec=None, priority=None, idle_timeout=None,
+                 hard_timeout=None, flags=None, cookie=None, packet_count=None,
+                 byte_count=None, match=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
             length (int): Length of this entry.
             table_id (int): ID of table flow came from.
-            match (Match): Description of fields.
             duration_sec (int): Time flow has been alive in seconds.
             duration_nsec (int): Time flow has been alive in nanoseconds in
                 addition to duration_sec.
@@ -399,48 +398,59 @@ class FlowStats(GenericStruct):
             cookie (int): Opaque controller-issued identifier.
             packet_count (int): Number of packets in flow.
             byte_count (int): Number of bytes in flow.
-            actions (ListOfActions): Actions.
+            match (Match): Description of fields.
         """
         super().__init__()
         self.length = length
         self.table_id = table_id
-        self.match = match
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
-        self.prioriry = priority
+        self.priority = priority
         self.idle_timeout = idle_timeout
         self.hard_timeout = hard_timeout
+        self.flags = flags
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count
-        self.actions = [] if actions is None else actions
 
 
 class FlowStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_FLOW."""
 
-    match = Match()
     table_id = UBInt8()
     #: Align to 32 bits.
-    pad = Pad(1)
-    out_port = UBInt16()
+    pad = Pad(3)
+    out_port = UBInt32()
+    out_group = UBInt32()
+    pad2 = Pad(4)
+    cookie = UBInt64()
+    cookie_mask = UBInt64()
+    match = Match()
 
-    def __init__(self, match=None, table_id=None, out_port=None):
+    def __init__(self, table_id=None, out_port=None, out_group=None,
+                 cookie=None, cookie_mask=None, match=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            match (Match): Fields to match.
             table_id (int): ID of table to read (from pyof_table_stats)
                 0xff for all tables or 0xfe for emergency.
             out_port (:class:`int`, :class:`.Port`): Require matching entries
                 to include this as an output port. A value of
                 :attr:`.Port.OFPP_NONE` indicates no restriction.
+            out_group: Require matching entries to include this as an output
+                group. A value of OFPG_ANY indicates no restriction.
+            cookie: Requires matching entries to contain this cookie value
+            cookie_mask: Mask used to restrict the cookie bits that must match.
+                A value of 0 indicates no restriction.
+            match (Match): Fields to match.
         """
         super().__init__()
-        self.match = match
         self.table_id = table_id
         self.out_port = out_port
-
+        self.out_group = out_group
+        self.cookie = cookie
+        self.cookie_mask = cookie_mask
+        self.match = match
 
 class PortStats(GenericStruct):
     """Body of reply to OFPST_PORT request.
