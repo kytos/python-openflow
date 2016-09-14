@@ -634,30 +634,24 @@ class TableStats(GenericStruct):
     table_id = UBInt8()
     #: Align to 32-bits.
     pad = Pad(3)
-    name = Char(length=OFP_MAX_TABLE_NAME_LEN)
-    max_entries = UBInt32()
     active_count = UBInt32()
-    count_lookup = UBInt64()
-    count_matched = UBInt64()
+    lookup_count = UBInt64()
+    matched_count = UBInt64()
 
     def __init__(self, table_id=None, name=None, max_entries=None,
-                 active_count=None, count_lookup=None,
-                 count_matched=None):
+                 active_count=None, lookup_count=None,
+                 matched_count=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
             table_id (int): Identifier of table.  Lower numbered tables are
                 consulted first.
-            name (str): Table name.
-            max_entries (int): Max number of entries supported.
             active_count (int): Number of active entries.
-            count_lookup (int): Number of packets looked up in table.
-            count_matched (int): Number of packets that hit table.
+            lookup_count (int): Number of packets looked up in table.
+            matched_count (int): Number of packets that hit table.
         """
         super().__init__()
         self.table_id = table_id
-        self.name = name
-        self.max_entries = max_entries
         self.active_count = active_count
-        self.count_lookup = count_lookup
-        self.count_matched = count_matched
+        self.lookup_count = lookup_count
+        self.matched_count = matched_count
