@@ -494,7 +494,8 @@ class PortStats(GenericStruct):
             rx_crc_err (int): Number of CRC errors.
             collisions (int): Number of collisions.
             duration_sec (int): Time port has been alive in seconds
-            duration_nsec (int): Time port has been alive in nanoseconds beyond duration_sec
+            duration_nsec (int): Time port has been alive in nanoseconds beyond
+                duration_sec
         """
         super().__init__()
         self.port_no = port_no
@@ -537,16 +538,17 @@ class PortStatsRequest(GenericStruct):
 class QueueStats(GenericStruct):
     """Implements the reply body of a port_no."""
 
-    port_no = UBInt16()
-    #: Align to 32-bits.
-    pad = Pad(2)
+    port_no = UBInt32()
     queue_id = UBInt32()
     tx_bytes = UBInt64()
     tx_packets = UBInt64()
     tx_errors = UBInt64()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
-                 tx_packets=None, tx_errors=None):
+                 tx_packets=None, tx_errors=None, duration_sec=None,
+                 duration_nsec=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -555,6 +557,9 @@ class QueueStats(GenericStruct):
             tx_bytes (int): Number of transmitted bytes.
             tx_packets (int): Number of transmitted packets.
             tx_errors (int): Number of packets dropped due to overrun.
+            duration_sec (int): Time queue has been alive in seconds.
+            duration_nsec (int): Time queue has been alive in nanoseconds
+                beyond duration_sec.
         """
         super().__init__()
         self.port_no = port_no
@@ -562,14 +567,14 @@ class QueueStats(GenericStruct):
         self.tx_bytes = tx_bytes
         self.tx_packets = tx_packets
         self.tx_errors = tx_errors
+        self.duration_sec = duration_sec
+        self.duration_nsec = duration_nsec
 
 
 class QueueStatsRequest(GenericStruct):
     """Implements the request body of a ``port_no``."""
 
-    port_no = UBInt16()
-    #: Align to 32-bits
-    pad = Pad(2)
+    port_no = UBInt32()
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
