@@ -160,7 +160,8 @@ class StatsTypes(Enum):
     OFPST_VENDOR = 0xffff
 
 
-# Base Classes for other messages - not meant to be directly used.
+# Base Classes for other messages - not meant to be directly used, so, because
+# of that, they will not be inserted on the __all__ attribute.
 
 
 class AsyncConfig(GenericMessage):
@@ -334,14 +335,17 @@ class DescStats(GenericStruct):
     revision, serial number and a description field.
     """
 
+    #: Manufacturer description
     mfr_desc = Char(length=DESC_STR_LEN)
+    #: Hardware description
     hw_desc = Char(length=DESC_STR_LEN)
+    #: Software description
     sw_desc = Char(length=DESC_STR_LEN)
+    #: Serial number
     serial_num = Char(length=SERIAL_NUM_LEN)
-    dp_desc = Char(length=DESC_STR_LEN)
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
-                 serial_num=None, dp_desc=None):
+                 serial_num=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -349,14 +353,12 @@ class DescStats(GenericStruct):
             hw_desc (str): Hardware description
             sw_desc (str): Software description
             serial_num (str): Serial number
-            dp_desc (str): Human readable description of datapath
         """
         super().__init__()
         self.mfr_desc = mfr_desc
         self.hw_desc = hw_desc
         self.sw_desc = sw_desc
         self.serial_num = serial_num
-        self.dp_desc = dp_desc
 
 
 class FlowStats(GenericStruct):
