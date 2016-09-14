@@ -281,10 +281,13 @@ class ListOfActions(FixedTypeList):
 
 
 class AggregateStatsReply(GenericStruct):
-    """Body of reply to OFPST_AGGREGATE request."""
+    """Body of reply to OFPMP_AGGREGATE request."""
 
+    #: Number of packets in flows.
     packet_count = UBInt64()
+    #: Number of bytes in flows.
     byte_count = UBInt64()
+    #: Number of flows.
     flow_count = UBInt32()
     #: Align to 64 bits
     pad = Pad(4)
@@ -306,26 +309,49 @@ class AggregateStatsReply(GenericStruct):
 class AggregateStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_AGGREGATE."""
 
-    match = Match()
+    #: ID of table to read (from ofp_table_stats) OFPTT_ALL for all tables.
     table_id = UBInt8()
-    #: Align to 32 bits
-    pad = Pad(1)
-    out_port = UBInt16()
+    #: Align to 32 bits.
+    pad = Pad(3)
+    #: Require matching entries to include this as an output port. A value of
+    #: OFPP_ANY indicates no restriction.
+    out_port = UBInt32()
+    #: Require matching entries to include this as an output group. A value of
+    #: OFPG_ANY indicates no restriction.
+    out_group = UBInt32()
+    #: Align to 64 bits
+    pad2 = Pad(4)
+    #: Require matching entries to contain this cookie value
+    cookie = UBInt64()
+    #: Mask used to restrict the cookie bits that must match. A value of 0
+    #: indicates no restriction.
+    cookie_mask = UBInt64()
+    #: Fields to match. Variable size.
+    match = Match()
 
-    def __init__(self, match=None, table_id=None, out_port=None):
+    def __init__(self, table_id=None, out_port=None, out_group=None,
+                 cookie=None, cookie_mask=None, match=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            match (Match): Fields to match.
-            table_id (int): ID of table to read (from pyof_table_stats) 0xff
-                for all tables or 0xfe for emergency.
+            table_id (int): ID of table to read (from ofp_table_stats)
+                OFPTT_ALL for all tables.
             out_port (int): Require matching entries to include this as an
-                output port. A value of OFPP_NONE indicates no restriction.
+                output port. A value of OFPP_ANY indicates no restriction.
+            out_group (in): Require matching entries to include this as an
+                output group. A value of OFPG_ANY indicates no restriction.
+            cookie (int): Require matching entries to contain this cookie value
+            cookie_mask (int): Mask used to restrict the cookie bits that must
+                match. A value of 0 indicates no restriction.
+            match (Match): Fields to match. Variable size
         """
         super().__init__()
-        self.match = match
         self.table_id = table_id
         self.out_port = out_port
+        self.out_group = out_group
+        self.cookie = cookie
+        self.cookie_mask = cookie_mask
+        self.match = match
 
 
 class DescStats(GenericStruct):
