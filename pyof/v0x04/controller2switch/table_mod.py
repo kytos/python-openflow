@@ -1,4 +1,4 @@
-"""Flow Table."""
+"""Flow Table Modification message."""
 from enum import Enum
 
 from pyof.foundation.base import GenericMessage
