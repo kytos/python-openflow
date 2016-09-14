@@ -1,8 +1,8 @@
-"""Table flow tests."""
+"""Table flow modification tests."""
 import unittest
 
 from pyof.v0x04.common.header import Type
-from pyof.v0x04.controller2switch.flow_table import TableMod
+from pyof.v0x04.controller2switch.table_mod import TableMod
 
 
 class TestTableMod(unittest.TestCase):
