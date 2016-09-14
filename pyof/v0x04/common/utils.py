@@ -26,7 +26,6 @@ from pyof.v0x04.controller2switch.queue_get_config_reply import \
 from pyof.v0x04.controller2switch.queue_get_config_request import \
     QueueGetConfigRequest
 from pyof.v0x04.controller2switch.set_config import SetConfig
-from pyof.v0x04.controller2switch.stats_request import StatsRequest
 # Importing symmetric messages
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
@@ -67,7 +66,6 @@ def new_message_from_message_type(message_type):
         str(Type.OFPT_PACKET_OUT): PacketOut,
         str(Type.OFPT_FLOW_MOD): FlowMod,
         str(Type.OFPT_PORT_MOD): PortMod,
-        str(Type.OFPT_STATS_REQUEST): StatsRequest,
         str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
         str(Type.OFPT_BARRIER_REPLY): BarrierReply,
         str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
