@@ -4,7 +4,7 @@ from tests.test_struct import TestStruct
 
 
 class TestGetConfigReply(TestStruct):
-    """Config Reply message tests"""
+    """Config Reply message tests."""
 
     @classmethod
     def setUpClass(cls):

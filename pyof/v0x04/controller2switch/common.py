@@ -7,8 +7,7 @@ from enum import Enum
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
-from pyof.foundation.constants import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
-                                       SERIAL_NUM_LEN)
+from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
 from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
@@ -19,9 +18,9 @@ from pyof.v0x04.common.header import Header
 # Third-party imports
 
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
-           'ControllerRole', 'DescStats', 'FlowStatsRequest', 'MultipartTypes',
-           'PortStats', 'PortStatsRequest', 'QueueStats', 'QueueStatsRequest',
-           'StatsTypes', 'TableStats')
+           'ControllerRole', 'DescStats', 'FlowStats', 'FlowStatsRequest',
+           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
+           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
 
 # Enums
 
@@ -161,21 +160,6 @@ class StatsTypes(Enum):
 
 
 # Classes
-
-
-class ListOfActions(FixedTypeList):
-    """List of actions.
-
-    Represented by instances of ActionHeader and used on ActionHeader objects.
-    """
-
-    def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            items (ActionHeader): Instance or a list of instances.
-        """
-        super().__init__(pyof_class=ActionHeader, items=items)
 
 
 class AggregateStatsReply(GenericStruct):
@@ -377,6 +361,21 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class ListOfActions(FixedTypeList):
+    """List of actions.
+
+    Represented by instances of ActionHeader and used on ActionHeader objects.
+    """
+
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (ActionHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=ActionHeader, items=items)
 
 
 class PortStats(GenericStruct):
@@ -656,4 +655,3 @@ class SwitchConfig(GenericMessage):
         super().__init__(xid)
         self.flags = flags
         self.miss_send_len = miss_send_len
-

@@ -4,7 +4,7 @@ from tests.test_struct import TestStruct
 
 
 class TestPortStatsRequest(TestStruct):
-    """Config Port Stats Request message tests"""
+    """Config Port Stats Request message tests."""
 
     @classmethod
     def setUpClass(cls):

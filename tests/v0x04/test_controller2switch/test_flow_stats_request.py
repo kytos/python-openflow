@@ -3,7 +3,7 @@ from pyof.v0x04.controller2switch.common import FlowStatsRequest
 from tests.test_struct import TestStruct
 
 
-class FlowStatsRequest(TestStruct):
+class TestFlowStatsRequest(TestStruct):
     """Flow stats request message."""
 
     @classmethod
