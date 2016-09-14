@@ -27,14 +27,14 @@ __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
 
 
 class ConfigFlags(Enum):
-    """Configuration Flags. Handling of IP Fragments."""
+    """Handling of IP fragments."""
 
-    #: No special handling for fragments
+    #: No special handling for fragments.
     OFPC_FRAG_NORMAL = 0
-    #: Drop fragments
-    OFPC_FRAG_DROP = 1 << 0
-    #: Reassemble (only if OFPC_IP_REASM set)
-    OFPC_FRAG_REASM = 1 << 1
+    #: Drop fragments.
+    OFPC_FRAG_DROP = 1
+    #: Reassemble (only if OFPC_IP_REASM set).
+    OFPC_FRAG_REASM = 2
     OFPC_FRAG_MASK = 3
 
 
