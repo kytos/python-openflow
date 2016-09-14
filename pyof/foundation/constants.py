@@ -1,4 +1,4 @@
-"""General constants from python-openflow library"""
+"""General constants from python-openflow library."""
 
 # Max values of each basic type
 UBINT8_MAX_VALUE = 255

@@ -1,6 +1,4 @@
 """Packet out message tests."""
-import unittest
-
 from pyof.foundation.exceptions import ValidationError
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.packet_out import PacketOut
@@ -26,14 +24,6 @@ class TestPacketOut(TestStruct):
     def setUp(self):
         """Run before every test."""
         self.message = self.get_raw_object()
-
-    @unittest.skip('Need to recover dump contents.')
-    def test_pack(self):
-        pass
-
-    @unittest.skip('Need to recover dump contents.')
-    def test_unpack(self):
-        pass
 
     def test_valid_virtual_in_ports(self):
         """Valid virtual ports as defined in 1.0.1 spec."""
@@ -65,3 +55,9 @@ class TestPacketOut(TestStruct):
             self.message.in_port = in_port
             self.assertFalse(self.message.is_valid())
             self.assertRaises(ValidationError, self.message.validate)
+
+    def test_pack(self):
+        self.skipTest('Need to recover dump contents.')
+
+    def test_unpack(self):
+        self.skipTest('Need to recover dump contents.')

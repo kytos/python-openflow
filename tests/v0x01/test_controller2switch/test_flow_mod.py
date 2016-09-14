@@ -1,6 +1,4 @@
 """Flow modification (add/delete) message tests."""
-import unittest
-
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
@@ -19,13 +17,11 @@ class TestFlowAdd(TestStruct):
         super().set_raw_dump_object(FlowMod, **kwargs)
         super().set_minimum_size(72)
 
-    @unittest.skip('Need to recover dump contents.')
     def test_pack(self):
-        pass
+        self.skipTest('Need to recover dump contents.')
 
-    @unittest.skip('Need to recover dump contents.')
     def test_unpack(self):
-        pass
+        self.skipTest('Need to recover dump contents.')
 
 
 class TestFlowDelete(TestStruct):

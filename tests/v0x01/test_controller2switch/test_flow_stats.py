@@ -1,3 +1,4 @@
+"""Test FlowStats message."""
 import unittest
 
 from pyof.v0x01.common import flow_match
@@ -5,8 +6,10 @@ from pyof.v0x01.controller2switch.common import FlowStats
 
 
 class TestFlowStats(unittest.TestCase):
+    """Test class for TestFlowStats."""
 
     def setUp(self):
+        """Test basic setup."""
         self.message = FlowStats()
         self.message.length = 160
         self.message.table_id = 1
@@ -33,17 +36,17 @@ class TestFlowStats(unittest.TestCase):
         self.message.match.tp_dst = 80
 
     def test_get_size(self):
-        """[Controller2Switch/FlowStats] - size 88"""
+        """[Controller2Switch/FlowStats] - size 88."""
         self.assertEqual(self.message.get_size(), 88)
 
     @unittest.skip('Not yet implemented')
     def test_pack(self):
-        """[Controller2Switch/FlowStats] - packing"""
+        """[Controller2Switch/FlowStats] - packing."""
         # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
-        """[Controller2Switch/FlowStats] - unpacking"""
+        """[Controller2Switch/FlowStats] - unpacking."""
         # TODO
         pass

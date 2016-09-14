@@ -5,9 +5,10 @@ descriptions.
 """
 import sys
 from subprocess import call
-
 from setuptools import Command, find_packages, setup
+
 from pyof import __version__
+
 
 class Doctest(Command):
     """Run Sphinx doctest."""

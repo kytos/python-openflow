@@ -3,11 +3,11 @@
 # System imports
 from enum import Enum
 
+from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32, UBInt64
 # Local source tree imports
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.header import Header, Type
-from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32, UBInt64
 
 __all__ = ('FlowRemoved', 'FlowRemovedReason')
 

@@ -4,11 +4,11 @@
 
 # Third-party imports
 
+from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import Pad, UBInt16
 # Local source tree imports
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
-from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt16
 
 __all__ = ('QueueGetConfigRequest',)
 

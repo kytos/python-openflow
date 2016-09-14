@@ -1,6 +1,4 @@
 """Packet in message tests."""
-import unittest
-
 from pyof.v0x01.asynchronous.packet_in import PacketIn, PacketInReason
 from tests.test_struct import TestStruct
 
@@ -20,10 +18,8 @@ class TestPacketIn(TestStruct):
         # 18, not 20.
         super().set_minimum_size(18)
 
-    @unittest.skip('Need to recover dump contents.')
     def test_pack(self):
-        pass
+        self.skipTest('Need to recover dump contents.')
 
-    @unittest.skip('Need to recover dump contents.')
     def test_unpack(self):
-        pass
+        self.skipTest('Need to recover dump contents.')
