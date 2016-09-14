@@ -1,10 +1,6 @@
 """Automate struct tests."""
-import logging
 import unittest
 from tests.raw_dump import RawDump
-
-log = logging.getLogger()
-RAW_DUMP_ERR = '\n>>>> Raw dump file for this test need to be generated <<<<\n'
 
 
 class TestStruct(unittest.TestCase):
@@ -30,8 +26,16 @@ class TestStruct(unittest.TestCase):
                     super().set_raw_dump_file('v0x01', 'ofpt_barrier_reply')
                     # Create BarrierReply(xid=5) when needed
                     super().set_raw_dump_object(BarrierReply, xid=5)
-                    # As in spec: ``FP_ASSERT(sizeof(struct ...) == ...);``
+                    # As in spec: ``OFP_ASSERT(sizeof(struct ...) == ...);``
                     super().set_minimum_size(8)
+
+        To only test the minimum size and skip packing/unpacking:
+
+        .. code-block:: python3
+            class MyTest(TestDump):
+                @classmethod
+                def setUpClass(cls):
+                    super().set_minimum_size(8, BarrierReply)
     """
 
     def __init__(self, *args, **kwargs):
@@ -73,6 +77,8 @@ class TestStruct(unittest.TestCase):
             RawDump: with parameters previously set using
                 :meth:`set_raw_dump_file`.
         """
+        if cls._new_raw_dump is None:
+            raise FileNotFoundError()
         return cls._new_raw_dump()
 
     @classmethod
@@ -104,17 +110,21 @@ class TestStruct(unittest.TestCase):
         return cls._new_raw_object()
 
     @classmethod
-    def set_minimum_size(cls, size):
+    def set_minimum_size(cls, size, msg_cls=None):
         """Set the struct minimum size.
 
         The minimum size can be found in OF spec. For example,
         :class:`.PhyPort` minimum size is 48 because of
-        ``FP_ASSERT(sizeof(struct ofp_phy_port) == 48);`` (spec 1.0.0).
+        ``OFP_ASSERT(sizeof(struct ofp_phy_port) == 48);`` (spec 1.0.0).
 
         Args:
             size (int): The minimum size of the struct, in bytes.
+            msg_cls (class): The class (or function) to have its size checked.
+                If None, use the same class set in :meth:`set_raw_dump_object`.
         """
         cls._min_size = size
+        if msg_cls is not None:
+            TestStruct._msg_cls = msg_cls
 
     def test_pack(self):
         """Check whether packed objects equals to dump file."""
@@ -124,27 +134,20 @@ class TestStruct(unittest.TestCase):
             packed_obj = msg.pack()
             self.assertEqual(packed_obj, raw_file)
         except FileNotFoundError:
-            log.warning(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
-        except:
-            self.fail()
+            raise self.skipTest('Need a raw dump file.')
 
     def test_unpack(self):
         """Check whether the unpacked dump equals to expected object."""
         try:
-            obj = self.get_raw_object()
             unpacked = self.get_raw_dump().unpack()
+            obj = self.get_raw_object()
             self.assertEqual(unpacked, obj)
         except FileNotFoundError:
-            log.error(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest('Need a raw dump file.')
 
     def test_minimum_size(self):
         """Test struct minimum size."""
         if self._min_size is None:
-            raise self.skipTest('minimum size not set.')
-        try:
-            obj = TestStruct._msg_cls()
-            self.assertEqual(obj.get_size(), self._min_size)
-        except:
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest('minimum size was not set.')
+        obj = TestStruct._msg_cls()
+        self.assertEqual(obj.get_size(), self._min_size)
