@@ -68,6 +68,21 @@ class Bucket(GenericStruct):
         self.actions = actions
 
 
+class ListOfBuckets(FixedTypeList):
+    """List of buckets.
+
+    Represented by instances of Bucket.
+    """
+
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (Bucket): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=Bucket, items=items)
+
+
 class GroupMod(GenericMessage):
     """Group setup and teardown (controller -> datapath)."""
 
@@ -77,7 +92,7 @@ class GroupMod(GenericMessage):
     #: Pad to 64 bits.
     pad = Pad(1)
     group_id = UBInt32()
-    buckets = FixedTypeList(Bucket)
+    buckets = ListOfBuckets()
 
     def __init__(self, xid=None, command=None, group_type=None, group_id=None,
                  buckets=None):
@@ -88,7 +103,7 @@ class GroupMod(GenericMessage):
             command (GroupModCommand): One of OFPGC_*.
             group_type (GroupType): One of OFPGT_*.
             group_id (int): Group identifier.
-            buckets (:func:`list` of :class:`Bucket`): The length of the bucket
+            buckets (:class:`ListOfBuckets`): The length of the bucket
                 array is inferred from the length field in the header.
         """
         super().__init__(xid)
