@@ -294,7 +294,7 @@ class BinaryData(GenericType):
             buff (bytes): Binary data package to be unpacked.
             offset (int): Where to begin unpacking.
         """
-        self._value = buff
+        self._value = buff[offset:]
 
     def get_size(self, value=None):
         """Return the size in bytes.

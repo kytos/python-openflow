@@ -3,20 +3,19 @@
 # System imports
 from enum import Enum
 
-from pyof.foundation import exceptions
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import ConstantTypeList, UBInt16
+from pyof.foundation.basic_types import BinaryData, UBInt16
+# Do not import new_message_from_header directly to avoid cyclic import.
+from pyof.v0x01 import common
 from pyof.v0x01.common.header import Header, Type
-
-# Third-party imports
 
 
 __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
            'FlowModFailedCode', 'HelloFailedCode', 'PortModFailedCode',
            'QueueOpFailedCode')
 
-# Enums
 
+# Enums
 
 class ErrorType(Enum):
     """Values for ’type’ in ofp_error_message.
@@ -162,7 +161,7 @@ class ErrorMsg(GenericMessage):
     header = Header(message_type=Type.OFPT_ERROR)
     error_type = UBInt16(enum_ref=ErrorType)
     code = UBInt16()
-    data = ConstantTypeList()
+    data = BinaryData()
 
     def __init__(self, xid=None, error_type=None, code=None, data=None):
         """Assign parameters to object attributes.
@@ -171,14 +170,50 @@ class ErrorMsg(GenericMessage):
             xid (int): To be included in the message header.
             error_type (ErrorType): Error type.
             code (Enum): Error code.
-            data: Its content is specified in the error code documentation.
+            data (:func:`bytes` or packable): Its content is based on the error
+                type and code.
         """
         super().__init__(xid)
         self.error_type = error_type
         self.code = code
-        self.data = [] if data is None else data
+        self.data = data
+
+    def pack(self):
+        """Pack the value as a binary representation.
+
+        :attr:`data` is packed before the calling :meth:`.GenericMessage.pack`.
+        After that, :attr:`data`'s value is restored.
+
+        Returns:
+            bytes: The binary representation.
+        """
+        data_backup = None
+        if self.data and not isinstance(self.data, bytes):
+            data_backup = self.data
+            self.data = self.data.pack()
+        packed = super().pack()
+        if data_backup:
+            self.data = data_backup
+        return packed
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
-        raise exceptions.MethodNotImplemented("'Unpack' method not "
-                                              "implemented on ErrorMsg class")
+        offset = self.header.get_size()
+        super().unpack(buff, offset)
+        self.data = self._unpack_data()
+
+    def _unpack_data(self):
+        if self.data == b'':
+            return BinaryData()
+        # header unpacking
+        header = Header()
+        header_size = header.get_size()
+        header_data = self.data.value[:header_size]
+        header.unpack(header_data)
+
+        # message unpacking
+        msg = common.utils.new_message_from_header(header)
+        msg_data = self.data.value[header_size:]
+        msg.unpack(msg_data)
+
+        return msg

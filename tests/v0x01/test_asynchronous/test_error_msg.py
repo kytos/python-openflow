@@ -1,32 +1,46 @@
 """Testing ErrorMessage."""
-import unittest
+from pyof.v0x01.asynchronous.error_msg import (BadRequestCode, ErrorMsg,
+                                               ErrorType)
+from pyof.v0x01.symmetric.hello import Hello
 
-from pyof.v0x01.asynchronous import error_msg
+from ...test_struct import TestStruct
 
 
-class TestErrorMsg(unittest.TestCase):
+class TestErrorMsg(TestStruct):
     """Test the ErrorMsg message."""
 
+    @classmethod
+    def setUpClass(cls):
+        """Setup TestStruct."""
+        super().setUpClass()
+        super().set_minimum_size(12, ErrorMsg)
+
     def setUp(self):
-        """Setup the TestErrorMsg Class instantiating a ErrorMsg message."""
-        self.message = error_msg.ErrorMsg()
-        self.message.header.xid = 1
-        self.message.type = error_msg.ErrorType.OFPET_BAD_ACTION
-        self.message.code = error_msg.BadActionCode.OFPBAC_EPERM
-        self.message.data = []
+        """Error message to be used in multiple tests."""
+        self.error_msg = ErrorMsg(error_type=ErrorType.OFPET_BAD_REQUEST,
+                                  code=BadRequestCode.OFPBRC_BAD_STAT,
+                                  data=b'')
 
-    def test_size(self):
-        """[Asynchronous/ErrorMsg] - size 12."""
-        self.assertEqual(self.message.get_size(), 12, 'Wrong message size')
+    def test_pack_unpack_with_empty_data(self):
+        """Should accept and empty byte as data."""
+        # unpacked data
+        u_error = ErrorMsg()
+        u_error.unpack(self.error_msg.pack())
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Asynchronous/ErrorMsg] - packing."""
-        # TODO
-        pass
+        self.assertEqual(self.error_msg.error_type, u_error.error_type)
+        self.assertEqual(self.error_msg.code, u_error.code)
+        self.assertEqual(b'', u_error.data)
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Asynchronous/ErrorMsg] - unpacking."""
-        # TODO
-        pass
+    def test_pack_unpack_with_hello(self):
+        """`Hello` message in `data` field after packing and unpacking."""
+        # packed data
+        p_hello = Hello()
+        self.error_msg.data = p_hello
+        packed = self.error_msg.pack()
+
+        # unpacked data
+        u_error = ErrorMsg()
+        u_error.unpack(packed)
+        u_hello = u_error.data
+
+        self.assertEqual(p_hello, u_hello)

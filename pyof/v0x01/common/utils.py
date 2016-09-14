@@ -77,7 +77,7 @@ def new_message_from_message_type(message_type):
     }
 
     if message_type not in available_classes:
-        raise ValueError
+        raise ValueError('"{}" is not known.'.format(message_type))
 
     message_class = available_classes.get(message_type)
     message_instance = message_class()
