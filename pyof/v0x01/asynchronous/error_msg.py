@@ -163,7 +163,7 @@ class ErrorMsg(GenericMessage):
     code = UBInt16()
     data = BinaryData()
 
-    def __init__(self, xid=None, error_type=None, code=None, data=None):
+    def __init__(self, xid=None, error_type=None, code=None, data=b''):
         """Assign parameters to object attributes.
 
         Args:
