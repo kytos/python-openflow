@@ -243,8 +243,8 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def __init__(self):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for attribute_name, class_attribute in self.get_class_attributes():
-            setattr(self, attribute_name, deepcopy(class_attribute))
+        for name, value in self.get_class_attributes():
+            setattr(self, name, deepcopy(value))
 
     def __eq__(self, other):
         """Check whether two structures have the same structure and values.
@@ -345,7 +345,8 @@ class GenericStruct(object, metaclass=MetaStruct):
             Exception: If the struct is not valid.
         """
         if value is None:
-            return sum(cls.get_size(obj) for obj, cls in self.get_attributes())
+            return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
+                       self.get_attributes())
         elif isinstance(value, type(self)):
             return value.get_size()
         else:
@@ -395,8 +396,8 @@ class GenericStruct(object, metaclass=MetaStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, obj in self.get_class_attributes():
-            size = self._unpack_attribute(name, obj, buff, begin)
+        for name, value in self.get_class_attributes():
+            size = self._unpack_attribute(name, value, buff, begin)
             begin += size
 
     def _unpack_attribute(self, name, obj, buff, begin):
@@ -462,9 +463,9 @@ class GenericMessage(GenericStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, cls in self.get_class_attributes():
-            if type(cls).__name__ != "Header":
-                size = self._unpack_attribute(name, cls, buff, begin)
+        for name, value in self.get_class_attributes():
+            if type(value).__name__ != "Header":
+                size = self._unpack_attribute(name, value, buff, begin)
                 begin += size
 
     def _validate_message_length(self):
