@@ -446,7 +446,7 @@ class FixedTypeList(TypeList):
         """
         if isinstance(item, list):
             self.extend(item)
-        elif item.__class__ == self._pyof_class:
+        elif issubclass(item.__class__, self._pyof_class):
             list.append(self, item)
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
@@ -464,7 +464,7 @@ class FixedTypeList(TypeList):
             :exc:`~.exceptions.WrongListItemType`: If the item has a different
                 type than the one specified in the constructor.
         """
-        if item.__class__ == self._pyof_class:
+        if issubclass(item.__class__, self._pyof_class):
             list.insert(self, index, item)
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,

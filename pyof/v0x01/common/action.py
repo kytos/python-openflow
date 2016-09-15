@@ -70,7 +70,7 @@ class ActionHeader(GenericStruct):
         self.length = length
 
 
-class ActionOutput(GenericStruct):
+class ActionOutput(ActionHeader):
     """Defines the actions output.
 
     Action structure for :attr:`ActionType.OFPAT_OUTPUT`, which sends packets
@@ -97,7 +97,7 @@ class ActionOutput(GenericStruct):
         self.max_length = max_length
 
 
-class ActionEnqueue(GenericStruct):
+class ActionEnqueue(ActionHeader):
     """Send packets to a queue's port.
 
     A switch may support only queues that are tied to specific PCP/TOS bits.
@@ -126,7 +126,7 @@ class ActionEnqueue(GenericStruct):
         self.queue_id = queue_id
 
 
-class ActionVlanVid(GenericStruct):
+class ActionVlanVid(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
 
     .. note:: The vlan_vid field is 16 bits long,
@@ -150,7 +150,7 @@ class ActionVlanVid(GenericStruct):
         self.vlan_id = vlan_id
 
 
-class ActionVlanPCP(GenericStruct):
+class ActionVlanPCP(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_PCP`."""
 
     type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
@@ -172,7 +172,7 @@ class ActionVlanPCP(GenericStruct):
         self.vlan_pcp = vlan_pcp
 
 
-class ActionDLAddr(GenericStruct):
+class ActionDLAddr(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or _DST."""
 
     dl_addr_type = UBInt16(enum_ref=ActionType)
@@ -195,7 +195,7 @@ class ActionDLAddr(GenericStruct):
         self.dl_addr = dl_addr
 
 
-class ActionNWAddr(GenericStruct):
+class ActionNWAddr(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST."""
 
     nw_addr_type = UBInt16(enum_ref=ActionType)
@@ -215,7 +215,7 @@ class ActionNWAddr(GenericStruct):
         self.nw_addr = nw_addr
 
 
-class ActionNWTos(GenericStruct):
+class ActionNWTos(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_TOS`.
 
     .. note:: The nw_tos field is the 6 upper bits of the ToS field to set,
@@ -241,7 +241,7 @@ class ActionNWTos(GenericStruct):
         self.nw_tos = nw_tos
 
 
-class ActionTPPort(GenericStruct):
+class ActionTPPort(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or _DST."""
 
     tp_port_type = UBInt16(enum_ref=ActionType)
@@ -263,7 +263,7 @@ class ActionTPPort(GenericStruct):
         self.tp_port = tp_port
 
 
-class ActionVendorHeader(GenericStruct):
+class ActionVendorHeader(ActionHeader):
     """Action header for :attr:`ActionType.OFPAT_VENDOR`.
 
     The rest of the body is vendor-defined.
