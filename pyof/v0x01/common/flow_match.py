@@ -66,22 +66,35 @@ class FlowWildCards(GenericBitMask):
 class Match(GenericStruct):
     """Describes a flow entry. Fields to match against flows."""
 
+    #: Wildcards fields.
     wildcards = UBInt32(enum_ref=FlowWildCards)
+    #: Input switch port.
     in_port = UBInt16()
+    #: Ethernet source address. (default: '00:00:00:00:00:00')
     dl_src = HWAddress()
+    #: Ethernet destination address. (default: '00:00:00:00:00:00')
     dl_dst = HWAddress()
+    #: Input VLAN id. (default: 0)
     dl_vlan = UBInt16()
+    #: Input VLAN priority. (default: 0)
     dl_vlan_pcp = UBInt8()
     #: Align to 64-bits.
     pad1 = Pad(1)
+    #: Ethernet frame type. (default: 0)
     dl_type = UBInt16()
+    #: IP ToS (actually DSCP field, 6 bits). (default: 0)
     nw_tos = UBInt8()
+    #: IP protocol or lower 8 bits of ARP opcode. (default: 0)
     nw_proto = UBInt8()
     #: Align to 64-bits.
     pad2 = Pad(2)
+    #: IP source address. (default: 0)
     nw_src = UBInt32()
+    #: IP destination address. (default: 0)
     nw_dst = UBInt32()
+    #: TCP/UDP source port. (default: 0)
     tp_src = UBInt16()
+    #: TCP/UDP destination port. (default: 0)
     tp_dst = UBInt16()
 
     def __init__(self, wildcards=0, in_port=0, dl_src='00:00:00:00:00:00',
