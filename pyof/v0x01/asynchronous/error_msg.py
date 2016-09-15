@@ -5,6 +5,7 @@ from enum import Enum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
+from pyof.foundation.exceptions import PackException
 # Do not import new_message_from_header directly to avoid cyclic import.
 from pyof.v0x01 import common
 from pyof.v0x01.common.header import Header, Type
@@ -178,7 +179,7 @@ class ErrorMsg(GenericMessage):
         self.code = code
         self.data = data
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack the value as a binary representation.
 
         :attr:`data` is packed before the calling :meth:`.GenericMessage.pack`.
@@ -187,14 +188,21 @@ class ErrorMsg(GenericMessage):
         Returns:
             bytes: The binary representation.
         """
-        data_backup = None
-        if self.data and not isinstance(self.data, bytes):
-            data_backup = self.data
-            self.data = self.data.pack()
-        packed = super().pack()
-        if data_backup:
-            self.data = data_backup
-        return packed
+        if value is None:
+            data_backup = None
+            if self.data is not None and not isinstance(self.data, bytes):
+                data_backup = self.data
+                self.data = self.data.pack()
+            packed = super().pack()
+            if data_backup is not None:
+                self.data = data_backup
+            return packed
+        elif isinstance(value, type(self)):
+            return value.pack()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
