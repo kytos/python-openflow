@@ -12,4 +12,4 @@ class TestGetAsyncRequest(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x04', 'ofpt_get_async_request')
         super().set_raw_dump_object(GetAsyncRequest, xid=3)
-        super().set_minimum_size(32)
+        super().set_minimum_size(8)

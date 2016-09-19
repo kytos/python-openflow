@@ -16,4 +16,4 @@ class TestPacketIn(TestStruct):
                                     table_id=1, cookie=1, data=b'')
         # Different from the specification, the minimum size of this class is
         # 18, not 20.
-        super().set_minimum_size(18)
+        super().set_minimum_size(34)
