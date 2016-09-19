@@ -97,14 +97,14 @@ class Match(GenericStruct):
     #: TCP/UDP destination port. (default: 0)
     tp_dst = UBInt16()
 
-    def __init__(self, wildcards=0, in_port=0, dl_src='00:00:00:00:00:00',
-                 dl_dst='00:00:00:00:00:00', dl_vlan=0, dl_vlan_pcp=0,
-                 dl_type=0, nw_tos=0, nw_proto=0, nw_src=0, nw_dst=0, tp_src=0,
-                 tp_dst=0):
+    def __init__(self, wildcards=FlowWildCards.OFPFW_ALL, in_port=0,
+                 dl_src='00:00:00:00:00:00', dl_dst='00:00:00:00:00:00',
+                 dl_vlan=0, dl_vlan_pcp=0, dl_type=0, nw_tos=0, nw_proto=0,
+                 nw_src=0, nw_dst=0, tp_src=0, tp_dst=0):
         """All the constructor parameters below are optional.
 
         Args:
-            wildcards (FlowWildCards): Wildcards fields. (Default: 0)
+            wildcards (FlowWildCards): Wildcards fields. (Default: OFPFW_ALL)
             in_port (int): Input switch port. (default: 0)
             dl_src (HWAddress): Ethernet source address.
                 (default: '00:00:00:00:00:00')
