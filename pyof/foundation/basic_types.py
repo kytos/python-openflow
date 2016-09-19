@@ -172,7 +172,6 @@ class Char(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-
     def __init__(self, hw_address='00:00:00:00:00:00'):
         """The constructor takes the parameters below.
 
@@ -246,8 +245,9 @@ class HWAddress(GenericType):
             int: The address size in bytes.
         """
         return 6
-    
+
     def is_broadcast(self):
+        """Return true if the value is a broadcast address. False otherwise."""
         return self.value == 'ff:ff:ff:ff:ff:ff'
 
 

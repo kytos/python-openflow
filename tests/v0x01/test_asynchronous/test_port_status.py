@@ -19,11 +19,12 @@ class TestPortStatus(TestStruct):
         super().set_minimum_size(64)
 
     def test_pack(self):
+        """Skip pack test for now."""
         self.skipTest('Need to recover dump contents.')
 
     def test_unpack(self):
+        """Skipt unpack test for now."""
         self.skipTest('Need to recover dump contents.')
-
 
 
 def _new_portstatus():
