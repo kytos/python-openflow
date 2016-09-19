@@ -13,15 +13,19 @@ from pyof import __version__
 
 class CleanCommand(Command):
     """Custom clean command to tidy up the project root."""
+
     user_options = []
 
     def initialize_options(self):
+        """No initializa options."""
         pass
 
     def finalize_options(self):
+        """No finalize options."""
         pass
 
     def run(self):
+        """Clean build, dist, pyc and egg from package and docs."""
         os.system('rm -vrf ./build ./dist ./*.pyc ./*.egg-info')
         os.system('cd docs; make clean')
 
