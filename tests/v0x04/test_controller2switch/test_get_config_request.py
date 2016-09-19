@@ -12,4 +12,4 @@ class TestGetConfigRequest(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x04', 'ofpt_get_config_request')
         super().set_raw_dump_object(GetConfigRequest)
-        super().set_minimum_size(12)
+        super().set_minimum_size(8)
