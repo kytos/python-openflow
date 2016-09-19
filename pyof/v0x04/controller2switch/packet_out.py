@@ -25,7 +25,7 @@ class PacketOut(GenericMessage):
     buffer_id = UBInt32()
     #: Packet’s input port or OFPP_CONTROLLER.
     #: TODO: This field have a enum_ref ?
-    in_port = UBInt16(enum_ref=PortNo)
+    in_port = UBInt32(enum_ref=PortNo)
     #: Size of action array in bytes.
     actions_len = UBInt16()
     #: Padding
