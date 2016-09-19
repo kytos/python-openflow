@@ -21,7 +21,8 @@ from copy import deepcopy
 from enum import Enum
 
 # Local source tree imports
-from pyof.foundation import exceptions
+from pyof.foundation.exceptions import (BadValueException, PackException,
+                                        UnpackException, ValidationError)
 
 # Third-party imports
 
@@ -62,7 +63,7 @@ class GenericType:
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return self.pack() == other.pack()
-        elif self.isenum() and isinstance(other, self.enum_ref):
+        elif hasattr(other, 'value'):
             return self.value == other.value
         return self.value == other
 
@@ -145,7 +146,7 @@ class GenericType:
             msg = '{} could not pack {} = {}.'.format(type(self).__name__,
                                                       type(value).__name__,
                                                       value)
-            raise exceptions.PackException(msg)
+            raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack *buff* into this object.
@@ -164,10 +165,10 @@ class GenericType:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
             if self.enum_ref:
                 self._value = self.enum_ref(self._value)
-        except struct.error:
-            msg = 'fmt: {}, buff: {}, offset: {}.'.format(
-                self._fmt, buff, offset)
-            raise exceptions.UnpackException(msg)
+        except (struct.error, TypeError, ValueError) as e:
+            msg = '{}; fmt = {}, buff = {}, offset = {}.'.format(e, self._fmt,
+                                                                 buff, offset)
+            raise UnpackException(msg)
 
     def get_size(self, value=None):
         """Return the size in bytes of this type.
@@ -188,7 +189,7 @@ class GenericType:
         try:
             self.pack()
             return True
-        except exceptions.BadValueException:
+        except BadValueException:
             return False
 
     def isenum(self):
@@ -242,8 +243,8 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def __init__(self):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for attribute_name, class_attribute in self.get_class_attributes():
-            setattr(self, attribute_name, deepcopy(class_attribute))
+        for name, value in self.get_class_attributes():
+            setattr(self, name, deepcopy(value))
 
     def __eq__(self, other):
         """Check whether two structures have the same structure and values.
@@ -344,13 +345,14 @@ class GenericStruct(object, metaclass=MetaStruct):
             Exception: If the struct is not valid.
         """
         if value is None:
-            return sum(cls.get_size(obj) for obj, cls in self.get_attributes())
+            return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
+                       self.get_attributes())
         elif isinstance(value, type(self)):
             return value.get_size()
         else:
             msg = "{} is not an instance of {}".format(value,
                                                        type(self).__name__)
-            raise exceptions.PackException(msg)
+            raise PackException(msg)
 
     def pack(self, value=None):
         """Pack the struct in a binary representation.
@@ -369,7 +371,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             if not self.is_valid():
                 error_msg = "Error on validation prior to pack() on class "
                 error_msg += "{}.".format(type(self).__name__)
-                raise exceptions.ValidationError(error_msg)
+                raise ValidationError(error_msg)
             else:
                 message = b''
                 # pylint: disable=no-member
@@ -381,7 +383,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         else:
             msg = "{} is not an instance of {}".format(value,
                                                        type(self).__name__)
-            raise exceptions.PackException(msg)
+            raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -394,16 +396,24 @@ class GenericStruct(object, metaclass=MetaStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for attribute_name, class_attribute in self.get_class_attributes():
-            attribute = deepcopy(class_attribute)
+        for name, value in self.get_class_attributes():
+            size = self._unpack_attribute(name, value, buff, begin)
+            begin += size
+
+    def _unpack_attribute(self, name, obj, buff, begin):
+        attribute = deepcopy(obj)
+        setattr(self, name, attribute)
+        if len(buff) == 0:
+            size = 0
+        else:
             try:
                 attribute.unpack(buff, begin)
-            except exceptions.UnpackException:
-                msg = 'Attribute name: {}, type: {}.'.format(
-                    attribute_name, type(class_attribute).__name__)
-                raise exceptions.UnpackException(msg)
-            setattr(self, attribute_name, attribute)
-            begin += attribute.get_size()
+                size = attribute.get_size()
+            except UnpackException as e:
+                child_cls = type(self).__name__
+                msg = '{}.{}; {}'.format(child_cls, name, e)
+                raise UnpackException(msg)
+        return size
 
     def is_valid(self):
         """Check whether all struct attributes in are valid.
@@ -453,12 +463,10 @@ class GenericMessage(GenericStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for attribute_name, class_attribute in self.get_class_attributes():
-            if type(class_attribute).__name__ != "Header":
-                attribute = deepcopy(class_attribute)
-                attribute.unpack(buff, begin)
-                setattr(self, attribute_name, attribute)
-                begin += attribute.get_size()
+        for name, value in self.get_class_attributes():
+            if type(value).__name__ != "Header":
+                size = self._unpack_attribute(name, value, buff, begin)
+                begin += size
 
     def _validate_message_length(self):
         if not self.header.length == self.get_size():
@@ -511,7 +519,7 @@ class GenericMessage(GenericStruct):
         else:
             msg = "{} is not an instance of {}".format(value,
                                                        type(self).__name__)
-            raise exceptions.PackException(msg)
+            raise PackException(msg)
 
     def update_header_length(self):
         """Update the header length attribute based on current message size.

@@ -12,7 +12,7 @@ class MethodNotImplemented(Exception):
     """Exception to be raised when a method is not implemented."""
 
     def __str__(self):
-        return "Method not yet implemented" + super().__str__()
+        return "Method not yet implemented: " + super().__str__()
 
 
 class BadValueException(Exception):
@@ -51,8 +51,7 @@ class WrongListItemType(Exception):
 class UnpackException(Exception):
     """Error while unpacking."""
 
-    def __str__(self):
-        return "Unpack error: " + super().__str__()
+    pass
 
 
 class PackException(Exception):
