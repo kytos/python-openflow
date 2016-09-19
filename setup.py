@@ -3,11 +3,31 @@
 Run "python3 setup --help-commands" to list all available commands and their
 descriptions.
 """
+import os
 import sys
 from subprocess import call
 from setuptools import Command, find_packages, setup
 
 from pyof import __version__
+
+
+class CleanCommand(Command):
+    """Custom clean command to tidy up the project root."""
+
+    user_options = []
+
+    def initialize_options(self):
+        """No initializa options."""
+        pass
+
+    def finalize_options(self):
+        """No finalize options."""
+        pass
+
+    def run(self):
+        """Clean build, dist, pyc and egg from package and docs."""
+        os.system('rm -vrf ./build ./dist ./*.pyc ./*.egg-info')
+        os.system('cd docs; make clean')
 
 
 class Doctest(Command):
@@ -77,6 +97,7 @@ setup(name='python-openflow',
       packages=find_packages(exclude=['tests', '*v0x02*']),
       cmdclass={
           'lint': Linter,
-          'quick_lint': FastLinter
+          'quick_lint': FastLinter,
+          'clean': CleanCommand,
       },
       zip_safe=False)
