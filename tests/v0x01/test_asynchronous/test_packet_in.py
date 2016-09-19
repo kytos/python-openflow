@@ -19,7 +19,9 @@ class TestPacketIn(TestStruct):
         super().set_minimum_size(18)
 
     def test_pack(self):
+        """Skip pack test for now."""
         self.skipTest('Need to recover dump contents.')
 
     def test_unpack(self):
+        """Skip unpack test for now."""
         self.skipTest('Need to recover dump contents.')
