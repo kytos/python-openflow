@@ -358,9 +358,9 @@ please take a look inside ``raw`` directory.
 Signing the CLA
 ---------------
 
-Please sign our Contributor License Agreement (CLA) before sending pull
-requests. For any code changes to be accepted, the CLA must be signed. It's a
-quick process, we promise!
+Please `sign <http://kytos.io/cla/>`__ our Contributor License Agreement (CLA)
+before sending pull requests. For any code changes to be accepted, the CLA
+must be signed. It's a quick process, we promise!
 
 Contact Us
 ----------
