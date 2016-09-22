@@ -5,7 +5,7 @@ descriptions.
 """
 import os
 import sys
-from subprocess import call
+from subprocess import call, check_call
 from setuptools import Command, find_packages, setup
 
 from pyof import __version__
@@ -35,7 +35,7 @@ class Doctest(Command):
 
     if sys.argv[-1] == 'test':
         print('Running examples in documentation')
-        call('make doctest -C docs/', shell=True)
+        check_call('make doctest -C docs/', shell=True)
 
 
 class Linter(Command):
