@@ -66,44 +66,60 @@ class FlowWildCards(GenericBitMask):
 class Match(GenericStruct):
     """Describes a flow entry. Fields to match against flows."""
 
+    #: Wildcards fields.
     wildcards = UBInt32(enum_ref=FlowWildCards)
+    #: Input switch port.
     in_port = UBInt16()
+    #: Ethernet source address. (default: '00:00:00:00:00:00')
     dl_src = HWAddress()
+    #: Ethernet destination address. (default: '00:00:00:00:00:00')
     dl_dst = HWAddress()
+    #: Input VLAN id. (default: 0)
     dl_vlan = UBInt16()
+    #: Input VLAN priority. (default: 0)
     dl_vlan_pcp = UBInt8()
     #: Align to 64-bits.
     pad1 = Pad(1)
+    #: Ethernet frame type. (default: 0)
     dl_type = UBInt16()
+    #: IP ToS (actually DSCP field, 6 bits). (default: 0)
     nw_tos = UBInt8()
+    #: IP protocol or lower 8 bits of ARP opcode. (default: 0)
     nw_proto = UBInt8()
     #: Align to 64-bits.
     pad2 = Pad(2)
+    #: IP source address. (default: 0)
     nw_src = UBInt32()
+    #: IP destination address. (default: 0)
     nw_dst = UBInt32()
+    #: TCP/UDP source port. (default: 0)
     tp_src = UBInt16()
+    #: TCP/UDP destination port. (default: 0)
     tp_dst = UBInt16()
 
-    def __init__(self, wildcards=None, in_port=None, dl_src=None, dl_dst=None,
-                 dl_vlan=None, dl_vlan_pcp=None, dl_type=None,
-                 nw_tos=None, nw_proto=None, nw_src=None,
-                 nw_dst=None, tp_src=None, tp_dst=None):
+    def __init__(self, wildcards=FlowWildCards.OFPFW_ALL, in_port=0,
+                 dl_src='00:00:00:00:00:00', dl_dst='00:00:00:00:00:00',
+                 dl_vlan=0, dl_vlan_pcp=0, dl_type=0, nw_tos=0, nw_proto=0,
+                 nw_src=0, nw_dst=0, tp_src=0, tp_dst=0):
         """All the constructor parameters below are optional.
 
         Args:
-            wildcards (FlowWildCards): Wildcards fields.
-            in_port (int): Input switch port.
+            wildcards (FlowWildCards): Wildcards fields. (Default: OFPFW_ALL)
+            in_port (int): Input switch port. (default: 0)
             dl_src (HWAddress): Ethernet source address.
+                (default: '00:00:00:00:00:00')
             dl_dst (HWAddress): Ethernet destination address.
-            dl_vlan (int): Input VLAN id.
-            dl_vlan_pcp (int): Input VLAN priority.
-            dl_type (int): Ethernet frame type.
-            nw_tos (int): IP ToS (actually DSCP field, 6 bits).
+                (default: '00:00:00:00:00:00')
+            dl_vlan (int): Input VLAN id. (default: 0)
+            dl_vlan_pcp (int): Input VLAN priority. (default: 0)
+            dl_type (int): Ethernet frame type. (default: 0)
+            nw_tos (int): IP ToS (actually DSCP field, 6 bits). (default: 0)
             nw_proto (int): IP protocol or lower 8 bits of ARP opcode.
-            nw_src (int): IP source address.
-            nw_dst (int): IP destination address.
-            tp_src (int): TCP/UDP source port.
-            tp_dst (int): TCP/UDP destination port.
+                (default: 0)
+            nw_src (int): IP source address. (default: 0)
+            nw_dst (int): IP destination address. (default: 0)
+            tp_src (int): TCP/UDP source port. (default: 0)
+            tp_dst (int): TCP/UDP destination port. (default: 0)
         """
         super().__init__()
         self.wildcards = wildcards

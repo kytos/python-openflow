@@ -184,6 +184,9 @@ class HWAddress(GenericType):
     def pack(self, value=None):
         """Pack the value as a binary representation.
 
+        If the passed value (or the self._value) is zero (int), then the pack
+        will assume that the value to be packed is '00:00:00:00:00:00'.
+
         Returns
             bytes: The binary representation.
 
@@ -193,10 +196,13 @@ class HWAddress(GenericType):
         if isinstance(value, type(self)):
             return value.pack()
 
-        if value is not None:
-            value = value.split(':')
-        else:
-            value = self._value.split(':')
+        if value is None:
+            value = self._value
+
+        if value == 0:
+            value = '00:00:00:00:00:00'
+
+        value = value.split(':')
 
         try:
             return struct.pack('!6B', *[int(x, 16) for x in value])
