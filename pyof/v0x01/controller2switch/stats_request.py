@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import ConstantTypeList, UBInt16
+from pyof.foundation.basic_types import BinaryData, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.controller2switch.common import StatsTypes
@@ -20,9 +20,9 @@ class StatsRequest(GenericMessage):
     header = Header(message_type=Type.OFPT_STATS_REQUEST)
     body_type = UBInt16(enum_ref=StatsTypes)
     flags = UBInt16()
-    body = ConstantTypeList()
+    body = BinaryData()
 
-    def __init__(self, xid=None, body_type=None, flags=None, body=None):
+    def __init__(self, xid=None, body_type=None, flags=0, body=b''):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -33,4 +33,4 @@ class StatsRequest(GenericMessage):
         super().__init__(xid)
         self.body_type = body_type
         self.flags = flags
-        self.body = [] if body is None else body
+        self.body = body
