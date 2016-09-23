@@ -257,14 +257,14 @@ Information about environment setup for developers can be found in the
 Pull Request Pro Tips
 ~~~~~~~~~~~~~~~~~~~~~
 
--  **`Fork <http://guides.github.com/activities/forking/>`__ the repository** and
-   clone it locally. Connect your local repository to the original ‘upstream’ one
-   by adding it as a remote. **Pull in** changes from ‘upstream’ often to stay
-   up to date so that when you submit your pull request, merge
+-  `Fork <http://guides.github.com/activities/forking/>`__ the repository
+   and clone it locally. Connect your local repository to the original
+   ‘upstream’ one by adding it as a remote. **Pull in** changes from ‘upstream’
+   often to stay up to date so that when you submit your pull request, merge
    conflicts will be less likely. See more detailed instructions
    `here <https://help.github.com/articles/syncing-a-fork>`__.
--  **Create a `branch <http://guides.github.com/introduction/flow/>`__** for your
-   edits.
+-  **Create** a `branch <http://guides.github.com/introduction/flow/>`__ for
+   your edits.
 -  **Be clear** about what problem is occurring and how someone can recreate
    that problem or why your feature will help. Then be equally as clear about
    the steps you took to make your changes.
@@ -358,9 +358,9 @@ please take a look inside ``raw`` directory.
 Signing the CLA
 ---------------
 
-Please sign our Contributor License Agreement (CLA) before sending pull
-requests. For any code changes to be accepted, the CLA must be signed. It's a
-quick process, we promise!
+Please `sign <http://kytos.io/cla/>`__ our Contributor License Agreement (CLA)
+before sending pull requests. For any code changes to be accepted, the CLA
+must be signed. It's a quick process, we promise!
 
 Contact Us
 ----------
