@@ -10,7 +10,7 @@ from pyof.foundation.base import GenericStruct, GenericType
 # Third-party imports
 
 
-__all__ = ('UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'Pad',
+__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'Pad',
            'HWAddress', 'BinaryData', 'FixedTypeList', 'ConstantTypeList')
 
 
@@ -552,3 +552,14 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
+
+class Ethernet(GenericStruct):
+    destination = HWAddress()
+    source = HWAddress()
+    type = UBInt16()
+
+    def __init__(self, destination=None, source=None, type=None):
+        super().__init__()
+        self.destination = destination
+        self.source = source
+        self.type = type
