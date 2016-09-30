@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16, UBInt32
-from pyof.foundation.exceptions import ValidationError
+from pyof.foundation.exceptions import PackException, ValidationError
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.common import ListOfActions
@@ -26,8 +26,8 @@ class PacketOut(GenericMessage):
     actions = ListOfActions()
     data = BinaryData()
 
-    def __init__(self, xid=None, buffer_id=None, in_port=None,
-                 actions_len=None, actions=None, data=b''):
+    def __init__(self, xid=None, buffer_id=None, in_port=None, actions=None,
+                 data=b''):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -37,7 +37,6 @@ class PacketOut(GenericMessage):
                 (:attr:`.Port.OFPP_NONE` if none). Virtual ports OFPP_IN_PORT,
                 OFPP_TABLE, OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be
                 used as input port.
-            actions_len (int): Size of action array in bytes.
             actions (ListOfActions): Actions (class ActionHeader).
             data (bytes): Packet data. The length is inferred from the length
                 field in the header. (Only meaningful if buffer_id == -1).
@@ -45,7 +44,6 @@ class PacketOut(GenericMessage):
         super().__init__(xid)
         self.buffer_id = buffer_id
         self.in_port = in_port
-        self.actions_len = actions_len
         self.actions = [] if actions is None else actions
         self.data = data
 
@@ -62,6 +60,18 @@ class PacketOut(GenericMessage):
             return True
         except ValidationError:
             return False
+
+    def pack(self, value=None):
+        """Update the action_len attribute and call super().pack()."""
+        if value is None:
+            self._update_actions_len()
+            return super().pack()
+        elif isinstance(value, type(self)):
+            return value.pack()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -90,6 +100,13 @@ class PacketOut(GenericMessage):
                     attribute.unpack(buff, begin)
                 setattr(self, attribute_name, attribute)
                 begin += attribute.get_size()
+
+    def _update_actions_len(self):
+        """Update the actions_len field based on actions value."""
+        if isinstance(self.actions, ListOfActions):
+            self.actions_len = self.actions.get_size()
+        else:
+            self.actions_len = ListOfActions(self.actions).get_size()
 
     def _validate_in_port(self):
         port = self.in_port
