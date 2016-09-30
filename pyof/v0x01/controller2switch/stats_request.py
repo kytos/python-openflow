@@ -14,7 +14,7 @@ __all__ = ('StatsRequest',)
 
 
 class StatsRequest(GenericMessage):
-    """Response to the config request."""
+    """Request statistics to switch."""
 
     #: OpenFlow :class:`.Header`
     header = Header(message_type=Type.OFPT_STATS_REQUEST)
@@ -28,7 +28,7 @@ class StatsRequest(GenericMessage):
         Args:
             body_type (StatsTypes): One of the OFPST_* constants.
             flags (int): OFPSF_REQ_* flags (none yet defined).
-            body (ConstantTypeList): Body of the request.
+            body (BinaryData): Body of the request.
         """
         super().__init__(xid)
         self.body_type = body_type
