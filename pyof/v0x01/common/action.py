@@ -85,7 +85,7 @@ class ActionOutput(ActionHeader):
     port = UBInt16()
     max_length = UBInt16()
 
-    def __init__(self, port=None, max_length=None):
+    def __init__(self, port=None, max_length=0):
         """The following constructor parameters are optional.
 
         Args:

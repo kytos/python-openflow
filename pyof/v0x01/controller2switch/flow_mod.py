@@ -11,6 +11,8 @@ from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.common import ListOfActions
 
+from pyof.v0x01.common.constants import NO_BUFFER
+
 # Third-party imports
 
 __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
@@ -62,9 +64,10 @@ class FlowMod(GenericMessage):
     flags = UBInt16(enum_ref=FlowModFlags)
     actions = ListOfActions()
 
-    def __init__(self, xid=None, match=None, cookie=None, command=None,
-                 idle_timeout=None, hard_timeout=None, priority=None,
-                 buffer_id=None, out_port=None, flags=None, actions=None):
+    def __init__(self, xid=None, match=None, cookie=0, command=None,
+                 idle_timeout=0, hard_timeout=0, priority=0,
+                 buffer_id=NO_BUFFER, out_port=Port.OFPP_NONE,
+                 flags=FlowModFlags.OFPFF_CHECK_OVERLAP, actions=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
