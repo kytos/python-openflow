@@ -52,3 +52,43 @@ class TestGenericStruct(unittest.TestCase):
         self.assertIsNot(message1.b.c, message2.b.c)
         self.assertIsNot(message1.b.c.c1, message2.b.c.c1)
         self.assertIsNot(message1.b.c.c2, message2.b.c.c2)
+
+class TestGenericType(unittest.TestCase):
+
+    def setUp(self):
+        """Basic Test Setup."""
+        class MyGenericType(base.GenericType):
+            "Example class."
+            _fmt = "!B"
+
+        self.MyGenericType = MyGenericType
+
+    def test_basic_operator(self):
+        """[Foundation/Base/GenericType] - Basic Operators."""
+        a = self.MyGenericType(1)
+        b = self.MyGenericType(2)
+
+        self.assertEqual(a + 1, 2)
+        self.assertEqual(1 + a, 2)
+        self.assertEqual(b + 1, 3)
+        self.assertEqual(1 + b, 3)
+
+        self.assertEqual(a - 1, 0)
+        self.assertEqual(1 - a, 0)
+        self.assertEqual(b - 1, 1)
+        self.assertEqual(1 - b, 1)
+
+        self.assertEqual(a & 1, 1)
+        self.assertEqual(1 & a, 1)
+        self.assertEqual(b & 1, 0)
+        self.assertEqual(1 & b, 0)
+
+        self.assertEqual(a | 1, 1)
+        self.assertEqual(1 | a, 1)
+        self.assertEqual(b | 1, 3)
+        self.assertEqual(1 | b, 3)
+
+        self.assertEqual(a ^ 1, 0)
+        self.assertEqual(1 ^ a, 0)
+        self.assertEqual(b ^ 1, 3)
+        self.assertEqual(1 ^ b, 3)
