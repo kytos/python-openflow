@@ -53,8 +53,8 @@ class TestGenericStruct(unittest.TestCase):
         self.assertIsNot(message1.b.c.c1, message2.b.c.c1)
         self.assertIsNot(message1.b.c.c2, message2.b.c.c2)
 
-class TestGenericType(unittest.TestCase):
 
+class TestGenericType(unittest.TestCase):
     def setUp(self):
         """Basic Test Setup."""
         class MyGenericType(base.GenericType):
