@@ -125,3 +125,37 @@ class TestHWaddress(unittest.TestCase):
         unpacked = basic_types.HWAddress()
         unpacked.unpack(packed)
         self.assertEqual(mac, unpacked.value)
+
+
+class TestIPAddress(unittest.TestCase):
+    """Test of IPAddress BasicType."""
+
+    def test_unpack_packed(self):
+        """Testing unpack of packed IPAddress"""
+        ip_addr = basic_types.IPAddress('192.168.0.1')
+        packed = ip_addr.pack()
+        unpacked = basic_types.IPAddress()
+        unpacked.unpack(packed)
+        self.assertEqual(ip_addr.value, unpacked.value)
+
+    def test_unpack_packed_with_netmask(self):
+        """Testing unpack of packed IPAddress with netmask."""
+        ip_addr = basic_types.IPAddress('192.168.0.1/16')
+        packed = ip_addr.pack()
+        unpacked = basic_types.IPAddress()
+        unpacked.unpack(packed)
+        self.assertEqual(ip_addr.value, unpacked.value)
+
+    def test_wildcard(self):
+        """Testing get wildcard from IPAddress."""
+        ip_addr = basic_types.IPAddress('192.168.0.1/24')
+        self.assertEqual(ip_addr.wildcard_netmask, 8)
+        ip_addr = basic_types.IPAddress('192.168.0.1/16')
+        self.assertEqual(ip_addr.wildcard_netmask, 16)
+        ip_addr = basic_types.IPAddress('192.168.0.1')
+        self.assertEqual(ip_addr.wildcard_netmask, 0)
+
+    def test_get_size(self):
+        """Testing get_size from IPAddress."""
+        ip_addr = basic_types.IPAddress('192.168.0.1/24')
+        self.assertEqual(ip_addr.get_size(), 4)

@@ -10,8 +10,9 @@ from pyof.foundation.base import GenericStruct, GenericType
 # Third-party imports
 
 
-__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 'Pad',
-           'HWAddress', 'BinaryData', 'FixedTypeList', 'ConstantTypeList')
+__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64',
+           'Char', 'Pad', 'IPAddress', 'HWAddress', 'BinaryData',
+           'FixedTypeList', 'ConstantTypeList')
 
 
 class Pad(GenericType):
@@ -168,6 +169,100 @@ class Char(GenericType):
 
         self._value = unpacked_data.decode('ascii').rstrip('\0')
 
+
+class IPAddress(GenericType):
+    """Defines a IP address."""
+
+    netmask = UBInt32()
+    max_prefix = UBInt32(32)
+
+    def __init__(self, address="0.0.0.0/32"):
+        """The constructor takes the parameters below.
+
+        Args:
+            address (str): IP Address using ipv4 or ipv6 format.
+                Defaults to '0.0.0.0/32'
+        """
+        if address.find('/') >= 0:
+            address, netmask = address.split('/')
+        else:
+            netmask = 32
+
+        super().__init__(address)
+        self.netmask = int(netmask)
+
+    @property
+    def wildcard_netmask(self):
+        """Calculate a wildcard to openflow netmask.
+
+        Returns:
+            netmask (bits): Wildcarded bits for netmask
+        """
+        return self.max_prefix - self.netmask
+
+    def pack(self, value=None):
+        """Pack the value as a binary representation.
+
+        If the value is None the self._value will be used to pack.
+
+        Args:
+            value (str): IP Address with ipv4 format.
+
+        Returns
+            bytes: The binary representation.
+
+        Raises:
+            struct.error: If the value does not fit the binary format.
+        """
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self._value
+
+        if value.find('/'):
+            value = value.split('/')[0]
+
+        try:
+            value = value.split('.')
+            return struct.pack('!4B', *[int(x) for x in value])
+        except struct.error as err:
+            msg = "IPAddress error. "
+            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
+                                                         err)
+            raise exceptions.PackException(msg)
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            Exception: If there is a struct unpacking error.
+        """
+        try:
+            unpacked_data = struct.unpack('!4B', buff[offset:offset+4])
+            self._value = '.'.join([str(x) for x in unpacked_data])
+        except:
+            raise Exception("%s: %s" % (offset, buff))
+
+    def get_size(self, value=None):
+        """Return the ip address size in bytes.
+
+        Args:
+            value: In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
+
+        Returns:
+            int: The address size in bytes.
+        """
+        return 4
 
 class HWAddress(GenericType):
     """Defines a hardware address."""
