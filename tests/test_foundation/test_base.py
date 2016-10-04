@@ -55,18 +55,11 @@ class TestGenericStruct(unittest.TestCase):
 
 
 class TestGenericType(unittest.TestCase):
-    def setUp(self):
-        """Basic Test Setup."""
-        class MyGenericType(base.GenericType):
-            "Example class."
-            _fmt = "!B"
-
-        self.MyGenericType = MyGenericType
 
     def test_basic_operator(self):
         """[Foundation/Base/GenericType] - Basic Operators."""
-        a = self.MyGenericType(1)
-        b = self.MyGenericType(2)
+        a = basic_types.UBInt32(1)
+        b = basic_types.UBInt32(2)
 
         self.assertEqual(a + 1, 2)
         self.assertEqual(1 + a, 2)
