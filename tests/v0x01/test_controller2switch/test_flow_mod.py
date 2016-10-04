@@ -55,16 +55,4 @@ def _get_flowmod_kwargs(command):
 
 def _get_match():
     """Return a Match object."""
-    return Match(wildcards=0x000000000010001f,
-                 in_port=0,
-                 dl_src='00:00:00:00:00:00',
-                 dl_dst='00:00:00:00:00:00',
-                 dl_vlan=0,
-                 dl_vlan_pcp=0,
-                 dl_type=0,
-                 nw_tos=0,
-                 nw_proto=0,
-                 nw_src=0,
-                 nw_dst=0,
-                 tp_src=0,
-                 tp_dst=0)
+    return Match()

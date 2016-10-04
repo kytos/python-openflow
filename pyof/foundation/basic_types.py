@@ -10,8 +10,8 @@ from pyof.foundation.base import GenericStruct, GenericType
 # Third-party imports
 
 
-__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 
-           'Pad', 'IPAddress', 'HWAddress', 'BinaryData', 'FixedTypeList', 
+__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char',
+           'Pad', 'IPAddress', 'HWAddress', 'BinaryData', 'FixedTypeList',
            'ConstantTypeList')
 
 
@@ -180,7 +180,7 @@ class IPAddress(GenericType):
         """The constructor takes the parameters below.
 
         Args:
-            address (str): IP Address using ipv4 or ipv6 format.
+            address (str): IP Address using ipv4.
                 Defaults to '0.0.0.0/32'
         """
         if address.find('/') >= 0:
@@ -220,7 +220,7 @@ class IPAddress(GenericType):
         if value is None:
             value = self._value
 
-        if value.find('/'):
+        if value.find('/') >= 0:
             value = value.split('/')[0]
 
         try:
@@ -263,6 +263,7 @@ class IPAddress(GenericType):
             int: The address size in bytes.
         """
         return 4
+
 
 class HWAddress(GenericType):
     """Defines a hardware address."""
@@ -321,11 +322,7 @@ class HWAddress(GenericType):
             Exception: If there is a struct unpacking error.
         """
         def _int2hex(n):
-            h = hex(n)[2:]  # remove '0x' prefix
-            if len(h) == 1:
-                return '0' + h
-            else:
-                return h
+            return "{0:0{1}x}".format(n, 2)
 
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])

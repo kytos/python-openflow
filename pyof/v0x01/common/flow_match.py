@@ -6,7 +6,7 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (IPAddress, HWAddress, Pad,
+from pyof.foundation.basic_types import (HWAddress, IPAddress, Pad,
                                          UBInt8, UBInt16, UBInt32)
 
 __all__ = ('Match', 'FlowWildCards')
@@ -91,7 +91,7 @@ class Match(GenericStruct):
     #: IP source address. (default: '0.0.0.0/32')
     nw_src = IPAddress()
     #: IP destination address. (default: '0.0.0.0/32')
-    nw_dst = IPAddress ()
+    nw_dst = IPAddress()
     #: TCP/UDP source port. (default: 0)
     tp_src = UBInt16(0)
     #: TCP/UDP destination port. (default: 0)
@@ -122,17 +122,23 @@ class Match(GenericStruct):
         [setattr(self, field, value) for field, value in kwargs.items()]
 
     def __setattr__(self, name, value):
-        # convert string ip_address to IPAddress
-        if isinstance(getattr(Match, name),IPAddress) and \
+
+        # converts string ip_address to IPAddress
+        if isinstance(getattr(Match, name), IPAddress) and \
                 not isinstance(value, IPAddress):
+                    if isinstance(value, list):
+                        value = ".".join(str(x) for x in value)
                     value = IPAddress(value)
 
-        # convert string hw_address to HWAddress
-        if isinstance(getattr(Match, name),HWAddress) and \
-                not isinstance(value,HWAddress):
+        # convertstring or list of hwaddress to HWAddress
+        if isinstance(getattr(Match, name), HWAddress) and \
+                not isinstance(value, HWAddress):
+                    if isinstance(value, list):
+                        values = ["{0:0{1}x}".format(x, 2) for x in value]
+                        value = ":".join(values)
                     value = HWAddress(value)
 
-        super().__setattr__(name,value)
+        super().__setattr__(name, value)
         self.fill_wildcards(name, value)
 
     def fill_wildcards(self, field=None, value=0):
@@ -143,7 +149,7 @@ class Match(GenericStruct):
             field (str): Name of the updated field.
             value (GenericType): New value used in the field.
         """
-        if field in [None, 'wildcards'] or isinstance(value,Pad):
+        if field in [None, 'wildcards'] or isinstance(value, Pad):
             return
 
         default_value = getattr(Match, field)
@@ -162,4 +168,4 @@ class Match(GenericStruct):
 
             if value == default_value and not (self.wildcards & wildcard) or \
                value != default_value and (self.wildcards & wildcard):
-                self.wildcards ^=  wildcard
+                self.wildcards ^= wildcard

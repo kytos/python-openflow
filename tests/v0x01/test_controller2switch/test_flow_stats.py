@@ -30,8 +30,8 @@ class TestFlowStats(unittest.TestCase):
         self.message.match.dl_type = 1
         self.message.match.nw_tos = 1
         self.message.match.nw_proto = 1
-        self.message.match.nw_src = 10000
-        self.message.match.nw_dst = 10000
+        self.message.match.nw_src = [192, 168, 0, 1]
+        self.message.match.nw_dst = [192, 168, 0, 1]
         self.message.match.tp_src = 80
         self.message.match.tp_dst = 80
 
