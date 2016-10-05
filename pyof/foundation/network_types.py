@@ -1,9 +1,11 @@
 """Basic Network Types."""
 
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import BinaryData, HWAddress, UBInt8, UBInt16
+from pyof.foundation.basic_types import (BinaryData, FixedTypeList, HWAddress,
+                                         UBInt8, UBInt16, UBInt64)
 
 __all__ = ('Ethernet', 'LLDP', 'LLDP_TLV')
+from pyof.foundation.exceptions import PackException
 
 
 class Ethernet(GenericStruct):
@@ -28,22 +30,25 @@ class Ethernet(GenericStruct):
 
 class LLDP_TLV(GenericStruct):
     """TLV structure of LLDP packets."""
+
     #: This field actually have 7 bits, so on pack/unpack we will need to do
     #: some magic.
-    type = UBInt8
-    #: Defines the length of subtype + value
+    type = UBInt8()
+    #: Defines the length of subtype + value This field actually have 9 bits.
     length = UBInt8()
+    #: Binary data to be passed along. No matter the type and length, here you
+    #: will always need to add content as binary data. So, if you have
+    #: something that is not binary (bytes), then pack it befor adding.
     value = BinaryData()
 
-    def __init__(self, type, length, subtype, value=None):
+    def __init__(self, type, value=None):
         self.type = type
-        self.length = length
         self.value = value if value is not None else b''
 
     def _type_is_valid(self):
         """Check if the type value can be represented in 7 bits."""
         # 7 bits can represent 128 values, from 0 to 127.
-        if self.type > 0 and self.type < 128:
+        if self.type >= 0 and self.type < 128:
             return True
         else:
             return False
@@ -51,14 +56,14 @@ class LLDP_TLV(GenericStruct):
     def _length_is_valid(self):
         """Check if the length value can be represented in 9 bits."""
         # 9 bits can represent 512 values, from 0 to 511
-        if self.length > 0 and self.length < 511:
+        if self.length >= 0 and self.length < 511:
             return True
         else:
             return False
 
     def update_length(self):
         """Updates the length attribute of the instance."""
-        pass
+        self.length = len(BinaryData().pack(self.value))
 
     def pack(self, value=None):
         """Pack the LLDP_TLV in a binary representation.
@@ -88,8 +93,8 @@ class LLDP_TLV(GenericStruct):
             output += UBInt8().pack(self.type << 1 | self.length >> 8)
             # Here we are removing the higher bit from length to pack it as
             # 1 byte also.
-            output += UBInt8().pack(self.length & ((1 << 8) -1))
-            output += self.value.pack()
+            output += UBInt8().pack(self.length & ((1 << 8) - 1))
+            output += BinaryData().pack(self.value)
 
             return output
         elif isinstance(value, type(self)):
@@ -100,14 +105,17 @@ class LLDP_TLV(GenericStruct):
             raise PackException(msg)
 
     def unpack(self, buffer, offset=0):
-        being = offset
-        end = offset + 16
-        type_and_length = UBInt16().unpack(buffer[begin:end]).value
+        buffer = buffer[offset:]
+        type_and_length = UBInt16().unpack(buffer[0:16]).value
         self.type = type_and_length >> 9
         self.length = type_and_length & ((1 << 10) - 1)
-        begin = end
-        end = end + length
-        self.data = BinaryData().unpack(buffer[begin:end])
+        self.value = BinaryData().unpack(buffer[16:16+self.length])
+
+    def get_size(self, value=None):
+        if isinstance(value, type(self)):
+            return value.get_size()
+        else:
+            return 2 + len(BinaryData().pack(self.value))
 
 
 class LLDP(GenericStruct):
