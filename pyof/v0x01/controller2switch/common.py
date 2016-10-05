@@ -12,6 +12,7 @@ from pyof.foundation.constants import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
 from pyof.v0x01.common.action import ActionHeader
 from pyof.v0x01.common.flow_match import FlowWildCards, Match
 from pyof.v0x01.common.header import Header
+from pyof.v0x01.common.phy_port import Port
 
 # Third-party imports
 
@@ -246,7 +247,7 @@ class FlowStatsRequest(GenericStruct):
     pad = Pad(1)
     out_port = UBInt16()
 
-    def __init__(self, match=None, table_id=None, out_port=None):
+    def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
         """The constructor just assings parameters to object attributes.
 
         Args:
