@@ -106,11 +106,16 @@ class LLDP_TLV(GenericStruct):
             raise PackException(msg)
 
     def unpack(self, buffer, offset=0):
-        buffer = buffer[offset:]
-        type_and_length = UBInt16().unpack(buffer[0:16]).value
-        self.type = type_and_length >> 9
-        self.length = type_and_length & ((1 << 10) - 1)
-        self.value = BinaryData().unpack(buffer[16:16+self.length])
+        begin = offset
+        end = begin + 2
+        type_and_length = UBInt16()
+        type_and_length.unpack(buffer[begin:end])
+        self.type = type_and_length.value >> 9
+        self.length = type_and_length.value & ((1 << 10) - 1)
+        begin = end
+        end += self.length
+        self.value = BinaryData()
+        self.value.unpack(buffer[begin:end])
 
     def get_size(self, value=None):
         if isinstance(value, type(self)):
