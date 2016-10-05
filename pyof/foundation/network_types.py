@@ -4,8 +4,9 @@ from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (BinaryData, FixedTypeList, HWAddress,
                                          UBInt8, UBInt16, UBInt64)
 
-__all__ = ('Ethernet', 'LLDP', 'LLDP_TLV')
 from pyof.foundation.exceptions import PackException
+
+__all__ = ('Ethernet', 'LLDP', 'LLDP_TLV', 'ListOfTLVs')
 
 
 class Ethernet(GenericStruct):
@@ -116,6 +117,22 @@ class LLDP_TLV(GenericStruct):
             return value.get_size()
         else:
             return 2 + len(BinaryData().pack(self.value))
+
+
+class ListOfTLVs(FixedTypeList):
+    """List of instances of LLDP_TLV class.
+
+    Represented by instances of LLDP_TLV and used on :class:`LLDP` objects.
+    """
+
+    def __init__(self, items=None):
+        """The constructor takes the option paramenter below.
+
+        Args: items(:class:`list`, :class:`LLDP_TLV`): One :class:`LLDP_TLV`
+            instance or list.
+        """
+        super().__init__(pyof_class=LLDP_TLV,
+                         items=items)
 
 
 class LLDP(GenericStruct):
