@@ -42,9 +42,9 @@ class LLDP_TLV(GenericStruct):
     #: something that is not binary (bytes), then pack it befor adding.
     value = BinaryData()
 
-    def __init__(self, type, value=None):
+    def __init__(self, type, value=0):
         self.type = type
-        self.value = value if value is not None else b''
+        self.value = value
 
     def _type_is_valid(self):
         """Check if the type value can be represented in 7 bits."""
@@ -156,9 +156,13 @@ class LLDP(GenericStruct):
         #: For TLV_chassis_id we are using subtype 6 (InterfaceName) and
         #: passing, for now, the switch dpid. And the datapath_id of the
         #: switches are defined as UBInt64 on the OpenFlow spec (v0x01).
-        self.tlv_chassis_id.value = b'\x06' + UBInt64().pack(chassis_id)
+        self.tlv_chassis_id.value = b'\x06'
+        if chassis_id is not None:
+            self.tlv_chassis_id.value += UBInt64().pack(chassis_id)
         #: For TLV_port_id we are using subtype 5 (InterfaceName) and
         #: passing, for now, the port_no.
-        self.tlv_port_id.value = b'\x05' + UBInt16().pack(port_id)
+        self.tlv_port_id.value = b'\x05'
+        if port_id is not None:
+            self.tlv_port_id.value += UBInt16().pack(port_id)
         self.tlv_ttl.value = UBInt16().pack(ttl)
         self.extra_tlvs = [] if extra_tlvs is None else extra_tlvs
