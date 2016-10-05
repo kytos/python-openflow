@@ -85,8 +85,32 @@ class GenericType:
     def __add__(self, other):
         return self.value + other
 
+    def __radd__(self, other):
+        return self.value + other
+
     def __sub__(self, other):
         return self.value - other
+
+    def __rsub__(self, other):
+        return self.value - other
+
+    def __or__(self, other):
+        return self.value | other
+
+    def __ror__(self, other):
+        return self.value | other
+
+    def __and__(self, other):
+        return self.value & other
+
+    def __rand__(self, other):
+        return self.value & other
+
+    def __xor__(self, other):
+        return self.value ^ other
+
+    def __rxor__(self, other):
+        return self.value ^ other
 
     @property
     def value(self):
