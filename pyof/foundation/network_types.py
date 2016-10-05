@@ -136,16 +136,29 @@ class ListOfTLVs(FixedTypeList):
 
 
 class LLDP(GenericStruct):
-    ethernet_header = Ethernet(type=35020)
-    lldp_tlv_chassis_id = LLDP_TLV(type=1)
-    lldp_tlv_port = LLDP_TLV(type=2)
-    lldp_tlv_ttl = LLDP_TLV(type=3)
-    # list_of_extra_tlvs = ListOfTLVs()
-    lldp_tlv_end = LLDP_TLV(type=0, length=0, value=0)
+    """LLDP class."""
 
-    def __init__(self, source=None, tlvs=None):
+    ethernet_header = Ethernet(type=35020)
+    tlv_chassis_id = LLDP_TLV(type=1)
+    tlv_port_id = LLDP_TLV(type=2)
+    #: TTL time is given in seconds, between 0 and 65535
+    tlv_ttl = LLDP_TLV(type=3)
+    extra_tlvs = ListOfTLVs()
+    tlv_end = LLDP_TLV(type=0, value=0)
+
+    def __init__(self, source=None, chassis_id=None, port_id=None, ttl=30,
+                 extra_tlvs=None):
         super().__init__()
         # 01-80-C2-00-00-00 or 01-80-C2-00-00-03 are also valid values for LLDP
         # multicast
-        self.ethernet_header.destination = '01-80-C2-00-00-0E'
+        self.ethernet_header.destination = '01:80:C2:00:00:0E'
         self.ethernet_header.source = source
+        #: For TLV_chassis_id we are using subtype 6 (InterfaceName) and
+        #: passing, for now, the switch dpid. And the datapath_id of the
+        #: switches are defined as UBInt64 on the OpenFlow spec (v0x01).
+        self.tlv_chassis_id.value = b'\x06' + UBInt64().pack(chassis_id)
+        #: For TLV_port_id we are using subtype 5 (InterfaceName) and
+        #: passing, for now, the port_no.
+        self.tlv_port_id.value = b'\x05' + UBInt16().pack(port_id)
+        self.tlv_ttl.value = UBInt16().pack(ttl)
+        self.extra_tlvs = [] if extra_tlvs is None else extra_tlvs
