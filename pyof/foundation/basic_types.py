@@ -9,7 +9,7 @@ from pyof.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 
-__all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
+__all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList', 'DPID',
            'HWAddress', 'Pad', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64')
 
 
@@ -106,6 +106,34 @@ class UBInt64(GenericType):
     """
 
     _fmt = "!Q"
+
+class DPID(GenericType):
+    _fmt = "!8B"
+
+    def __init__(self, dpid=None):
+        self._value = dpid
+
+    def __str__(self):
+        return self._value
+
+    @property
+    def value(self):
+        return self._value
+
+    def unpack(self, buff, offset=0):
+        begin = offset
+        bytes = []
+        while begin < offset + 8:
+            number = struct.unpack("!B", buff[begin:begin+1])[0]
+            bytes.append("%.2x" % number)
+            begin += 1
+        self._value = ':'.join(bytes)
+
+    def pack(self, value=None):
+        buffer = b''
+        for value in self._value.split(":"):
+            buffer += struct.pack('!B', int(value, 16))
+        return buffer
 
 
 class Char(GenericType):
