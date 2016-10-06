@@ -22,11 +22,8 @@ class Ethernet(GenericStruct):
         self.type = type
         self.data = data
 
-    def __hash__(self):
-        return hash(self.pack())
-
     def get_hash(self):
-        return self.__hash__()
+        return hash(self.pack())
 
 
 class LLDP_TLV(GenericStruct):
