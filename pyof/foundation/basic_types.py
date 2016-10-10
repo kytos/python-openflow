@@ -9,11 +9,8 @@ from pyof.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 
-
-__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 
-           'Pad', 'IPAddress', 'HWAddress', 'BinaryData', 'FixedTypeList', 
-           'ConstantTypeList')
-
+__all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList', 'DPID',
+           'HWAddress', 'Pad', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64')
 
 class Pad(GenericType):
     """Class for padding attributes."""
@@ -108,6 +105,34 @@ class UBInt64(GenericType):
     """
 
     _fmt = "!Q"
+
+class DPID(GenericType):
+    _fmt = "!8B"
+
+    def __init__(self, dpid=None):
+        self._value = dpid
+
+    def __str__(self):
+        return self._value
+
+    @property
+    def value(self):
+        return self._value
+
+    def unpack(self, buff, offset=0):
+        begin = offset
+        bytes = []
+        while begin < offset + 8:
+            number = struct.unpack("!B", buff[begin:begin+1])[0]
+            bytes.append("%.2x" % number)
+            begin += 1
+        self._value = ':'.join(bytes)
+
+    def pack(self, value=None):
+        buffer = b''
+        for value in self._value.split(":"):
+            buffer += struct.pack('!B', int(value, 16))
+        return buffer
 
 
 class Char(GenericType):
@@ -647,23 +672,3 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
-
-
-class Ethernet(GenericStruct):
-    destination = HWAddress()
-    source = HWAddress()
-    type = UBInt16()
-    data = BinaryData()
-
-    def __init__(self, destination=None, source=None, type=None, data=b''):
-        super().__init__()
-        self.destination = destination
-        self.source = source
-        self.type = type
-        self.data = data
-
-    def __hash__(self):
-        return hash(self.pack())
-
-    def get_hash(self):
-        return self.__hash__()
