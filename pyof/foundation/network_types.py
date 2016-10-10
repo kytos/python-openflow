@@ -97,7 +97,9 @@ class TLVWithSubType(GenericTLV):
         self.type = header.value >> 9
         length = header.value & 511 
         begin, end = offset + 2, offset + 2 + length
-        self.sub_type = BinaryData(buffer[begin:begin+1])
+        sub_type = UBInt8()
+        sub_type.unpack(buffer[begin:begin+1])
+        self.sub_type = sub_type.value
         self.sub_value = BinaryData(buffer[begin+1:end])
 
 
