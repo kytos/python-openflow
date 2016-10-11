@@ -160,7 +160,7 @@ class Match(GenericStruct):
             else:
                 self.wildcards |= FlowWildCards.OFPFW_NW_SRC_MASK
                 shift = FlowWildCards.OFPFW_NW_SRC_SHIFT
-            wildcard = value.wildcard_netmask << shift
+            wildcard = (value.max_prefix - value.netmask) << shift
             self.wildcards -= wildcard
         else:
             wildcard_field = "OFPFW_{}".format(field.upper())

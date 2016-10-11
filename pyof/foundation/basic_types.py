@@ -217,15 +217,6 @@ class IPAddress(GenericType):
         super().__init__(address)
         self.netmask = int(netmask)
 
-    @property
-    def wildcard_netmask(self):
-        """Calculate a wildcard to openflow netmask.
-
-        Returns:
-            netmask (bits): Wildcarded bits for netmask
-        """
-        return self.max_prefix - self.netmask
-
     def pack(self, value=None):
         """Pack the value as a binary representation.
 

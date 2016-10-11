@@ -146,14 +146,22 @@ class TestIPAddress(unittest.TestCase):
         unpacked.unpack(packed)
         self.assertEqual(ip_addr.value, unpacked.value)
 
-    def test_wildcard(self):
-        """Testing get wildcard from IPAddress."""
+    def test_netmask(self):
+        """Testing get netmask from IPAddress."""
         ip_addr = basic_types.IPAddress('192.168.0.1/24')
-        self.assertEqual(ip_addr.wildcard_netmask, 8)
+        self.assertEqual(ip_addr.netmask, 24)
         ip_addr = basic_types.IPAddress('192.168.0.1/16')
-        self.assertEqual(ip_addr.wildcard_netmask, 16)
+        self.assertEqual(ip_addr.netmask, 16)
         ip_addr = basic_types.IPAddress('192.168.0.1')
-        self.assertEqual(ip_addr.wildcard_netmask, 0)
+        self.assertEqual(ip_addr.netmask, 32)
+
+    def test_max_prefix(self):
+        """Testing get max_prefix from IPAddress."""
+        ip_addr = basic_types.IPAddress()
+        self.assertEqual(ip_addr.max_prefix, 32)
+        ip_addr = basic_types.IPAddress('192.168.0.35/16')
+        self.assertEqual(ip_addr.max_prefix, 32)
+
 
     def test_get_size(self):
         """Testing get_size from IPAddress."""
