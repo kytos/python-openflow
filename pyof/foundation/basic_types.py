@@ -9,11 +9,9 @@ from pyof.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 
-
-__all__ = ('Ethernet', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64', 'Char', 
-           'Pad', 'IPAddress', 'HWAddress', 'BinaryData', 'FixedTypeList', 
-           'ConstantTypeList')
-
+__all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
+           'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
+           'UBInt32', 'UBInt64')
 
 class Pad(GenericType):
     """Class for padding attributes."""
@@ -109,6 +107,34 @@ class UBInt64(GenericType):
 
     _fmt = "!Q"
 
+class DPID(GenericType):
+    _fmt = "!8B"
+
+    def __init__(self, dpid=None):
+        self._value = dpid
+
+    def __str__(self):
+        return self._value
+
+    @property
+    def value(self):
+        return self._value
+
+    def unpack(self, buff, offset=0):
+        begin = offset
+        bytes = []
+        while begin < offset + 8:
+            number = struct.unpack("!B", buff[begin:begin+1])[0]
+            bytes.append("%.2x" % number)
+            begin += 1
+        self._value = ':'.join(bytes)
+
+    def pack(self, value=None):
+        buffer = b''
+        for value in self._value.split(":"):
+            buffer += struct.pack('!B', int(value, 16))
+        return buffer
+
 
 class Char(GenericType):
     """Build a double char type according to the length."""
@@ -180,7 +206,7 @@ class IPAddress(GenericType):
         """The constructor takes the parameters below.
 
         Args:
-            address (str): IP Address using ipv4 or ipv6 format.
+            address (str): IP Address using ipv4.
                 Defaults to '0.0.0.0/32'
         """
         if address.find('/') >= 0:
@@ -220,7 +246,7 @@ class IPAddress(GenericType):
         if value is None:
             value = self._value
 
-        if value.find('/'):
+        if value.find('/') >= 0:
             value = value.split('/')[0]
 
         try:
@@ -263,6 +289,7 @@ class IPAddress(GenericType):
             int: The address size in bytes.
         """
         return 4
+
 
 class HWAddress(GenericType):
     """Defines a hardware address."""
@@ -321,11 +348,7 @@ class HWAddress(GenericType):
             Exception: If there is a struct unpacking error.
         """
         def _int2hex(n):
-            h = hex(n)[2:]  # remove '0x' prefix
-            if len(h) == 1:
-                return '0' + h
-            else:
-                return h
+            return "{0:0{1}x}".format(n, 2)
 
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
@@ -647,23 +670,3 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
-
-
-class Ethernet(GenericStruct):
-    destination = HWAddress()
-    source = HWAddress()
-    type = UBInt16()
-    data = BinaryData()
-
-    def __init__(self, destination=None, source=None, type=None, data=b''):
-        super().__init__()
-        self.destination = destination
-        self.source = source
-        self.type = type
-        self.data = data
-
-    def __hash__(self):
-        return hash(self.pack())
-
-    def get_hash(self):
-        return self.__hash__()

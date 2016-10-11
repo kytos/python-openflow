@@ -6,6 +6,7 @@ from enum import Enum
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import (BinaryData, Pad, UBInt8, UBInt16,
                                          UBInt32)
+from pyof.v0x01.common.constants import NO_BUFFER
 from pyof.v0x01.common.header import Header, Type
 
 # Third-party imports
@@ -41,7 +42,7 @@ class PacketIn(GenericMessage):
     pad = Pad(1)
     data = BinaryData()
 
-    def __init__(self, xid=None, buffer_id=None, total_len=None, in_port=None,
+    def __init__(self, xid=None, buffer_id=NO_BUFFER, total_len=None, in_port=None,
                  reason=None, data=b''):
         """Assign parameters to object attributes.
 
