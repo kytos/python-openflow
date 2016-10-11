@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericBitMask, GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64
+from pyof.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64, DPID
 # Local source tree imports
 from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
@@ -46,7 +46,7 @@ class SwitchFeatures(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_FEATURES_REPLY)
-    datapath_id = UBInt64()
+    datapath_id = DPID()
     n_buffers = UBInt32()
     n_tables = UBInt8()
     #: Align to 64-bits.
