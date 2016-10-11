@@ -6,8 +6,8 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (HWAddress, Pad, UBInt8, UBInt16,
-                                         UBInt32)
+from pyof.foundation.basic_types import (HWAddress, IPAddress, Pad,
+                                         UBInt8, UBInt16, UBInt32)
 
 __all__ = ('Match', 'FlowWildCards')
 
@@ -67,40 +67,37 @@ class Match(GenericStruct):
     """Describes a flow entry. Fields to match against flows."""
 
     #: Wildcards fields.
-    wildcards = UBInt32(enum_ref=FlowWildCards)
+    wildcards = UBInt32(value=FlowWildCards.OFPFW_ALL, enum_ref=FlowWildCards)
     #: Input switch port.
-    in_port = UBInt16()
+    in_port = UBInt16(0)
     #: Ethernet source address. (default: '00:00:00:00:00:00')
     dl_src = HWAddress()
     #: Ethernet destination address. (default: '00:00:00:00:00:00')
     dl_dst = HWAddress()
     #: Input VLAN id. (default: 0)
-    dl_vlan = UBInt16()
+    dl_vlan = UBInt16(0)
     #: Input VLAN priority. (default: 0)
-    dl_vlan_pcp = UBInt8()
+    dl_vlan_pcp = UBInt8(0)
     #: Align to 64-bits.
     pad1 = Pad(1)
     #: Ethernet frame type. (default: 0)
-    dl_type = UBInt16()
+    dl_type = UBInt16(0)
     #: IP ToS (actually DSCP field, 6 bits). (default: 0)
-    nw_tos = UBInt8()
+    nw_tos = UBInt8(0)
     #: IP protocol or lower 8 bits of ARP opcode. (default: 0)
-    nw_proto = UBInt8()
+    nw_proto = UBInt8(0)
     #: Align to 64-bits.
     pad2 = Pad(2)
-    #: IP source address. (default: 0)
-    nw_src = UBInt32()
-    #: IP destination address. (default: 0)
-    nw_dst = UBInt32()
+    #: IP source address. (default: '0.0.0.0/32')
+    nw_src = IPAddress()
+    #: IP destination address. (default: '0.0.0.0/32')
+    nw_dst = IPAddress()
     #: TCP/UDP source port. (default: 0)
-    tp_src = UBInt16()
+    tp_src = UBInt16(0)
     #: TCP/UDP destination port. (default: 0)
-    tp_dst = UBInt16()
+    tp_dst = UBInt16(0)
 
-    def __init__(self, wildcards=FlowWildCards.OFPFW_ALL, in_port=0,
-                 dl_src='00:00:00:00:00:00', dl_dst='00:00:00:00:00:00',
-                 dl_vlan=0, dl_vlan_pcp=0, dl_type=0, nw_tos=0, nw_proto=0,
-                 nw_src=0, nw_dst=0, tp_src=0, tp_dst=0):
+    def __init__(self, **kwargs):
         """All the constructor parameters below are optional.
 
         Args:
@@ -116,22 +113,59 @@ class Match(GenericStruct):
             nw_tos (int): IP ToS (actually DSCP field, 6 bits). (default: 0)
             nw_proto (int): IP protocol or lower 8 bits of ARP opcode.
                 (default: 0)
-            nw_src (int): IP source address. (default: 0)
-            nw_dst (int): IP destination address. (default: 0)
+            nw_src (IPAddress): IP source address. (default: '0.0.0.0/32')
+            nw_dst (IPAddress): IP destination address. (default: '0.0.0.0/32')
             tp_src (int): TCP/UDP source port. (default: 0)
             tp_dst (int): TCP/UDP destination port. (default: 0)
         """
         super().__init__()
-        self.wildcards = wildcards
-        self.in_port = in_port
-        self.dl_src = dl_src
-        self.dl_dst = dl_dst
-        self.dl_vlan = dl_vlan
-        self.dl_vlan_pcp = dl_vlan_pcp
-        self.dl_type = dl_type
-        self.nw_tos = nw_tos
-        self.nw_proto = nw_proto
-        self.nw_src = nw_src
-        self.nw_dst = nw_dst
-        self.tp_src = tp_src
-        self.tp_dst = tp_dst
+        [setattr(self, field, value) for field, value in kwargs.items()]
+
+    def __setattr__(self, name, value):
+
+        # converts string ip_address to IPAddress
+        if isinstance(getattr(Match, name), IPAddress) and \
+                not isinstance(value, IPAddress):
+                    if isinstance(value, list):
+                        value = ".".join(str(x) for x in value)
+                    value = IPAddress(value)
+
+        # convertstring or list of hwaddress to HWAddress
+        if isinstance(getattr(Match, name), HWAddress) and \
+                not isinstance(value, HWAddress):
+                    if isinstance(value, list):
+                        values = ["{0:0{1}x}".format(x, 2) for x in value]
+                        value = ":".join(values)
+                    value = HWAddress(value)
+
+        super().__setattr__(name, value)
+        self.fill_wildcards(name, value)
+
+    def fill_wildcards(self, field=None, value=0):
+        """Update wildcards attribute considering the attributes of the
+        current instance.
+
+        Args:
+            field (str): Name of the updated field.
+            value (GenericType): New value used in the field.
+        """
+        if field in [None, 'wildcards'] or isinstance(value, Pad):
+            return
+
+        default_value = getattr(Match, field)
+        if isinstance(default_value, IPAddress):
+            if field is 'nw_dst':
+                self.wildcards |= FlowWildCards.OFPFW_NW_DST_MASK
+                shift = FlowWildCards.OFPFW_NW_DST_SHIFT
+            else:
+                self.wildcards |= FlowWildCards.OFPFW_NW_SRC_MASK
+                shift = FlowWildCards.OFPFW_NW_SRC_SHIFT
+            wildcard = value.wildcard_netmask << shift
+            self.wildcards -= wildcard
+        else:
+            wildcard_field = "OFPFW_{}".format(field.upper())
+            wildcard = getattr(FlowWildCards, wildcard_field)
+
+            if value == default_value and not (self.wildcards & wildcard) or \
+               value != default_value and (self.wildcards & wildcard):
+                self.wildcards ^= wildcard

@@ -8,7 +8,7 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import StatsTypes, FlowStats
+from pyof.v0x01.controller2switch.common import FlowStats, StatsTypes
 
 __all__ = ('StatsReply',)
 
