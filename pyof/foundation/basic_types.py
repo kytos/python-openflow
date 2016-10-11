@@ -130,10 +130,11 @@ class DPID(GenericType):
         self._value = ':'.join(bytes)
 
     def pack(self, value=None):
-        buffer = b''
-        for value in self._value.split(":"):
-            buffer += struct.pack('!B', int(value, 16))
-        return buffer
+        if isinstance(value, type(self)):
+            return value.pack()
+        if value is None:
+            value = self._value
+        return struct.pack('!8B', *[int(v, 16) for v in value.split(':')])
 
 
 class Char(GenericType):
