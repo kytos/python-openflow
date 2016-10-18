@@ -8,7 +8,7 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import StatsTypes
+from pyof.v0x01.controller2switch.common import PortStatsRequest, StatsTypes
 
 __all__ = ('StatsRequest',)
 
@@ -34,3 +34,26 @@ class StatsRequest(GenericMessage):
         self.body_type = body_type
         self.flags = flags
         self.body = body
+
+    def pack(self):
+        """Pack according to :attr:`body_type`.
+
+        Make `body` a binary pack before packing this object. Then, restore
+        body.
+        """
+        if self.body_type == StatsTypes.OFPST_PORT:
+            backup = self.body
+            self.body = self.body.pack()
+            pack = super().pack()
+            self.body = backup
+            return pack
+        else:
+            return super().pack()
+
+    def unpack(self, buff):
+        """Unpack according to :attr:`body_type`."""
+        super().unpack(buff)
+        if self.body_type == StatsTypes.OFPST_PORT:
+            buff = self.body.value
+            self.body = PortStatsRequest()
+            self.body.unpack(buff)

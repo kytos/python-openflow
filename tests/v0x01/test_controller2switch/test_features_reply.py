@@ -1,5 +1,5 @@
 """Echo request message tests."""
-from pyof.foundation.basic_types import HWAddress
+from pyof.foundation.basic_types import HWAddress, DPID
 from pyof.v0x01.common.phy_port import PhyPort, PortConfig, PortState
 from pyof.v0x01.controller2switch.features_reply import FeaturesReply
 from tests.test_struct import TestStruct
@@ -19,8 +19,9 @@ class TestFeaturesReply(TestStruct):
 
 
 def _get_kwargs():
-    return {'xid': 2, 'datapath_id': 1, 'n_buffers': 256, 'n_tables': 254,
-            'capabilities': 0x000000c7, 'actions': 4095, 'ports': _get_ports()}
+    return {'xid': 2, 'datapath_id': DPID('00:00:00:00:00:00:00:01'),
+            'n_buffers': 256, 'n_tables': 254, 'capabilities': 0x000000c7,
+            'actions': 4095, 'ports': _get_ports()}
 
 
 def _get_ports():

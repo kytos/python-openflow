@@ -11,7 +11,7 @@ from pyof.v0x01.asynchronous.flow_removed import FlowRemoved
 from pyof.v0x01.asynchronous.packet_in import PacketIn
 from pyof.v0x01.asynchronous.port_status import PortStatus
 # Importing controller2switch messages
-from pyof.v0x01.common.header import Type
+from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.controller2switch.barrier_reply import BarrierReply
 from pyof.v0x01.controller2switch.barrier_request import BarrierRequest
 from pyof.v0x01.controller2switch.features_reply import FeaturesReply
@@ -34,7 +34,8 @@ from pyof.v0x01.symmetric.echo_request import EchoRequest
 from pyof.v0x01.symmetric.hello import Hello
 from pyof.v0x01.symmetric.vendor_header import VendorHeader
 
-__all__ = ('new_message_from_header', 'new_message_from_message_type')
+__all__ = ('new_message_from_header', 'new_message_from_message_type',
+           'unpack_message')
 
 
 def new_message_from_message_type(message_type):
@@ -115,4 +116,15 @@ def new_message_from_header(header):
     message.header.xid = header.xid
     message.header.length = header.length
 
+    return message
+
+
+def unpack_message(buffer):
+    """Unpack the whole buffer, including header pack."""
+    hdr_size = Header().get_size()
+    hdr_buff, msg_buff = buffer[:hdr_size], buffer[hdr_size:]
+    header = Header()
+    header.unpack(hdr_buff)
+    message = new_message_from_header(header)
+    message.unpack(msg_buff)
     return message

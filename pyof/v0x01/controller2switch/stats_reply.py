@@ -1,14 +1,9 @@
 """Response the stat request packet from the controller."""
-
-# System imports
-
-# Third-party imports
-
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import BinaryData, UBInt16
-# Local imports
+from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import FlowStats, StatsTypes
+from pyof.v0x01.controller2switch.common import (DescStats, PortStats,
+                                                 StatsTypes)
 
 __all__ = ('StatsReply',)
 
@@ -35,7 +30,7 @@ class StatsReply(GenericMessage):
         self.flags = flags
         self.body = body
 
-    def unpack(self, buff, offset=0):
+    def unpack(self, buff):
         """Unpack a binary message into this object's attributes.
 
         Unpack the binary value *buff* and update this object attributes based
@@ -43,29 +38,21 @@ class StatsReply(GenericMessage):
         of the message **without the header**.
 
         This class' unpack method is like the :meth:`.GenericMessage.unpack`
-        one, except for the ``actions`` attribute which has a length determined
-        by the ``actions_len`` attribute.
+        one, except for the ``body`` attribute which has its type determined
+        by the ``body_type`` attribute.
 
         Args:
             buff (bytes): Binary data package to be unpacked, without the
                 header.
-            offset (int): Where to begin unpacking.
         """
-        stats = []
-        super().unpack(buff, offset)
-        data = self.body.value
-        if self.body_type == StatsTypes.OFPST_FLOW:
-            ReplyClass = FlowStats
-        else:
-            # TODO: Implement other types
-            return
+        super().unpack(buff)
 
-        while len(data) > 0:
-            length = UBInt16()
-            length.unpack(data[:2])
-            item = ReplyClass()
-            item.unpack(data[0:length.value])
-            stats.append(item)
-            data = data[length.value:]
+        if self.body_type == StatsTypes.OFPST_PORT:
+            self._unpack_body(FixedTypeList(pyof_class=PortStats))
+        elif self.body_type == StatsTypes.OFPST_DESC:
+            self._unpack_body(DescStats())
 
-        self.body = stats
+    def _unpack_body(self, obj):
+        """Unpack `body` using `obj` and replace it by the result."""
+        obj.unpack(self.body.value)
+        self.body = obj
