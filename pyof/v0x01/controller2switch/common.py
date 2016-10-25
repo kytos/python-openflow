@@ -17,9 +17,9 @@ from pyof.v0x01.common.phy_port import Port
 # Third-party imports
 
 __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
-           'AggregateStatsRequest', 'DescStats', 'FlowStatsRequest',
-           'PortStats', 'PortStatsRequest', 'QueueStats', 'QueueStatsRequest',
-           'TableStats')
+           'AggregateStatsRequest', 'DescStats', 'FlowStats',
+           'FlowStatsRequest', 'PortStats', 'PortStatsRequest', 'QueueStats',
+           'QueueStatsRequest', 'TableStats')
 
 # Enums
 
@@ -133,7 +133,7 @@ class AggregateStatsRequest(GenericStruct):
     pad = Pad(1)
     out_port = UBInt16()
 
-    def __init__(self, match=None, table_id=None, out_port=None):
+    def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -236,6 +236,21 @@ class FlowStats(GenericStruct):
         self.packet_count = packet_count
         self.byte_count = byte_count
         self.actions = [] if actions is None else actions
+
+    def unpack(self, buff, offset=0):
+        """Unpack *buff* into this object.
+
+        Do nothing, since the _length is already defined and it is just a Pad.
+        Keep buff and offset just for compability with other unpack methods.
+
+        Args:
+            buff: Buffer where data is located.
+            offset (int): Where data stream begins.
+        """
+        self.length = UBInt16()
+        self.length.unpack(buff, offset)
+        max_length = offset + self.length.value
+        super().unpack(buff[:max_length], offset)
 
 
 class FlowStatsRequest(GenericStruct):
