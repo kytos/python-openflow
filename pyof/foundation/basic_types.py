@@ -13,6 +13,7 @@ __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
            'UBInt32', 'UBInt64')
 
+
 class Pad(GenericType):
     """Class for padding attributes."""
 
@@ -120,7 +121,34 @@ class DPID(GenericType):
     def value(self):
         return self._value
 
+    def pack(self, value=None):
+        """Pack the value as a binary representation.
+
+        Returns:
+            bytes: The binary representation.
+
+        Raises:
+            struct.error: If the value does not fit the binary format.
+        """
+        if isinstance(value, type(self)):
+            return value.pack()
+        if value is None:
+            value = self._value
+        return struct.pack('!8B', *[int(v, 16) for v in value.split(':')])
+
     def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            Exception: If there is a struct unpacking error.
+        """
         begin = offset
         bytes = []
         while begin < offset + 8:
@@ -128,13 +156,6 @@ class DPID(GenericType):
             bytes.append("%.2x" % number)
             begin += 1
         self._value = ':'.join(bytes)
-
-    def pack(self, value=None):
-        if isinstance(value, type(self)):
-            return value.pack()
-        if value is None:
-            value = self._value
-        return struct.pack('!8B', *[int(v, 16) for v in value.split(':')])
 
 
 class Char(GenericType):
@@ -500,13 +521,14 @@ class TypeList(list, GenericStruct):
             item_class (:obj:`type`): Class of the expected items on this list.
             offset (int): If we need to shift the beginning of the data.
         """
-        item_size = item_class().get_size()
-        binary_items = (buff[i:i+item_size] for i in range(offset, len(buff),
-                                                           item_size))
-        for binary_item in binary_items:
+        begin = offset
+        limit_buff = len(buff)
+
+        while(begin < limit_buff):
             item = item_class()
-            item.unpack(binary_item)
+            item.unpack(buff, begin)
             self.append(item)
+            begin += item.get_size()
 
     def get_size(self, value=None):
         """Return the size in bytes.
