@@ -80,7 +80,7 @@ class ActionOutput(ActionHeader):
     should be sent.
     """
 
-    type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
     length = UBInt16(8)
     port = UBInt16()
     max_length = UBInt16()
@@ -107,7 +107,7 @@ class ActionEnqueue(ActionHeader):
     (TOS, VLAN PCP).
     """
 
-    type = UBInt16(ActionType.OFPAT_ENQUEUE, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_ENQUEUE, enum_ref=ActionType)
     length = UBInt16(16)
     port = UBInt16()
     #: Pad for 64-bit alignment.
@@ -134,7 +134,7 @@ class ActionVlanVid(ActionHeader):
               The value 0xffff is used to indicate that no VLAN id was set
     """
 
-    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
     length = UBInt16(8)
     vlan_id = UBInt16()
     #: Pad for bit alignment.
@@ -153,7 +153,7 @@ class ActionVlanVid(ActionHeader):
 class ActionVlanPCP(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_PCP`."""
 
-    type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
     length = UBInt16(8)
     vlan_pcp = UBInt8()
     #: Pad for bit alignment.
@@ -269,7 +269,7 @@ class ActionVendorHeader(ActionHeader):
     The rest of the body is vendor-defined.
     """
 
-    type = UBInt16(ActionType.OFPAT_VENDOR, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_VENDOR, enum_ref=ActionType)
     length = UBInt16()
     vendor = UBInt32()
 
