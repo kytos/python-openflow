@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericBitMask, GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64, DPID
+from pyof.foundation.basic_types import DPID, UBInt8, UBInt32, UBInt64, Pad
 # Local source tree imports
 from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
@@ -89,7 +89,7 @@ class FeaturesReply(SwitchFeatures):
 
         Args:
             xid (int): xid to be used on the message header.
-            datapath_id (int): UBInt64 datapath unique ID.
+            datapath_id (str or :class:`.DPID`): DPID datapath unique ID.
                 The lower 48-bits are for MAC address, while
                 the upper 16-bits are implementer-defined.
             n_buffers (int): UBInt32 max packets buffered at once.

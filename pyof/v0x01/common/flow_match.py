@@ -141,8 +141,25 @@ class Match(GenericStruct):
         super().__setattr__(name, value)
         self.fill_wildcards(name, value)
 
+    def unpack(self, buff, offset=0):
+        """Unpack *buff* into this object.
+
+        Do nothing, since the _length is already defined and it is just a Pad.
+        Keep buff and offset just for compability with other unpack methods.
+
+        Args:
+            buff: Buffer where data is located.
+            offset (int): Where data stream begins.
+        """
+        super().unpack(buff, offset)
+        self.wildcards = UBInt32(value=FlowWildCards.OFPFW_ALL,
+                                 enum_ref=FlowWildCards)
+        self.wildcards.unpack(buff, offset)
+
     def fill_wildcards(self, field=None, value=0):
-        """Update wildcards attribute considering the attributes of the
+        """Update wildcards attribute.
+
+        This method update a wildcards considering the attributes of the
         current instance.
 
         Args:

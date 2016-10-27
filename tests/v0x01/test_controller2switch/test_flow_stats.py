@@ -39,6 +39,13 @@ class TestFlowStats(unittest.TestCase):
         """[Controller2Switch/FlowStats] - size 88."""
         self.assertEqual(self.message.get_size(), 88)
 
+    def test_pack_unpack(self):
+        """[Controller2Switch/FlowStats] - packing and unpacking."""
+        pack = self.message.pack()
+        unpacked = FlowStats()
+        unpacked.unpack(pack)
+        self.assertEqual(self.message.pack(), unpacked.pack())
+
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Controller2Switch/FlowStats] - packing."""

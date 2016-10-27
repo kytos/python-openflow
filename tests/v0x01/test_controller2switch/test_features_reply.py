@@ -1,5 +1,5 @@
 """Echo request message tests."""
-from pyof.foundation.basic_types import HWAddress, DPID
+from pyof.foundation.basic_types import DPID, HWAddress
 from pyof.v0x01.common.phy_port import PhyPort, PortConfig, PortState
 from pyof.v0x01.controller2switch.features_reply import FeaturesReply
 from tests.test_struct import TestStruct

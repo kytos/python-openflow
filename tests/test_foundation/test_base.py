@@ -55,6 +55,7 @@ class TestGenericStruct(unittest.TestCase):
 
 
 class TestGenericType(unittest.TestCase):
+    """Testing GenericType class."""
 
     def test_basic_operator(self):
         """[Foundation/Base/GenericType] - Basic Operators."""

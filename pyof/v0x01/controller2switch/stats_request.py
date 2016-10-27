@@ -8,7 +8,10 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import PortStatsRequest, StatsTypes
+from pyof.v0x01.controller2switch.common import (AggregateStatsRequest,
+                                                 FlowStatsRequest,
+                                                 PortStatsRequest,
+                                                 StatsTypes)
 
 __all__ = ('StatsRequest',)
 
@@ -41,7 +44,9 @@ class StatsRequest(GenericMessage):
         Make `body` a binary pack before packing this object. Then, restore
         body.
         """
-        if self.body_type == StatsTypes.OFPST_PORT:
+        if self.body_type == StatsTypes.OFPST_PORT or \
+           self.body_type == StatsTypes.OFPST_FLOW or \
+           self.body_type == StatsTypes.OFPST_AGGREGATE:
             backup = self.body
             self.body = self.body.pack()
             pack = super().pack()
@@ -56,4 +61,12 @@ class StatsRequest(GenericMessage):
         if self.body_type == StatsTypes.OFPST_PORT:
             buff = self.body.value
             self.body = PortStatsRequest()
+            self.body.unpack(buff)
+        elif self.body_type == StatsTypes.OFPST_FLOW:
+            buff = self.body.value
+            self.body = FlowStatsRequest()
+            self.body.unpack(buff)
+        elif self.body_type == StatsTypes.OFPST_AGGREGATE:
+            buff = self.body.value
+            self.body = AggregateStatsRequest()
             self.body.unpack(buff)

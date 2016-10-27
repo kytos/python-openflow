@@ -162,7 +162,6 @@ class TestIPAddress(unittest.TestCase):
         ip_addr = basic_types.IPAddress('192.168.0.35/16')
         self.assertEqual(ip_addr.max_prefix, 32)
 
-
     def test_get_size(self):
         """Testing get_size from IPAddress."""
         ip_addr = basic_types.IPAddress('192.168.0.1/24')
