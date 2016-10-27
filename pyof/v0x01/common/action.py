@@ -70,6 +70,30 @@ class ActionHeader(GenericStruct):
         self.length = length
 
 
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            Exception: If there is a struct unpacking error.
+        """
+        self.action_type = UBInt16(enum_ref=ActionType)
+        self.action_type.unpack(buff, offset)
+
+        for cls in ActionHeader.__subclasses__():
+            if self.action_type.value in cls.allowed_types():
+                self.__class__ = cls
+                break
+
+        super().unpack(buff, offset)
+
+
 class ActionOutput(ActionHeader):
     """Defines the actions output.
 
@@ -95,6 +119,14 @@ class ActionOutput(ActionHeader):
         super().__init__()
         self.port = port
         self.max_length = max_length
+
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_OUTPUT]
 
 
 class ActionEnqueue(ActionHeader):
@@ -125,6 +157,13 @@ class ActionEnqueue(ActionHeader):
         self.port = port
         self.queue_id = queue_id
 
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_ENQUEUE]
 
 class ActionVlanVid(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
@@ -134,7 +173,7 @@ class ActionVlanVid(ActionHeader):
               The value 0xffff is used to indicate that no VLAN id was set
     """
 
-    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
+    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_VID, enum_ref=ActionType)
     length = UBInt16(8)
     vlan_id = UBInt16()
     #: Pad for bit alignment.
@@ -148,6 +187,14 @@ class ActionVlanVid(ActionHeader):
         """
         super().__init__()
         self.vlan_id = vlan_id
+
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_VLAN_VID]
 
 
 class ActionVlanPCP(ActionHeader):
@@ -170,6 +217,14 @@ class ActionVlanPCP(ActionHeader):
         """
         super().__init__()
         self.vlan_pcp = vlan_pcp
+
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_VLAN_PCP]
 
 
 class ActionDLAddr(ActionHeader):
@@ -194,6 +249,14 @@ class ActionDLAddr(ActionHeader):
         self.dl_addr_type = dl_addr_type
         self.dl_addr = dl_addr
 
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_DL_SRC, ActionType.OFPAT_SET_DL_DST]
+
 
 class ActionNWAddr(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST."""
@@ -214,6 +277,14 @@ class ActionNWAddr(ActionHeader):
         self.nw_addr_type = nw_addr_type
         self.nw_addr = nw_addr
 
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_NW_SRC, ActionType.OFPAT_SET_NW_DST]
+
 
 class ActionNWTos(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_TOS`.
@@ -233,12 +304,20 @@ class ActionNWTos(ActionHeader):
 
         Args:
             nw_tos_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
-                :attr:`~ActionType.OFPAT_SET_NW_SRC`.
+                :attr:`~ActionType.OFPAT_SET_NW_DST`.
             nw_tos (int): IP ToS (DSCP field, 6 bits).
         """
         super().__init__()
         self.nw_tos_type = nw_tos_type
         self.nw_tos = nw_tos
+
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_NW_TOS]
 
 
 class ActionTPPort(ActionHeader):
@@ -262,6 +341,14 @@ class ActionTPPort(ActionHeader):
         self.tp_port_type = tp_port_type
         self.tp_port = tp_port
 
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_SET_TP_SRC, ActionType.OFPAT_SET_TP_DST]
+
 
 class ActionVendorHeader(ActionHeader):
     """Action header for :attr:`ActionType.OFPAT_VENDOR`.
@@ -284,3 +371,11 @@ class ActionVendorHeader(ActionHeader):
         super().__init__()
         self.length = length
         self.vendor = vendor
+
+    def allowed_types():
+       """Return the Allowed Action Type
+
+       Returns:
+           action_types (list): list of allowed types
+       """
+       return [ActionType.OFPAT_VENDOR]
