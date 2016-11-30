@@ -1,14 +1,10 @@
 Authors and Contributors
 ========================
 
--  Beraldo Leal
--  Azher Mughal
--  Artur Baruchi
--  André Tadeu
--  Diego Rabatone Oliveira
--  Raphael Cóbe
--  Rogerio Iope
--  Carlos Eduardo Moreira dos Santos
-
-This is a collaborative project between SPRACE (From São Paulo State University,
-Unesp) and Caltech (California Institute of Technology).
+- Beraldo Leal <beraldo AT ncc DOT unesp DOT br>
+- Artur Baruchi <abaruchi AT ncc DOT unesp DOT br>
+- Carlos Eduardo Moreira dos Santos <cadu AT ncc DOT unesp DOT br>
+- Diego Rabatone Oliveira <diraol AT ncc DOT unesp DOT br>
+- Macártur de Sousa Carvalho <macartur.sc AT gmail DOT com>
+- Raphael Cóbe <rmcobe AT ncc DOT unesp DOT br>
+- André Tadeu <andretadeu AT ncc DOT unesp DOT br>
