@@ -8,7 +8,8 @@
 #4A4090
 */
 
-.rst-content dl:not(.docutils) dl.method code.descname {
+.rst-content dl:not(.docutils) dl.method code.descname,
+.rst-content dl:not(.docutils) dl.attribute code.descname {
   color: #4A4090;
 }
 .rst-content dl:not(.docutils) dl dt {
