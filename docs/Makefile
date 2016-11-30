@@ -21,7 +21,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 default:
 	make clean
-	make html
+	make dirhtml
 
 
 .PHONY: help
@@ -238,4 +238,4 @@ dummy:
 	@echo "Build finished. Dummy builder generates no files."
 
 livehtml:
-	sphinx-autobuild -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html -z ../pyof
+	sphinx-autobuild -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/html -z ../pyof
