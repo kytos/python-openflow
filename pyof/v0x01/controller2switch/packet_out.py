@@ -63,7 +63,7 @@ class PacketOut(GenericMessage):
             return False
 
     def pack(self, value=None):
-        """Update the action_len attribute and call super().pack()."""
+        """Update the action_len attribute and call super's pack."""
         if value is None:
             self._update_actions_len()
             return super().pack()

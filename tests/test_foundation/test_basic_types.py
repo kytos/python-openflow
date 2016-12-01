@@ -131,7 +131,7 @@ class TestIPAddress(unittest.TestCase):
     """Test of IPAddress BasicType."""
 
     def test_unpack_packed(self):
-        """Testing unpack of packed IPAddress"""
+        """Test unpacking of packed IPAddress."""
         ip_addr = basic_types.IPAddress('192.168.0.1')
         packed = ip_addr.pack()
         unpacked = basic_types.IPAddress()

@@ -1,12 +1,8 @@
-"""Defines Features Reply classes and related items."""
+"""Define Features Reply classes and related items."""
 
-# System imports
-
-# Third-party imports
-
-from pyof.foundation.base import GenericBitMask, GenericMessage
-from pyof.foundation.basic_types import DPID, UBInt8, UBInt32, UBInt64, Pad
 # Local source tree imports
+from pyof.foundation.base import GenericBitMask, GenericMessage
+from pyof.foundation.basic_types import DPID, Pad, UBInt8, UBInt32
 from pyof.v0x01.common.action import ActionType
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.common.phy_port import ListOfPhyPorts

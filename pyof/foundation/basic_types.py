@@ -32,7 +32,7 @@ class Pad(GenericType):
         return "{}({})".format(type(self).__name__, self._length)
 
     def __str__(self):
-        return self.pack()
+        return '0' * self._length
 
     def get_size(self, value=None):
         """Return the type size in bytes.
@@ -108,17 +108,26 @@ class UBInt64(GenericType):
 
     _fmt = "!Q"
 
+
 class DPID(GenericType):
+    """DataPath ID. Identifies a switch."""
+
     _fmt = "!8B"
 
     def __init__(self, dpid=None):
-        self._value = dpid
+        """Create an instance and optionally set its dpid value.
+
+        Args:
+            dpid (str): E.g. 00:00:00:00:00:00:00:01.
+        """
+        super().__init__(value=dpid)
 
     def __str__(self):
         return self._value
 
     @property
     def value(self):
+        """Return dpid value."""
         return self._value
 
     def pack(self, value=None):
@@ -150,12 +159,12 @@ class DPID(GenericType):
             Exception: If there is a struct unpacking error.
         """
         begin = offset
-        bytes = []
+        hexas = []
         while begin < offset + 8:
             number = struct.unpack("!B", buff[begin:begin+1])[0]
-            bytes.append("%.2x" % number)
+            hexas.append("%.2x" % number)
             begin += 1
-        self._value = ':'.join(bytes)
+        self._value = ':'.join(hexas)
 
 
 class Char(GenericType):
@@ -524,7 +533,7 @@ class TypeList(list, GenericStruct):
         begin = offset
         limit_buff = len(buff)
 
-        while(begin < limit_buff):
+        while begin < limit_buff:
             item = item_class()
             item.unpack(buff, begin)
             self.append(item)

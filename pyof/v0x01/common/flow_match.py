@@ -119,24 +119,24 @@ class Match(GenericStruct):
             tp_dst (int): TCP/UDP destination port. (default: 0)
         """
         super().__init__()
-        [setattr(self, field, value) for field, value in kwargs.items()]
+        for field, value in kwargs.items():
+            setattr(self, field, value)
 
     def __setattr__(self, name, value):
 
         # converts string ip_address to IPAddress
         if isinstance(getattr(Match, name), IPAddress) and \
                 not isinstance(value, IPAddress):
-                    if isinstance(value, list):
-                        value = ".".join(str(x) for x in value)
-                    value = IPAddress(value)
-
+            if isinstance(value, list):
+                value = ".".join(str(x) for x in value)
+            value = IPAddress(value)  # noqa
         # convertstring or list of hwaddress to HWAddress
-        if isinstance(getattr(Match, name), HWAddress) and \
+        elif isinstance(getattr(Match, name), HWAddress) and \
                 not isinstance(value, HWAddress):
-                    if isinstance(value, list):
-                        values = ["{0:0{1}x}".format(x, 2) for x in value]
-                        value = ":".join(values)
-                    value = HWAddress(value)
+            if isinstance(value, list):
+                values = ["{0:0{1}x}".format(x, 2) for x in value]
+                value = ":".join(values)
+            value = HWAddress(value)
 
         super().__setattr__(name, value)
         self.fill_wildcards(name, value)

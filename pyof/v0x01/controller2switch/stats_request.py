@@ -64,7 +64,7 @@ class StatsRequest(GenericMessage):
             self.body.unpack(buff)
         elif self.body_type == StatsTypes.OFPST_FLOW:
             buff = self.body.value
-            self.body = FlowStatsRequest()
+            self.body = FlowStatsRequest()  # noqa
             self.body.unpack(buff)
         elif self.body_type == StatsTypes.OFPST_AGGREGATE:
             buff = self.body.value

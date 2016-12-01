@@ -134,7 +134,7 @@ class TestStruct(unittest.TestCase):
             packed_obj = msg.pack()
             self.assertEqual(packed_obj, raw_file)
         except FileNotFoundError:
-            raise self.skipTest('Need a raw dump file.')
+            raise self.skipTest('No raw dump file found.')
 
     def test_unpack(self):
         """Check whether the unpacked dump equals to expected object."""
@@ -143,7 +143,7 @@ class TestStruct(unittest.TestCase):
             obj = self.get_raw_object()
             self.assertEqual(unpacked, obj)
         except FileNotFoundError:
-            raise self.skipTest('Need a raw dump file.')
+            raise self.skipTest('No raw dump file found.')
 
     def test_minimum_size(self):
         """Test struct minimum size."""

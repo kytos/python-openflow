@@ -69,7 +69,6 @@ class ActionHeader(GenericStruct):
         self.action_type = action_type
         self.length = length
 
-
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
 
@@ -119,14 +118,7 @@ class ActionOutput(ActionHeader):
         super().__init__()
         self.port = port
         self.max_length = max_length
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_OUTPUT]
+        self.allowed_types = ActionType.OFPAT_OUTPUT,
 
 
 class ActionEnqueue(ActionHeader):
@@ -156,14 +148,8 @@ class ActionEnqueue(ActionHeader):
         super().__init__()
         self.port = port
         self.queue_id = queue_id
+        self.allowed_types = ActionType.OFPAT_ENQUEUE,
 
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_ENQUEUE]
 
 class ActionVlanVid(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_VID`.
@@ -187,14 +173,7 @@ class ActionVlanVid(ActionHeader):
         """
         super().__init__()
         self.vlan_id = vlan_id
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_VLAN_VID]
+        self.allowed_types = ActionType.OFPAT_SET_VLAN_VID,
 
 
 class ActionVlanPCP(ActionHeader):
@@ -217,14 +196,7 @@ class ActionVlanPCP(ActionHeader):
         """
         super().__init__()
         self.vlan_pcp = vlan_pcp
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_VLAN_PCP]
+        self.allowed_types = ActionType.OFPAT_SET_VLAN_PCP,
 
 
 class ActionDLAddr(ActionHeader):
@@ -248,14 +220,8 @@ class ActionDLAddr(ActionHeader):
         super().__init__()
         self.dl_addr_type = dl_addr_type
         self.dl_addr = dl_addr
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_DL_SRC, ActionType.OFPAT_SET_DL_DST]
+        self.allowed_types = (ActionType.OFPAT_SET_DL_SRC,
+                              ActionType.OFPAT_SET_DL_DST)
 
 
 class ActionNWAddr(ActionHeader):
@@ -276,14 +242,8 @@ class ActionNWAddr(ActionHeader):
         super().__init__()
         self.nw_addr_type = nw_addr_type
         self.nw_addr = nw_addr
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_NW_SRC, ActionType.OFPAT_SET_NW_DST]
+        self.allowed_types = (ActionType.OFPAT_SET_NW_SRC,
+                              ActionType.OFPAT_SET_NW_DST)
 
 
 class ActionNWTos(ActionHeader):
@@ -310,14 +270,7 @@ class ActionNWTos(ActionHeader):
         super().__init__()
         self.nw_tos_type = nw_tos_type
         self.nw_tos = nw_tos
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_NW_TOS]
+        self.allowed_types = ActionType.OFPAT_SET_NW_TOS,
 
 
 class ActionTPPort(ActionHeader):
@@ -340,14 +293,8 @@ class ActionTPPort(ActionHeader):
         super().__init__()
         self.tp_port_type = tp_port_type
         self.tp_port = tp_port
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_SET_TP_SRC, ActionType.OFPAT_SET_TP_DST]
+        self.allowed_types = (ActionType.OFPAT_SET_TP_SRC,
+                              ActionType.OFPAT_SET_TP_DST)
 
 
 class ActionVendorHeader(ActionHeader):
@@ -371,11 +318,4 @@ class ActionVendorHeader(ActionHeader):
         super().__init__()
         self.length = length
         self.vendor = vendor
-
-    def allowed_types():
-       """Return the Allowed Action Type
-
-       Returns:
-           action_types (list): list of allowed types
-       """
-       return [ActionType.OFPAT_VENDOR]
+        self.allowed_types = ActionType.OFPAT_VENDOR,

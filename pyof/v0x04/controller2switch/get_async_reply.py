@@ -23,7 +23,7 @@ class GetAsyncReply(AsyncConfig):
     def __init__(self, xid=None, packet_in_mask1=None, packet_in_mask2=None,
                  port_status_mask1=None, port_status_mask2=None,
                  flow_removed_mask1=None, flow_removed_mask2=None):
-        """GetAsyncReply message.
+        """Set attributes for GetAsyncReply message.
 
         Args:
             xid (int): xid to be used on the message header.
