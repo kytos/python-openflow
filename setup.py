@@ -4,29 +4,60 @@ Run "python3 setup --help-commands" to list all available commands and their
 descriptions.
 """
 import sys
-from distutils.command.build import build
+from abc import abstractmethod
 from subprocess import call, check_call
 
-from setuptools import find_packages, setup
+from setuptools import Command, find_packages, setup
 
 from pyof import __version__
 
 
-class Linter(build):
+def lint():
+    """Run pylama and radon."""
+    files = 'tests setup.py pyof'
+    print('Pylama is running. It may take a while...')
+    cmd = 'pylama {}'.format(files)
+    check_call(cmd, shell=True)
+    print('Low grades (<= C) for Maintainability Index (if any):')
+    check_call('radon mi --min=C ' + files, shell=True)
+
+
+class SimpleCommand(Command):
+    """Make Command implementation simpler."""
+
+    user_options = []
+
+    @abstractmethod
+    def run(self):
+        """Run when command is invoked.
+
+        Use *call* instead of *check_call* to ignore failures.
+        """
+        pass
+
+    def initialize_options(self):
+        """Set defa ult values for options."""
+        pass
+
+    def finalize_options(self):
+        """Post-process options."""
+        pass
+
+
+class Linter(SimpleCommand):
     """Code linters."""
 
+    description = 'run Pylama on Python files'
+
     def run(self):
-        """Run pylama and radon."""
-        files = 'tests setup.py pyof'
-        print('Running pylama. It may take a while...')
-        cmd = 'pylama {}'.format(files)
-        call(cmd, shell=True)
-        print('Low grades (<= C) for Maintainability Index:')
-        call('radon mi --min=C ' + files, shell=True)
+        """Run linter."""
+        lint()
 
 
-class Cleaner(build):
+class Cleaner(SimpleCommand):
     """Custom clean command to tidy up the project root."""
+
+    description = 'clean build, dist, pyc and egg from package and docs'
 
     def run(self):
         """Clean build, dist, pyc and egg from package and docs."""
@@ -34,12 +65,10 @@ class Cleaner(build):
         call('cd docs; make clean', shell=True)
 
 
-class Doctest(build):
-    """Run Sphinx doctest during test."""
-
-    if sys.argv[-1] == 'test':
-        print('Running examples in documentation')
-        check_call('make doctest -C docs/', shell=True)
+if sys.argv[-1] == 'test':
+    print('Running examples in documentation')
+    check_call('make doctest -C docs/', shell=True)
+    lint()
 
 
 setup(name='python-openflow',
