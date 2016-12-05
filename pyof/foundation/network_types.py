@@ -1,4 +1,6 @@
-"""Basic Network Types."""
+""" Defines and Implements Basic Network packet types , such as Ethertnet and
+LLDP. """
+
 
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import BinaryData, HWAddress, UBInt8, UBInt16
@@ -31,7 +33,7 @@ class Ethernet(GenericStruct):
 class GenericTLV:
     """TLV structure of LLDP packets.
 
-    This is a Type, Length and Value struct.
+    This is a Type, Length and Value (TLV) struct.
     """
 
     def __init__(self, tlv_type=127, value=BinaryData()):
@@ -104,7 +106,11 @@ class GenericTLV:
 
 
 class TLVWithSubType(GenericTLV):
-    """Add sub type and sub value to :class:`GenericTLV` and remove value."""
+    """Modify the :class:`GenericTLV` to a more defined structure.
+
+    Add *sub_type* and *sub_value* attributes to :class:`GenericTLV`, while
+    also removes the *value* attribute.
+    """
 
     def __init__(self, tlv_type=1, sub_type=7, sub_value=None):
         """Create an instance and set its attributes."""
@@ -145,7 +151,10 @@ class TLVWithSubType(GenericTLV):
 
 
 class LLDP(GenericStruct):
-    """LLDP class."""
+    """LLDP class.
+
+    Build a LLDP using TLVSubtype and Generic Subtype
+    """
 
     chassis_id = TLVWithSubType(tlv_type=1, sub_type=7)
     port_id = TLVWithSubType(tlv_type=2, sub_type=7)
