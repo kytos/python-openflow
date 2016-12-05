@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, Pad, UBInt16, UBInt32
-from pyof.foundation.exceptions import ValidationError
+from pyof.foundation.exceptions import PackException, ValidationError
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port, PortNo
 from pyof.v0x04.controller2switch.common import ListOfActions
@@ -72,7 +72,7 @@ class PacketOut(GenericMessage):
             return False
 
     def pack(self, value=None):
-        """Update the action_len attribute and call super().pack()."""
+        """Update the action_len attribute and call super's pack."""
         if value is None:
             self._update_actions_len()
             return super().pack()

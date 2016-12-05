@@ -42,8 +42,8 @@ class PacketIn(GenericMessage):
     pad = Pad(1)
     data = BinaryData()
 
-    def __init__(self, xid=None, buffer_id=NO_BUFFER, total_len=None, in_port=None,
-                 reason=None, data=b''):
+    def __init__(self, xid=None, buffer_id=NO_BUFFER, total_len=None,
+                 in_port=None, reason=None, data=b''):
         """Assign parameters to object attributes.
 
         Args:

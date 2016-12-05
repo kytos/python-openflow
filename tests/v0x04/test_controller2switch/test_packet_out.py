@@ -7,7 +7,7 @@ from pyof.v0x04.controller2switch.packet_out import PacketOut
 from tests.test_struct import TestStruct
 
 log = logging.getLogger()
-RAW_DUMP_ERR = '\n>>>> Raw dump file for this test need to be generated <<<<\n'
+NO_RAW = 'No raw dump file found.'
 
 
 class TestPacketOut(TestStruct):
@@ -31,8 +31,7 @@ class TestPacketOut(TestStruct):
         try:
             msg = self.get_raw_dump().read()
         except FileNotFoundError:
-            log.warning(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest(NO_RAW)
         else:
             valid = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER,
                      PortNo.OFPP_NONE)
@@ -46,8 +45,7 @@ class TestPacketOut(TestStruct):
         try:
             msg = self.get_raw_dump().read()
         except FileNotFoundError:
-            log.warning(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest(NO_RAW)
         else:
             invalid = (PortNo.OFPP_IN_PORT, PortNo.OFPP_TABLE,
                        PortNo.OFPP_NORMAL, PortNo.OFPP_FLOOD, PortNo.OFPP_ALL)
@@ -62,8 +60,7 @@ class TestPacketOut(TestStruct):
         try:
             msg = self.get_raw_dump().read()
         except FileNotFoundError:
-            log.warning(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest(NO_RAW)
         else:
             max_valid = int(PortNo.OFPP_MAX.value) - 1
             msg = self.get_raw_object()
@@ -76,8 +73,7 @@ class TestPacketOut(TestStruct):
         try:
             msg = self.get_raw_dump().read()
         except FileNotFoundError:
-            log.warning(RAW_DUMP_ERR)
-            raise self.skipTest('There is no raw dump file for this test')
+            raise self.skipTest(NO_RAW)
         else:
             max_valid = int(PortNo.OFPP_MAX.value) - 1
             msg = self.get_raw_object()
