@@ -1,7 +1,4 @@
-Kytos - python-openflow
-=======================
-
-|Openflow| |Tag| |Release| |Tests| |License|
+|Experimental| |Openflow| |Tag| |Release| |Pypi| |Tests| |License|
 
 *python-openflow* is a low level library to parse OpenFlow messages. If you
 want to read an OpenFlow packet from an open socket or send a message to an
@@ -17,8 +14,8 @@ Overview
 --------
 
 This is just an overview for you to check whether this project fit your needs.
-For a more detailed documentation, please check the `python-openflow API
-Reference Manual <http://docs.kytos.io/python-openflow/api-reference/>`_.
+For a more detailed documentation, please check the :doc:`python-openflow API
+Reference Manual <pyof>`.
 
 Usage
 ^^^^^
@@ -117,13 +114,15 @@ License
 This software is under *MIT-License*. For more information please read the
 ``LICENSE`` file.
 
+.. |Experimental| image:: https://img.shields.io/badge/stability-experimental-orange.svg
 .. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
    :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
 .. |Tag| image:: https://img.shields.io/github/tag/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/tags
-.. |Release| image:: https://img.shields.io/github/release/kytos/python-openvpn.svg
+.. |Release| image:: https://img.shields.io/github/release/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/releases
+.. |Pypi| image:: https://img.shields.io/pypi/v/python-openflow.svg
 .. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=develop
-   :target: https://github.com/kytos/python-openflow
+   :target: https://travis-ci.org/kytos/python-openflow
 .. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/blob/master/LICENSE

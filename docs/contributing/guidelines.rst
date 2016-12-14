@@ -1,5 +1,5 @@
-Contributing
-============
+Contributing guidelines
+========================
 
 We'd love for you to contribute to our source code and to make Kytos even better
 than it is today! Here are the guidelines we follow:
@@ -21,6 +21,8 @@ If you have questions about how to use any component of Kytos project, please
 direct these to our dev mailing list. We are also available on IRC. Check the
 details in the `Contact Us`_ section.
 
+.. _contributing-issue:
+
 Found an Issue?
 ---------------
 
@@ -29,6 +31,8 @@ help us by submitting an issue to our `GitHub Repository <https://github.com/kyt
 you can submit a Pull Request with a fix.
 
 **Please see the** `Submission Guidelines`_ **below.**
+
+.. _contributing-feature-request:
 
 Want a Feature?
 ---------------
@@ -45,6 +49,8 @@ it is:
 
 - **Small Changes** can be crafted and submitted to the `GitHub Repository
   <github.com/kytos/python-openflow>`__ as a Pull Request.
+
+.. _contributing-doc-fix:
 
 Want a Doc Fix?
 ---------------
@@ -252,7 +258,7 @@ the changes from the main (upstream) repository:
        git pull upstream develop
 
 Information about environment setup for developers can be found in the
-:doc:`HACKING` section.
+:doc:`hacking` section.
 
 Pull Request Pro Tips
 ~~~~~~~~~~~~~~~~~~~~~
@@ -346,7 +352,7 @@ This project tries to follow the TDD (Test Driven Development) process. Before
 writing code to contribute, write the tests related to the functionality you
 wish to implement and then write the code to pass this test.
 
-More info about the tests can be found in the :doc:`HACKING` section.
+More info about the tests can be found in the :doc:`hacking` section.
 
 Use the raw packet files
 ~~~~~~~~~~~~~~~~~~~~~~~~
