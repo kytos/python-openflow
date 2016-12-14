@@ -1,6 +1,7 @@
 """Testing Header structure."""
 import os
 import unittest
+from unittest.mock import patch
 
 from pyof.v0x01.common.header import Header, Type
 
@@ -43,3 +44,9 @@ class TestHeader(unittest.TestCase):
         self.assertEqual(self.message.version, 1)
 
         f.close()
+
+    @patch('pyof.v0x01.common.header.randint')
+    def test_random_xid(self, m):
+        """Each Header instantiations without xid should call randint."""
+        Header(), Header()  # noqa
+        self.assertEqual(m.call_count, 2)
