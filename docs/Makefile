@@ -63,12 +63,16 @@ clean:
 html:
 	sphinx-apidoc -o . ../pyof/ -d10 -M
 	sed -i "/Submodules/,+1d" *.rst
+	sed -i "/Subpackages/,+1d" *.rst
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
 .PHONY: dirhtml
 dirhtml:
+	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sed -i "/Submodules/,+1d" *.rst
+	sed -i "/Subpackages/,+1d" *.rst
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
@@ -104,9 +108,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/python-openflowlibrary.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/pyof.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/python-openflowlibrary.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/pyof.qhc"
 
 .PHONY: applehelp
 applehelp:
@@ -123,8 +127,8 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/python-openflowlibrary"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/python-openflowlibrary"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/pyof"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/pyof"
 	@echo "# devhelp"
 
 .PHONY: epub
@@ -238,4 +242,9 @@ dummy:
 	@echo "Build finished. Dummy builder generates no files."
 
 livehtml:
-	sphinx-autobuild -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/html -z ../pyof
+	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sed -i "/Submodules/,+1d" *.rst
+	sed -i "/Subpackages/,+1d" *.rst
+	sphinx-autobuild -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml -z ../pyof
+	@echo
+	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
