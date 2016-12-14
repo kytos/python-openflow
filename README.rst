@@ -1,17 +1,16 @@
 |Experimental| |Openflow| |Tag| |Release| |Pypi| |Tests| |License|
 
+Overview
+--------
+
 *python-openflow* is a low level library to parse OpenFlow messages. If you
 want to read an OpenFlow packet from an open socket or send a message to an
 OpenFlow switch, this is your best friend. The main features are: high
-performance, latest specification compliance, short learning curve and free
-software license.
+performance, short learning curve and free software license.
 
 This library is part of `Kytos <http://kytos.io>`_ project. *python-openflow*
 was developed to be used with *Kytos* controller, but feel free to use this
 simple and intuitive library in other projects.
-
-Overview
---------
 
 This is just an overview for you to check whether this project fit your needs.
 For a more detailed documentation, please check the :doc:`python-openflow API
@@ -60,7 +59,7 @@ Basic Usage Example
 See how easy is the creation of a features request message with this library.
 You can use ipython3 to get the advantages of autocompletion:
 
-.. code-block:: python3
+.. code-block:: python
 
     >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
     >>> request = FeaturesRequest()
@@ -73,6 +72,10 @@ its binary representation that should be used to be sent throught the network:
 .. code:: python3
 
     >>> binary_msg = request.pack()
+
+Please note that this library do not send or receive messages via socket. You
+have to create your own server to receive messages from switches. This library
+only helps you to handle OpenFlow messages on a more pythonic way.
 
 .. seealso::
 
