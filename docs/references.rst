@@ -4,9 +4,8 @@
   :hidden:
 
   index
-  user/index
-  developer/index
+  examples/index
+  API Reference <pyof>
   contributing/index
-  Package API <pyof>
   AUTHORS
   LICENSE

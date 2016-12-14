@@ -17,13 +17,48 @@ This is just an overview for you to check whether this project fit your needs.
 For a more detailed documentation, please check the :doc:`python-openflow API
 Reference Manual <pyof>`.
 
-Usage
-^^^^^
+Installing
+^^^^^^^^^^
+
+For now, you can install this package from source (if you have cloned this
+repository) or via pip.
+
+.. note:: We are improving this and soon you will be able to install from the
+ major distros repositories.
+
+From PyPI
+=========
+
+*python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
+for Python 3) or include this project in your `requirements.txt`. To install it
+with `pip3`, run the following command:
+
+.. code-block:: shell
+
+   $ sudo pip3 install python-openflow
+
+From source code
+================
+
+First you need to clone `python-openflow` repository:
+
+.. code-block:: shell
+
+   $ git clone https://github.com/kytos/python-openflow.git
+
+After cloning, the installation process is done by standard `setuptools`
+install procedure:
+
+.. code-block:: shell
+
+   $ cd python-openflow
+   $ sudo python3 setup.py install
+
+Basic Usage Example
+^^^^^^^^^^^^^^^^^^^
 
 See how easy is the creation of a features request message with this library.
 You can use ipython3 to get the advantages of autocompletion:
-
-.. The code in this section is replicated in docs/toc/usage.rst.
 
 .. code-block:: python3
 
@@ -39,80 +74,9 @@ its binary representation that should be used to be sent throught the network:
 
     >>> binary_msg = request.pack()
 
-Installation
-^^^^^^^^^^^^
+.. seealso::
 
-You can install this package with pip package installer or from source code.
-
-=====================
-Installing from PyPI
-=====================
-
-*python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
-for Python 3) and also include this project in your `requirements.txt`
-
-If you do not have `pip3` you can install it on Ubuntu-base machines by
-running:
-
-.. code-block:: shell
-
-    $ sudo apt update
-    $ sudo apt install python3-pip
-
-Once you have `pip3`, execute:
-
-.. code-block:: shell
-
-   $ sudo pip3 install python-openflow
-
-=======================
-Installing source code
-=======================
-
-First you need to clone `python-openflow` repository:
-
-.. code-block:: shell
-
-   $ git clone https://github.com/kytos/python-openflow.git
-
-After cloning, the installation process is done by `setuptools` in the usual
-way:
-
-.. code-block:: shell
-
-   $ cd python-openflow
-   $ sudo python3 setup.py install
-
-=====================
-Checking installation
-=====================
-
-That's it! To check wether it is installed successfully, please try to import
-after running ``python3`` or ``ipython3``:
-
-.. code-block:: python3
-
-   >>> import pyof
-   >>> # no errors should be displayed
-
-Support
-^^^^^^^
-
-We are available in IRC (``#kytos`` (at) ``freenode.net``)and there is also a
-development mailing list. Details can be found in the full documentation.
-
-Contributing
-^^^^^^^^^^^^
-
-Contributions are welcome either by creating issues in GitHub or in the form of
-pull requests. Before, please, read the contribution and hacking guides in the
-main documentation.
-
-License
-^^^^^^^
-
-This software is under *MIT-License*. For more information please read the
-``LICENSE`` file.
+    To see more examples, please visit our :doc:`examples/index` chapter.
 
 .. |Experimental| image:: https://img.shields.io/badge/stability-experimental-orange.svg
 .. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
