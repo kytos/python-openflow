@@ -77,6 +77,13 @@ div#sidebar.bs-sidenav.affix {
   top: 92px;
 }
 
+/* Highlight current selected section on sidebar */
+#sidebar li.current a.current.reference {
+  font-weight: bold;
+  color: #563d7c;
+  border-right: 1px solid #563d7c;
+}
+
 /* Sidebar hierarchy left-padding size */
 #sidebar.bs-sidenav .nav li a {
   padding: 5px;
