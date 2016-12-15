@@ -303,6 +303,13 @@ div.admonition.alert-danger > p.admonition-title:before  {
   font-family: Courier, "Lucida Console", monospace;
 }
 
+:target:before {
+    content: "";
+    display: block;
+    height: 50px;
+    margin: -50px 0 0;
+}
+
 /*div.code .highlight pre {*/
   /*background: none;*/
   /*background-color: none;*/
