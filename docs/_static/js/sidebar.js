@@ -145,3 +145,6 @@ $(function() {
   set_position_from_cookie();
 
 });
+$(window).ready(function(){
+  $('body').scrollspy({ target: '.sphinxsidebarwrapper', offset: 70 });
+})
