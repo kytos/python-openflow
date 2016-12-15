@@ -1,11 +1,12 @@
+#######
 Hacking
-=======
+#######
 
 Before reading this file, please read the :doc:`guidelines` section that
 contains the main guidelines of the project.
 
 Development Environment Setup
------------------------------
+*****************************
 
 This project is written in Python (version 3.5).
 
@@ -23,7 +24,7 @@ automatically in every shell, add it to ``~/.bashrc`` replacing ``pwd`` by the
 full path of the repository (output of ``pwd``).
 
 Virtualenv
-~~~~~~~~~~
+==========
 
 Another option is to use *virtualenv*. It installs the required and
 recommended python libraries without messing up with your system. Besides, you
@@ -87,7 +88,7 @@ See more virtualenvwrapper commands on:
 http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
 
 Virtualenv Extras
-^^^^^^^^^^^^^^^^^
+-----------------
 
 If you want to show the current activated virtualenv on the right side of your
 shell, add the following code to your ``~/.virtualenvs/postactivate`` file:
@@ -107,7 +108,7 @@ and also this code to your ``~/.virtualenvs/postdeactivate`` file:
     RPROMPT="$_OLD_RPROMPT"
 
 TDD (Test Driven Development)
------------------------------
+*****************************
 
 We aim at 100% of test coverage. We are using
 Python `unittest <https://docs.python.org/3.5/library/unittest.html>`__ to
