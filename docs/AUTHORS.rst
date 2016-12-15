@@ -1,5 +1,6 @@
+#######
 Authors
-=======
+#######
 
 - Beraldo Leal <beraldo AT ncc DOT unesp DOT br>
 - Artur Baruchi <abaruchi AT ncc DOT unesp DOT br>

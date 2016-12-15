@@ -1,5 +1,6 @@
+############
 Introduction
-============
+############
 
 Our main goal is to make the development of OpenFlow applications easy and
 straightforward. This library is the foundation for the development of any
@@ -10,7 +11,7 @@ library will be minimal. We tried to keep it very close to the specs regarding
 class names and attributes.
 
 Source code structure
----------------------
+*********************
 
 This project is packed as a python package (``python-openflow``), and contains
 the following directory structure:
@@ -34,10 +35,10 @@ the following directory structure:
   testing purposes.
 
 Main Highlights
----------------
+***************
 
 Speed focused
-~~~~~~~~~~~~~
+=============
 
 We keep the word *performance* in mind since the beginning of the development.
 Also, as computer scientists, we will always try to get the best performance by
@@ -48,7 +49,7 @@ with high-speed networks (~1 terabit/s), some even involving data transfers
 from/to CERN.
 
 Always updated
-~~~~~~~~~~~~~~
+==============
 
 To avoid code repetition this project utilizes an incremental architecture.
 
@@ -62,14 +63,14 @@ protocol faster. Our main goal is to follow the specifications since the very
 beginning.
 
 Easy to learn
-~~~~~~~~~~~~~
+=============
 
 Python is an easy language to learn and we aim at writing code in a "pythonic
 way". We also provide a well documented API. Thus, learning to make your
 controller using this library is a trivial task.
 
 Born to be free
-~~~~~~~~~~~~~~~
+===============
 
 OpenFlow was born with a simple idea: make your network more vendor agnostic
 and we like that!

@@ -1,7 +1,8 @@
 |Experimental| |Openflow| |Tag| |Release| |Pypi| |Tests| |License|
 
+########
 Overview
-========
+########
 
 *python-openflow* is a low level library to parse and create OpenFlow messages.
 If you want to read an OpenFlow packet from an open socket or send a message to
@@ -21,10 +22,10 @@ For a more detailed documentation, please check the
 `python-openflow API Reference Manual <http://docs.kytos.io/python-openflow/pyof/>`_.
 
 Quick Start
------------
+***********
 
 Installing
-^^^^^^^^^^
+==========
 
 For now, you can install this package from source (if you have cloned this
 repository) or via pip. If you are a more experienced Python user, you can
@@ -34,7 +35,7 @@ also install it without root permissions.
  major distros' repositories.
 
 From PyPI
-"""""""""
+---------
 
 *python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
 for Python 3) or include this project in your `requirements.txt`. To install it
@@ -45,7 +46,7 @@ with `pip3`, run the following command:
    $ sudo pip3 install python-openflow
 
 From source code
-""""""""""""""""
+----------------
 
 First you need to clone `python-openflow` repository:
 
@@ -62,7 +63,7 @@ install procedure:
    $ sudo python3 setup.py install
 
 Basic Usage Example
-^^^^^^^^^^^^^^^^^^^
+===================
 
 See how it is easy to create a feature request message with this library.
 You can use ipython3 to get the advantages of autocompletion:
