@@ -77,6 +77,16 @@ div#sidebar.bs-sidenav.affix {
   top: 92px;
 }
 
+/* Sidebar hierarchy left-padding size */
+#sidebar.bs-sidenav .nav li a {
+  padding: 5px;
+}
+
+#sidebar div.sphinxsidebar ul ul,
+#sidebar div.sphinxsidebar ul.want-points {
+  margin-left: 15px;
+}
+
 /* body */
 body div.kytos-theme-marker-class > div.container {
   margin-top: 15px;
@@ -303,6 +313,7 @@ div.admonition.alert-danger > p.admonition-title:before  {
   font-family: Courier, "Lucida Console", monospace;
 }
 
+/* Fix top spacing for html anchors */
 :target:before {
     content: "";
     display: block;
