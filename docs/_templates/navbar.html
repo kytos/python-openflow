@@ -27,7 +27,17 @@
 <section id="DocsCover" class="container-fluid section-primary section-cover-docs">
   <div class="container">
     <div class="row features-content">
-      <h1><i class="fa fa-book"></i> Welcome to Kytos/{% if theme_navbar_title %}{{ theme_navbar_title|e  }}{% else %}{{ project|e  }}{% endif %} documentation</h1>
+      {% if theme_navbar_title %}
+        {% set proj_title = theme_navbar_title %}
+      {% elif project %}
+        {% set proj_title = project %}
+      {% endif %}
+      {% if proj_title|string == 'Kytos'|string or proj_title|string == 'Kytos project'|string %}
+        {% set proj_title = '<strong>Kytos</strong> project' %}
+      {% else %}
+        {% set proj_title = 'Kytos/<strong>' + proj_title + '</strong>' %}
+      {% endif %}
+      <h1><i class="fa fa-book"></i> Welcome to {{proj_title}} documentation</h1>
     </div>
   </div>
 </section>
