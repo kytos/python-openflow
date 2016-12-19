@@ -7,3 +7,4 @@ Sphinx >= 1.4.5
 # files change
 sphinx-autobuild >= 0.6.0
 sphinx-rtd-theme >= 0.1.9
+sphinx_bootstrap_theme

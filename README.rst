@@ -1,76 +1,52 @@
-Kytos - python-openflow
-=======================
+|Experimental| |Openflow| |Tag| |Release| |Pypi| |Tests| |License|
 
-|Openflow| |Tag| |Release| |Tests| |License|
-
-*python-openflow* is a low level library to parse OpenFlow messages. If you
-want to read an OpenFlow packet from an open socket or send a message to an
-OpenFlow switch, this is your best friend. The main features are: high
-performance, latest specification compliance, short learning curve and free
-software license.
-
-This library is part of `Kytos <http://kytos.io>`_ project. *python-openflow*
-was developed to be used with *Kytos* controller, but feel free to use this
-simple and intuitive library in other projects.
-
+########
 Overview
---------
+########
 
-This is just an overview for you to check whether this project fit your needs.
-For a more detailed documentation, please check the `python-openflow API
-Reference Manual <http://docs.kytos.io/python-openflow/api-reference/>`_.
+*python-openflow* is a low level library to parse and create OpenFlow messages.
+If you want to read an OpenFlow packet from an open socket or send a message to
+an OpenFlow switch, this is your best friend. The main features are: high
+performance, short learning curve and free software license.
 
-Usage
-^^^^^
+This library is part of `Kytos <http://kytos.io>`_ project, but feel free to
+use this simple and intuitive library in other projects.
 
-See how easy is the creation of a features request message with this library.
-You can use ipython3 to get the advantages of autocompletion:
+.. attention::
+   *python-openflow* does not perform I/O operations. To communicate with a
+   switch, you can use, for example, `Kyco <http://docs.kytos.io/kyco>`_, the
+   Kytos Controller.
 
-.. The code in this section is replicated in docs/toc/usage.rst.
+A quick start follows for you to check whether this project fits your needs.
+For a more detailed documentation, please check the
+`python-openflow API Reference Manual <http://docs.kytos.io/python-openflow/pyof/>`_.
 
-.. code-block:: python3
+Quick Start
+***********
 
-    >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
-    >>> request = FeaturesRequest()
-    >>> print(request.header.message_type)
-    Type.OFPT_FEATURES_REQUEST
+Installing
+==========
 
-If you need to send this message via socket, call the ``pack()`` method to get
-its binary representation that should be used to be sent throught the network:
+For now, you can install this package from source (if you have cloned this
+repository) or via pip. If you are a more experienced Python user, you can
+also install it without root permissions.
 
-.. code:: python3
+.. note:: We are improving this and soon you will be able to install from the
+ major distros' repositories.
 
-    >>> binary_msg = request.pack()
-
-Installation
-^^^^^^^^^^^^
-
-You can install this package with pip package installer or from source code.
-
-=====================
-Installing from PyPI
-=====================
+From PyPI
+---------
 
 *python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
-for Python 3) and also include this project in your `requirements.txt`
-
-If you do not have `pip3` you can install it on Ubuntu-base machines by
-running:
-
-.. code-block:: shell
-
-    $ sudo apt update
-    $ sudo apt install python3-pip
-
-Once you have `pip3`, execute:
+for Python 3) or include this project in your `requirements.txt`. To install it
+with `pip3`, run the following command:
 
 .. code-block:: shell
 
    $ sudo pip3 install python-openflow
 
-=======================
-Installing source code
-=======================
+From source code
+----------------
 
 First you need to clone `python-openflow` repository:
 
@@ -78,52 +54,65 @@ First you need to clone `python-openflow` repository:
 
    $ git clone https://github.com/kytos/python-openflow.git
 
-After cloning, the installation process is done by `setuptools` in the usual
-way:
+After cloning, the installation process is done by standard `setuptools`
+install procedure:
 
 .. code-block:: shell
 
    $ cd python-openflow
    $ sudo python3 setup.py install
 
-=====================
-Checking installation
-=====================
+Basic Usage Example
+===================
 
-That's it! To check wether it is installed successfully, please try to import
-after running ``python3`` or ``ipython3``:
+See how it is easy to create a feature request message with this library.
+You can use ipython3 to get the advantages of autocompletion:
 
-.. code-block:: python3
+.. code-block:: python
 
-   >>> import pyof
-   >>> # no errors should be displayed
+    >>> from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+    >>> request = FeaturesRequest()
+    >>> print(request.header.message_type)
+    Type.OFPT_FEATURES_REQUEST
 
-Support
-^^^^^^^
+If you need to send this message via socket, call the ``pack()`` method to get
+its binary representation to be sent through the network:
 
-We are available in IRC (``#kytos`` (at) ``freenode.net``)and there is also a
-development mailing list. Details can be found in the full documentation.
+.. code:: python
 
-Contributing
-^^^^^^^^^^^^
+    >>> binary_msg = request.pack()
+    >>> print(binary_msg)
+    b"\x01\x05\x00\x08\x14\xad'\x8d"
+    >>> # Use a controller (e.g. Kytos Controller) to send "binary_msg"
 
-Contributions are welcome either by creating issues in GitHub or in the form of
-pull requests. Before, please, read the contribution and hacking guides in the
-main documentation.
+To parse a message, use ``unpack_message()``:
 
-License
-^^^^^^^
+.. code:: python
 
-This software is under *MIT-License*. For more information please read the
-``LICENSE`` file.
+   >>> from pyof.v0x01.common.utils import unpack_message
+   >>> binary_msg = b"\x01\x05\x00\x08\x14\xad'\x8d"
+   >>> msg = unpack_message(binary_msg)
+   >>> print(msg.header.message_type)
+   Type.OFPT_FEATURES_REQUEST
 
+Please, note that this library do not send or receive messages via socket. You
+have to create your own server to receive messages from switches. This library
+only helps you to handle OpenFlow messages in a more pythonic way.
+To communicate with switches, we also develop *Kyco*, the Kytos Controller.
+
+.. hint::
+   To see more examples, please visit our
+   `Examples <http://docs.kytos.io/python-openflow/examples>`_ section.
+
+.. |Experimental| image:: https://img.shields.io/badge/stability-experimental-orange.svg
 .. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
    :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
 .. |Tag| image:: https://img.shields.io/github/tag/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/tags
-.. |Release| image:: https://img.shields.io/github/release/kytos/python-openvpn.svg
+.. |Release| image:: https://img.shields.io/github/release/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/releases
+.. |Pypi| image:: https://img.shields.io/pypi/v/python-openflow.svg
 .. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=develop
-   :target: https://github.com/kytos/python-openflow
+   :target: https://travis-ci.org/kytos/python-openflow
 .. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/blob/master/LICENSE
