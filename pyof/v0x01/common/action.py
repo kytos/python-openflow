@@ -58,6 +58,8 @@ class ActionHeader(GenericStruct):
     #: Pad for 64-bit alignment.
     pad = Pad(4)
 
+    _allowed_types = ()
+
     def __init__(self, action_type=None, length=None):
         """The following constructor parameters are optional.
 
@@ -86,11 +88,16 @@ class ActionHeader(GenericStruct):
         self.action_type.unpack(buff, offset)
 
         for cls in ActionHeader.__subclasses__():
-            if self.action_type.value in cls.allowed_types():
+            if self.action_type.value in cls.get_allowed_types():
                 self.__class__ = cls
                 break
 
         super().unpack(buff, offset)
+
+    @classmethod
+    def get_allowed_types(cls):
+        """Return allowed types for the class."""
+        return cls._allowed_types
 
 
 class ActionOutput(ActionHeader):
@@ -108,6 +115,8 @@ class ActionOutput(ActionHeader):
     port = UBInt16()
     max_length = UBInt16()
 
+    _allowed_types = ActionType.OFPAT_OUTPUT,
+
     def __init__(self, port=None, max_length=0):
         """The following constructor parameters are optional.
 
@@ -118,7 +127,6 @@ class ActionOutput(ActionHeader):
         super().__init__()
         self.port = port
         self.max_length = max_length
-        self.allowed_types = ActionType.OFPAT_OUTPUT,
 
 
 class ActionEnqueue(ActionHeader):
@@ -138,6 +146,8 @@ class ActionEnqueue(ActionHeader):
     pad = Pad(6)
     queue_id = UBInt32()
 
+    _allowed_types = ActionType.OFPAT_ENQUEUE,
+
     def __init__(self, port=None, queue_id=None):
         """The following constructor parameters are optional.
 
@@ -148,7 +158,6 @@ class ActionEnqueue(ActionHeader):
         super().__init__()
         self.port = port
         self.queue_id = queue_id
-        self.allowed_types = ActionType.OFPAT_ENQUEUE,
 
 
 class ActionVlanVid(ActionHeader):
@@ -165,6 +174,8 @@ class ActionVlanVid(ActionHeader):
     #: Pad for bit alignment.
     pad2 = Pad(2)
 
+    _allowed_types = ActionType.OFPAT_SET_VLAN_VID,
+
     def __init__(self, vlan_id=None):
         """The following constructor parameters are optional.
 
@@ -173,7 +184,6 @@ class ActionVlanVid(ActionHeader):
         """
         super().__init__()
         self.vlan_id = vlan_id
-        self.allowed_types = ActionType.OFPAT_SET_VLAN_VID,
 
 
 class ActionVlanPCP(ActionHeader):
@@ -184,6 +194,8 @@ class ActionVlanPCP(ActionHeader):
     vlan_pcp = UBInt8()
     #: Pad for bit alignment.
     pad = Pad(3)
+
+    _allowed_types = ActionType.OFPAT_SET_VLAN_PCP,
 
     def __init__(self, vlan_pcp=None):
         """The following constructor parameters are optional.
@@ -196,7 +208,6 @@ class ActionVlanPCP(ActionHeader):
         """
         super().__init__()
         self.vlan_pcp = vlan_pcp
-        self.allowed_types = ActionType.OFPAT_SET_VLAN_PCP,
 
 
 class ActionDLAddr(ActionHeader):
@@ -207,6 +218,8 @@ class ActionDLAddr(ActionHeader):
     dl_addr = HWAddress()
     #: Pad for bit alignment.
     pad = Pad(6)
+
+    _allowed_types = (ActionType.OFPAT_SET_DL_SRC, ActionType.OFPAT_SET_DL_DST)
 
     def __init__(self, dl_addr_type=None, dl_addr=None):
         """The following constructor parameters are optional.
@@ -220,8 +233,6 @@ class ActionDLAddr(ActionHeader):
         super().__init__()
         self.dl_addr_type = dl_addr_type
         self.dl_addr = dl_addr
-        self.allowed_types = (ActionType.OFPAT_SET_DL_SRC,
-                              ActionType.OFPAT_SET_DL_DST)
 
 
 class ActionNWAddr(ActionHeader):
@@ -230,6 +241,8 @@ class ActionNWAddr(ActionHeader):
     nw_addr_type = UBInt16(enum_ref=ActionType)
     length = UBInt16(8)
     nw_addr = UBInt32()
+
+    _allowed_types = (ActionType.OFPAT_SET_NW_SRC, ActionType.OFPAT_SET_NW_DST)
 
     def __init__(self, nw_addr_type=None, nw_addr=None):
         """The following constructor parameters are optional.
@@ -242,8 +255,6 @@ class ActionNWAddr(ActionHeader):
         super().__init__()
         self.nw_addr_type = nw_addr_type
         self.nw_addr = nw_addr
-        self.allowed_types = (ActionType.OFPAT_SET_NW_SRC,
-                              ActionType.OFPAT_SET_NW_DST)
 
 
 class ActionNWTos(ActionHeader):
@@ -259,6 +270,8 @@ class ActionNWTos(ActionHeader):
     #: Pad for bit alignment.
     pad = Pad(3)
 
+    _allowed_types = ActionType.OFPAT_SET_NW_TOS,
+
     def __init__(self, nw_tos_type=None, nw_tos=None):
         """The following constructor parameters are optional.
 
@@ -270,7 +283,6 @@ class ActionNWTos(ActionHeader):
         super().__init__()
         self.nw_tos_type = nw_tos_type
         self.nw_tos = nw_tos
-        self.allowed_types = ActionType.OFPAT_SET_NW_TOS,
 
 
 class ActionTPPort(ActionHeader):
@@ -281,6 +293,8 @@ class ActionTPPort(ActionHeader):
     tp_port = UBInt16()
     #: Pad for bit alignment.
     pad = Pad(2)
+
+    _allowed_types = (ActionType.OFPAT_SET_TP_SRC, ActionType.OFPAT_SET_TP_DST)
 
     def __init__(self, tp_port_type=None, tp_port=None):
         """The following constructor parameters are optional.
@@ -293,8 +307,6 @@ class ActionTPPort(ActionHeader):
         super().__init__()
         self.tp_port_type = tp_port_type
         self.tp_port = tp_port
-        self.allowed_types = (ActionType.OFPAT_SET_TP_SRC,
-                              ActionType.OFPAT_SET_TP_DST)
 
 
 class ActionVendorHeader(ActionHeader):
@@ -307,6 +319,8 @@ class ActionVendorHeader(ActionHeader):
     length = UBInt16()
     vendor = UBInt32()
 
+    _allowed_types = ActionType.OFPAT_VENDOR,
+
     def __init__(self, length=None, vendor=None):
         """The following constructor parameters are optional.
 
@@ -318,4 +332,3 @@ class ActionVendorHeader(ActionHeader):
         super().__init__()
         self.length = length
         self.vendor = vendor
-        self.allowed_types = ActionType.OFPAT_VENDOR,
