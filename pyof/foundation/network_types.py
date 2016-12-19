@@ -10,11 +10,28 @@ __all__ = ('Ethernet', 'GenericTLV', 'TLVWithSubType', 'LLDP')
 
 
 class Ethernet(GenericStruct):
-    """Ethernet struct."""
+    """Ethernet "struct".
 
+    Objects of this class represents an ethernet packet. It contains the
+    'Ethernet header', composed by destination (MAC), source (MAC), type
+    (EtherType)[1] and the payload of the packet, as binary data.
+
+    This class does not consider the Ethernet 'Preamble' or the 'CRC'.
+
+    There is also a get_hash method, that hashes the binary representation of
+    the object so we can have a unique representation of the ethernet packet,
+    so we can keep a track of ethernet packets being flooded over the network.
+
+    [1] EtherTypes: http://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml#ieee-802-numbers-1
+    """
+
+    #: destination (:class:`HWAddress`): The final destination MAC address.
     destination = HWAddress()
+    #: source (:class:`HWAddress`): The source MAC address of the packet.
     source = HWAddress()
+    #: type (:class:`UBInt16`): The EtherType of the packet.
     type = UBInt16()
+    #: data (:class:`BinaryData`): The content of the packet in binary format.
     data = BinaryData()
 
     def __init__(self, destination=None, source=None, eth_type=None, data=b''):
@@ -34,11 +51,20 @@ class GenericTLV:
     """TLV structure of LLDP packets.
 
     This is a Type, Length and Value (TLV) struct.
+
+    The LLDP/TLV definition states that the Type field have 7 bits, while the
+    length have 9 bits. The Value must be between 0-511 octets.
+
+    Internally, on the instances of this class, the Type is a integer (0-127)
+    and the Length is dynamically calculated based on the current type and
+    value.
     """
 
     def __init__(self, tlv_type=127, value=BinaryData()):
         """Create an instance and set its attributes."""
+        #: type (int): The Type of the TLV Structure
         self.type = tlv_type
+        #: value (int): The value of the TLV Structure
         self._value = value
 
     @property
@@ -53,7 +79,12 @@ class GenericTLV:
 
     @property
     def header(self):
-        """Header."""
+        """Header of the TLV Packet.
+
+        The header is composed by the Type (7 bits) and Length (9 bits),
+        summing up 16 bits. To achieve that, we need to do some bitshift
+        operations.
+        """
         return UBInt16(((self.type & 127) << 9) | (self.length & 511))
 
     def pack(self, value=None):
@@ -106,10 +137,11 @@ class GenericTLV:
 
 
 class TLVWithSubType(GenericTLV):
-    """Modify the :class:`GenericTLV` to a more defined structure.
+    """Modify the :class:`GenericTLV` to a Organization Specific TLV structure.
 
-    Add *sub_type* and *sub_value* attributes to :class:`GenericTLV`, while
-    also removes the *value* attribute.
+    Beyond the standard TLV (type, length, value), we can also have a more
+    specific structure, with the *value* field being splitted into a *sub_type*
+    field and a new "*sub_value*" field.
     """
 
     def __init__(self, tlv_type=1, sub_type=7, sub_value=None):
@@ -153,7 +185,10 @@ class TLVWithSubType(GenericTLV):
 class LLDP(GenericStruct):
     """LLDP class.
 
-    Build a LLDP using TLVSubtype and Generic Subtype
+    Build a LLDP packet with TLVSubtype and Generic Subtypes.
+
+    It contains a chassis_id TLV, a port_id TLV, a TTL (Time to live) and
+    another TVL to represent the end of the LLDP Packet.
     """
 
     chassis_id = TLVWithSubType(tlv_type=1, sub_type=7)
