@@ -1,5 +1,7 @@
-""" Defines and Implements Basic Network packet types , such as Ethertnet and
-LLDP. """
+"""Basic Network packet types.
+
+Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
+"""
 
 
 from pyof.foundation.base import GenericStruct
@@ -22,6 +24,7 @@ class Ethernet(GenericStruct):
     the object so we can have a unique representation of the ethernet packet,
     so we can keep a track of ethernet packets being flooded over the network.
 
+    # pylint: disable=C0301
     [1] EtherTypes: http://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml#ieee-802-numbers-1
     """
 
