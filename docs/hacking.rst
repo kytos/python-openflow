@@ -2,8 +2,8 @@
 Hacking
 #######
 
-Before reading this file, please read the :doc:`guidelines` section that
-contains the main guidelines of the project.
+.. note:: Before reading this file, please read the :doc:`guidelines` section
+    that contains the main guidelines of the project.
 
 Development Environment Setup
 *****************************
@@ -134,5 +134,5 @@ To run check the code test coverage, first run:
 
 To see the command line report run the command ``coverage report`` and, to
 generate a HTML report, run: ``coverage html`` and open the file
-**html\_cov/index.html** into your browser
-(you can run ``open html_cov/index.html``).
+**html\_cov/index.html** into your browser (you can run ``open
+html_cov/index.html``).
