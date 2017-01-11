@@ -246,11 +246,98 @@ class MetaStruct(type):
 
     def __new__(mcs, name, bases, classdict):
         """Add ``__ordered__`` attribute with attributes in declared order."""
-        # Skip methods and private attributes
-        classdict['__ordered__'] = OrderedDict([(key, type(value)) for
-                                                key, value in classdict.items()
-                                                if key[0] != '_' and not
-                                                hasattr(value, '__call__')])
+        ordered = None
+
+        #: Recovering __ordered__ from the first parent class that have it,
+        #: if any
+        for base in bases:
+            if hasattr(base, '__ordered__'):
+                # TODO: How to do a "copy from current of version" that get the
+                #       class (value) from the correct pyof version (the same
+                #       as the class being edited/created)?
+                #       This is where we need to do some magic!
+                #: Try to get the __ordered__ dict from the base (parent) class.
+                #: If it fails (there is no __ordered__) then an exception is
+                #: raised
+                base_ordered = base.__ordered__.copy()
+
+                #: List with attributes names to be removed.
+                remove_attributes = classdict.get('_remove_attributes')
+
+                #: List of tuples like (old_name, new_name)
+                rename_attributes = classdict.get('_rename_attributes')
+
+                #: A dict with new_attribute_name as key and valued with the
+                #: name of the attribute that will be preceeded by this new
+                #: attribute.
+                insert_before = classdict.get('_insert_attributes_before')
+
+                # Remove attributes marked to be removed, if any to do so
+                if remove_attributes is not None:
+                    for attr in remove_attributes:
+                        try:
+                            base_ordered.pop(attr)
+                        except KeyError:
+                            pass
+
+                # Renaming attributes copied from the parent class
+                if rename_attributes is not None:
+                    for old_name, new_name in rename_attributes:
+                        if old_name in classdict:
+                            classdict[new_name] = classdict.pop(old_name)
+                        else:
+                            classdict[new_name] = deepcopy(base.__dict__[old_name])
+                        base_ordered = OrderedDict([(new_name, v) if
+                                                    k == old_name else (k, v)
+                                                    for k, v in
+                                                    base_ordered.items()])
+
+                # Now let's get the new class attributes.
+                new_attrs = OrderedDict([(key, type(value)) for
+                                         key, value in classdict.items()
+                                         if key[0] != '_' and not
+                                         hasattr(value, '__call__')])
+
+                attrs = list(base_ordered.keys())
+
+                # And now lets add these new attributes to the ordered dict,
+                # considering the insert_before item data.
+                for attr in list(new_attrs.keys()):
+                    #: If the attribute was redefined, by default we will
+                    #: keep it at the same place it was before. So, we do not
+                    #: need to add it again.
+                    if attr not in attrs:
+                        if insert_before and attr in insert_before:
+                            #: If the attribute must be added before some other
+                            #: attribute, do so.
+                            attrs.insert(attrs.index(insert_before[attr]),
+                                         attr)
+                        else:
+                            #: Otherwise append the new attribute into the end
+                            #: of the list
+                            attrs.append(attr)
+
+                #: finally creating the ordered dict that will be added on the
+                #: class.
+                ordered = OrderedDict()
+                for attr in attrs:
+                    ordered[attr] = new_attrs.get(attr, base_ordered.get(attr))
+
+                #: break the for loop, we are just interested on the first
+                #: base class that have the __ordered__ dict.
+                break
+
+        if ordered is None:
+            #: If there was no __ordered__ dict on the parent class, create
+            #: one with the current class attributes, skipping methods and
+            #: private attributes
+            ordered = OrderedDict([(key, type(value)) for
+                                   key, value in classdict.items()
+                                   if key[0] != '_' and not
+                                   hasattr(value, '__call__')])
+
+        classdict['__ordered__'] = ordered
+
         return type.__new__(mcs, name, bases, classdict)
 
 
