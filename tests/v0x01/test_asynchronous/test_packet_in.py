@@ -11,17 +11,9 @@ class TestPacketIn(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_packet_in')
-        super().set_raw_dump_object(PacketIn, xid=1, buffer_id=1, total_len=1,
+        super().set_raw_dump_object(PacketIn, xid=15, buffer_id=1, total_len=1,
                                     in_port=1,
                                     reason=PacketInReason.OFPR_ACTION)
         # Different from the specification, the minimum size of this class is
         # 18, not 20.
         super().set_minimum_size(18)
-
-    def test_pack(self):
-        """Skip pack test for now."""
-        self.skipTest('Need to recover dump contents.')
-
-    def test_unpack(self):
-        """Skip unpack test for now."""
-        self.skipTest('Need to recover dump contents.')
