@@ -206,7 +206,6 @@ class ErrorMsg(GenericMessage):
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
-        offset = self.header.get_size()
         super().unpack(buff, offset)
         self.data = self._unpack_data()
 
