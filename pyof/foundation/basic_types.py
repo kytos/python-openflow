@@ -459,7 +459,7 @@ class BinaryData(GenericType):
         """
         if value is None:
             return len(self._value)
-        elif isinstance(value, type(self)):
+        elif hasattr(value, 'get_size'):
             return value.get_size()
         else:
             return len(value)
