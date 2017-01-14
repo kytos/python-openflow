@@ -685,6 +685,8 @@ class GenericMessage(GenericStruct):
             raise NotImplementedError(msg)
         super().__init_subclass__(**kwargs)
 
+        self.update_header_length()
+
     def _validate_message_length(self):
         return self.header.length == self.get_size()
 

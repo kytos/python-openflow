@@ -31,6 +31,20 @@ class StatsReply(GenericMessage):
         self.flags = flags
         self.body = body
 
+    def pack(self):
+        """Pack a StatsReply using the object's attributes.
+
+        This method will pack the attribute body and body_type before pack the
+        StatsReply object, then will return this struct as a binary data.
+
+        Returns:
+            stats_reply_packed (bytes): Binary data with StatsReply packed.
+        """
+        self.body = BinaryData(self.body.pack())
+        stats_reply_packed = super().pack()
+        self._unpack_body()
+        return stats_reply_packed
+
     def unpack(self, buff):
         """Unpack a binary message into this object's attributes.
 
@@ -47,17 +61,17 @@ class StatsReply(GenericMessage):
                 header.
         """
         super().unpack(buff)
+        self._unpack_body()
 
-        if self.body_type == StatsTypes.OFPST_PORT:
-            self._unpack_body(FixedTypeList(pyof_class=PortStats))
-        elif self.body_type == StatsTypes.OFPST_AGGREGATE:
-            self._unpack_body(FixedTypeList(pyof_class=AggregateStatsReply))
-        elif self.body_type == StatsTypes.OFPST_FLOW:
-            self._unpack_body(FixedTypeList(pyof_class=FlowStats))
-        elif self.body_type == StatsTypes.OFPST_DESC:
-            self._unpack_body(DescStats())
-
-    def _unpack_body(self, obj):
-        """Unpack `body` using `obj` and replace it by the result."""
+    def _unpack_body(self):
+        """Unpack `body` replace it by the result."""
+        types = {
+            StatsTypes.OFPST_DESC.value: DescStats(),
+            StatsTypes.OFPST_PORT.value: FixedTypeList(pyof_class=PortStats),
+            StatsTypes.OFPST_FLOW.value: FixedTypeList(pyof_class=FlowStats),
+            StatsTypes.OFPST_AGGREGATE.value:
+                FixedTypeList(pyof_class=AggregateStatsReply)
+            }
+        obj = types[self.body_type.value]
         obj.unpack(self.body.value)
         self.body = obj
