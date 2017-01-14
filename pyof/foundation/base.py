@@ -758,7 +758,13 @@ class GenericMessage(GenericStruct):
         When sending an OpenFlow message we need to inform the message length
         on the header. This is mandatory.
         """
-        self.header.length = self.get_size()
+        if self.header is not None:
+            self.header.length = self.get_size()
+
+    def __setattr__(self, name, value):
+        """Update the header lenght when a attribute is updated."""
+        super().__setattr__(name, value)
+        self.update_header_length()
 
 
 class MetaBitMask(type):
