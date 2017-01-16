@@ -1,32 +1,19 @@
 """Test for StatsReply message."""
-import unittest
+from pyof.v0x01.controller2switch.common import StatsTypes
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from pyof.v0x01.controller2switch import common, stats_reply
+from ...test_struct import TestStruct
 
 
-class TestStatsReply(unittest.TestCase):
+class TestStatsReply(TestStruct):
     """Test for StatsReply message."""
 
-    def setUp(self):
-        """Baisc Test Setup."""
-        self.message = stats_reply.StatsReply()
-        self.message.header.xid = 1
-        self.message.type = common.StatsTypes.OFPST_FLOW
-        self.message.flags = 0x0001
-        self.message.body = []
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/StatsReply] - size 12."""
-        self.assertEqual(self.message.get_size(), 12)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/StatsReply] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/StatsReply] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_stats_reply')
+        super().set_raw_dump_object(StatsReply, xid=1,
+                                    body_type=StatsTypes.OFPST_FLOW,
+                                    flags=0x0001, body=[])
+        super().set_minimum_size(12)

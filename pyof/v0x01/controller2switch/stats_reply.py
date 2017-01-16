@@ -44,9 +44,13 @@ class StatsReply(GenericMessage):
         Returns:
             stats_reply_packed (bytes): Binary data with StatsReply packed.
         """
-        self.body = BinaryData(self.body.pack())
+        buff = self.body
+
+        if self.body and hasattr(self.body, 'pack'):
+            self.body = BinaryData(buff.pack())
         stats_reply_packed = super().pack()
-        self._unpack_body()
+        self.body = buff
+
         return stats_reply_packed
 
     def unpack(self, buff):
