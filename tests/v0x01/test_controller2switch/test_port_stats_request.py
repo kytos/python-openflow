@@ -1,29 +1,19 @@
 """Test for PortStatsRequest."""
-import unittest
+from pyof.v0x01.controller2switch.common import PortStatsRequest, StatsTypes
+from pyof.v0x01.controller2switch.stats_request import StatsRequest
 
-from pyof.v0x01.controller2switch.common import PortStatsRequest
+from ...test_struct import TestStruct
 
 
-class TestPortStatsRequest(unittest.TestCase):
+class TestPortStatsRequest(TestStruct):
     """Test for PortStatsRequest."""
 
-    def setUp(self):
-        """Basic test setup."""
-        self.message = PortStatsRequest()
-        self.message.port_no = 80
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/PortStatsRequest] - size 8."""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/PortStatsRequest] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/PortStatsRequest] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_port_stats_request')
+        super().set_raw_dump_object(StatsRequest, xid=17,
+                                    body_type=StatsTypes.OFPST_PORT,
+                                    flags=0, body=PortStatsRequest(port_no=80))
+        super().set_minimum_size(12)
