@@ -1,5 +1,6 @@
 """Packet out message tests."""
 from pyof.foundation.exceptions import ValidationError
+from pyof.v0x01.common.action import ActionOutput
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.packet_out import PacketOut
 from tests.test_struct import TestStruct
@@ -17,8 +18,9 @@ class TestPacketOut(TestStruct):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_packet_out')
-        super().set_raw_dump_object(PacketOut, xid=80, buffer_id=5,
-                                    in_port=Port.OFPP_NONE)
+        super().set_raw_dump_object(PacketOut, xid=8, buffer_id=4294967295,
+                                    in_port=Port.OFPP_NONE, data=_get_data(),
+                                    actions=_get_actions())
         super().set_minimum_size(16)
 
     def setUp(self):
@@ -56,10 +58,15 @@ class TestPacketOut(TestStruct):
             self.assertFalse(self.message.is_valid())
             self.assertRaises(ValidationError, self.message.validate)
 
-    def test_pack(self):
-        """Skip pack test for now."""
-        self.skipTest('Need to recover dump contents.')
 
-    def test_unpack(self):
-        """Skip unpack test for now."""
-        self.skipTest('Need to recover dump contents.')
+def _get_actions():
+    """Function used to return a list of actions used by packetout instance."""
+    action = ActionOutput(port=1, max_length=0)
+    return [action]
+
+
+def _get_data():
+    """Function used to return a BinaryData used by packetout instance."""
+    data = b'\x01# \x00\x00\x01\xd2A\xc6.*@\x88\xcc\x02\x07\x07dpi'
+    data += b'd:1\x04\x02\x021\x06\x02\x00x\x0c\x06dpid:1\x00\x00'
+    return data
