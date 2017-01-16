@@ -17,8 +17,7 @@ __all__ = ('QueueGetConfigReply',)
 class QueueGetConfigReply(GenericMessage):
     """Class implements the response to the config request."""
 
-    header = Header(
-        message_type=Type.OFPT_GET_CONFIG_REPLY)
+    header = Header(message_type=Type.OFPT_QUEUE_GET_CONFIG_REPLY)
     port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits.
     pad = Pad(6)
