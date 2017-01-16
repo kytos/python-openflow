@@ -229,7 +229,7 @@ class FlowStats(GenericStruct):
         self.match = match
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
-        self.prioriry = priority
+        self.priority = priority
         self.idle_timeout = idle_timeout
         self.hard_timeout = hard_timeout
         self.cookie = cookie
