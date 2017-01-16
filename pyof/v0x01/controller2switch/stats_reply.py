@@ -4,7 +4,8 @@ from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.controller2switch.common import (AggregateStatsReply,
                                                  DescStats, FlowStats,
-                                                 PortStats, StatsTypes)
+                                                 PortStats, QueueStats,
+                                                 StatsTypes)
 
 __all__ = ('StatsReply',)
 
@@ -69,6 +70,7 @@ class StatsReply(GenericMessage):
             StatsTypes.OFPST_DESC.value: DescStats(),
             StatsTypes.OFPST_PORT.value: FixedTypeList(pyof_class=PortStats),
             StatsTypes.OFPST_FLOW.value: FixedTypeList(pyof_class=FlowStats),
+            StatsTypes.OFPST_QUEUE.value: FixedTypeList(pyof_class=QueueStats),
             StatsTypes.OFPST_AGGREGATE.value:
                 FixedTypeList(pyof_class=AggregateStatsReply)
             }
