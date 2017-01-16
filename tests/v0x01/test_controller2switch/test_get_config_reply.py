@@ -1,31 +1,19 @@
 """Test GetConfigReply message."""
-import unittest
+from pyof.v0x01.controller2switch.common import ConfigFlags
+from pyof.v0x01.controller2switch.get_config_reply import GetConfigReply
 
-from pyof.v0x01.controller2switch import flow_mod, get_config_reply
+from ...test_struct import TestStruct
 
 
-class TestGetConfigReply(unittest.TestCase):
+class TestGetConfigReply(TestStruct):
     """Test class for TestGetConfigReply."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = get_config_reply.GetConfigReply()
-        self.message.header.xid = 1
-        self.message.flags = flow_mod.FlowModFlags.OFPFF_EMERG
-        self.message.miss_send_len = 1024
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/GetConfigReply] - size 12."""
-        self.assertEqual(self.message.get_size(), 12)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/GetConfigReply] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/GetConfigReply] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_get_config_reply')
+        super().set_raw_dump_object(GetConfigReply, xid=13,
+                                    flags=ConfigFlags.OFPC_FRAG_REASM,
+                                    miss_send_len=1024)
+        super().set_minimum_size(12)
