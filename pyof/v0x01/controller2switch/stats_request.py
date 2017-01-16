@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import BinaryData, UBInt16
+from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.controller2switch.common import (AggregateStatsRequest,
@@ -50,15 +50,18 @@ class StatsRequest(GenericMessage):
         """
         if not self._types[self.body_type.value]:
             return super().pack()
+
         backup = self.body
-        self.body = self.body.pack()
+        if hasattr(self.body, 'pack'):
+            self.body = self.body.pack()
         pack = super().pack()
         self.body = backup
+
         return pack
 
     def unpack(self, buff):
         """Unpack according to :attr:`body_type`."""
         super().unpack(buff)
         buff = self.body.value
-        self.body = self._types[self.body_type.value]()
+        self.body = FixedTypeList(pyof_class=self._types[self.body_type.value])
         self.body.unpack(buff)
