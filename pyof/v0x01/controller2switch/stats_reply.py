@@ -5,7 +5,7 @@ from pyof.v0x01.common.header import Header, Type
 from pyof.v0x01.controller2switch.common import (AggregateStatsReply,
                                                  DescStats, FlowStats,
                                                  PortStats, QueueStats,
-                                                 StatsTypes)
+                                                 StatsTypes, TableStats)
 
 __all__ = ('StatsReply',)
 
@@ -18,6 +18,9 @@ class StatsReply(GenericMessage):
     body_type = UBInt16(enum_ref=StatsTypes)
     flags = UBInt16()
     body = BinaryData()
+
+    _types = [DescStats, FlowStats, AggregateStatsReply, TableStats,
+              PortStats, QueueStats]
 
     def __init__(self, xid=None, body_type=None, flags=None, body=b''):
         """The constructor just assings parameters to object attributes.
@@ -66,14 +69,10 @@ class StatsReply(GenericMessage):
 
     def _unpack_body(self):
         """Unpack `body` replace it by the result."""
-        types = {
-            StatsTypes.OFPST_DESC.value: DescStats(),
-            StatsTypes.OFPST_PORT.value: FixedTypeList(pyof_class=PortStats),
-            StatsTypes.OFPST_FLOW.value: FixedTypeList(pyof_class=FlowStats),
-            StatsTypes.OFPST_QUEUE.value: FixedTypeList(pyof_class=QueueStats),
-            StatsTypes.OFPST_AGGREGATE.value:
-                FixedTypeList(pyof_class=AggregateStatsReply)
-            }
-        obj = types[self.body_type.value]
+        if self.body_type.value == 0:
+            obj = self._types[self.body_type.value]()
+        else:
+            obj = FixedTypeList(pyof_class=self._types[self.body_type.value])
+
         obj.unpack(self.body.value)
         self.body = obj
