@@ -161,14 +161,3 @@ class TestStruct(unittest.TestCase):
             self.assertEqual(obj.get_size(), unpacked.get_size())
         except FileNotFoundError:
             raise self.skipTest('No raw dump file found.')
-
-    @unittest.skipIf(not hasattr(_new_raw_object, 'body'),
-                     "This Class don't have a body attribute")
-    def test_message_body(self):
-        """"Check whether the Generic Message has the expected body."""
-        try:
-            unpacked = self.get_raw_dump().unpack()
-            obj = self.get_raw_object()
-            self.assertEqual(obj.body, unpacked.body)
-        except FileNotFoundError:
-            raise self.skipTest('No raw dump file found.')
