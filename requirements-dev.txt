@@ -2,6 +2,7 @@
 
 # For running doctests (during "python setup.py test")
 Sphinx >= 1.4.5
+sphinx_bootstrap_theme
 
 # Linters
 git+git://github.com/cemsbr/pylama_pylint.git@master
