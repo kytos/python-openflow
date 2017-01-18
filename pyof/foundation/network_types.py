@@ -78,7 +78,7 @@ class GenericTLV:
     @property
     def length(self):
         """Struct length in bytes."""
-        return len(self.value.pack())
+        return len(self._value.pack())
 
     @property
     def header(self):
@@ -101,7 +101,7 @@ class GenericTLV:
         """
         if value is None:
             output = self.header.pack()
-            output += self.value.pack()
+            output += self._value.pack()
             return output
 
         elif isinstance(value, type(self)):
@@ -129,7 +129,7 @@ class GenericTLV:
         self.type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
-        self.value = BinaryData(buffer[begin:end])
+        self._value = BinaryData(buffer[begin:end])
 
     def get_size(self, value=None):
         """Return struct size."""
