@@ -5,7 +5,7 @@ Sphinx >= 1.4.5
 sphinx_bootstrap_theme
 
 # Linters
-git+git://github.com/cemsbr/pylama_pylint.git@master
+pylama-pylint >= 3.0.1
 radon >= 1.4.0
 
 # Code coverage
