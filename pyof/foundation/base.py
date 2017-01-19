@@ -266,11 +266,26 @@ class MetaStruct(type):
         for base in bases:
             if hasattr(base, '_get_class_attributes'):
                 inherited = True
-                for name, obj in base._get_class_attributes():
+                for attr_name, obj in base._get_class_attributes():
                     #: Get an updated version of this attribute, considering
                     #: the version of the current class being created.
-                    attr = MetaStruct._update_attr_version(name, obj,
+                    attr = MetaStruct._update_attr_version(attr_name, obj,
                                                            curr_version)
+                    if attr_name == 'header':
+                        old_enum = obj.message_type
+                        new_header = attr[1]
+                        new_enum = new_header.__class__.message_type.enum_ref
+                        new_header.version = int(curr_version.replace('v0x',
+                                                                      ''))
+                        #: This if will be removed on the future with an
+                        #: improvement on the __init_subclass__ method of the
+                        #: GenericMessage class.
+                        if old_enum:
+                            msg_type_name = old_enum.name
+                            new_type = new_enum[msg_type_name]
+                            new_header.message_type = new_type
+
+                        attr = (attr[0], new_header)
                     inherited_attributes.update([attr])
 
             if inherited:
@@ -567,6 +582,12 @@ class GenericMessage(GenericStruct):
         if xid is not None:
             self.header.xid = xid
 
+    def __init_subclass__(cls, **kwargs):
+        if cls.header is None or cls.header.__class__.__name__ != 'Header':
+            msg = "The header attribute must be implemented on the class "
+            msg += cls.__name__ + "."
+            raise NotImplementedError(msg)
+        super().__init_subclass__(**kwargs)
 
     def _validate_message_length(self):
         return self.header.length == self.get_size()
