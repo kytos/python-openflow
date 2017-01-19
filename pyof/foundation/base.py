@@ -402,7 +402,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def __init__(self):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for name, value in self.get_class_attributes():
+        for name, value in self._get_class_attributes():
             setattr(self, name, deepcopy(value))
 
     def __eq__(self, other):
@@ -440,63 +440,82 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def _validate_attributes_type(self):
         """Validate the type of each attribute."""
-        for _attr in self.__ordered__:
-            _class = self.__ordered__[_attr]
-            attr = getattr(self, _attr)
-            if isinstance(attr, _class):
+        for _attr, _class in self._get_attributes():
+            if isinstance(_attr, _class):
                 return True
             elif issubclass(_class, GenericType):
-                if GenericStruct._attr_fits_into_class(attr, _class):
+                if GenericStruct._attr_fits_into_class(_attr, _class):
                     return True
-            elif not isinstance(attr, _class):
+            elif not isinstance(_attr, _class):
                 return False
         return True
 
-    def get_class_attributes(self):
-        """Return a generator for class attributes' names and their types.
+    @classmethod
+    def _get_class_attributes(cls):
+        """Return a generator for class attributes' names and value.
 
         .. code-block:: python3
 
-            for _name, _type in self.get_class_attributes():
-                print("Attribute name: {}".format(_name))
-                print("Attribute type: {}".format(_type))
+            for _name, _value in self._get_class_attributes():
+                print("attribute name: {}".format(_name))
+                print("attribute type: {}".format(_value))
 
-        Returns:
-            generator: Tuples with attribute name and type.
+        returns:
+            generator: tuples with attribute name and value.
         """
-        for attribute_name in self.__ordered__:  # pylint: disable=no-member
-            yield (attribute_name, getattr(type(self), attribute_name))
+        # cls = type(self)
+        for name, value in cls.__dict__.items():
+            # gets only our (kytos) attributes. this ignores methods, dunder
+            # methods and attributes, and common python type attributes.
+            if GenericStruct._is_kytos_attribute(value):
+                yield (name, value)
 
-    def get_instance_attributes(self):
-        """Return a generator for instance attributes' names and their values.
+    def _get_instance_attributes(self):
+        """Return a generator for instance attributes' name and value.
 
         .. code-block:: python3
 
-            for _name, _value in self.get_instance_attributes():
-                print("Attribute name: {}".format(_name))
-                print("Attribute value: {}".format(_value))
+            for _name, _value in self._get_instance_attributes():
+                print("attribute name: {}".format(_name))
+                print("attribute value: {}".format(_value))
 
-        Returns:
-            generator: Tuples with attribute name and value.
+        returns:
+            generator: tuples with attribute name and value.
         """
-        for attribute_name in self.__ordered__:  # pylint: disable=no-member
-            yield (attribute_name, getattr(self, attribute_name))
+        for name, value in self.__dict__.items():
+            if name in map((lambda x: x[0]), self._get_class_attributes()):
+                yield (name, value)
 
-    def get_attributes(self):
+    def _get_attributes(self):
         """Return a generator for instance and class attribute.
 
         .. code-block:: python3
 
-            for instance_attribute, class_attribute in self.get_attributes():
+            for instance_attribute, class_attribute in self._get_attributes():
                 print("Instance Attribute: {}".format(instance_attribute))
                 print("Class Attribute: {}".format(class_attribute))
 
         Returns:
             generator: Tuples with instance attribute and class attribute
         """
-        for attribute_name in self.__ordered__:  # pylint: disable=no-member
-            yield (getattr(self, attribute_name),
-                   getattr(type(self), attribute_name))
+        return map((lambda i, c: (i[1], c[1])),
+                   self._get_instance_attributes(),
+                   self._get_class_attributes())
+
+    def _unpack_attribute(self, name, obj, buff, begin):
+        attribute = deepcopy(obj)
+        setattr(self, name, attribute)
+        if len(buff) == 0:
+            size = 0
+        else:
+            try:
+                attribute.unpack(buff, begin)
+                size = attribute.get_size()
+            except UnpackException as e:
+                child_cls = type(self).__name__
+                msg = '{}.{}; {}'.format(child_cls, name, e)
+                raise UnpackException(msg)
+        return size
 
     def get_size(self, value=None):
         """Calculate the total struct size in bytes.
@@ -523,7 +542,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             #     size += cls_val.get_size(obj_val)
             # return size
             return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
-                       self.get_attributes())
+                       self._get_attributes())
         elif isinstance(value, type(self)):
             return value.get_size()
         else:
@@ -552,7 +571,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             else:
                 message = b''
                 # pylint: disable=no-member
-                for instance_attr, class_attr in self.get_attributes():
+                for instance_attr, class_attr in self._get_attributes():
                     message += class_attr.pack(instance_attr)
                 return message
         elif isinstance(value, type(self)):
@@ -573,24 +592,9 @@ class GenericStruct(object, metaclass=MetaStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, value in self.get_class_attributes():
+        for name, value in self._get_class_attributes():
             size = self._unpack_attribute(name, value, buff, begin)
             begin += size
-
-    def _unpack_attribute(self, name, obj, buff, begin):
-        attribute = deepcopy(obj)
-        setattr(self, name, attribute)
-        if len(buff) == 0:
-            size = 0
-        else:
-            try:
-                attribute.unpack(buff, begin)
-                size = attribute.get_size()
-            except UnpackException as e:
-                child_cls = type(self).__name__
-                msg = '{}.{}; {}'.format(child_cls, name, e)
-                raise UnpackException(msg)
-        return size
 
     def is_valid(self):
         """Check whether all struct attributes in are valid.
@@ -627,23 +631,6 @@ class GenericMessage(GenericStruct):
         if xid is not None:
             self.header.xid = xid
 
-    def unpack(self, buff, offset=0):
-        """Unpack a binary message into this object's attributes.
-
-        Unpack the binary value *buff* and update this object attributes based
-        on the results. It is an inplace method and it receives the binary data
-        of the message **without the header**.
-
-        Args:
-            buff (bytes): Binary data package to be unpacked, without the
-                header.
-            offset (int): Where to begin unpacking.
-        """
-        begin = offset
-        for name, value in self.get_class_attributes():
-            if type(value).__name__ != "Header":
-                size = self._unpack_attribute(name, value, buff, begin)
-                begin += size
 
     def _validate_message_length(self):
         if not self.header.length == self.get_size():
@@ -697,6 +684,24 @@ class GenericMessage(GenericStruct):
             msg = "{} is not an instance of {}".format(value,
                                                        type(self).__name__)
             raise PackException(msg)
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results. It is an inplace method and it receives the binary data
+        of the message **without the header**.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked, without the
+                header.
+            offset (int): Where to begin unpacking.
+        """
+        begin = offset
+        for name, value in self._get_class_attributes():
+            if type(value).__name__ != "Header":
+                size = self._unpack_attribute(name, value, buff, begin)
+                begin += size
 
     def update_header_length(self):
         """Update the header length attribute based on current message size.
