@@ -342,6 +342,111 @@ class MetaStruct(type):
 
         return type.__new__(mcs, name, bases, classdict)
 
+    @staticmethod
+    def get_pyof_version(module_fullname):
+        """Get the module pyof version based on the module fullname.
+
+        Args:
+            module_fullname (str): The fullname of the module
+                (e.g.: pyof.v0x01.common.header)
+
+        Returns:
+            version (str): The module version, on the format 'v0x0?' if any. Or
+            None (None): If there isn't a version on the fullname.
+        """
+        ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
+        matched = ver_module_re.match(module_fullname)
+        if matched:
+            version = matched.group(2)
+            # module = matched.group(3)
+            return version
+        return None
+
+    @staticmethod
+    def replace_pyof_version(module_fullname, version):
+        """Replace the OF Version of a module fullname.
+
+        Get's a module name (eg. 'pyof.v0x01.common.header') and returns it on
+        a new 'version' (eg. 'pyof.v0x02.common.header').
+
+        Args:
+            module_fullname (str): The fullname of the module
+                (e.g.: pyof.v0x01.common.header)
+            version (str): The version to be 'inserted' on the module fullname.
+
+        Returns:
+            None (None): if the requested version is the same as the one of the
+                module_fullname or if the module_fullname is not a 'OF version'
+                specific module.
+            new_module_fullname (str): The new module fullname, with the
+                replaced version, on the format "pyof.v0x01.common.header".
+        """
+        module_version = MetaStruct.get_pyof_version(module_fullname)
+        if not module_version or module_version == version:
+            return None
+        else:
+            return module_fullname.replace(module_version, version)
+
+    @staticmethod
+    def get_pyof_obj_new_version(name, obj, new_version):
+        """Return a class atrribute on a different pyof version.
+
+        This method receives the name of a class attribute, the class attribute
+        itself (object) and an openflow version.
+        The attribute will be evaluated and from it we will recover its class
+        and the module where the class was defined.
+        If the module is a "python-openflow version specific module" (starts
+        with "pyof.v0"), then we will get it's version and if it is different
+        from the 'new_version', then we will get the module on the
+        'new_version', look for the 'obj' class on the new module and return
+        an instance of the new version of the 'obj'.
+
+        Example:
+            >> from pyof.v0x01.common.header import Header
+            >> name = 'header'
+            >> obj = Header()
+            >> obj
+            <pyof.v0x01.common.header.Header at 0x...>
+            >> new_version = 'v0x02'
+            >> MetaStruct.get_pyof_new_version(name, obj, new_version)
+            ('header', <pyof.v0x02.common.header.Header at 0x...)
+
+        Args:
+            name (str): the name of the class attribute being handled.
+            obj (object): the class attribute itself
+            new_version (string): the pyof version in which you want the object
+                'obj'.
+
+        Return:
+            (name, obj): A tuple in which the first item is the name of the
+                class attribute (the same that was passed), and the second item
+                is a instance of the passed class attribute. If the class
+                attribute is not a pyof versioned attribute, then the same
+                passed object is returned without any changes. Also, if the obj
+                is a pyof versioned attribute, but it is already on the right
+                version (same as new_version), then the passed obj is return.
+        """
+        if new_version is None:
+            return (name, obj)
+
+        cls = obj.__class__
+        cls_name = cls.__name__
+        cls_mod = cls.__module__
+
+        #: If the module name does not starts with pyof.v0 then it is not a
+        #: 'pyof versioned' module (OpenFlow specification defined), so we do
+        #: not have anything to do with it.
+        new_mod = MetaStruct.replace_pyof_version(cls_mod, new_version)
+        if new_mod is not None:
+            # Loads the module
+            new_mod = importlib.import_module(new_mod)
+            #: Get the class from the loaded module
+            new_cls = getattr(new_mod, cls_name)
+            #: return the tuple with the attribute name and the instance
+            return (name, new_cls())
+
+        return (name, obj)
+
 
 class GenericStruct(object, metaclass=MetaStruct):
     """Class inherited by all OpenFlow structs.
