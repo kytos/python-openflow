@@ -5,7 +5,7 @@ descriptions.
 """
 import sys
 from abc import abstractmethod
-from subprocess import call, check_call
+from subprocess import CalledProcessError, call, check_call
 
 from setuptools import Command, find_packages, setup
 
@@ -15,11 +15,13 @@ from pyof import __version__
 def lint():
     """Run pylama and radon."""
     files = 'tests setup.py pyof'
-    print('Pylama is running. It may take a while...')
+    print('Pylama is running. It may take several seconds...')
     cmd = 'pylama {}'.format(files)
-    check_call(cmd, shell=True)
-    print('Low grades (<= C) for Maintainability Index (if any):')
-    check_call('radon mi --min=C ' + files, shell=True)
+    try:
+        check_call(cmd, shell=True)
+    except CalledProcessError as e:
+        print('Please, fix linter errors above.')
+        sys.exit(e.returncode)
 
 
 class SimpleCommand(Command):

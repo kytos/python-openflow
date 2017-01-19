@@ -67,7 +67,7 @@ class GenericTLV:
         """Create an instance and set its attributes."""
         #: type (int): The Type of the TLV Structure
         self.type = tlv_type
-        #: value (int): The value of the TLV Structure
+        #: value (BinaryData): The value of the TLV Structure
         self._value = value
 
     @property
