@@ -23,6 +23,5 @@ class SetConfig(SwitchConfig):
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
         """
-        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, flags, miss_send_len)
         self.header.message_type = Type.OFPT_SET_CONFIG
