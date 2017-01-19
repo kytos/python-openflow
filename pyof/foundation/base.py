@@ -15,6 +15,8 @@ These classes are used in all parts of this library.
 """
 
 # System imports
+import importlib
+import re
 import struct
 from collections import OrderedDict
 from copy import deepcopy
