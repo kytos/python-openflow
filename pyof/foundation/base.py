@@ -484,8 +484,19 @@ class GenericStruct(object, metaclass=MetaStruct):
                 return False
         return True
 
-    # linter cannot detect attribute added by metaclass
-    # pylint: disable=no-member
+    @staticmethod
+    def _is_pyof_attribute(obj):
+        """Return True if the object is a kytos attribute.
+
+        To be a kytos attribute the item must be an instance of either
+        GenericType or GenericStruct.
+
+        returns:
+            True: if the obj is a kytos attribute
+            False: if the obj is not a kytos attribute
+        """
+        return isinstance(obj, GenericType) or isinstance(obj, GenericStruct)
+
     def _validate_attributes_type(self):
         """Validate the type of each attribute."""
         for _attr in self.__ordered__:
