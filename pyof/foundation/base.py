@@ -668,9 +668,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         return True
         # pylint: disable=unreachable
-        if not self._validate_attributes_type():
-            return False
-        return True
+        return self._validate_attributes_type()
 
 
 class GenericMessage(GenericStruct):
@@ -692,9 +690,7 @@ class GenericMessage(GenericStruct):
 
 
     def _validate_message_length(self):
-        if not self.header.length == self.get_size():
-            return False
-        return True
+        return self.header.length == self.get_size()
 
     def is_valid(self):
         """Check whether a message is valid or not.
@@ -709,11 +705,7 @@ class GenericMessage(GenericStruct):
         """
         return True
         # pylint: disable=unreachable
-        if not super().is_valid():
-            return False
-        if not self._validate_message_length():
-            return False
-        return True
+        return super().is_valid() and self._validate_message_length()
 
     def pack(self, value=None):
         """Pack the message into a binary data.
