@@ -28,6 +28,5 @@ class RoleRequest(RoleBaseMessage):
             role (:class:`~.controller2switch.common.ControllerRole`): .
             generation_id (int): Master Election Generation Id.
         """
-        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, role, generation_id)
         self.header.message_type = Type.OFPT_ROLE_REQUEST
