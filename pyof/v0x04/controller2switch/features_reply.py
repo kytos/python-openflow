@@ -99,6 +99,5 @@ class FeaturesReply(SwitchFeatures):
             capabilities (int): bitmap of supported capabilities.
             reserved (int): Reserved.
         """
-        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, datapath_id, n_buffers, n_tables, auxiliary_id,
                          capabilities, reserved)

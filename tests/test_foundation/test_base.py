@@ -26,9 +26,18 @@ class TestGenericStruct(unittest.TestCase):
 
             c = AttributeC()
 
+        class Header(base.GenericStruct):
+            """Mock Header class."""
+
+            version = basic_types.UBInt8(1)
+            message_type = basic_types.UBInt8(2)
+            length = basic_types.UBInt8(8)
+            xid = basic_types.UBInt8(4)
+
         class MyMessage(base.GenericMessage):
             """Example class."""
 
+            header = Header()
             a = AttributeA()
             b = AttributeB()
             i = basic_types.UBInt32(5)
