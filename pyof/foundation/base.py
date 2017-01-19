@@ -342,6 +342,52 @@ class MetaStruct(type):
 
         return type.__new__(mcs, name, bases, classdict)
 
+    @staticmethod
+    def _get_module_version(fullname):
+        ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
+        version = None
+        # module = None
+        requested = ver_module_re.match(fullname)
+        if requested:
+            version = requested.group(2)
+            # module = requested.group(3)
+            return version
+        return None
+
+    @staticmethod
+    def _replace_attribute_version(module, version):
+        module_version = MetaStruct._get_module_version(module)
+        if not module_version:
+            return module
+        else:
+            return module.replace(module_version, version)
+
+    @staticmethod
+    def _update_attr_version(name, obj, new_version):
+        if new_version is None:
+            return (name, obj)
+
+        cls = obj.__class__
+        cls_name = cls.__name__
+        cls_mod = cls.__module__
+        if cls_mod.startswith('pyof.v0'):
+            new_mod = MetaStruct._replace_attribute_version(cls_mod,
+                                                            new_version)
+            new_mod = importlib.import_module(new_mod)
+            new_cls = getattr(new_mod, cls_name)
+            return (name, new_cls())
+        return (name, obj)
+
+    @staticmethod
+    def _update_attrs_version(classdict, new_version):
+        new_items = []
+        for name, obj in classdict.items():
+            item = MetaStruct._update_attr_version(name, obj, new_version)
+            new_items.append(item)
+        if new_items:
+            classdict.update([new_items])
+        return classdict
+
 
 class GenericStruct(object, metaclass=MetaStruct):
     """Class inherited by all OpenFlow structs.
