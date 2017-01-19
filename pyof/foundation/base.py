@@ -678,6 +678,12 @@ class GenericMessage(GenericStruct):
         if xid is not None:
             self.header.xid = xid
 
+    def __init_subclass__(cls, **kwargs):
+        if cls.header is None or cls.header.__class__.__name__ != 'Header':
+            msg = "The header attribute must be implemented on the class "
+            msg += cls.__name__ + "."
+            raise NotImplementedError(msg)
+        super().__init_subclass__(**kwargs)
 
     def _validate_message_length(self):
         return self.header.length == self.get_size()
