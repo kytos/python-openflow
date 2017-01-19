@@ -1,7 +1,6 @@
 """Testing class inheritance attributes changes."""
 import unittest
 
-import pyof
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32, UBInt64
 
@@ -42,8 +41,10 @@ class TestInheritance(unittest.TestCase):
         m1 = self.MyClassA()
         m2 = self.MyClassB()
         # Checking keys (attributes names) and its ordering
+        # pylint: disable=W0212
         self.assertEqual([attr[0] for attr in m1._get_class_attributes()],
                          self.a_expected_names)
+        # pylint: disable=W0212
         self.assertEqual([attr[0] for attr in m2._get_class_attributes()],
                          self.b_expected_names)
 

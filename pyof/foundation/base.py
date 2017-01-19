@@ -248,7 +248,6 @@ class MetaStruct(type):
 
     def __new__(mcs, name, bases, classdict):
         """Add ``__ordered__`` attribute with attributes in declared order."""
-
         #: Retrieving class attributes management markers
         removed_attributes = classdict.pop('_removed_attributes', [])
         # renamed_attributes = classdict.pop('_renamed_attributes', [])
