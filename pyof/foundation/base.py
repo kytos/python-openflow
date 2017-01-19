@@ -236,111 +236,101 @@ class GenericType:
 
 
 class MetaStruct(type):
-    """MetaClass to force ordered attributes.
+    """MetaClass that dinamically handles openflow version of class attributes.
 
-    You probably do not need to use this class. Inherit from
-    :class:`GenericStruct` instead.
+    See more about it at:
+        https://github.com/kytos/python-openflow/wiki/Version-Inheritance
+
+    You do not need to use this class. Inherit from :class:`GenericStruct`
+    instead.
     """
 
+    # pylint: disable=unused-argument
     @classmethod
-    def __prepare__(mcs, name, bases):  # pylint: disable=unused-argument
+    def __prepare__(mcs, name, bases, **kwargs):
         return OrderedDict()
 
-    def __new__(mcs, name, bases, classdict):
-        """Add ``__ordered__`` attribute with attributes in declared order."""
-        ordered = None
+    def __new__(cls, name, bases, classdict, **kwargs):
+        """Inherit attributes from parent class and update their versions.
 
-        #: Recovering __ordered__ from the first parent class that have it,
-        #: if any
+        Here is the moment that the new class is going to be created. During
+        this process, two things may be done.
+
+        Firstly, we will look if the type of any parent classes is this
+        MetaStruct. We will inherit from the first parent class that fits this
+        requirement. If any is found, then we will get all attributes from this
+        class and place them as class attributes on the class being created.
+
+        Secondly, for each class attribute being inherited, we will make sure
+        that the pyof version of this attribute is the same as the version of
+        the current class being created. If it is not, then we will find out
+        which is the class and module of that attribute, look for a version
+        that matches the version of the current class and replace that
+        attribute with the correct version.
+
+        See this link for more information on why this is being done:
+            - https://github.com/kytos/python-openflow/wiki/Version-Inheritance
+        """
+        #: Retrieving class attributes management markers
+        removed_attributes = classdict.pop('_removed_attributes', [])
+        # renamed_attributes = classdict.pop('_renamed_attributes', [])
+        # reordered_attributes = classdict.pop('_reordered_attributes', {})
+
+        curr_module = classdict.get('__module__')
+        curr_version = MetaStruct.get_pyof_version(curr_module)
+
+        inherited_attributes = None
+
+        #: looking for (kytos) class attributes defined on the bases
+        #: classes so we can copy them into the current class being created
+        #: so we can "inherit" them as class attributes
         for base in bases:
-            if hasattr(base, '__ordered__'):
-                # TODO: How to do a "copy from current of version" that get the
-                #       class (value) from the correct pyof version (the same
-                #       as the class being edited/created)?
-                #       This is where we need to do some magic!
-                #: Try to get the __ordered__ dict from the base (parent) class.
-                #: If it fails (there is no __ordered__) then an exception is
-                #: raised
-                base_ordered = base.__ordered__.copy()
+            #: Check if we are inheriting from one of our classes.
+            if isinstance(base, MetaStruct):
+                inherited_attributes = OrderedDict()
+                for attr_name, obj in base._get_class_attributes():
+                    #: Get an updated version of this attribute,
+                    #: considering the version of the current class being
+                    #: created.
+                    attr = MetaStruct.get_pyof_obj_new_version(attr_name, obj,
+                                                               curr_version
+                                                               )
 
-                #: List with attributes names to be removed.
-                remove_attributes = classdict.get('_remove_attributes')
+                    if attr_name == 'header':
+                        #: Here we are going to set the message_type on the
+                        #: header, according to the message_type of the
+                        #: parent class.
+                        old_enum = obj.message_type
+                        new_header = attr[1]
+                        new_enum = new_header.__class__.message_type.enum_ref
+                        #: This 'if' will be removed on the future with an
+                        #: improved version of __init_subclass__ method of the
+                        #: GenericMessage class
+                        if old_enum:
+                            msg_type_name = old_enum.name
+                            new_type = new_enum[msg_type_name]
+                            new_header.message_type = new_type
+                        attr = (attr[0], new_header)
 
-                #: List of tuples like (old_name, new_name)
-                rename_attributes = classdict.get('_rename_attributes')
-
-                #: A dict with new_attribute_name as key and valued with the
-                #: name of the attribute that will be preceeded by this new
-                #: attribute.
-                insert_before = classdict.get('_insert_attributes_before')
-
-                # Remove attributes marked to be removed, if any to do so
-                if remove_attributes is not None:
-                    for attr in remove_attributes:
-                        try:
-                            base_ordered.pop(attr)
-                        except KeyError:
-                            pass
-
-                # Renaming attributes copied from the parent class
-                if rename_attributes is not None:
-                    for old_name, new_name in rename_attributes:
-                        if old_name in classdict:
-                            classdict[new_name] = classdict.pop(old_name)
-                        else:
-                            classdict[new_name] = deepcopy(base.__dict__[old_name])
-                        base_ordered = OrderedDict([(new_name, v) if
-                                                    k == old_name else (k, v)
-                                                    for k, v in
-                                                    base_ordered.items()])
-
-                # Now let's get the new class attributes.
-                new_attrs = OrderedDict([(key, type(value)) for
-                                         key, value in classdict.items()
-                                         if key[0] != '_' and not
-                                         hasattr(value, '__call__')])
-
-                attrs = list(base_ordered.keys())
-
-                # And now lets add these new attributes to the ordered dict,
-                # considering the insert_before item data.
-                for attr in list(new_attrs.keys()):
-                    #: If the attribute was redefined, by default we will
-                    #: keep it at the same place it was before. So, we do not
-                    #: need to add it again.
-                    if attr not in attrs:
-                        if insert_before and attr in insert_before:
-                            #: If the attribute must be added before some other
-                            #: attribute, do so.
-                            attrs.insert(attrs.index(insert_before[attr]),
-                                         attr)
-                        else:
-                            #: Otherwise append the new attribute into the end
-                            #: of the list
-                            attrs.append(attr)
-
-                #: finally creating the ordered dict that will be added on the
-                #: class.
-                ordered = OrderedDict()
-                for attr in attrs:
-                    ordered[attr] = new_attrs.get(attr, base_ordered.get(attr))
-
-                #: break the for loop, we are just interested on the first
-                #: base class that have the __ordered__ dict.
+                    inherited_attributes.update([attr])
+                #: We are going to inherit just from the 'closest parent'
                 break
 
-        if ordered is None:
-            #: If there was no __ordered__ dict on the parent class, create
-            #: one with the current class attributes, skipping methods and
-            #: private attributes
-            ordered = OrderedDict([(key, type(value)) for
-                                   key, value in classdict.items()
-                                   if key[0] != '_' and not
-                                   hasattr(value, '__call__')])
+        #: If we have inherited something, then first we will remove the
+        #: attributes marked to be removed on the 'removed_attributes' and
+        #: after that we will update the inherited 'classdict' with the
+        #: attributes from the current classdict.
+        if inherited_attributes is not None:
+            #: removing attributes set to be removed
+            for attr_name in removed_attributes:
+                inherited_attributes.pop(attr_name, None)
 
-        classdict['__ordered__'] = ordered
+            #: Updating the inherited attributes with those defined on the
+            #: body of the class being created.
+            inherited_attributes.update(classdict)
+            classdict = inherited_attributes
 
-        return type.__new__(mcs, name, bases, classdict)
+        return super().__new__(cls, name, bases, classdict, **kwargs)
 
     @staticmethod
     def get_pyof_version(module_fullname):
