@@ -534,13 +534,6 @@ class GenericStruct(object, metaclass=MetaStruct):
             Exception: If the struct is not valid.
         """
         if value is None:
-            # size = 0
-            # for obj_val, cls_val in self.get_attributes():
-            #     print('cls_val', cls_val, type(cls_val))
-            #     print('obj_val', obj_val, type(obj_val))
-            #     print('size is', cls_val.get_size(obj_val))
-            #     size += cls_val.get_size(obj_val)
-            # return size
             return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
                        self._get_attributes())
         elif isinstance(value, type(self)):
