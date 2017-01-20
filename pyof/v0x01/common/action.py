@@ -208,54 +208,48 @@ class ActionVlanPCP(ActionHeader):
         .. note:: The vlan_pcp field is 8 bits long,
                   but only the lower 3 bits have meaning.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_SET_VLAN_PCP, length=8)
         self.vlan_pcp = vlan_pcp
 
 
 class ActionDLAddr(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_DL_SRC` or _DST."""
 
-    dl_addr_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(16)
     dl_addr = HWAddress()
     #: Pad for bit alignment.
     pad = Pad(6)
 
     _allowed_types = (ActionType.OFPAT_SET_DL_SRC, ActionType.OFPAT_SET_DL_DST)
 
-    def __init__(self, dl_addr_type=None, dl_addr=None):
+    def __init__(self, action_type=None, dl_addr=None):
         """The following constructor parameters are optional.
 
         Args:
-            dl_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_DL_SRC` or
+            action_type (ActionType): :attr:`~ActionType.OFPAT_SET_DL_SRC` or
                 :attr:`~ActionType.OFPAT_SET_DL_DST`.
             dl_addr (:class:`~.HWAddress`): Ethernet address.
                 Defaults to None.
         """
-        super().__init__()
-        self.dl_addr_type = dl_addr_type
+        super().__init__(action_type, length=16)
         self.dl_addr = dl_addr
 
 
 class ActionNWAddr(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_NW_SRC` or _DST."""
 
-    nw_addr_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
     nw_addr = UBInt32()
 
     _allowed_types = (ActionType.OFPAT_SET_NW_SRC, ActionType.OFPAT_SET_NW_DST)
 
-    def __init__(self, nw_addr_type=None, nw_addr=None):
+    def __init__(self, action_type=None, nw_addr=None):
         """The following constructor parameters are optional.
 
         Args:
-            nw_addr_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
+            action_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
                 :attr:`~ActionType.OFPAT_SET_NW_DST`.
             nw_addr (int): IP Address.
         """
-        super().__init__()
-        self.nw_addr_type = nw_addr_type
+        super().__init__(action_type, length=8)
         self.nw_addr = nw_addr
 
 
@@ -266,48 +260,42 @@ class ActionNWTos(ActionHeader):
               in the original bit positions (shifted to the left by 2).
     """
 
-    nw_tos_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
     nw_tos = UBInt8()
     #: Pad for bit alignment.
     pad = Pad(3)
 
     _allowed_types = ActionType.OFPAT_SET_NW_TOS,
 
-    def __init__(self, nw_tos_type=None, nw_tos=None):
+    def __init__(self, action_type=None, nw_tos=None):
         """The following constructor parameters are optional.
 
         Args:
-            nw_tos_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
+            action_type (ActionType): :attr:`~ActionType.OFPAT_SET_NW_SRC` or
                 :attr:`~ActionType.OFPAT_SET_NW_DST`.
             nw_tos (int): IP ToS (DSCP field, 6 bits).
         """
-        super().__init__()
-        self.nw_tos_type = nw_tos_type
+        super().__init__(action_type, length=8)
         self.nw_tos = nw_tos
 
 
 class ActionTPPort(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_TP_SRC` or _DST."""
 
-    tp_port_type = UBInt16(enum_ref=ActionType)
-    length = UBInt16(8)
     tp_port = UBInt16()
     #: Pad for bit alignment.
     pad = Pad(2)
 
     _allowed_types = (ActionType.OFPAT_SET_TP_SRC, ActionType.OFPAT_SET_TP_DST)
 
-    def __init__(self, tp_port_type=None, tp_port=None):
+    def __init__(self, action_type=None, tp_port=None):
         """The following constructor parameters are optional.
 
         Args:
-            tp_port_type (ActionType): :attr:`~ActionType.OFPAT_SET_TP_SRC` or
+            action_type (ActionType): :attr:`~ActionType.OFPAT_SET_TP_SRC` or
                 :attr:`~ActionType.OFPAT_SET_TP_DST`.
             tp_port (int): TCP/UDP/other port to set.
         """
-        super().__init__()
-        self.tp_port_type = tp_port_type
+        super().__init__(action_type, length=8)
         self.tp_port = tp_port
 
 
