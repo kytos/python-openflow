@@ -672,7 +672,7 @@ class GenericMessage(GenericStruct):
 
     header = None
 
-    def __init__(self, xid):
+    def __init__(self, xid=None):
         """Initialize header's xid."""
         super().__init__()
         if xid is not None:
