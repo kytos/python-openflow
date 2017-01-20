@@ -56,7 +56,9 @@ class ActionHeader(GenericStruct):
     action_type = UBInt16(enum_ref=ActionType)
     length = UBInt16()
     #: Pad for 64-bit alignment.
-    pad = Pad(4)
+    #: This attribute will not be implemented since not all subclasses from
+    #: this class will hold it on the same place and with the same size.
+    # pad = Pad(4)
 
     _allowed_types = ()
 
