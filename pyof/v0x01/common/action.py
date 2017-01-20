@@ -112,8 +112,6 @@ class ActionOutput(ActionHeader):
     should be sent.
     """
 
-    action_type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
-    length = UBInt16(8)
     port = UBInt16()
     max_length = UBInt16()
 
@@ -126,7 +124,7 @@ class ActionOutput(ActionHeader):
             port (:class:`Port` or :class:`int`): Output port.
             max_length (int): Max length to send to controller.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_OUTPUT, length=8)
         self.port = port
         self.max_length = max_length
 
@@ -141,8 +139,6 @@ class ActionEnqueue(ActionHeader):
     (TOS, VLAN PCP).
     """
 
-    action_type = UBInt16(ActionType.OFPAT_ENQUEUE, enum_ref=ActionType)
-    length = UBInt16(16)
     port = UBInt16()
     #: Pad for 64-bit alignment.
     pad = Pad(6)
@@ -157,7 +153,7 @@ class ActionEnqueue(ActionHeader):
             port (physical port or :attr:`.Port.OFPP_IN_PORT`): Queue's port.
             queue_id (int): Where to enqueue the packets.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_ENQUEUE, length=16)
         self.port = port
         self.queue_id = queue_id
 
@@ -170,8 +166,6 @@ class ActionVlanVid(ActionHeader):
               The value 0xffff is used to indicate that no VLAN id was set
     """
 
-    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_VID, enum_ref=ActionType)
-    length = UBInt16(8)
     vlan_id = UBInt16()
     #: Pad for bit alignment.
     pad2 = Pad(2)
@@ -184,15 +178,13 @@ class ActionVlanVid(ActionHeader):
         Args:
             vlan_id (int): VLAN priority.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_SET_VLAN_VID, length=8)
         self.vlan_id = vlan_id
 
 
 class ActionVlanPCP(ActionHeader):
     """Action structure for :attr:`ActionType.OFPAT_SET_VLAN_PCP`."""
 
-    action_type = UBInt16(ActionType.OFPAT_SET_VLAN_PCP, enum_ref=ActionType)
-    length = UBInt16(8)
     vlan_pcp = UBInt8()
     #: Pad for bit alignment.
     pad = Pad(3)
@@ -305,8 +297,6 @@ class ActionVendorHeader(ActionHeader):
     The rest of the body is vendor-defined.
     """
 
-    action_type = UBInt16(ActionType.OFPAT_VENDOR, enum_ref=ActionType)
-    length = UBInt16()
     vendor = UBInt32()
 
     _allowed_types = ActionType.OFPAT_VENDOR,
@@ -319,6 +309,5 @@ class ActionVendorHeader(ActionHeader):
             vender (int): Vendor ID with the same form as in VendorHeader.
                 Defaults to None.
         """
-        super().__init__()
-        self.length = length
+        super().__init__(action_type=ActionType.OFPAT_VENDOR, length=length)
         self.vendor = vendor
