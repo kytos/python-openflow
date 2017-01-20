@@ -2,7 +2,7 @@
 from pyof.v0x01.controller2switch.common import QueueStats, StatsTypes
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestQueueStats(TestStruct):

@@ -1,7 +1,7 @@
 """Test GetConfigRequest message."""
 from pyof.v0x01.controller2switch.get_config_request import GetConfigRequest
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestGetConfigRequest(TestStruct):

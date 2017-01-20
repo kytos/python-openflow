@@ -4,7 +4,7 @@ from pyof.v0x01.common.queue import (PacketQueue, QueueProperties,
                                      QueuePropHeader)
 from pyof.v0x01.controller2switch import queue_get_config_reply
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestQueueGetConfigReply(TestStruct):

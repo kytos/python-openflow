@@ -4,7 +4,7 @@ from pyof.v0x01.common.flow_match import FlowWildCards
 from pyof.v0x01.controller2switch.common import StatsTypes, TableStats
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestTableStats(TestStruct):

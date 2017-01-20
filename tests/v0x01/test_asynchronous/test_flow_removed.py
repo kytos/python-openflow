@@ -3,7 +3,7 @@ from pyof.foundation.basic_types import HWAddress, IPAddress
 from pyof.v0x01.asynchronous.flow_removed import FlowRemoved, FlowRemovedReason
 from pyof.v0x01.common.flow_match import Match
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestFlowRemoved(TestStruct):

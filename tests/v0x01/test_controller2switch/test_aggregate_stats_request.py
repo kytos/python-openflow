@@ -5,7 +5,7 @@ from pyof.v0x01.controller2switch.common import (AggregateStatsRequest,
                                                  StatsTypes)
 from pyof.v0x01.controller2switch.stats_request import StatsRequest
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestAggregateStatsRequest(TestStruct):

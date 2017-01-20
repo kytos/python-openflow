@@ -2,7 +2,7 @@
 from pyof.foundation.basic_types import BinaryData
 from pyof.v0x01.asynchronous.error_msg import (BadRequestCode, ErrorMsg,
                                                ErrorType)
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestErrorMessage(TestStruct):

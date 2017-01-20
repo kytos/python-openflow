@@ -2,7 +2,7 @@
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch import queue_get_config_request as request
 
-from ...test_struct import TestStruct
+from tests.test_struct import TestStruct
 
 
 class TestQueueGetConfigRequest(TestStruct):
