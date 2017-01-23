@@ -94,6 +94,5 @@ class FeaturesReply(SwitchFeatures):
             actions (int): UBInt32 Bitmap of supported "action_type"s.
             ports (int): Port definitions.
         """
-        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, datapath_id, n_buffers, n_tables, capabilities,
                          actions, ports)

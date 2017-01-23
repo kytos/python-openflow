@@ -34,7 +34,6 @@ class GetAsyncReply(AsyncConfig):
             flow_removed_mask1 (): .
             flow_removed_mask2 (): .
         """
-        self.__ordered__ = super().__ordered__  # pylint: disable=no-member
         super().__init__(xid, packet_in_mask1, packet_in_mask2,
                          port_status_mask1, port_status_mask2,
                          flow_removed_mask1, flow_removed_mask2)
