@@ -8,20 +8,9 @@ from abc import abstractmethod
 from subprocess import CalledProcessError, call, check_call
 
 from setuptools import Command, find_packages, setup
+from setuptools.command.test import test as TestCommand
 
 from pyof import __version__
-
-
-def lint():
-    """Run pylama and radon."""
-    files = 'tests setup.py pyof'
-    print('Pylama is running. It may take several seconds...')
-    cmd = 'pylama {}'.format(files)
-    try:
-        check_call(cmd, shell=True)
-    except CalledProcessError as e:
-        print('Please, fix linter errors above.')
-        sys.exit(e.returncode)
 
 
 class SimpleCommand(Command):
@@ -53,7 +42,19 @@ class Linter(SimpleCommand):
 
     def run(self):
         """Run linter."""
-        lint()
+        self.lint()
+
+    @staticmethod
+    def lint():
+        """Run pylama and radon."""
+        files = 'tests setup.py pyof'
+        print('Pylama is running. It may take several seconds...')
+        cmd = 'pylama {}'.format(files)
+        try:
+            check_call(cmd, shell=True)
+        except CalledProcessError as e:
+            print('FAILED: please, fix the error(s) above.')
+            sys.exit(e.returncode)
 
 
 class Cleaner(SimpleCommand):
@@ -67,10 +68,15 @@ class Cleaner(SimpleCommand):
         call('cd docs; make clean', shell=True)
 
 
-if sys.argv[-1] == 'test':
-    print('Running examples in documentation')
-    check_call('make doctest -C docs/', shell=True)
-    lint()
+class Test(TestCommand):
+    """Run doctest and linter besides tests/*."""
+
+    def run(self):
+        """First, tests/*."""
+        super().run()
+        print('Running examples in documentation')
+        check_call('make doctest -C docs/', shell=True)
+        Linter.lint()
 
 
 setup(name='python-openflow',
@@ -85,5 +91,6 @@ setup(name='python-openflow',
       cmdclass={
           'lint': Linter,
           'clean': Cleaner,
+          'test': Test
       },
       zip_safe=False)
