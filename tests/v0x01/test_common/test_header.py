@@ -34,11 +34,11 @@ class TestHeader(unittest.TestCase):
     def test_unpack(self):
         """[Common/Header] - unpacking Hello."""
         filename = os.path.join(os.path.dirname(os.path.realpath('__file__')),
-                                'raw/v0x01/ofpt_header.dat')
+                                'raw/v0x01/ofpt_hello.dat')
         f = open(filename, 'rb')
         self.message.unpack(f.read(8))
 
-        self.assertEqual(self.message.length, 0)
+        self.assertEqual(self.message.length, 8)
         self.assertEqual(self.message.xid, 1)
         self.assertEqual(self.message.message_type, Type.OFPT_HELLO)
         self.assertEqual(self.message.version, 1)

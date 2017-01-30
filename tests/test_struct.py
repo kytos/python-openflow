@@ -107,8 +107,7 @@ class TestStruct(unittest.TestCase):
             A new object using class and parameters priviously set through
                 :meth:`set_raw_dump_object`.
         """
-        obj = cls._new_raw_object()
-        return obj
+        return cls._new_raw_object()
 
     @classmethod
     def set_minimum_size(cls, size, msg_cls=None):
