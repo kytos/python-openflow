@@ -1,41 +1,28 @@
 """Test for PortStats structure."""
-import unittest
+from pyof.v0x01.controller2switch.common import PortStats, StatsTypes
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from pyof.v0x01.controller2switch.common import PortStats
+from tests.test_struct import TestStruct
 
 
-class TestPortStats(unittest.TestCase):
+class TestPortStats(TestStruct):
     """Test for PortStats structure."""
 
-    def setUp(self):
-        """Basic test Setup."""
-        self.message = PortStats()
-        self.message.port_no = 80
-        self.message.rx_packets = 5
-        self.message.tx_packets = 10
-        self.message.rx_bytes = 200
-        self.message.tx_bytes = 400
-        self.message.rx_dropped = 0
-        self.message.tx_dropped = 0
-        self.message.rx_errors = 0
-        self.message.tx_errors = 0
-        self.message.rx_frame_err = 0
-        self.message.rx_over_err = 0
-        self.message.rx_crc_err = 0
-        self.message.collisions = 0
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/PortStats] - size 104."""
-        self.assertEqual(self.message.get_size(), 104)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_port_stats')
+        super().set_raw_dump_object(StatsReply, xid=13,
+                                    body_type=StatsTypes.OFPST_PORT,
+                                    flags=0, body=_get_port_stats())
+        super().set_minimum_size(12)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/PortStats] - packing."""
-        # TODO
-        pass
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/PortStats] - unpacking."""
-        # TODO
-        pass
+def _get_port_stats():
+    """Function used to return a PortStats instance."""
+    return PortStats(port_no=80, rx_packets=5, tx_packets=10,
+                     rx_bytes=200, tx_bytes=400, rx_dropped=0,
+                     tx_dropped=0, rx_errors=0, tx_errors=0,
+                     rx_frame_err=0, rx_over_err=0,
+                     rx_crc_err=0, collisions=0)

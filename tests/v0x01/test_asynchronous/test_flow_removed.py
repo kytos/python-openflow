@@ -1,52 +1,30 @@
 """Testing FlowRemoved message."""
-import unittest
+from pyof.foundation.basic_types import HWAddress, IPAddress
+from pyof.v0x01.asynchronous.flow_removed import FlowRemoved, FlowRemovedReason
+from pyof.v0x01.common.flow_match import Match
 
-from pyof.v0x01.asynchronous import flow_removed
-from pyof.v0x01.common import flow_match
+from tests.test_struct import TestStruct
 
 
-class TestFlowRemoved(unittest.TestCase):
+class TestFlowRemoved(TestStruct):
     """Test the FlowRemoved message."""
 
-    def setUp(self):
-        """Setup the TestFlowremoved Class instantiating."""
-        self.message = flow_removed.FlowRemoved()
-        self.message.header.xid = 1
-        self.message.match = flow_match.Match()
-        self.message.cookie = 0
-        self.message.priority = 1
-        self.message.reason = flow_removed.FlowRemovedReason.OFPRR_IDLE_TIMEOUT
-        self.message.duration_sec = 4
-        self.message.duration_nsec = 23
-        self.message.idle_timeout = 9
-        self.message.packet_count = 10
-        self.message.byte_count = 4
-        self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
-        self.message.match.in_port = 80
-        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_vlan = 1
-        self.message.match.dl_vlan_pcp = 1
-        self.message.match.dl_type = 1
-        self.message.match.nw_tos = 1
-        self.message.match.nw_proto = 1
-        self.message.match.nw_src = [192, 168, 0, 1]
-        self.message.match.nw_dst = [192, 168, 0, 2]
-        self.message.match.tp_src = 80
-        self.message.match.tp_dst = 80
+    @classmethod
+    def setUpClass(cls):
+        """Setup TestStruct."""
+        reason = FlowRemovedReason.OFPRR_IDLE_TIMEOUT
+        match = Match(in_port=80, dl_vlan=1, dl_vlan_pcp=1, dl_type=1,
+                      nw_tos=1, nw_proto=1, tp_src=80, tp_dst=80,
+                      dl_src=HWAddress('00:00:00:00:00:00'),
+                      dl_dst=HWAddress('00:00:00:00:00:00'),
+                      nw_src=IPAddress('192.168.0.1'),
+                      nw_dst=IPAddress('192.168.0.2'))
 
-    def test_size(self):
-        """[Asynchronous/FlowRemoved] - size 88."""
-        self.assertEqual(self.message.get_size(), 88)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Asynchronous/FlowRemoved] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Asynchronous/FlowRemoved] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_flow_removed')
+        super().set_raw_dump_object(FlowRemoved, xid=12,
+                                    match=match, cookie=0, priority=1,
+                                    reason=reason, duration_sec=4,
+                                    duration_nsec=23, idle_timeout=9,
+                                    packet_count=10, byte_count=4)
+        super().set_minimum_size(88)

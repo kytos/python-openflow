@@ -29,7 +29,7 @@ def _get_ports():
         PhyPort(port_no=65534,
                 hw_addr=HWAddress('0e:d3:98:a5:30:47'),
                 name='s1',
-                config=PortConfig.OFPC_PORT_DOWN,
+                config=PortConfig.OFPPC_PORT_DOWN,
                 state=PortState.OFPPS_LINK_DOWN,
                 curr=0,
                 advertised=0,

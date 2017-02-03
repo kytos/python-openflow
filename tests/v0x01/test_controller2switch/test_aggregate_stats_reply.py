@@ -1,31 +1,21 @@
 """Test for AggregateStatsReply message."""
-import unittest
+from pyof.v0x01.controller2switch.common import AggregateStatsReply, StatsTypes
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from pyof.v0x01.controller2switch.common import AggregateStatsReply
+from tests.test_struct import TestStruct
 
 
-class TestAggregateStatsReply(unittest.TestCase):
+class TestAggregateStatsReply(TestStruct):
     """Test for AggregateStatsReply message."""
 
-    def setUp(self):
-        """Basic test setup."""
-        self.message = AggregateStatsReply()
-        self.message.packet_count = 5
-        self.message.byte_count = 1
-        self.message.flow_count = 8
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/AggregateStatsReply] - size 24."""
-        self.assertEqual(self.message.get_size(), 24)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/AggregateStatsReply] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/AggregateStatsReply] - unpacking."""
-        # TODO
-        pass
+        aggregate_stats_reply = AggregateStatsReply(packet_count=5,
+                                                    byte_count=1, flow_count=8)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_aggregate_stats_reply')
+        super().set_raw_dump_object(StatsReply, xid=17,
+                                    body_type=StatsTypes.OFPST_AGGREGATE,
+                                    flags=0, body=aggregate_stats_reply)
+        super().set_minimum_size(12)

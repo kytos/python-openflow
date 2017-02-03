@@ -1,30 +1,18 @@
 """Test for QueueGetConfigRequest message."""
-import unittest
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.controller2switch import queue_get_config_request as request
 
-from pyof.v0x01.controller2switch import queue_get_config_request
+from tests.test_struct import TestStruct
 
 
-class TestQueueGetConfigRequest(unittest.TestCase):
+class TestQueueGetConfigRequest(TestStruct):
     """Test for QueueGetConfigRequest message."""
 
-    def setUp(self):
-        """Baisc test setup."""
-        self.message = queue_get_config_request.QueueGetConfigRequest()
-        self.message.header.xid = 1
-        self.message.port = 80
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/QueueGetConfigRequest] - size 12."""
-        self.assertEqual(self.message.get_size(), 12)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/QueueGetConfigRequest] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/QueueGetConfigRequest] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_queue_get_config_request')
+        super().set_raw_dump_object(request.QueueGetConfigRequest,
+                                    xid=1, port=Port.OFPP_MAX)
+        super().set_minimum_size(12)

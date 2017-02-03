@@ -4,14 +4,12 @@
 
 # Third-party imports
 
+from importlib import import_module
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import BinaryData, UBInt16
+from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import (AggregateStatsRequest,
-                                                 FlowStatsRequest,
-                                                 PortStatsRequest,
-                                                 StatsTypes)
+from pyof.v0x01.controller2switch.common import StatsTypes
 
 __all__ = ('StatsRequest',)
 
@@ -38,35 +36,40 @@ class StatsRequest(GenericMessage):
         self.flags = flags
         self.body = body
 
-    def pack(self):
+    def pack(self, value=None):
         """Pack according to :attr:`body_type`.
 
         Make `body` a binary pack before packing this object. Then, restore
         body.
         """
-        if self.body_type == StatsTypes.OFPST_PORT or \
-           self.body_type == StatsTypes.OFPST_FLOW or \
-           self.body_type == StatsTypes.OFPST_AGGREGATE:
-            backup = self.body
-            self.body = self.body.pack()
-            pack = super().pack()
-            self.body = backup
-            return pack
-        else:
-            return super().pack()
+        backup = self.body
+        if not value:
+            value = self.body
 
-    def unpack(self, buff):
+        if hasattr(value, 'pack'):
+            self.body = value.pack()
+        stats_request_packed = super().pack()
+
+        self.body = backup
+        return stats_request_packed
+
+    def unpack(self, buff, offset=0):
         """Unpack according to :attr:`body_type`."""
         super().unpack(buff)
-        if self.body_type == StatsTypes.OFPST_PORT:
-            buff = self.body.value
-            self.body = PortStatsRequest()
-            self.body.unpack(buff)
-        elif self.body_type == StatsTypes.OFPST_FLOW:
-            buff = self.body.value
-            self.body = FlowStatsRequest()  # noqa
-            self.body.unpack(buff)
-        elif self.body_type == StatsTypes.OFPST_AGGREGATE:
-            buff = self.body.value
-            self.body = AggregateStatsRequest()
-            self.body.unpack(buff)
+
+        class_name = self._get_body_class()
+        buff = self.body.value
+        self.body = FixedTypeList(pyof_class=class_name)
+        self.body.unpack(buff)
+
+    def _get_body_class(self):
+        if isinstance(self.body_type, (int, UBInt16)):
+            self.body_type = self.body_type.enum_ref(self.body_type.value)
+
+        module = import_module('pyof.v0x01.controller2switch.common')
+        body_name = self.body_type.name.replace('OFPST_', '').title()
+
+        for class_name in module.__all__:
+            if 'Request' in class_name and body_name in class_name:
+                return getattr(module, class_name)
+        return None

@@ -1,34 +1,28 @@
 """Test DescStats message."""
-import unittest
-
 from pyof.foundation.constants import DESC_STR_LEN
-from pyof.v0x01.controller2switch.common import DescStats
+from pyof.v0x01.controller2switch.common import DescStats, StatsTypes
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
+
+from tests.test_struct import TestStruct
 
 
-class TestDescStats(unittest.TestCase):
+class TestDescStats(TestStruct):
     """Test class for TestDescStats."""
 
-    def setUp(self):
-        """Test basic setup."""
-        content = bytes('A' * DESC_STR_LEN, 'utf-8')
-        self.message = DescStats()
-        self.message.mfr_desc = content
-        self.message.hw_desc = content
-        self.message.sw_desc = content
-        self.message.serial_num = content
-        self.message.dp_desc = content
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/DescStats] - size 1056."""
-        self.assertEqual(self.message.get_size(), 1056)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_desc_stats_reply')
+        super().set_raw_dump_object(StatsReply, xid=14,
+                                    body_type=StatsTypes.OFPST_DESC,
+                                    flags=0, body=_get_desc_stats())
+        super().set_minimum_size(12)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/DescStats] - packing."""
-        # TODO
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/DescStats] - unpacking."""
-        # TODO
-        pass
+def _get_desc_stats():
+    """Function used to return desc_stat used by StatsReply instance."""
+    content = 'A' * DESC_STR_LEN
+    return DescStats(mfr_desc=content, hw_desc=content,
+                     sw_desc=content, serial_num=content,
+                     dp_desc=content)

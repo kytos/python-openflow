@@ -52,7 +52,7 @@ class PortConfig(GenericBitMask):
     """
 
     #: Port is administratively down.
-    OFPC_PORT_DOWN = 1 << 0
+    OFPPC_PORT_DOWN = 1 << 0
     #: Disable 802.1D spanning tree on port.
     OFPPC_NO_STP = 1 << 1
     #: Drop all packets except 802.1D spanning tree.

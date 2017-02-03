@@ -376,6 +376,7 @@ class HWAddress(GenericType):
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
+
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
 
@@ -459,7 +460,7 @@ class BinaryData(GenericType):
         """
         if value is None:
             return len(self._value)
-        elif isinstance(value, type(self)):
+        elif hasattr(value, 'get_size'):
             return value.get_size()
         else:
             return len(value)
