@@ -296,7 +296,7 @@ class IPAddress(GenericType):
         try:
             unpacked_data = struct.unpack('!4B', buff[offset:offset+4])
             self._value = '.'.join([str(x) for x in unpacked_data])
-        except:
+        except struct.error:
             raise Exception("%s: %s" % (offset, buff))
 
     def get_size(self, value=None):
@@ -374,7 +374,7 @@ class HWAddress(GenericType):
 
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
-        except:
+        except struct.error:
             raise Exception("%s: %s" % (offset, buff))
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
@@ -459,7 +459,7 @@ class BinaryData(GenericType):
         """
         if value is None:
             return len(self._value)
-        elif isinstance(value, type(self)):
+        elif hasattr(value, 'get_size'):
             return value.get_size()
         else:
             return len(value)

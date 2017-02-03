@@ -1,30 +1,21 @@
 """Test for QueueStatsRequest message."""
-import unittest
+from pyof.v0x01.controller2switch.common import QueueStatsRequest, StatsTypes
+from pyof.v0x01.controller2switch.stats_request import StatsRequest
 
-from pyof.v0x01.controller2switch.common import QueueStatsRequest
+from tests.test_struct import TestStruct
 
 
-class TestQueueStatsRequest(unittest.TestCase):
+class TestQueueStatsRequest(TestStruct):
     """Test for QueueStatsRequest message."""
 
-    def setUp(self):
-        """Baisc test setup."""
-        self.message = QueueStatsRequest()
-        self.message.port_no = 80
-        self.message.queue_id = 5
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/QueueStatsRequest] - size 8."""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/QueueStatsRequest] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/QueueStatsRequest] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_queue_stats_request')
+        super().set_raw_dump_object(StatsRequest, xid=14,
+                                    body_type=StatsTypes.OFPST_QUEUE,
+                                    flags=0,
+                                    body=QueueStatsRequest(port_no=80,
+                                                           queue_id=5))
+        super().set_minimum_size(12)

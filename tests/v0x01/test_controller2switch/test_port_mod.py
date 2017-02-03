@@ -1,34 +1,21 @@
 """Test PortMod message."""
-import unittest
+from pyof.v0x01.common.phy_port import PortConfig, PortFeatures
+from pyof.v0x01.controller2switch.port_mod import PortMod
 
-from pyof.v0x01.controller2switch import port_mod
+from tests.test_struct import TestStruct
 
 
-class TestPortMod(unittest.TestCase):
+class TestPortMod(TestStruct):
     """Test class for PortMod."""
 
-    def setUp(self):
-        """Basic test setup."""
-        self.message = port_mod.PortMod()
-        self.message.header.xid = 1
-        self.message.port_no = 80
-        self.message.hw_addr = 'aa:bb:cc:00:33:9f'
-        self.message.config = 1 << 2
-        self.message.mask = 1 << 1
-        self.message.advertise = 1
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/PortMod] - size 32."""
-        self.assertEqual(self.message.get_size(), 32)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/PortMod] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/PortMod] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_port_mod')
+        super().set_raw_dump_object(PortMod, xid=3, port_no=80,
+                                    hw_addr='aa:bb:cc:00:33:9f',
+                                    config=PortConfig.OFPPC_PORT_DOWN,
+                                    mask=PortConfig.OFPPC_NO_FWD,
+                                    advertise=PortFeatures.OFPPF_FIBER)
+        super().set_minimum_size(32)

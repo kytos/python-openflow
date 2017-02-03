@@ -1,4 +1,5 @@
 """Flow modification (add/delete) message tests."""
+from pyof.v0x01.common.action import ActionOutput
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
@@ -16,14 +17,6 @@ class TestFlowAdd(TestStruct):
         kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_ADD)
         super().set_raw_dump_object(FlowMod, **kwargs)
         super().set_minimum_size(72)
-
-    def test_pack(self):
-        """Skip pack test for now."""
-        self.skipTest('Need to recover dump contents.')
-
-    def test_unpack(self):
-        """Skip unpack test for now."""
-        self.skipTest('Need to recover dump contents.')
 
 
 class TestFlowDelete(TestStruct):
@@ -50,9 +43,16 @@ def _get_flowmod_kwargs(command):
             'priority': 32768,
             'buffer_id': 4294967295,
             'out_port': Port.OFPP_NONE,
-            'flags': 0}
+            'flags': 0,
+            'actions': _get_actions()}
 
 
 def _get_match():
     """Return a Match object."""
     return Match()
+
+
+def _get_actions():
+    """Return a List of actions registered by flow object."""
+    action = ActionOutput(port=65533, max_length=65535)
+    return [action]

@@ -1,59 +1,39 @@
 """Test FlowStats message."""
-import unittest
+from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.controller2switch.common import FlowStats, StatsTypes
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
 
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.controller2switch.common import FlowStats
+from tests.test_struct import TestStruct
 
 
-class TestFlowStats(unittest.TestCase):
+class TestFlowStats(TestStruct):
     """Test class for TestFlowStats."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = FlowStats()
-        self.message.length = 160
-        self.message.table_id = 1
-        self.message.match = flow_match.Match()
-        self.message.duration_sec = 60
-        self.message.duration_nsec = 10000
-        self.message.priority = 1
-        self.message.idle_timeout = 300
-        self.message.hard_timeout = 6000
-        self.message.cookie = 1
-        self.message.packet_count = 1
-        self.message.byte_count = 1
-        self.message.match.in_port = 80
-        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_vlan = 1
-        self.message.match.dl_vlan_pcp = 1
-        self.message.match.dl_type = 1
-        self.message.match.nw_tos = 1
-        self.message.match.nw_proto = 1
-        self.message.match.nw_src = [192, 168, 0, 1]
-        self.message.match.nw_dst = [192, 168, 0, 1]
-        self.message.match.tp_src = 80
-        self.message.match.tp_dst = 80
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/FlowStats] - size 88."""
-        self.assertEqual(self.message.get_size(), 88)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_flow_stats_reply')
+        super().set_raw_dump_object(StatsReply, xid=12,
+                                    body_type=StatsTypes.OFPST_FLOW,
+                                    flags=0, body=_get_flow_stats())
+        super().set_minimum_size(12)
 
-    def test_pack_unpack(self):
-        """[Controller2Switch/FlowStats] - packing and unpacking."""
-        pack = self.message.pack()
-        unpacked = FlowStats()
-        unpacked.unpack(pack)
-        self.assertEqual(self.message.pack(), unpacked.pack())
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/FlowStats] - packing."""
-        # TODO
-        pass
+def _get_flow_stats():
+    """Function used to return a FlowStats instance."""
+    return FlowStats(length=160, table_id=1,
+                     match=_get_match(), duration_sec=60,
+                     duration_nsec=10000, priority=1,
+                     idle_timeout=300, hard_timeout=6000,
+                     cookie=1, packet_count=1, byte_count=1)
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/FlowStats] - unpacking."""
-        # TODO
-        pass
+
+def _get_match():
+    """Function used to return a Match instance."""
+    return Match(in_port=80, dl_src='01:02:03:04:05:06',
+                 dl_dst='01:02:03:04:05:06', dl_vlan=1,
+                 dl_vlan_pcp=1, dl_type=1,
+                 nw_tos=1, nw_proto=1,
+                 nw_src='192.168.0.1', nw_dst='192.168.0.1',
+                 tp_src=80, tp_dst=80)

@@ -1,28 +1,16 @@
 """Test GetConfigRequest message."""
-import unittest
+from pyof.v0x01.controller2switch.get_config_request import GetConfigRequest
 
-from pyof.v0x01.controller2switch import get_config_request
+from tests.test_struct import TestStruct
 
 
-class TestGetConfigRequest(unittest.TestCase):
+class TestGetConfigRequest(TestStruct):
     """Test class for TestGetConfigRequest."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = get_config_request.GetConfigRequest(1)
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/GetConfigRequest] - size 8."""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/GetConfigRequest] - packing."""
-        # TODO
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/GetConfigRequest] - unpacking."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_get_config_request')
+        super().set_raw_dump_object(GetConfigRequest, xid=1)
+        super().set_minimum_size(8)

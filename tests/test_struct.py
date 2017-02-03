@@ -151,3 +151,12 @@ class TestStruct(unittest.TestCase):
             raise self.skipTest('minimum size was not set.')
         obj = TestStruct._msg_cls()
         self.assertEqual(obj.get_size(), self._min_size)
+
+    def test_raw_dump_size(self):
+        """Check whether the unpacked dump has the expected size."""
+        try:
+            unpacked = self.get_raw_dump().unpack()
+            obj = self.get_raw_object()
+            self.assertEqual(obj.get_size(), unpacked.get_size())
+        except FileNotFoundError:
+            raise self.skipTest('No raw dump file found.')

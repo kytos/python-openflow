@@ -1,44 +1,34 @@
 """Test FlowStatsRequest message."""
-import unittest
+from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.controller2switch.common import FlowStatsRequest, StatsTypes
+from pyof.v0x01.controller2switch.stats_request import StatsRequest
 
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.controller2switch.common import FlowStatsRequest
+from tests.test_struct import TestStruct
 
 
-class TestFlowStatsRequest(unittest.TestCase):
+class TestFlowStatsRequest(TestStruct):
     """Test class for TestFlowStatsRequest."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = FlowStatsRequest()
-        self.message.match = flow_match.Match()
-        self.message.table_id = 1
-        self.message.out_port = 80
-        self.message.match.in_port = 80
-        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_vlan = 1
-        self.message.match.dl_vlan_pcp = 1
-        self.message.match.dl_type = 1
-        self.message.match.nw_tos = 1
-        self.message.match.nw_proto = 1
-        self.message.match.nw_src = [192, 168, 0, 1]
-        self.message.match.nw_dst = [192, 168, 0, 1]
-        self.message.match.tp_src = 80
-        self.message.match.tp_dst = 80
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/FlowStatsRequest] - size 44."""
-        self.assertEqual(self.message.get_size(), 44)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_flow_stats_request')
+        super().set_raw_dump_object(StatsRequest, xid=12,
+                                    body_type=StatsTypes.OFPST_FLOW,
+                                    flags=0, body=_get_flow_stats_request())
+        super().set_minimum_size(12)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/FlowStatsRequest] - packing."""
-        # TODO
-        pass
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/FlowStatsRequest] - unpacking."""
-        # TODO
-        pass
+def _get_flow_stats_request():
+    return FlowStatsRequest(match=_get_match(), table_id=1, out_port=80)
+
+
+def _get_match():
+    """Function used to return a Match instance."""
+    return Match(in_port=80, dl_src='01:02:03:04:05:06',
+                 dl_dst='01:02:03:04:05:06', dl_vlan=1,
+                 dl_vlan_pcp=1, dl_type=1,
+                 nw_tos=1, nw_proto=1,
+                 nw_src='192.168.0.1', nw_dst='192.168.0.1',
+                 tp_src=80, tp_dst=80)

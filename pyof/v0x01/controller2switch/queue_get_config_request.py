@@ -16,7 +16,7 @@ __all__ = ('QueueGetConfigRequest',)
 class QueueGetConfigRequest(GenericMessage):
     """Query structure for configured queues on a port."""
 
-    header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
+    header = Header(message_type=Type.OFPT_QUEUE_GET_CONFIG_REQUEST)
     port = UBInt16(enum_ref=Port)
     #: Pad to 64-bits
     pad = Pad(2)

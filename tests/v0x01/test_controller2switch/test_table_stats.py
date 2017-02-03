@@ -1,37 +1,28 @@
 """Test TableStats message."""
-import unittest
-
 from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
-from pyof.v0x01.common import flow_match
-from pyof.v0x01.controller2switch.common import TableStats
+from pyof.v0x01.common.flow_match import FlowWildCards
+from pyof.v0x01.controller2switch.common import StatsTypes, TableStats
+from pyof.v0x01.controller2switch.stats_reply import StatsReply
+
+from tests.test_struct import TestStruct
 
 
-class TestTableStats(unittest.TestCase):
+class TestTableStats(TestStruct):
     """Test class for TableStats."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = TableStats()
-        self.message.table_id = 1
-        self.message.name = bytes('X' * OFP_MAX_TABLE_NAME_LEN, 'utf-8')
-        self.message.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
-        self.message.max_entries = 1
-        self.message.active_count = 10
-        self.message.count_lookup = 10
-        self.message.count_matched = 0
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/TableStats] - size 64."""
-        self.assertEqual(self.message.get_size(), 64)
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_table_stats')
+        super().set_raw_dump_object(StatsReply, xid=14,
+                                    body_type=StatsTypes.OFPST_TABLE,
+                                    flags=0, body=_get_table_stats())
+        super().set_minimum_size(12)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/TableStats] - packing."""
-        # TODO
-        pass
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/TableStats] - unpacking."""
-        # TODO
-        pass
+def _get_table_stats():
+    return TableStats(table_id=1,
+                      name='X' * OFP_MAX_TABLE_NAME_LEN,
+                      wildcards=FlowWildCards.OFPFW_TP_DST, max_entries=1,
+                      active_count=10, count_lookup=10, count_matched=0)

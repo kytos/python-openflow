@@ -1,45 +1,35 @@
 """Test  AggregateStatsRequest message."""
-import unittest
+from pyof.v0x01.common.flow_match import Match
+from pyof.v0x01.common.phy_port import Port
+from pyof.v0x01.controller2switch.common import (AggregateStatsRequest,
+                                                 StatsTypes)
+from pyof.v0x01.controller2switch.stats_request import StatsRequest
 
-from pyof.v0x01.common import flow_match, phy_port
-from pyof.v0x01.controller2switch.common import AggregateStatsRequest
+from tests.test_struct import TestStruct
 
 
-class TestAggregateStatsRequest(unittest.TestCase):
+class TestAggregateStatsRequest(TestStruct):
     """Test class for TestAggregateStatsRequest."""
 
-    def setUp(self):
-        """Test basic setup."""
-        self.message = AggregateStatsRequest()
-        self.message.match = flow_match.Match()
-        self.message.table_id = 1
-        self.message.out_port = phy_port.Port.OFPP_NONE
-        self.message.match.wildcards = flow_match.FlowWildCards.OFPFW_TP_DST
-        self.message.match.in_port = 80
-        self.message.match.dl_src = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_dst = [1, 2, 3, 4, 5, 6]
-        self.message.match.dl_vlan = 1
-        self.message.match.dl_vlan_pcp = 1
-        self.message.match.dl_type = 1
-        self.message.match.nw_tos = 1
-        self.message.match.nw_proto = 1
-        self.message.match.nw_src = [192, 168, 0, 1]
-        self.message.match.nw_dst = [192, 168, 0, 1]
-        self.message.match.tp_src = 80
-        self.message.match.tp_dst = 80
-
-    def test_get_size(self):
+    @classmethod
+    def setUpClass(cls):
         """[Controller2Switch/AggregateStatsRequest] - size 44."""
-        self.assertEqual(self.message.get_size(), 44)
+        request = AggregateStatsRequest(table_id=1, out_port=Port.OFPP_NONE,
+                                        match=_get_match())
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Controller2Switch/AggregateStatsRequest] - packing."""
-        # TODO
-        pass
+        super().setUpClass()
+        super().set_raw_dump_file('v0x01', 'ofpt_aggregate_request')
+        super().set_raw_dump_object(StatsRequest, xid=17,
+                                    body_type=StatsTypes.OFPST_AGGREGATE,
+                                    flags=0, body=request)
+        super().set_minimum_size(12)
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Controller2Switch/AggregateStatsRequest] - unpacking."""
-        # TODO
-        pass
+
+def _get_match():
+    """Function used to built Match instance used by AggregateStatsRequest."""
+    return Match(in_port=80, dl_src="01:02:03:04:05:06",
+                 dl_dst="01:02:03:04:05:06", dl_vlan=1,
+                 dl_vlan_pcp=1, dl_type=1,
+                 nw_tos=1, nw_proto=1,
+                 nw_src='192.168.0.1', nw_dst='192.168.0.1',
+                 tp_src=80, tp_dst=80)
