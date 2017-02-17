@@ -6,6 +6,7 @@
 from pyof.foundation.base import GenericBitMask, GenericStruct
 from pyof.foundation.basic_types import (HWAddress, Pad, UBInt8, UBInt16,
                                          UBInt32)
+from pyof.foundation.constants import UBINT16_MAX_VALUE
 
 # Third-party imports
 
@@ -117,7 +118,7 @@ class ActionOutput(ActionHeader):
 
     _allowed_types = ActionType.OFPAT_OUTPUT,
 
-    def __init__(self, port=None, max_length=0):
+    def __init__(self, port=None, max_length=UBINT16_MAX_VALUE):
         """The following constructor parameters are optional.
 
         Args:
