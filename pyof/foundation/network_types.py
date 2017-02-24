@@ -66,8 +66,12 @@ class GenericTLV(GenericStruct):
         """Create an instance and set its attributes."""
         super().__init__()
         self.type = tlv_type
-        if value:
-            self.value = value
+        self._value = value
+
+    @property
+    def value(self):
+        """Return the value stored by GenericTLV."""
+        return self._value
 
     @property
     def length(self):
@@ -123,7 +127,7 @@ class GenericTLV(GenericStruct):
         self.type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
-        self.value = BinaryData(buffer[begin:end])
+        self._value = BinaryData(buffer[begin:end])
 
     def get_size(self, value=None):
         """Return struct size."""
@@ -143,8 +147,7 @@ class TLVWithSubType(GenericTLV):
 
     def __init__(self, tlv_type=1, sub_type=7, sub_value=BinaryData()):
         """Create an instance and set its attributes."""
-        super().__init__(value=None)
-        self.type = tlv_type
+        super().__init__(tlv_type)
         self.sub_type = sub_type
         self.sub_value = sub_value
 
