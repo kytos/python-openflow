@@ -3,7 +3,6 @@
 Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
 """
 
-
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import BinaryData, HWAddress, UBInt8, UBInt16
 from pyof.foundation.exceptions import PackException
@@ -50,35 +49,34 @@ class Ethernet(GenericStruct):
         return hash(self.pack())
 
 
-class GenericTLV:
+class GenericTLV(GenericStruct):
     """TLV structure of LLDP packets.
 
     This is a Type, Length and Value (TLV) struct.
 
-    The LLDP/TLV definition states that the Type field have 7 bits, while the
-    length have 9 bits. The Value must be between 0-511 octets.
+    The LLDP/TLV definition states that the Type field have 7 bits, while
+    the length have 9 bits. The Value must be between 0-511 octets.
 
-    Internally, on the instances of this class, the Type is a integer (0-127)
-    and the Length is dynamically calculated based on the current type and
-    value.
+    Internally, on the instances of this class, the Type is a integer
+    (0-127) and the Length is dynamically calculated based on the current
+    type and value.
     """
 
     def __init__(self, tlv_type=127, value=BinaryData()):
         """Create an instance and set its attributes."""
-        #: type (int): The Type of the TLV Structure
+        super().__init__()
         self.type = tlv_type
-        #: value (BinaryData): The value of the TLV Structure
         self._value = value
 
     @property
     def value(self):
-        """Return TLV value."""
+        """Return the value stored by GenericTLV."""
         return self._value
 
     @property
     def length(self):
         """Struct length in bytes."""
-        return len(self._value.pack())
+        return len(self.value.pack())
 
     @property
     def header(self):
@@ -101,7 +99,7 @@ class GenericTLV:
         """
         if value is None:
             output = self.header.pack()
-            output += self._value.pack()
+            output += self.value.pack()
             return output
 
         elif isinstance(value, type(self)):
@@ -147,12 +145,10 @@ class TLVWithSubType(GenericTLV):
     field and a new "*sub_value*" field.
     """
 
-    def __init__(self, tlv_type=1, sub_type=7, sub_value=None):
+    def __init__(self, tlv_type=1, sub_type=7, sub_value=BinaryData()):
         """Create an instance and set its attributes."""
-        super().__init__(tlv_type=tlv_type)
+        super().__init__(tlv_type)
         self.sub_type = sub_type
-        if sub_value is None:
-            sub_value = BinaryData()
         self.sub_value = sub_value
 
     @property
@@ -198,4 +194,6 @@ class LLDP(GenericStruct):
     port_id = TLVWithSubType(tlv_type=2, sub_type=7)
     #: TTL time is given in seconds, between 0 and 65535
     ttl = GenericTLV(tlv_type=3, value=UBInt16(120))
+    # We are not using list of tlvs for now
+    # tlvs = ListOfTLVs()
     end = GenericTLV(tlv_type=0)
