@@ -13,7 +13,7 @@ __all__ = ('PacketOut',)
 # Classes
 
 #: in_port valid virtual port values, for validation
-_VIRT_IN_PORTS = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER, PortNo.OFPP_NONE)
+_VIRT_IN_PORTS = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER, PortNo.OFPP_ANY)
 
 
 class PacketOut(GenericMessage):

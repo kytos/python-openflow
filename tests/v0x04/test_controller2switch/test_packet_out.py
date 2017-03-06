@@ -23,7 +23,7 @@ class TestPacketOut(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x04', 'ofpt_packet_out')
         super().set_raw_dump_object(PacketOut, xid=80, buffer_id=5,
-                                    in_port=PortNo.OFPP_NONE)
+                                    in_port=PortNo.OFPP_ANY)
         super().set_minimum_size(24)
 
     def test_valid_virtual_in_ports(self):
@@ -34,7 +34,7 @@ class TestPacketOut(TestStruct):
             raise self.skipTest(NO_RAW)
         else:
             valid = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER,
-                     PortNo.OFPP_NONE)
+                     PortNo.OFPP_ANY)
             msg = self.get_raw_object()
             for in_port in valid:
                 msg.in_port = in_port
