@@ -44,7 +44,7 @@ class PortNo(Enum):
     #: Wildcard port used only for flow mod (delete) and flow stats requests.
     #: Selects all flows regardless of output port (including flows with no
     #: output port).
-    OFPP_NONE = 0xffffffff
+    OFPP_ANY = 0xffffffff
 
 
 class PortConfig(GenericBitMask):
