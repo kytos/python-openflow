@@ -251,9 +251,11 @@ class DescStats(GenericStruct):
     sw_desc = Char(length=DESC_STR_LEN)
     #: Serial number
     serial_num = Char(length=SERIAL_NUM_LEN)
+    #: Datapath description
+    dp_desc = Char(length=DESC_STR_LEN)
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
-                 serial_num=None):
+                 serial_num=None, dp_desc=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
@@ -261,12 +263,14 @@ class DescStats(GenericStruct):
             hw_desc (str): Hardware description
             sw_desc (str): Software description
             serial_num (str): Serial number
+            dp_desc (str): Datapath description
         """
         super().__init__()
         self.mfr_desc = mfr_desc
         self.hw_desc = hw_desc
         self.sw_desc = sw_desc
         self.serial_num = serial_num
+        self.dp_desc = dp_desc
 
 
 class FlowStats(GenericStruct):
