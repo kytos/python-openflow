@@ -30,6 +30,7 @@ from pyof.v0x04.controller2switch.set_config import SetConfig
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
 from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
+from pyof.v0x04.controller2switch.multipart_reply import MultipartReply
 from pyof.v0x04.symmetric.hello import Hello
 
 __all__ = ('new_message_from_header', 'new_message_from_message_type')
@@ -54,7 +55,7 @@ def new_message_from_message_type(message_type):
         str(Type.OFPT_ERROR): ErrorMsg,
         str(Type.OFPT_ECHO_REQUEST): EchoRequest,
         str(Type.OFPT_ECHO_REPLY): EchoReply,
-        str(Type.OFPT_VENDOR): ExperimenterHeader,
+        str(Type.OFPT_EXPERIMENTER): ExperimenterHeader,
         str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
         str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
         str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,
@@ -69,7 +70,8 @@ def new_message_from_message_type(message_type):
         str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
         str(Type.OFPT_BARRIER_REPLY): BarrierReply,
         str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
-        str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply
+        str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply,
+        str(Type.OFPT_MULTIPART_REPLY): MultipartReply,
     }
 
     if message_type not in available_classes:
