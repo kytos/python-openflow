@@ -73,7 +73,8 @@ def new_message_from_message_type(message_type):
     }
 
     if message_type not in available_classes:
-        raise ValueError
+        msg = "Define class for {} in {}".format(message_type, __file__)
+        raise ValueError(msg)
 
     message_class = available_classes.get(message_type)
     message_instance = message_class()
