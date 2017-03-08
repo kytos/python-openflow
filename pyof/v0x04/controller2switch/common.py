@@ -458,9 +458,9 @@ class PortStats(GenericStruct):
 class PortStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_PORT."""
 
-    port_no = UBInt16()
+    port_no = UBInt32()
     #: Align to 64-bits.
-    pad = Pad(6)
+    pad = Pad(4)
 
     def __init__(self, port_no=None):
         """The constructor just assings parameters to object attributes.
