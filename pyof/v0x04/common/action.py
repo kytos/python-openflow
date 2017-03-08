@@ -72,7 +72,6 @@ class ActionType(Enum):
     OFPAT_POP_PBB = 27
     #: Experimenter type
     OFPAT_EXPERIMENTER = 0xffff
-    OFPAT_VENDOR = 0xffff
 
 
 class ControllerMaxLen(Enum):
