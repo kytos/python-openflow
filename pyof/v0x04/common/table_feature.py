@@ -14,7 +14,7 @@ from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.common.flow_instructions import ListOfInstruction
-from pyof.v0x04.controller2switch.table_mod import OFPTT_ALL
+from pyof.v0x04.controller2switch.table_mod import Table
 
 __all__ = ('TableFeaturePropType', 'Property', 'InstructionsProperty',
            'NextTablesProperty', 'ActionsProperty', 'OxmProperty' ,
@@ -263,12 +263,13 @@ class TableFeatures(GenericStruct):
     # /* Table Feature Property list */
     properties = ListOfProperty()
 
-    def __init__(self, table_id=OFPTT_ALL, name="", metadata_match=0xFFFFFFFFFFFFFFFF,
+    def __init__(self, table_id=Table.OFPTT_ALL, name="",
+                 metadata_match=0xFFFFFFFFFFFFFFFF,
                  metadata_write=0xFFFFFFFFFFFFFFFF,
                  config=0,
                  max_entries=0,
+                 properties=ListOfProperty()):
         """The constructor of TableFeatures receives the paramters below.
-
 
         Args:
             table_id(int):       Indetifier of table.The default value
@@ -287,8 +288,8 @@ class TableFeatures(GenericStruct):
             config(int):         Field reseved for future use.
             max_entries(int):    Describe the maximum number of flow entries
                                  that can be inserted into that table.
+            properties(ListOfProperty): List of Property intances.
         """
-                 properties=ListOfProperty()):
         super().__init__()
         self.table_id = table_id
         self.name = name

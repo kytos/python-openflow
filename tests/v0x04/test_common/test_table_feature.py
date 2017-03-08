@@ -10,7 +10,7 @@ from pyof.v0x04.common.flow_instructions import (InstructionApplyAction,
 from tests.v0x04.test_struct import TestStruct
 
 class TestTableFeatures(TestStruct):
-    """"""
+    """Class used to test TableFeatures structures."""
 
     @classmethod
     def setUpClass(cls):
