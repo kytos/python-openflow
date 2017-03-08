@@ -253,6 +253,8 @@ class ActionPopMPLS(GenericStruct):
     length = UBInt16(8)
     #: Ethertype
     ethertype = UBInt16()
+    #: Padding
+    pad = Pad(2)
 
     def __init__(self, ethertype=None):
         """Action structure for OFPAT_POP_MPLS.
