@@ -17,11 +17,11 @@ from pyof.v0x04.common.header import Header
 
 # Third-party imports
 
-__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
-           'ControllerRole', 'DescStats', 'FlowStats', 'FlowStatsRequest',
-           'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
-           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
-           'TableStats')
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'BucketCounter',
+           'ConfigFlags', 'ControllerRole', 'DescStats', 'FlowStats',
+           'FlowStatsRequest', 'GroupStatsRequest', 'ListOfActions',
+           'MultipartTypes', 'PortStats', 'PortStatsRequest', 'QueueStats',
+           'QueueStatsRequest', 'StatsTypes', 'TableStats')
 
 # Enums
 
@@ -237,6 +237,27 @@ class AggregateStatsRequest(GenericStruct):
         self.match = match
 
 
+class BucketCounter(GenericStruct):
+    """Used in group stats replies."""
+
+    #: Number of packets processed by bucket.
+    packet_count = UBInt64()
+    #: Number of bytes processed by bucket.
+    byte_count = UBInt64()
+
+    def __init__(self, packet_count=None, byte_count=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            packet_count: Number of packets processed by bucket.
+            byte_count: Number of bytes processed by bucket.
+        """
+
+        super().__init__()
+        self.packet_count = packet_count
+        self.byte_count = byte_count
+
+
 class DescStats(GenericStruct):
     """Information available from the OFPST_DESC stats request.
 
@@ -369,7 +390,7 @@ class FlowStatsRequest(GenericStruct):
 
 
 class GroupStatsRequest(GenericStruct):
-    """Body of OFPMP_GROUP request"""
+    """Body of OFPMP_GROUP request."""
 
     #: Group id. All groups is OFPG_ALL
     group_id = UBInt32()
