@@ -19,9 +19,9 @@ from pyof.v0x04.common.header import Header
 
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'BucketCounter',
            'ConfigFlags', 'ControllerRole', 'DescStats', 'FlowStats',
-           'FlowStatsRequest', 'GroupStatsRequest', 'ListOfActions',
-           'MultipartTypes', 'PortStats', 'PortStatsRequest', 'QueueStats',
-           'QueueStatsRequest', 'StatsTypes', 'TableStats')
+           'FlowStatsRequest', 'GroupStats', 'GroupStatsRequest',
+           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
+           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
 
 # Enums
 
@@ -387,6 +387,49 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class GroupStats(GenericStruct):
+    """Body of reply to OFPMP_GROUP request."""
+
+    length = UBInt16()
+    #: Align to 64 bits.
+    pad = Pad(2)
+    group_id = UBInt32()
+    ref_count = UBInt32()
+    #: Align to 64 bits.
+    pad2 = Pad(4)
+    packet_count = UBInt64()
+    byte_count = UBInt64()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
+    bucket_stats = FixedTypeList(BucketCounter)
+
+    def __init__(self, length=None, group_id=None, ref_count=None,
+                 packet_count=None, byte_count=None, duration_sec=None,
+                 duration_nsec=None, bucket_stats=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            length: Length of this entry
+            group_id: Group identifier
+            ref_count: Number of flows or groups that directly forward
+                to this group.
+            packet_count: Number of packets processed by group
+            byte_count: Number of bytes processed by group
+            duration_sec: Time group has been alive in seconds
+            duration_nsec: Time group has been alive in nanoseconds
+            bucket_stats: List of stats of group buckets
+        """
+        super().__init__()
+        self.length = length
+        self.group_id = group_id
+        self.ref_count = ref_count
+        self.packet_count = packet_count
+        self.byte_count = byte_count
+        self.duration_sec = duration_sec
+        self.duration_nsec = duration_nsec
+        self.bucket_stats = bucket_stats
 
 
 class GroupStatsRequest(GenericStruct):
