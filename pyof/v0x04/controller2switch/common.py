@@ -14,14 +14,16 @@ from pyof.v0x04.asynchronous.port_status import PortReason
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
+from pyof.v0x04.controller2switch.group_mod import Bucket
 
 # Third-party imports
 
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'BucketCounter',
            'ConfigFlags', 'ControllerRole', 'DescStats', 'FlowStats',
-           'FlowStatsRequest', 'GroupStats', 'GroupStatsRequest',
-           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
-           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
+           'FlowStatsRequest', 'GroupDescStats', 'GroupStats',
+           'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
+           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
+           'TableStats')
 
 # Enums
 
@@ -387,6 +389,33 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class GroupDescStats(GenericStruct):
+    """Body of reply to OFPMP_GROUP_DESC request."""
+
+    length = UBInt16()
+    group_type = UBInt8()
+    #: Pad to 64 bits.
+    pad = Pad(1)
+    group_id = UBInt32()
+    buckets = FixedTypeList(Bucket)
+
+    def __init__(self, length=None, group_type=None, group_id=None,
+                 buckets=None):
+        """The constructor just assigns parameters to object attributes
+
+        Args:
+            length: Length of this entry.
+            group_type: One of OFPGT_*.
+            group_id: Group identifier.
+            buckets: List of buckets in group.
+        """
+        super().__init__()
+        self.length = length
+        self.group_type = group_type
+        self.group_id = group_id
+        self.buckets = buckets
 
 
 class GroupStats(GenericStruct):
