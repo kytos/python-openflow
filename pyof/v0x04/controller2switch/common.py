@@ -19,8 +19,9 @@ from pyof.v0x04.common.header import Header
 
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
            'ControllerRole', 'DescStats', 'FlowStats', 'FlowStatsRequest',
-           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
-           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
+           'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
+           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
+           'TableStats')
 
 # Enums
 
@@ -365,6 +366,26 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class GroupStatsRequest(GenericStruct):
+    """Body of OFPMP_GROUP request"""
+
+    #: Group id. All groups is OFPG_ALL
+    group_id = UBInt32()
+    #: Align to 64 bits
+    pad = Pad(4)
+
+    def __init__(self, group_id=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            group_id(int): ID of group to read. OFPG_ALL to request informatio
+                for all groups.
+        """
+
+        super().__init__()
+        self.group_id = group_id
 
 
 class ListOfActions(FixedTypeList):
