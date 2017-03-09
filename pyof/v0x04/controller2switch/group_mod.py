@@ -7,7 +7,20 @@ from pyof.foundation.basic_types import (FixedTypeList, GenericStruct, Pad,
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.header import Header, Type
 
-_all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Bucket')
+_all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Bucket', 'Group')
+
+
+class Group(Enum):
+    """Group numbering. Groups can use any number up to OFPG_MAX."""
+
+    #: Last usable group number.
+    OFPG_MAX = 0xffffff00
+    #: Fake groups.
+    #: Represents all groups for group delete commands.
+    OFPG_ALL = 0xfffffffc
+    #: Wildcard group used only for flow stats requests.
+    #  Select all flows regardless of group (including flows with no group).
+    OFPG_ANY = 0xffffffff
 
 
 class GroupModCommand(Enum):
