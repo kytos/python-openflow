@@ -21,7 +21,7 @@ from pyof.v0x04.controller2switch.group_mod import Bucket
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'BucketCounter',
            'ConfigFlags', 'ControllerRole', 'DescStats', 'FlowStats',
            'FlowStatsRequest', 'GroupCapabilities', 'GroupDescStats',
-           'GroupStats', 'GroupStatsRequest', 'ListOfActions',
+           'GroupFeatures', 'GroupStats', 'GroupStatsRequest', 'ListOfActions',
            'MultipartTypes', 'PortStats', 'PortStatsRequest', 'QueueStats',
            'QueueStatsRequest', 'StatsTypes', 'TableStats')
 
@@ -416,7 +416,7 @@ class GroupDescStats(GenericStruct):
 
     def __init__(self, length=None, group_type=None, group_id=None,
                  buckets=None):
-        """The constructor just assigns parameters to object attributes
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length: Length of this entry.
@@ -429,6 +429,46 @@ class GroupDescStats(GenericStruct):
         self.group_type = group_type
         self.group_id = group_id
         self.buckets = buckets
+
+
+class GroupFeatures(GenericStruct):
+    """Body of reply to OFPMP_GROUP_FEATURES request.Group features."""
+
+    types = UBInt32()
+    capabilities = UBInt32()
+    max_groups1 = UBInt32()
+    max_groups2 = UBInt32()
+    max_groups3 = UBInt32()
+    max_groups4 = UBInt32()
+    actions1 = UBInt32()
+    actions2 = UBInt32()
+    actions3 = UBInt32()
+    actions4 = UBInt32()
+
+    def __init__(self, types=None, capabilities=None, max_groups1=None,
+                 max_groups2=None, max_groups3=None, max_groups4=None,
+                 actions1=None, actions2=None, actions3=None, actions4=None):
+        """The constructor just assigns parameters to object attributes
+
+        Args:
+            types: Bitmap of OFPGT_* values supported.
+            capabilities: Bitmap of OFPGFC_* capability supported.
+            max_groups: 4-position array; Maximum number of groups for each
+                type.
+            actions: 4-position array; Bitmaps of OFPAT_* that are supported.
+        """
+        super().__init__()
+        self.types = types
+        self.capabilities = capabilities
+        self.max_groups1 = max_groups1
+        self.max_groups2 = max_groups2
+        self.max_groups3 = max_groups3
+        self.max_groups4 = max_groups4
+        self.actions1 = actions1
+        self.actions2 = actions2
+        self.actions3 = actions3
+        self.actions4 = actions4
+
 
 
 class GroupStats(GenericStruct):
