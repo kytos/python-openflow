@@ -4,7 +4,7 @@
 from enum import Enum
 
 # Local source tree imports
-from pyof.foundation.base import GenericMessage, GenericStruct, GenericBitMask
+from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
@@ -14,16 +14,16 @@ from pyof.v0x04.asynchronous.port_status import PortReason
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
-from pyof.v0x04.controller2switch.group_mod import Bucket
 
 # Third-party imports
 
-__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'BucketCounter',
-           'ConfigFlags', 'ControllerRole', 'DescStats', 'FlowStats',
-           'FlowStatsRequest', 'GroupCapabilities', 'GroupDescStats',
-           'GroupFeatures', 'GroupStats', 'GroupStatsRequest', 'ListOfActions',
-           'MultipartTypes', 'PortStats', 'PortStatsRequest', 'QueueStats',
-           'QueueStatsRequest', 'StatsTypes', 'TableStats')
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
+           'BucketCounter', 'ConfigFlags', 'ControllerRole', 'DescStats',
+           'FlowStats', 'FlowStatsRequest', 'GroupCapabilities',
+           'GroupDescStats', 'GroupFeatures', 'GroupStats',
+           'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
+           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
+           'TableStats')
 
 # Enums
 
@@ -237,6 +237,40 @@ class AggregateStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class Bucket(GenericStruct):
+    """Bucket for use in groups."""
+
+    length = UBInt16()
+    weight = UBInt16()
+    watch_port = UBInt32()
+    watch_group = UBInt32()
+    pad = Pad(4)
+    actions = FixedTypeList(ActionHeader)
+
+    def __init__(self, length=None, weight=None, watch_port=None,
+                 watch_group=None, actions=None):
+        """Initialize all instance variables.
+
+        Args:
+            length (int): Length the bucket in bytes, including this header and
+                any padding to make it 64-bit aligned.
+            weight (int): Relative weight of bucket. Only defined for select
+                groups.
+            watch_port (int): Port whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            watch_group (int): Group whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            actions (:func:`list` of :class:`.ActionHeader`): The action length
+                is inferred from the length field in the header.
+        """
+        super().__init__()
+        self.length = length
+        self.weight = weight
+        self.watch_port = watch_port
+        self.watch_group = watch_group
+        self.actions = actions
 
 
 class BucketCounter(GenericStruct):
