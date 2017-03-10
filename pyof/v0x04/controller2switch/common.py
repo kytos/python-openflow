@@ -53,6 +53,19 @@ class ControllerRole(Enum):
     OFPCR_ROLE_SLAVE = 3
 
 
+class GroupCapabilities(GenericBitMask):
+    """Group configuration flags."""
+
+    #: Support weight for select groups.
+    OFPGFC_SELECT_WEIGHT = 1 << 0
+    #: Support liveness for select groups.
+    OFPGFC_SELECT_LIVENESS = 1 << 1
+    #: Support chaining groups.
+    OFPGFC_CHAINING = 1 << 2
+    #: Chack chaining for loops and delete.
+    OFPGFC_CHAINING_CHECKS = 1 << 3
+
+
 class MultipartTypes(Enum):
     """Types of Multipart Messages, both Request and Reply."""
 
@@ -423,19 +436,6 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
-
-
-class GroupCapabilities(GenericBitMask):
-    """Group configuration flags."""
-
-    #: Support weight for select groups.
-    OFPGFC_SELECT_WEIGHT = 1 << 0
-    #: Support liveness for select groups.
-    OFPGFC_SELECT_LIVENESS = 1 << 1
-    #: Support chaining groups.
-    OFPGFC_CHAINING = 1 << 2
-    #: Chack chaining for loops and delete.
-    OFPGFC_CHAINING_CHECKS = 1 << 3
 
 
 class GroupDescStats(GenericStruct):
