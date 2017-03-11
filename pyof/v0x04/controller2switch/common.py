@@ -12,6 +12,7 @@ from pyof.v0x04.controller2switch.meter_mod import MeterBandType, MeterFlags
 from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
+from pyof.v0x04.controller2switch.meter_mod import Meter
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
@@ -28,7 +29,7 @@ __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
            'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
            'TableStats', 'MeterMultipartRequest', 'MeterConfig',
-           'MeterFeatures')
+           'MeterFeatures', 'BandStats', 'ListOfBandStats', 'MeterStats')
 
 # Enums
 
@@ -919,6 +920,85 @@ class MeterConfig(GenericStruct):
         self.flags = flags
         self.meter_id = meter_id
         self.bands = bands
+
+
+class BandStats(GenericStruct):
+    """Band  Statistics.
+
+    Statistics for each meter band.
+    """
+
+    packet_band_count = UBInt64()
+    byte_band_count = UBInt64()
+
+    def __init__(self, packet_band_count=None, byte_band_count=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            packet_band_count(int): Number of packets in band.
+            byte_band_count(int):   Number of bytes in band.
+        """
+        self.packet_band_count = packet_band_count
+        self.byte_band_count = byte_band_count
+
+
+class ListOfBandStats(FixedTypeList):
+    """List of BandStats.
+
+    Represented by instances of BandStats.
+    """
+
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (BandStats): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=BandStats,items=items)
+
+
+class MeterStats(GenericStruct):
+    """Meter Statistics.
+
+    Body of reply to OFPMP_METER request.
+    """
+
+    meter_id = UBInt32(enum_ref=Meter)
+    length = UBInt16()
+    pad = Pad(6)
+    flow_count = UBInt32()
+    packet_in_count = UBInt64()
+    byte_in_count = UBInt64()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
+    band_stats = ListOfBandStats()
+
+    def __init__(self, meter_id=Meter.OFPM_ALL, flow_count=None,
+                 packet_in_count=None, byte_in_count=None, duration_sec=None,
+                 duration_nsec=None, band_stats=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            meter_id(Meter):      Meter instance.
+            flow_count(int):      Number of flows bound to meter.
+            packet_in_count(int): Number of packets in input.
+            byte_in_count(int):   Number of bytes in input.
+            duration_sec(int):    Time meter has been alive in seconds.
+            duration_nsec(int):   Time meter has been alive in
+                                  nanoseconds beyond duration_sec.
+            band_stats(list):     Instances of BandStats
+        """
+        super().__init__()
+        self.meter_id = meter_id
+        self.flow_count = flow_count
+        self.packet_in_count= packet_in_count
+        self.byte_in_count = byte_in_count
+        self.duration_sec = duration_sec
+        self.duration_nsec = duration_nsec
+        if band_stats != None:
+          self.band_stats = band_stats
+        else:
+           self.band_stats = []
         self.update_length()
 
     def update_length(self):
@@ -947,7 +1027,8 @@ class MeterConfig(GenericStruct):
         length = UBInt16()
         length.unpack(buff,offset)
 
-        super().unpack(buff[:offset+length.value],offset)
+        length.unpack(buff,offset=offset+MeterStats.meter_id.get_size())
+        super().unpack(buff[:offset+length.value],offset=offset)
 
 
 class MeterFeatures(GenericStruct):
@@ -962,17 +1043,17 @@ class MeterFeatures(GenericStruct):
 
     def __init__(self, max_meter=None, band_types=None, capabilities=None,
                  max_bands=None, max_color=None):
-         """The Constructor of MeterFeatures receives the parameters below.
+        """The Constructor of MeterFeatures receives the parameters below.
 
-         Args:
-             max_meter(int):           Maximum number of meters.
-             band_types(Meter):        Bitmaps of OFPMBT_* values supported.
-             capabilities(MeterFlags): Bitmaps of "ofp_meter_flags".
-             max_bands(int):           Maximum bands per meters
-             max_color(int):           Maximum color value
-         """
-         self.max_meter = max_meter
-         self.band_types = band_types
-         self.capabilities = capabilities
-         self.max_bands = max_bands
-         self.max_color = max_color
+        Args:
+            max_meter(int):           Maximum number of meters.
+            band_types(Meter):        Bitmaps of OFPMBT_* values supported.
+            capabilities(MeterFlags): Bitmaps of "ofp_meter_flags".
+            max_bands(int):           Maximum bands per meters
+            max_color(int):           Maximum color value
+        """
+        self.max_meter = max_meter
+        self.band_types = band_types
+        self.capabilities = capabilities
+        self.max_bands = max_bands
+        self.max_color = max_color
