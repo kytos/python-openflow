@@ -14,6 +14,9 @@ from pyof.v0x04.asynchronous.port_status import PortReason
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
+from pyof.v0x04.controller2switch.meter_mod import (Meter, MeterFlags,
+                                                    MeterBandHeader,
+                                                    ListOfMeterBandHeader)
 
 # Third-party imports
 
@@ -23,7 +26,7 @@ __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
            'GroupDescStats', 'GroupFeatures', 'GroupStats',
            'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
-           'TableStats')
+           'TableStats', 'MeterMultipartRequest', 'MeterConfig')
 
 # Enums
 
@@ -857,3 +860,89 @@ class SwitchConfig(GenericMessage):
         super().__init__(xid)
         self.flags = flags
         self.miss_send_len = miss_send_len
+
+
+class MeterMultipartRequest(GenericStruct):
+    """MeterMultipartRequest structure.
+
+    This class represents the structure for ofp_meter_multipart_request.
+    This structure is a body of OFPMP_METER and OFPMP_METER_CONFIG requests.
+    """
+
+    # Meter instance, or OFPM_ALL.
+    meter_id = UBInt32(enum_ref=Meter)
+
+    # Align to 64 bits.
+    pad = Pad(4)
+
+    def __init__(self, meter_id=Meter.OFPM_ALL):
+        """The Constructor of MeterMultipartRequest receives the paramters
+        below.
+
+        Args:
+            meter_id(Meter): Meter Indentify.The value Meter.OFPM_ALL is used
+                             to refer to all Meters on the switch.
+        """
+
+        super().__init__()
+        self.meter_id = meter_id
+
+
+class MeterConfig(GenericStruct):
+    """MeterConfig is a class to represents  ofp_meter_config structure.
+
+    Body of reply to OFPMP_METER_CONFIG request.
+    """
+    # Length of this entry.
+    length = UBInt16()
+    # All OFPMC_* that apply.
+    flags = UBInt16(enum_ref=MeterFlags)
+    # Meter instance.
+    meter_id = UBInt32(enum_ref=Meter)
+    # The bands length is inferred from the length field.
+    bands = ListOfMeterBandHeader()
+
+    def __init__(self, flags=MeterFlags.OFPMF_STATS, meter_id=Meter.OFPM_ALL,
+                 bands=[]):
+        """The Constructor of MeterConfig receives the parameters below.
+
+        Args:
+            flags(MeterFlags): Meter configuration flags.The default value is
+                               MeterFlags.OFPMF_STATS
+            meter_id(Meter):   Meter Indentify.The value Meter.OFPM_ALL is used
+                               to refer to all Meters on the switch.
+            bands(list):       List of MeterBandHeader instances.
+        """
+        super().__init__()
+        self.flags = flags
+        self.meter_id = meter_id
+        self.bands = bands
+        self.update_length()
+
+    def update_length(self):
+        self.length = self.get_size()
+
+
+    def pack(self, value=None):
+        """Pack method used to update the length of instance and  packing.
+
+        Args:
+            value: Structure to be packed.
+        """
+        self.update_length()
+        return super().pack(value)
+
+    def unpack(self, buff=None, offset=0):
+        """Unpack *buff* into this object.
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        length = UBInt16()
+        length.unpack(buff,offset)
+
+        super().unpack(buff[:offset+length.value],offset)
