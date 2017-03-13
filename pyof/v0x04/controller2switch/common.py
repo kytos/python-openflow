@@ -18,9 +18,10 @@ from pyof.v0x04.common.header import Header
 # Third-party imports
 
 __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
-           'ControllerRole', 'DescStats', 'FlowStats', 'FlowStatsRequest',
-           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
-           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
+           'ControllerRole', 'DescStats', 'ExperimenterMultipartHeader',
+           'FlowStats', 'FlowStatsRequest', 'ListOfActions', 'MultipartTypes',
+           'PortStats', 'PortStatsRequest', 'QueueStats', 'QueueStatsRequest',
+           'StatsTypes', 'TableStats')
 
 # Enums
 
@@ -256,7 +257,7 @@ class DescStats(GenericStruct):
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             mfr_desc (str): Manufacturer description
@@ -271,6 +272,25 @@ class DescStats(GenericStruct):
         self.sw_desc = sw_desc
         self.serial_num = serial_num
         self.dp_desc = dp_desc
+
+
+class ExperimenterMultipartHeader(GenericStruct):
+    """Body for ofp_multipart_request/reply of type OFPMP_EXPERIMENTER."""
+
+    experimenter = UBInt32()
+    exp_type = UBInt32()
+    #: Followed by experimenter-defined arbitrary data.
+
+    def __init__(self, experimenter=None, exp_type=None):
+        """The constructor just assigns parameters to object attributes.
+        Args:
+            experimenter: Experimenter ID which takes the same form as in
+                struct ofp_experimenter_header (class ExperimenterHeader).
+            exp_type: Experimenter defined.
+        """
+        super().__init__()
+        self.experimenter = experimenter
+        self.exp_type = exp_type
 
 
 class FlowStats(GenericStruct):
