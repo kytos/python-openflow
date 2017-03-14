@@ -16,7 +16,7 @@ use this simple and intuitive library in other projects.
 .. attention::
    *python-openflow* does not perform I/O operations. To communicate with a
    switch, you must write your own controller using this library or use our
-   `Kytos SDN plataform <http://kytos.io/>`_.
+   `Kytos SDN platform <http://kytos.io/>`_.
 
 A quick start follows for you to check whether this project fits your needs.
 For a more detailed documentation, please check the `python-openflow API
