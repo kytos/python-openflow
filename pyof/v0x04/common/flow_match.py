@@ -8,7 +8,8 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32
+from pyof.foundation.basic_types import (FixedTypeList, UBInt8, UBInt16,
+                                         UBInt32)
 
 # Third-party imports
 
@@ -182,7 +183,15 @@ class VlanId(Enum):
 # Classes
 
 
-class Match(GenericStruct):
+class OxmHeader(GenericStruct):
+    """Generic Openflow EXtensible Match header.
+
+    Abstract class that can be instanciated as Match or OxmExperimenterHeader.
+    """
+    pass
+
+
+class Match(OxmHeader):
     """Describes the flow match header structure.
 
     These are the fields to match against flows.
@@ -229,7 +238,7 @@ class Match(GenericStruct):
         self.oxm_field4 = oxm_field4
 
 
-class OxmExperimenterHeader(GenericStruct):
+class OxmExperimenterHeader(OxmHeader):
     """Header for OXM experimenter match fields."""
 
     #: oxm_class = OFPXMC_EXPERIMENTER
@@ -248,3 +257,17 @@ class OxmExperimenterHeader(GenericStruct):
         """
         super().__init__()
         self.experimenter = experimenter
+
+
+class ListOfOxmHeader(FixedTypeList):
+    """List of Openflow EXtensible Match header instances.
+
+    Represented by instances of OxmHeader.
+    """
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (OxmHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=OxmHeader,items=items)
