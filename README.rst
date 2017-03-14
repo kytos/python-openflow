@@ -16,11 +16,11 @@ use this simple and intuitive library in other projects.
 .. attention::
    *python-openflow* does not perform I/O operations. To communicate with a
    switch, you must write your own controller using this library or use our
-   `Kytos SDN controller <http://kytos.io/>`_.
+   `Kytos SDN plataform <http://kytos.io/>`_.
 
 A quick start follows for you to check whether this project fits your needs.
-For a more detailed documentation, please check the
-`python-openflow API Reference Manual <http://docs.kytos.io/python-openflow/pyof/>`_.
+For a more detailed documentation, please check the `python-openflow API
+Reference Manual <http://docs.kytos.io/python-openflow/pyof/>`_.
 
 Quick Start
 ***********
@@ -31,8 +31,8 @@ Installing
 We are doing a huge effort to make Kytos and its components available on all
 common distros. So, we recommend you to download it from your distro repository.
 
-But if you are trying to test, develop or just want a more recent version of
-our software no problem: Download now, the latest release (it still a beta
+But if you are trying to test, develop or just want a more recent version of our
+software no problem: Download now, the latest release (it still a beta
 software), from our repository:
 
 First you need to clone `python-openflow` repository:
@@ -41,8 +41,8 @@ First you need to clone `python-openflow` repository:
 
    $ git clone https://github.com/kytos/python-openflow.git
 
-After cloning, the installation process is done by standard `setuptools`
-install procedure:
+After cloning, the installation process is done by standard `setuptools` install
+procedure:
 
 .. code-block:: shell
 
@@ -53,8 +53,8 @@ install procedure:
 Basic Usage Example
 ===================
 
-See how it is easy to create a feature request message with this library.
-You can use ipython3 to get the advantages of autocompletion:
+See how it is easy to create a feature request message with this library.  You
+can use ipython3 to get the advantages of autocompletion:
 
 .. code-block:: python
 
