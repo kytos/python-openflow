@@ -1,8 +1,9 @@
-|Experimental| |Openflow| |Tag| |Release| |Pypi| |Tests| |License|
 
 ########
 Overview
 ########
+
+|Experimental| |Openflow| |Tag| |Release| |Tests| |License|
 
 *python-openflow* is a low level library to parse and create OpenFlow messages.
 If you want to read an OpenFlow packet from an open socket or send a message to
@@ -27,26 +28,12 @@ Quick Start
 Installing
 ==========
 
-For now, you can install this package from source (if you have cloned this
-repository) or via pip. If you are a more experienced Python user, you can
-also install it without root permissions.
+We are doing a huge effort to make Kytos and its components available on all
+common distros. So, we recommend you to download it from your distro repository.
 
-.. note:: We are improving this and soon you will be able to install from the
- major distros' repositories.
-
-From PyPI
----------
-
-*python-openflow* is in PyPI, so you can easily install it via `pip3` (`pip`
-for Python 3) or include this project in your `requirements.txt`. To install it
-with `pip3`, run the following command:
-
-.. code-block:: shell
-
-   $ sudo pip3 install python-openflow
-
-From source code
-----------------
+But if you are trying to test, develop or just want a more recent version of
+our software no problem: Download now, the latest release (it still a beta
+software), from our repository:
 
 First you need to clone `python-openflow` repository:
 
@@ -61,6 +48,7 @@ install procedure:
 
    $ cd python-openflow
    $ sudo python3 setup.py install
+
 
 Basic Usage Example
 ===================
@@ -98,21 +86,35 @@ To parse a message, use ``unpack_message()``:
 Please, note that this library do not send or receive messages via socket. You
 have to create your own server to receive messages from switches. This library
 only helps you to handle OpenFlow messages in a more pythonic way.
-To communicate with switches, we also develop *Kyco*, the Kytos Controller.
+To communicate with switches, we are working on
+`Kytos Controller <https://github.com/kytos/kytos>`__.
 
-.. hint::
-   To see more examples, please visit our
-   `Examples <http://docs.kytos.io/python-openflow/examples>`_ section.
+Authors
+*******
+
+For a complete list of authors, please open ``AUTHORS.rst`` file.
+
+Contributing
+************
+
+If you want to contribute to this project, please read `Kytos Documentation
+<https://docs.kytos.io/kytos/contributing/>`__ website.
+
+License
+*******
+
+This software is under *MIT-License*. For more information please read
+``LICENSE`` file.
+
 
 .. |Experimental| image:: https://img.shields.io/badge/stability-experimental-orange.svg
-.. |Openflow| image:: https://img.shields.io/badge/Openflow-1.0.0-brightgreen.svg
+.. |Openflow| image:: https://img.shields.io/badge/Openflow-1.3-brightgreen.svg
    :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
 .. |Tag| image:: https://img.shields.io/github/tag/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/tags
 .. |Release| image:: https://img.shields.io/github/release/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/releases
-.. |Pypi| image:: https://img.shields.io/pypi/v/python-openflow.svg
-.. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=develop
+.. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=master
    :target: https://travis-ci.org/kytos/python-openflow
 .. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/blob/master/LICENSE
