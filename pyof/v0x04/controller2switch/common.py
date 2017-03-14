@@ -301,7 +301,6 @@ class BucketCounter(GenericStruct):
             packet_count: Number of packets processed by bucket.
             byte_count: Number of bytes processed by bucket.
         """
-
         super().__init__()
         self.packet_count = packet_count
         self.byte_count = byte_count
@@ -482,7 +481,7 @@ class GroupFeatures(GenericStruct):
     def __init__(self, types=None, capabilities=None, max_groups1=None,
                  max_groups2=None, max_groups3=None, max_groups4=None,
                  actions1=None, actions2=None, actions3=None, actions4=None):
-        """The constructor just assigns parameters to object attributes
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             types: Bitmap of OFPGT_* values supported.
@@ -502,7 +501,6 @@ class GroupFeatures(GenericStruct):
         self.actions2 = actions2
         self.actions3 = actions3
         self.actions4 = actions4
-
 
 
 class GroupStats(GenericStruct):
@@ -563,7 +561,6 @@ class GroupStatsRequest(GenericStruct):
             group_id(int): ID of group to read. OFPG_ALL to request informatio
                 for all groups.
         """
-
         super().__init__()
         self.group_id = group_id
 
