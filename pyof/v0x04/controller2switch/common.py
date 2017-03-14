@@ -8,6 +8,7 @@ from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
+from pyof.v0x04.controller2switch.meter_mod import MeterBandType, MeterFlags
 from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
@@ -26,8 +27,8 @@ __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
            'GroupDescStats', 'GroupFeatures', 'GroupStats',
            'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
-           'TableStats', 'MeterMultipartRequest', 'MeterConfig')
-
+           'TableStats', 'MeterMultipartRequest', 'MeterConfig',
+           'MeterFeatures')
 
 # Enums
 
@@ -947,3 +948,31 @@ class MeterConfig(GenericStruct):
         length.unpack(buff,offset)
 
         super().unpack(buff[:offset+length.value],offset)
+
+
+class MeterFeatures(GenericStruct):
+    """Body of reply to OFPMP_METER_FEATURES request. Meter features."""
+
+    max_meter = UBInt32()
+    band_types = UBInt32(enum_ref=MeterBandType)
+    capabilities = UBInt32(enum_ref=MeterFlags)
+    max_bands = UBInt8()
+    max_color = UBInt8()
+    pad = Pad(2)
+
+    def __init__(self, max_meter=None, band_types=None, capabilities=None,
+                 max_bands=None, max_color=None):
+         """The Constructor of MeterFeatures receives the parameters below.
+
+         Args:
+             max_meter(int):           Maximum number of meters.
+             band_types(Meter):        Bitmaps of OFPMBT_* values supported.
+             capabilities(MeterFlags): Bitmaps of "ofp_meter_flags".
+             max_bands(int):           Maximum bands per meters
+             max_color(int):           Maximum color value
+         """
+         self.max_meter = max_meter
+         self.band_types = band_types
+         self.capabilities = capabilities
+         self.max_bands = max_bands
+         self.max_color = max_color
