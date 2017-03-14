@@ -4,7 +4,7 @@
 from enum import Enum
 
 # Local source tree imports
-from pyof.foundation.base import GenericMessage, GenericStruct
+from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
@@ -17,10 +17,13 @@ from pyof.v0x04.common.header import Header
 
 # Third-party imports
 
-__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'ConfigFlags',
-           'ControllerRole', 'DescStats', 'FlowStats', 'FlowStatsRequest',
-           'ListOfActions', 'MultipartTypes', 'PortStats', 'PortStatsRequest',
-           'QueueStats', 'QueueStatsRequest', 'StatsTypes', 'TableStats')
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
+           'BucketCounter', 'ConfigFlags', 'ControllerRole', 'DescStats',
+           'FlowStats', 'FlowStatsRequest', 'GroupCapabilities',
+           'GroupDescStats', 'GroupFeatures', 'GroupStats',
+           'GroupStatsRequest', 'ListOfActions', 'MultipartTypes', 'PortStats',
+           'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
+           'TableStats')
 
 # Enums
 
@@ -48,6 +51,19 @@ class ControllerRole(Enum):
     OFPCR_ROLE_MASTER = 2
     #: Read-only access.
     OFPCR_ROLE_SLAVE = 3
+
+
+class GroupCapabilities(GenericBitMask):
+    """Group configuration flags."""
+
+    #: Support weight for select groups.
+    OFPGFC_SELECT_WEIGHT = 1 << 0
+    #: Support liveness for select groups.
+    OFPGFC_SELECT_LIVENESS = 1 << 1
+    #: Support chaining groups.
+    OFPGFC_CHAINING = 1 << 2
+    #: Chack chaining for loops and delete.
+    OFPGFC_CHAINING_CHECKS = 1 << 3
 
 
 class MultipartTypes(Enum):
@@ -236,6 +252,60 @@ class AggregateStatsRequest(GenericStruct):
         self.match = match
 
 
+class Bucket(GenericStruct):
+    """Bucket for use in groups."""
+
+    length = UBInt16()
+    weight = UBInt16()
+    watch_port = UBInt32()
+    watch_group = UBInt32()
+    pad = Pad(4)
+    actions = FixedTypeList(ActionHeader)
+
+    def __init__(self, length=None, weight=None, watch_port=None,
+                 watch_group=None, actions=None):
+        """Initialize all instance variables.
+
+        Args:
+            length (int): Length the bucket in bytes, including this header and
+                any padding to make it 64-bit aligned.
+            weight (int): Relative weight of bucket. Only defined for select
+                groups.
+            watch_port (int): Port whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            watch_group (int): Group whose state affects whether this bucket is
+                live. Only required for fast failover groups.
+            actions (:func:`list` of :class:`.ActionHeader`): The action length
+                is inferred from the length field in the header.
+        """
+        super().__init__()
+        self.length = length
+        self.weight = weight
+        self.watch_port = watch_port
+        self.watch_group = watch_group
+        self.actions = actions
+
+
+class BucketCounter(GenericStruct):
+    """Used in group stats replies."""
+
+    #: Number of packets processed by bucket.
+    packet_count = UBInt64()
+    #: Number of bytes processed by bucket.
+    byte_count = UBInt64()
+
+    def __init__(self, packet_count=None, byte_count=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            packet_count: Number of packets processed by bucket.
+            byte_count: Number of bytes processed by bucket.
+        """
+        super().__init__()
+        self.packet_count = packet_count
+        self.byte_count = byte_count
+
+
 class DescStats(GenericStruct):
     """Information available from the OFPST_DESC stats request.
 
@@ -365,6 +435,134 @@ class FlowStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
+
+
+class GroupDescStats(GenericStruct):
+    """Body of reply to OFPMP_GROUP_DESC request."""
+
+    length = UBInt16()
+    group_type = UBInt8()
+    #: Pad to 64 bits.
+    pad = Pad(1)
+    group_id = UBInt32()
+    buckets = FixedTypeList(Bucket)
+
+    def __init__(self, length=None, group_type=None, group_id=None,
+                 buckets=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            length: Length of this entry.
+            group_type: One of OFPGT_*.
+            group_id: Group identifier.
+            buckets: List of buckets in group.
+        """
+        super().__init__()
+        self.length = length
+        self.group_type = group_type
+        self.group_id = group_id
+        self.buckets = buckets
+
+
+class GroupFeatures(GenericStruct):
+    """Body of reply to OFPMP_GROUP_FEATURES request.Group features."""
+
+    types = UBInt32()
+    capabilities = UBInt32()
+    max_groups1 = UBInt32()
+    max_groups2 = UBInt32()
+    max_groups3 = UBInt32()
+    max_groups4 = UBInt32()
+    actions1 = UBInt32()
+    actions2 = UBInt32()
+    actions3 = UBInt32()
+    actions4 = UBInt32()
+
+    def __init__(self, types=None, capabilities=None, max_groups1=None,
+                 max_groups2=None, max_groups3=None, max_groups4=None,
+                 actions1=None, actions2=None, actions3=None, actions4=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            types: Bitmap of OFPGT_* values supported.
+            capabilities: Bitmap of OFPGFC_* capability supported.
+            max_groups: 4-position array; Maximum number of groups for each
+                type.
+            actions: 4-position array; Bitmaps of OFPAT_* that are supported.
+        """
+        super().__init__()
+        self.types = types
+        self.capabilities = capabilities
+        self.max_groups1 = max_groups1
+        self.max_groups2 = max_groups2
+        self.max_groups3 = max_groups3
+        self.max_groups4 = max_groups4
+        self.actions1 = actions1
+        self.actions2 = actions2
+        self.actions3 = actions3
+        self.actions4 = actions4
+
+
+class GroupStats(GenericStruct):
+    """Body of reply to OFPMP_GROUP request."""
+
+    length = UBInt16()
+    #: Align to 64 bits.
+    pad = Pad(2)
+    group_id = UBInt32()
+    ref_count = UBInt32()
+    #: Align to 64 bits.
+    pad2 = Pad(4)
+    packet_count = UBInt64()
+    byte_count = UBInt64()
+    duration_sec = UBInt32()
+    duration_nsec = UBInt32()
+    bucket_stats = FixedTypeList(BucketCounter)
+
+    def __init__(self, length=None, group_id=None, ref_count=None,
+                 packet_count=None, byte_count=None, duration_sec=None,
+                 duration_nsec=None, bucket_stats=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            length: Length of this entry
+            group_id: Group identifier
+            ref_count: Number of flows or groups that directly forward
+                to this group.
+            packet_count: Number of packets processed by group
+            byte_count: Number of bytes processed by group
+            duration_sec: Time group has been alive in seconds
+            duration_nsec: Time group has been alive in nanoseconds
+            bucket_stats: List of stats of group buckets
+        """
+        super().__init__()
+        self.length = length
+        self.group_id = group_id
+        self.ref_count = ref_count
+        self.packet_count = packet_count
+        self.byte_count = byte_count
+        self.duration_sec = duration_sec
+        self.duration_nsec = duration_nsec
+        self.bucket_stats = bucket_stats
+
+
+class GroupStatsRequest(GenericStruct):
+    """Body of OFPMP_GROUP request."""
+
+    #: Group id. All groups is OFPG_ALL
+    group_id = UBInt32()
+    #: Align to 64 bits
+    pad = Pad(4)
+
+    def __init__(self, group_id=None):
+        """The constructor just assigns parameters to object attributes.
+
+        Args:
+            group_id(int): ID of group to read. OFPG_ALL to request informatio
+                for all groups.
+        """
+        super().__init__()
+        self.group_id = group_id
 
 
 class ListOfActions(FixedTypeList):

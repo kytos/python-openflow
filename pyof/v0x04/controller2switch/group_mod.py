@@ -2,12 +2,25 @@
 from enum import Enum
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import (FixedTypeList, GenericStruct, Pad,
-                                         UBInt8, UBInt16, UBInt32)
-from pyof.v0x04.common.action import ActionHeader
+from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
+                                         UBInt32)
 from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.controller2switch.common import Bucket
 
-_all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Bucket')
+__all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group')
+
+
+class Group(Enum):
+    """Group numbering. Groups can use any number up to OFPG_MAX."""
+
+    #: Last usable group number.
+    OFPG_MAX = 0xffffff00
+    #: Fake groups.
+    #: Represents all groups for group delete commands.
+    OFPG_ALL = 0xfffffffc
+    #: Wildcard group used only for flow stats requests.
+    #  Select all flows regardless of group (including flows with no group).
+    OFPG_ANY = 0xffffffff
 
 
 class GroupModCommand(Enum):
@@ -32,40 +45,6 @@ class GroupType(Enum):
     OFPGT_INDIRECT = 2
     #: Fast failover group.
     OFPGT_FF = 3
-
-
-class Bucket(GenericStruct):
-    """Bucket for use in groups."""
-
-    length = UBInt16()
-    weight = UBInt16()
-    watch_port = UBInt32()
-    watch_group = UBInt32()
-    pad = Pad(4)
-    actions = FixedTypeList(ActionHeader)
-
-    def __init__(self, length=None, weight=None, watch_port=None,
-                 watch_group=None, actions=None):
-        """Initialize all instance variables.
-
-        Args:
-            length (int): Length the bucket in bytes, including this header and
-                any padding to make it 64-bit aligned.
-            weight (int): Relative weight of bucket. Only defined for select
-                groups.
-            watch_port (int): Port whose state affects whether this bucket is
-                live. Only required for fast failover groups.
-            watch_group (int): Group whose state affects whether this bucket is
-                live. Only required for fast failover groups.
-            actions (:func:`list` of :class:`.ActionHeader`): The action length
-                is inferred from the length field in the header.
-        """
-        super().__init__()
-        self.length = length
-        self.weight = weight
-        self.watch_port = watch_port
-        self.watch_group = watch_group
-        self.actions = actions
 
 
 class ListOfBuckets(FixedTypeList):
