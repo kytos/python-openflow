@@ -8,7 +8,9 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32, UBInt64
+from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8,
+                                         UBInt16, UBInt32, UBInt64)
+from pyof.v0x04.controller2switch.meter_mod import Meter
 from pyof.v0x04.common.action import ListOfActions
 
 # Third-party imports
@@ -39,144 +41,176 @@ class InstructionType(Enum):
     #: Experimenter instruction
     OFPIT_EXPERIMENTER = 0xFFFF
 
+    def find_class(self):
+        """Method used to return a class related with this type."""
+        classes = {1:InstructionGotoTable, 2: InstructionWriteMetadata,
+                   3: InstructionWriteAction, 4: InstructionApplyAction,
+                   5: InstructionClearAction, 6: InstructionMeter}
+        return classes.get(self.value, None)
+
 
 # Classes
 
+class Instruction(GenericStruct):
+    """Generic Instruction class.
 
-class InstructionApplyAction(GenericStruct):
+    This class represents a Generic Instruction that can be instanciated as
+    'InstructionApplyAction', 'InstructionClearAction', 'InstructionGotoTable',
+    'InstructionMeter', 'InstructionWriteAction', 'InstructionWriteMetadata'.
+    """
+
+    instruction_type = UBInt16(enum_ref=InstructionType)
+    length = UBInt16()
+
+    def __init__(self, instruction_type=None):
+        """Constructor of Generic Instruction receives the parameters bellow.
+
+        Args:
+            instruction_type(InstructionType): Type of instruction.
+        """
+        super().__init__()
+        self.instruction_type = instruction_type
+
+    def update_length(self):
+        """Method used to update length attribute."""
+        self.length = self.get_size()
+
+    def unpack(self, buff=None, offset=0):
+        """Unpack *buff* into this object.
+
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        instruction_type = UBInt16(enum_ref=InstructionType)
+        instruction_type.unpack(buff,offset)
+        self.__class__ = InstructionType(instruction_type.value).find_class()
+
+        length = UBInt16()
+        length.unpack(buff, offset=offset+2)
+
+        super().unpack(buff[:offset+length.value],offset)
+
+
+class InstructionApplyAction(Instruction):
     """Instruction structure for OFPIT_APPLY_ACTIONS.
 
     The :attr:`~actions` field is treated as a list, and the actions are
     applied to the packet in-order.
     """
 
-    #: OFPIT_APPLY_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_APPLY_ACTIONS,
-                               enum_ref=InstructionType)
-    #: Length of this struct in bytes.
-    length = UBInt16()
     #: Align to 64-bits
     pad = Pad(4)
     #: Actions associated with OFPIT_APPLY_ACTIONS
     actions = ListOfActions()
 
-    def __init__(self, length=None, actions=None):
+    def __init__(self, actions=[]):
         """Instruction structure for OFPIT_APPLY_ACTIONS.
 
         Args:
-            - length (int): Length of this struct in bytes.
             - actions (:class:`~.actions.ListOfActions`): Actions associated
                 with OFPIT_APPLY_ACTIONS.
         """
-        super().__init__()
-        self.length = length
-        self.actions = actions if actions is not None else []
+        super().__init__(InstructionType.OFPIT_APPLY_ACTIONS)
+        self.actions = actions
+        self.update_length()
 
 
-class InstructionClearAction(GenericStruct):
+class InstructionClearAction(Instruction):
     """Instruction structure for OFPIT_CLEAR_ACTIONS.
 
     This structure does not contain any actions.
     """
 
-    #: OFPIT_CLEAR_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_CLEAR_ACTIONS,
-                               enum_ref=InstructionType)
-    #: Length of this struct in bytes.
-    length = UBInt16(8)
     #: Align to 64-bits
     pad = Pad(4)
     #: OFPIT_CLEAR_ACTIONS does not have any action on the list of actions.
     actions = ListOfActions()
 
+    def __init__(self, actions=[]):
+        """Instruction structure for OFPIT_CLEAR_ACTIONS.
 
-class InstructionGotoTable(GenericStruct):
+        Args:
+            - actions (:class:`~.actions.ListOfActions`): Actions associated
+                with OFPIT_CLEAR_ACTIONS.
+        """
+        super().__init__(InstructionType.OFPIT_CLEAR_ACTIONS)
+        self.actions = actions
+        self.update_length()
+
+
+class InstructionGotoTable(Instruction):
     """Instruction structure for OFPIT_GOTO_TABLE."""
 
-    #: OFPIT_GOTO_TABLE.
-    instruction_type = UBInt16(InstructionType.OFPIT_GOTO_TABLE,
-                               enum_ref=InstructionType)
-    #: Length of this struct in bytes.
-    length = UBInt16()
     #: Set next table in the lookup pipeline.
     table_id = UBInt8()
     #: Pad to 64 bits.
     pad = Pad(3)
 
-    def __init__(self, length=None, table_id=None):
+    def __init__(self, table_id=Meter.OFPM_ALL):
         """Instruction structure for OFPIT_GOTO_TABLE.
 
         Args:
             - length (int): Length of this struct in bytes.
             - table_id (int): set next table in the lookup pipeline.
         """
-        super().__init__()
-        self.length = length
+        super().__init__(InstructionType.OFPIT_GOTO_TABLE)
         self.table_id = table_id
+        self.update_length()
 
 
-class InstructionMeter(GenericStruct):
+class InstructionMeter(Instruction):
     """Instruction structure for OFPIT_METER.
 
     meter_id indicates which meter to apply on the packet.
     """
 
-    #: OFPIT_METER.
-    instruction_type = UBInt16(InstructionType.OFPIT_METER,
-                               enum_ref=InstructionType)
-    #: Length is 8.
-    length = UBInt16(8)
     #: Meter instance.
     meter_id = UBInt32()
 
-    def __init__(self, meter_id=None):
+    def __init__(self, meter_id=Meter.OFPM_ALL):
         """Instruction structure for OFPIT_METER.
 
         Args:
             - meter_id (int): Meter instance.
         """
-        super().__init__()
+        super().__init__(InstructionType.OFPIT_METER)
         self.meter_id = meter_id
 
 
-class InstructionWriteAction(GenericStruct):
+class InstructionWriteAction(Instruction):
     """Instruction structure for OFPIT_WRITE_ACTIONS.
 
     The actions field must be treated as a SET, so the actions are not
     repeated.
     """
 
-    #: OFPIT_WRITE_ACTIONS
-    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_ACTIONS,
-                               enum_ref=InstructionType)
-    #: Length of this struct in bytes.
-    length = UBInt16()
     #: Align to 64-bits
     pad = Pad(4)
     #: Actions associated with OFPIT_WRITE_ACTIONS
     actions = ListOfActions()
 
-    def __init__(self, length=None, actions=None):
+    def __init__(self, actions=[]):
         """Instruction structure for OFPIT_WRITE_ACTIONS.
 
         Args:
-            - length (int): Length of this struct in bytes.
             - actions (:class:`~.actions.ListOfActions`): Actions associated
                 with OFPIT_WRITE_ACTIONS.
         """
-        super().__init__()
-        self.length = length
-        self.actions = actions if actions is not None else []
+        super().__init__(InstructionType.OFPIT_WRITE_ACTIONS)
+        self.actions = actions
+        self.update_length()
 
 
-class InstructionWriteMetadata(GenericStruct):
+class InstructionWriteMetadata(Instruction):
     """Instruction structure for OFPIT_WRITE_METADATA."""
 
-    #: OFPIT_WRITE_METADATA
-    instruction_type = UBInt16(InstructionType.OFPIT_WRITE_METADATA,
-                               enum_ref=InstructionType)
-    #: Length of this struct in bytes
-    length = UBInt16()
     #: Align to 64-bits
     pad = Pad(4)
     #: Metadata value to write
@@ -184,15 +218,27 @@ class InstructionWriteMetadata(GenericStruct):
     #: Metadata write bitmask
     metadata_mask = UBInt64()
 
-    def __init__(self, length=None, metadata=None, metadata_mask=None):
+    def __init__(self, metadata=0, metadata_mask=0):
         """Instruction structure for OFPIT_WRITE_METADATA.
 
         Args:
-            - length (int): Length of this struct in bytes.
             - metadata (int): Metadata value to write.
             - metadata_mask (int): Metadata write bitmask.
         """
-        super().__init__()
-        self.length = length
+        super().__init__(InstructionType.OFPIT_WRITE_METADATA)
         self.metadata = metadata
         self.metadata_mask = metadata_mask
+        self.update_length()
+
+class ListOfInstruction(FixedTypeList):
+    """List of Instructions.
+
+    Represented by instances of Instruction.
+    """
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (Instruction): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=Instruction,items=items)
