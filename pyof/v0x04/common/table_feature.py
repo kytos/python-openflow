@@ -6,19 +6,20 @@ This module contains the Table Features struture and your Property types.
 # System imports
 from enum import Enum
 
-# Local source tree imports
-from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
-                                         UBInt16 ,UBInt32, UBInt64)
+                                         UBInt16, UBInt32, UBInt64)
+# Local source tree imports
+from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.v0x04.common.action import ListOfActions
-from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.common.flow_instructions import ListOfInstruction
+from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.controller2switch.table_mod import Table
 
 __all__ = ('TableFeaturePropType', 'Property', 'InstructionsProperty',
-           'NextTablesProperty', 'ActionsProperty', 'OxmProperty' ,
+           'NextTablesProperty', 'ActionsProperty', 'OxmProperty',
            'ListOfProperty', 'TableFeatures')
+
 
 class TableFeaturePropType(Enum):
     """Table Property Types.
@@ -80,6 +81,7 @@ class Property(GenericStruct):
 
     This class represents a Table Property generic structure.
     """
+
     property_type = UBInt16(enum_ref=TableFeaturePropType)
     length = UBInt16(4)
 
@@ -101,7 +103,6 @@ class Property(GenericStruct):
         self.update_length()
         return super().pack(value)
 
-
     def unpack(self, buff=None, offset=0):
         """Unpack *buff* into this object.
 
@@ -116,12 +117,12 @@ class Property(GenericStruct):
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         property_type = UBInt16(enum_ref=TableFeaturePropType)
-        property_type.unpack(buff,offset)
+        property_type.unpack(buff, offset)
         self.__class__ = TableFeaturePropType(property_type.value).find_class()
 
         length = UBInt16()
-        length.unpack(buff,offset=offset+2)
-        super().unpack(buff[:offset+length.value],offset=offset)
+        length.unpack(buff, offset=offset+2)
+        super().unpack(buff[:offset+length.value], offset=offset)
 
     def update_length(self):
         """Update the length of current instance."""
@@ -135,10 +136,11 @@ class InstructionsProperty(Property):
         OFPTFPT_INSTRUCTIONS
         OFPTFPT_INSTRUCTIONS_MISS
     """
+
     instruction_ids = ListOfInstruction()
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_INSTRUCTIONS,
-                 instruction_ids=[]):
+                 instruction_ids=None):
         """Constructor of InstructionProperty receives the parameters bellow.
 
         Args:
@@ -146,7 +148,7 @@ class InstructionsProperty(Property):
             instruction_ids(ListOfInstruction): List of Instruction instances.
         """
         super().__init__(property_type=property_type)
-        self.instruction_ids = instruction_ids
+        self.instruction_ids = instruction_ids if instruction_ids else []
         self.update_length()
 
 
@@ -157,6 +159,7 @@ class NextTablesProperty(Property):
         OFPTFPT_NEXT_TABLES
         OFPTFPT_NEXT_TABLES_MISS
     """
+
     next_table_ids = ListOfInstruction()
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_NEXT_TABLES,
@@ -182,11 +185,12 @@ class ActionsProperty(Property):
         OFPTFPT_APPLY_ACTIONS
         OFPTFPT_APPLY_ACTIONS_MISS
     """
+
     action_ids = ListOfActions()
 
     def __init__(self,
                  property_type=TableFeaturePropType.OFPTFPT_WRITE_ACTIONS,
-                 action_ids=ListOfActions()):
+                 action_ids=None):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
@@ -194,7 +198,7 @@ class ActionsProperty(Property):
             action_ids(ListOfActions): List of Action instances.
         """
         super().__init__(property_type)
-        self.action_ids = action_ids
+        self.action_ids = action_ids if action_ids else ListOfActions()
         self.update_length()
 
 
@@ -209,6 +213,7 @@ class OxmProperty(Property):
         OFPTFPT_APPLY_SETFIELD
         OFPTFPT_APPLY_SETFIELD_MISS
     """
+
     oxm_ids = ListOfOxmHeader()
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_MATCH,
@@ -327,5 +332,5 @@ class TableFeatures(GenericStruct):
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         length = UBInt16()
-        length.unpack(buff,offset)
-        super().unpack(buff[:offset+length.value],offset)
+        length.unpack(buff, offset)
+        super().unpack(buff[:offset+length.value], offset)

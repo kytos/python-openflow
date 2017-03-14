@@ -8,10 +8,10 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8,
-                                         UBInt16, UBInt32, UBInt64)
-from pyof.v0x04.controller2switch.meter_mod import Meter
+from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
+                                         UBInt32, UBInt64)
 from pyof.v0x04.common.action import ListOfActions
+from pyof.v0x04.controller2switch.meter_mod import Meter
 
 # Third-party imports
 
@@ -43,7 +43,7 @@ class InstructionType(Enum):
 
     def find_class(self):
         """Method used to return a class related with this type."""
-        classes = {1:InstructionGotoTable, 2: InstructionWriteMetadata,
+        classes = {1: InstructionGotoTable, 2: InstructionWriteMetadata,
                    3: InstructionWriteAction, 4: InstructionApplyAction,
                    5: InstructionClearAction, 6: InstructionMeter}
         return classes.get(self.value, None)
@@ -89,13 +89,13 @@ class Instruction(GenericStruct):
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         instruction_type = UBInt16(enum_ref=InstructionType)
-        instruction_type.unpack(buff,offset)
+        instruction_type.unpack(buff, offset)
         self.__class__ = InstructionType(instruction_type.value).find_class()
 
         length = UBInt16()
         length.unpack(buff, offset=offset+2)
 
-        super().unpack(buff[:offset+length.value],offset)
+        super().unpack(buff[:offset+length.value], offset)
 
 
 class InstructionApplyAction(Instruction):
@@ -110,7 +110,7 @@ class InstructionApplyAction(Instruction):
     #: Actions associated with OFPIT_APPLY_ACTIONS
     actions = ListOfActions()
 
-    def __init__(self, actions=[]):
+    def __init__(self, actions=None):
         """Instruction structure for OFPIT_APPLY_ACTIONS.
 
         Args:
@@ -118,7 +118,7 @@ class InstructionApplyAction(Instruction):
                 with OFPIT_APPLY_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_APPLY_ACTIONS)
-        self.actions = actions
+        self.actions = actions if actions else []
         self.update_length()
 
 
@@ -133,7 +133,7 @@ class InstructionClearAction(Instruction):
     #: OFPIT_CLEAR_ACTIONS does not have any action on the list of actions.
     actions = ListOfActions()
 
-    def __init__(self, actions=[]):
+    def __init__(self, actions=None):
         """Instruction structure for OFPIT_CLEAR_ACTIONS.
 
         Args:
@@ -141,7 +141,7 @@ class InstructionClearAction(Instruction):
                 with OFPIT_CLEAR_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_CLEAR_ACTIONS)
-        self.actions = actions
+        self.actions = actions if actions else []
         self.update_length()
 
 
@@ -196,7 +196,7 @@ class InstructionWriteAction(Instruction):
     #: Actions associated with OFPIT_WRITE_ACTIONS
     actions = ListOfActions()
 
-    def __init__(self, actions=[]):
+    def __init__(self, actions=None):
         """Instruction structure for OFPIT_WRITE_ACTIONS.
 
         Args:
@@ -204,7 +204,7 @@ class InstructionWriteAction(Instruction):
                 with OFPIT_WRITE_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_WRITE_ACTIONS)
-        self.actions = actions
+        self.actions = actions if actions else []
         self.update_length()
 
 
@@ -230,15 +230,17 @@ class InstructionWriteMetadata(Instruction):
         self.metadata_mask = metadata_mask
         self.update_length()
 
+
 class ListOfInstruction(FixedTypeList):
     """List of Instructions.
 
     Represented by instances of Instruction.
     """
+
     def __init__(self, items=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
             items (Instruction): Instance or a list of instances.
         """
-        super().__init__(pyof_class=Instruction,items=items)
+        super().__init__(pyof_class=Instruction, items=items)
