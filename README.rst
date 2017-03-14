@@ -10,13 +10,13 @@ If you want to read an OpenFlow packet from an open socket or send a message to
 an OpenFlow switch, this is your best friend. The main features are: high
 performance, short learning curve and free software license.
 
-This library is part of `Kytos <http://kytos.io>`_ project, but feel free to
+This library is part of `Kytos project <http://kytos.io>`_, but feel free to
 use this simple and intuitive library in other projects.
 
 .. attention::
    *python-openflow* does not perform I/O operations. To communicate with a
-   switch, you can use, for example, `Kyco <http://docs.kytos.io/kyco>`_, the
-   Kytos Controller.
+   switch, you must write your own controller using this library or use our
+   `Kytos controller <http://docs.kytos.io/>`_.
 
 A quick start follows for you to check whether this project fits your needs.
 For a more detailed documentation, please check the
@@ -86,8 +86,6 @@ To parse a message, use ``unpack_message()``:
 Please, note that this library do not send or receive messages via socket. You
 have to create your own server to receive messages from switches. This library
 only helps you to handle OpenFlow messages in a more pythonic way.
-To communicate with switches, we are working on
-`Kytos Controller <https://github.com/kytos/kytos>`__.
 
 Authors
 *******
