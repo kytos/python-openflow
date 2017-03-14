@@ -283,6 +283,7 @@ class ExperimenterMultipartHeader(GenericStruct):
 
     def __init__(self, experimenter=None, exp_type=None):
         """The constructor just assigns parameters to object attributes.
+
         Args:
             experimenter: Experimenter ID which takes the same form as in
                 struct ofp_experimenter_header (class ExperimenterHeader).
