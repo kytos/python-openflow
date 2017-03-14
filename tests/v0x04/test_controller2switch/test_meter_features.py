@@ -7,6 +7,7 @@ from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
 
 from tests.v0x04.test_struct import TestStruct
 
+
 class TestMeterFeatures(TestStruct):
     """Class to test MeterFeatures structures."""
 
@@ -23,6 +24,6 @@ class TestMeterFeatures(TestStruct):
     @classmethod
     def meter_feature_instance(cls):
         """Method used to create a MeterFeature instance."""
-        return MeterFeatures(max_meter=200,max_bands=20, max_color=4,
+        return MeterFeatures(max_meter=200, max_bands=20, max_color=4,
                              band_types=MeterBandType.OFPMBT_DROP,
                              capabilities=MeterFlags.OFPMF_KBPS)

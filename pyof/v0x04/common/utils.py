@@ -19,6 +19,7 @@ from pyof.v0x04.controller2switch.features_request import FeaturesRequest
 from pyof.v0x04.controller2switch.flow_mod import FlowMod
 from pyof.v0x04.controller2switch.get_config_reply import GetConfigReply
 from pyof.v0x04.controller2switch.get_config_request import GetConfigRequest
+from pyof.v0x04.controller2switch.multipart_reply import MultipartReply
 from pyof.v0x04.controller2switch.packet_out import PacketOut
 from pyof.v0x04.controller2switch.port_mod import PortMod
 from pyof.v0x04.controller2switch.queue_get_config_reply import \
@@ -30,7 +31,6 @@ from pyof.v0x04.controller2switch.set_config import SetConfig
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
 from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
-from pyof.v0x04.controller2switch.multipart_reply import MultipartReply
 from pyof.v0x04.symmetric.hello import Hello
 
 __all__ = ('new_message_from_header', 'new_message_from_message_type')

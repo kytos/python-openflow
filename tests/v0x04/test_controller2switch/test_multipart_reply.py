@@ -1,16 +1,16 @@
 """MultipartReply message test."""
 
-from pyof.v0x04.controller2switch.common import (MeterConfig, MultipartTypes)
-from pyof.v0x04.controller2switch.meter_mod import (MeterFlags, Meter,
+from pyof.v0x04.controller2switch.common import MeterConfig, MultipartTypes
+from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
                                                     MeterBandDrop,
-                                                    MeterBandDscpRemark,
-                                                    ListOfMeterBandHeader)
+                                                    MeterBandDscpRemark)
 from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
                                                           MultipartReplyFlags)
 from tests.v0x04.test_struct import TestStruct
 
+
 class TestTableFeatures(TestStruct):
-    """"""
+    """Test TableFeatures."""
 
     @classmethod
     def setUpClass(cls):
@@ -29,8 +29,8 @@ class TestTableFeatures(TestStruct):
 
     @staticmethod
     def list_of_meters():
-        """Method used to instantiate a ListOfMeterBandHeader with some instances."""
+        """Instantiate a ListOfMeterBandHeader with some instances."""
         meters = [MeterBandDrop(rate=6, burst_size=3),
-                  MeterBandDscpRemark(rate=1,burst_size=4,prec_level=2),
+                  MeterBandDscpRemark(rate=1, burst_size=4, prec_level=2),
                   MeterBandDrop(rate=9, burst_size=1)]
         return ListOfMeterBandHeader(items=[meters])

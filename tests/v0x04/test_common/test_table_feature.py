@@ -1,13 +1,14 @@
 """Test of v0x04 table_feature module."""
 
+from pyof.v0x04.common.flow_instructions import (InstructionApplyAction,
+                                                 InstructionClearAction)
 from pyof.v0x04.common.table_feature import (InstructionsProperty,
                                              ListOfProperty, TableFeatures)
 from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
-                                                          MultipartTypes,
-                                                          MultipartReplyFlags)
-from pyof.v0x04.common.flow_instructions import (InstructionApplyAction,
-                                                 InstructionClearAction)
+                                                          MultipartReplyFlags,
+                                                          MultipartTypes)
 from tests.v0x04.test_struct import TestStruct
+
 
 class TestTableFeatures(TestStruct):
     """Class used to test TableFeatures structures."""

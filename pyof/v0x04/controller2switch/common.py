@@ -1,4 +1,6 @@
 """Defines common structures and enums for controller2switch."""
+# Ignoring "too many lines in module"
+# pylint: disable=C0302
 
 # System imports
 from enum import Enum
@@ -8,17 +10,15 @@ from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
-from pyof.v0x04.controller2switch.meter_mod import MeterBandType, MeterFlags
 from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
-from pyof.v0x04.controller2switch.meter_mod import Meter
 from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header
-from pyof.v0x04.controller2switch.meter_mod import (Meter, MeterFlags,
-                                                    MeterBandHeader,
-                                                    ListOfMeterBandHeader)
+from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
+                                                    Meter, MeterBandType,
+                                                    MeterFlags)
 
 # Third-party imports
 
@@ -27,7 +27,7 @@ __all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
            'BucketCounter', 'ConfigFlags', 'ControllerRole', 'DescStats',
            'FlowStats', 'FlowStatsRequest', 'GroupCapabilities',
            'ExperimenterMultipartHeader', 'GroupDescStats',
-           'GroupFeatures', 'GroupStats', 'GroupStatsRequest', 
+           'GroupFeatures', 'GroupStats', 'GroupStatsRequest',
            'ListOfActions', 'MultipartTypes', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
            'TableStats', 'MeterMultipartRequest', 'MeterConfig',
@@ -632,6 +632,8 @@ class PortStats(GenericStruct):
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
 
+    # Can't avoid "too many local variables" (R0914) in this struct.
+    # pylint: disable=R0914
     def __init__(self, port_no=None, rx_packets=None,
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
@@ -901,23 +903,22 @@ class MeterMultipartRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, meter_id=Meter.OFPM_ALL):
-        """The Constructor of MeterMultipartRequest receives the paramters
-        below.
+        """Constructor of MeterMultipartRequest receives the parameters below.
 
         Args:
             meter_id(Meter): Meter Indentify.The value Meter.OFPM_ALL is used
                              to refer to all Meters on the switch.
         """
-
         super().__init__()
         self.meter_id = meter_id
 
 
 class MeterConfig(GenericStruct):
-    """MeterConfig is a class to represents  ofp_meter_config structure.
+    """MeterConfig is a class to represent ofp_meter_config structure.
 
     Body of reply to OFPMP_METER_CONFIG request.
     """
+
     # Length of this entry.
     length = UBInt16()
     # All OFPMC_* that apply.
@@ -928,7 +929,7 @@ class MeterConfig(GenericStruct):
     bands = ListOfMeterBandHeader()
 
     def __init__(self, flags=MeterFlags.OFPMF_STATS, meter_id=Meter.OFPM_ALL,
-                 bands=[]):
+                 bands=None):
         """The Constructor of MeterConfig receives the parameters below.
 
         Args:
@@ -941,7 +942,7 @@ class MeterConfig(GenericStruct):
         super().__init__()
         self.flags = flags
         self.meter_id = meter_id
-        self.bands = bands
+        self.bands = bands if bands else []
 
 
 class BandStats(GenericStruct):
@@ -960,6 +961,7 @@ class BandStats(GenericStruct):
             packet_band_count(int): Number of packets in band.
             byte_band_count(int):   Number of bytes in band.
         """
+        super().__init__()
         self.packet_band_count = packet_band_count
         self.byte_band_count = byte_band_count
 
@@ -976,7 +978,7 @@ class ListOfBandStats(FixedTypeList):
         Args:
             items (BandStats): Instance or a list of instances.
         """
-        super().__init__(pyof_class=BandStats,items=items)
+        super().__init__(pyof_class=BandStats, items=items)
 
 
 class MeterStats(GenericStruct):
@@ -1013,22 +1015,19 @@ class MeterStats(GenericStruct):
         super().__init__()
         self.meter_id = meter_id
         self.flow_count = flow_count
-        self.packet_in_count= packet_in_count
+        self.packet_in_count = packet_in_count
         self.byte_in_count = byte_in_count
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
-        if band_stats != None:
-          self.band_stats = band_stats
-        else:
-           self.band_stats = []
+        self.band_stats = band_stats if band_stats else []
         self.update_length()
 
     def update_length(self):
+        """Update length attribute with current struct length."""
         self.length = self.get_size()
 
-
     def pack(self, value=None):
-        """Pack method used to update the length of instance and  packing.
+        """Pack method used to update the length of instance and packing.
 
         Args:
             value: Structure to be packed.
@@ -1038,6 +1037,7 @@ class MeterStats(GenericStruct):
 
     def unpack(self, buff=None, offset=0):
         """Unpack *buff* into this object.
+
         This method will convert a binary data into a readable value according
         to the attribute format.
         Args:
@@ -1047,10 +1047,10 @@ class MeterStats(GenericStruct):
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         length = UBInt16()
-        length.unpack(buff,offset)
+        length.unpack(buff, offset)
 
-        length.unpack(buff,offset=offset+MeterStats.meter_id.get_size())
-        super().unpack(buff[:offset+length.value],offset=offset)
+        length.unpack(buff, offset=offset+MeterStats.meter_id.get_size())
+        super().unpack(buff[:offset+length.value], offset=offset)
 
 
 class MeterFeatures(GenericStruct):
@@ -1074,6 +1074,7 @@ class MeterFeatures(GenericStruct):
             max_bands(int):           Maximum bands per meters
             max_color(int):           Maximum color value
         """
+        super().__init__()
         self.max_meter = max_meter
         self.band_types = band_types
         self.capabilities = capabilities

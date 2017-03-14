@@ -1,8 +1,9 @@
 """Automate struct tests."""
 import unittest
-from tests.raw_dump import RawDump
+
 from pyof.v0x04.common.header import Header
 from pyof.v0x04.common.utils import new_message_from_header
+
 
 class TestStruct(unittest.TestCase):
     """Run tests related to struct packing and unpacking.
@@ -85,8 +86,8 @@ class TestStruct(unittest.TestCase):
 
     def _pack_unpack(self, cls, *args, **kwargs):
         """Pack the message, unpack and check whether they are the same."""
-        args, kwargs = cls._msg_params
-        packed = cls._msg_cls(*args, **kwargs).pack()
+        args, kwargs = self._msg_params
+        packed = self._msg_cls(*args, **kwargs).pack()
         header = Header()
         header_size = header.get_size()
         header.unpack(packed[:header_size])

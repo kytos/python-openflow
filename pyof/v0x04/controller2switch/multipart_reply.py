@@ -7,9 +7,8 @@ from enum import Enum
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, Pad, UBInt16
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.controller2switch.common import MultipartTypes
 from pyof.v0x04.common.table_feature import TableFeatures
-
+from pyof.v0x04.controller2switch.common import MultipartTypes
 
 # Third-party imports
 
@@ -64,8 +63,8 @@ class MultipartReply(GenericMessage):
     def pack(self, value=None):
         """Pack a StatsReply using the object's attributes.
 
-        This method will pack the attribute body and multipart_type before pack the
-        StatsReply object, then will return this struct as a binary data.
+        This method will pack the attribute body and multipart_type before pack
+        the StatsReply object, then will return this struct as a binary data.
 
         Returns:
             stats_reply_packed (bytes): Binary data with StatsReply packed.
@@ -116,6 +115,7 @@ class MultipartReply(GenericMessage):
     def _get_body_class(self):
         """Method used to return the body class using the multipart_type."""
         if isinstance(self.multipart_type, (int, UBInt16)):
-            self.multipart_type = self.multipart_type.enum_ref(self.multipart_type.value)
+            self.multipart_type = self.multipart_type.enum_ref(
+                self.multipart_type.value)
         if self.multipart_type.value == 12:
             return TableFeatures

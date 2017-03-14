@@ -66,6 +66,7 @@ class MeterBandType(Enum):
                  3: MeterBandExperimenter}
         return types[self.value]
 
+
 class MeterBandHeader(GenericStruct):
     """Common header for all meter bands."""
 
@@ -112,7 +113,7 @@ class MeterBandHeader(GenericStruct):
         length = UBInt16()
         length.unpack(buff, offset=offset+2)
 
-        super().unpack(buff[:offset+length.value],offset)
+        super().unpack(buff[:offset+length.value], offset)
 
 
 class MeterMod(GenericMessage):
@@ -200,10 +201,10 @@ class ListOfMeterBandHeader(FixedTypeList):
     Represented by instances of MeterBandHeader.
     """
 
-    def __init__(self, items=[]):
+    def __init__(self, items=None):
         """The constructor just assings parameters to object attributes.
 
         Args:
         items (MeterBandHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=MeterBandHeader,items=items)
+        super().__init__(pyof_class=MeterBandHeader, items=items)
