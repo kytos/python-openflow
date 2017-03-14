@@ -16,7 +16,7 @@ use this simple and intuitive library in other projects.
 .. attention::
    *python-openflow* does not perform I/O operations. To communicate with a
    switch, you must write your own controller using this library or use our
-   `Kytos controller <http://kytos.io/>`_.
+   `Kytos SDN controller <http://kytos.io/>`_.
 
 A quick start follows for you to check whether this project fits your needs.
 For a more detailed documentation, please check the
@@ -71,7 +71,7 @@ its binary representation to be sent through the network:
     >>> binary_msg = request.pack()
     >>> print(binary_msg)
     b"\x01\x05\x00\x08\x14\xad'\x8d"
-    >>> # Use a controller (e.g. Kytos Controller) to send "binary_msg"
+    >>> # Use a controller (e.g. Kytos SDN controller) to send "binary_msg"
 
 To parse a message, use ``unpack_message()``:
 
