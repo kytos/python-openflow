@@ -78,6 +78,7 @@ class Test(TestCommand):
         check_call('make doctest -C docs/', shell=True)
         Linter.lint()
 
+
 requirements = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='python-openflow',
