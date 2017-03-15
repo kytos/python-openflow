@@ -78,6 +78,7 @@ class Test(TestCommand):
         check_call('make doctest -C docs/', shell=True)
         Linter.lint()
 
+requirements = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='python-openflow',
       version=__version__,
@@ -87,6 +88,7 @@ setup(name='python-openflow',
       author_email='of-ng-dev@ncc.unesp.br',
       license='MIT',
       test_suite='tests',
+      install_requires=requirements,
       packages=find_packages(exclude=['tests', '*v0x02*', '*v0x04*']),
       cmdclass={
           'lint': Linter,
