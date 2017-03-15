@@ -47,7 +47,7 @@ procedure:
 .. code-block:: shell
 
    $ cd python-openflow
-   $ sudo python3 setup.py install
+   $ sudo python3.6 setup.py install
 
 
 Basic Usage Example
