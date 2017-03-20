@@ -22,24 +22,6 @@ class ActionType(Enum):
 
     #: Output to switch port.
     OFPAT_OUTPUT = 0
-    #: Set the 802.1q VLAN id.
-    OFPAT_SET_VLAN_VID = 1
-    #: Set the 802.1q priority.
-    OFPAT_SET_VLAN_PCP = 2
-    #: Strip the 802.1q header.
-    OFPAT_STRIP_VLAN = 3
-    #: Ethernet source address.
-    OFPAT_SET_DL_SRC = 4
-    #: Ethernet destination address.
-    OFPAT_SET_DL_DST = 5
-    #: IP source address.
-    OFPAT_SET_NW_SRC = 6
-    #: IP destination address.
-    OFPAT_SET_NW_DST = 7
-    #: TCP/UDP source port.
-    OFPAT_SET_TP_SRC = 8
-    #: TCP/UDP destination port.
-    OFPAT_SET_TP_DST = 9
     #: Copy TTL "outwards" -- from next-to-outermost to outermost
     OFPAT_COPY_TTL_OUT = 11
     #: Copy TTL "inwards" -- from outermost to next-to-outermost
