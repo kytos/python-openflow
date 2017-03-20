@@ -4,8 +4,8 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (HWAddress, Pad, UBInt8, UBInt16,
-                                         UBInt32)
+from pyof.foundation.basic_types import (FixedTypeList, HWAddress, Pad, UBInt8,
+                                         UBInt16, UBInt32)
 from pyof.foundation.constants import UBINT16_MAX_VALUE
 
 # Third-party imports
@@ -312,3 +312,18 @@ class ActionVendorHeader(ActionHeader):
         """
         super().__init__(action_type=ActionType.OFPAT_VENDOR, length=length)
         self.vendor = vendor
+
+
+class ListOfActions(FixedTypeList):
+    """List of actions.
+
+    Represented by instances of ActionHeader and used on ActionHeader objects.
+    """
+
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (ActionHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=ActionHeader, items=items)

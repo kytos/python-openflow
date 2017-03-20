@@ -10,7 +10,6 @@ from pyof.foundation.exceptions import PackException
 from pyof.v0x01 import common
 from pyof.v0x01.common.header import Header, Type
 
-
 __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
            'FlowModFailedCode', 'HelloFailedCode', 'PortModFailedCode',
            'QueueOpFailedCode')
