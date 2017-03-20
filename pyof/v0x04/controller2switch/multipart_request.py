@@ -7,7 +7,7 @@ from enum import Enum
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, Pad, UBInt16
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.controller2switch.common import MultipartTypes
+from pyof.v0x04.controller2switch.common.multipart import MultipartTypes
 
 # Third-party imports
 

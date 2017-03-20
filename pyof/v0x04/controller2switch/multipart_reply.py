@@ -8,7 +8,7 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, Pad, UBInt16
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.table_feature import TableFeatures
-from pyof.v0x04.controller2switch.common import MultipartTypes
+from pyof.v0x04.controller2switch.common.multipart import MultipartTypes
 
 # Third-party imports
 

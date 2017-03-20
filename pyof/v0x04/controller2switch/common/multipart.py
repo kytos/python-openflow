@@ -1,21 +1,15 @@
-"""Defines common structures and enums for controller2switch."""
-# Ignoring "too many lines in module"
-# pylint: disable=C0302
+"""Defines multipart types for multipart messages."""
 
 # System imports
 from enum import Enum
 
 # Local source tree imports
-from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
+from pyof.foundation.base import GenericBitMask, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
                                          UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
-from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
-from pyof.v0x04.asynchronous.packet_in import PacketInReason
-from pyof.v0x04.asynchronous.port_status import PortReason
-from pyof.v0x04.common.action import ActionHeader
 from pyof.v0x04.common.flow_match import Match
-from pyof.v0x04.common.header import Header
+from pyof.v0x04.controller2switch.common.bucket import Bucket, BucketCounter
 from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
                                                     Meter, MeterBandType,
                                                     MeterFlags)
@@ -23,42 +17,16 @@ from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
 # Third-party imports
 
 
-__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'Bucket',
-           'BucketCounter', 'ConfigFlags', 'ControllerRole', 'DescStats',
+__all__ = ('AggregateStatsReply', 'AggregateStatsRequest', 'DescStats',
            'FlowStats', 'FlowStatsRequest', 'GroupCapabilities',
            'ExperimenterMultipartHeader', 'GroupDescStats',
            'GroupFeatures', 'GroupStats', 'GroupStatsRequest',
-           'ListOfActions', 'MultipartTypes', 'PortStats',
+           'MultipartTypes', 'PortStats',
            'PortStatsRequest', 'QueueStats', 'QueueStatsRequest', 'StatsTypes',
            'TableStats', 'MeterMultipartRequest', 'MeterConfig',
            'MeterFeatures', 'BandStats', 'ListOfBandStats', 'MeterStats')
 
 # Enums
-
-
-class ConfigFlags(Enum):
-    """Handling of IP fragments."""
-
-    #: No special handling for fragments.
-    OFPC_FRAG_NORMAL = 0
-    #: Drop fragments.
-    OFPC_FRAG_DROP = 1
-    #: Reassemble (only if OFPC_IP_REASM set).
-    OFPC_FRAG_REASM = 2
-    OFPC_FRAG_MASK = 3
-
-
-class ControllerRole(Enum):
-    """Controller roles."""
-
-    #: Don’t change current role.
-    OFPCR_ROLE_NOCHANGE = 0
-    #: Default role, full access.
-    OFPCR_ROLE_EQUAL = 1
-    #: Full access, at most one master.
-    OFPCR_ROLE_MASTER = 2
-    #: Read-only access.
-    OFPCR_ROLE_SLAVE = 3
 
 
 class GroupCapabilities(GenericBitMask):
@@ -258,60 +226,6 @@ class AggregateStatsRequest(GenericStruct):
         self.cookie = cookie
         self.cookie_mask = cookie_mask
         self.match = match
-
-
-class Bucket(GenericStruct):
-    """Bucket for use in groups."""
-
-    length = UBInt16()
-    weight = UBInt16()
-    watch_port = UBInt32()
-    watch_group = UBInt32()
-    pad = Pad(4)
-    actions = FixedTypeList(ActionHeader)
-
-    def __init__(self, length=None, weight=None, watch_port=None,
-                 watch_group=None, actions=None):
-        """Initialize all instance variables.
-
-        Args:
-            length (int): Length the bucket in bytes, including this header and
-                any padding to make it 64-bit aligned.
-            weight (int): Relative weight of bucket. Only defined for select
-                groups.
-            watch_port (int): Port whose state affects whether this bucket is
-                live. Only required for fast failover groups.
-            watch_group (int): Group whose state affects whether this bucket is
-                live. Only required for fast failover groups.
-            actions (:func:`list` of :class:`.ActionHeader`): The action length
-                is inferred from the length field in the header.
-        """
-        super().__init__()
-        self.length = length
-        self.weight = weight
-        self.watch_port = watch_port
-        self.watch_group = watch_group
-        self.actions = actions
-
-
-class BucketCounter(GenericStruct):
-    """Used in group stats replies."""
-
-    #: Number of packets processed by bucket.
-    packet_count = UBInt64()
-    #: Number of bytes processed by bucket.
-    byte_count = UBInt64()
-
-    def __init__(self, packet_count=None, byte_count=None):
-        """The constructor just assigns parameters to object attributes.
-
-        Args:
-            packet_count: Number of packets processed by bucket.
-            byte_count: Number of bytes processed by bucket.
-        """
-        super().__init__()
-        self.packet_count = packet_count
-        self.byte_count = byte_count
 
 
 class DescStats(GenericStruct):
@@ -593,21 +507,6 @@ class GroupStatsRequest(GenericStruct):
         self.group_id = group_id
 
 
-class ListOfActions(FixedTypeList):
-    """List of actions.
-
-    Represented by instances of ActionHeader and used on ActionHeader objects.
-    """
-
-    def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            items (ActionHeader): Instance or a list of instances.
-        """
-        super().__init__(pyof_class=ActionHeader, items=items)
-
-
 class PortStats(GenericStruct):
     """Body of reply to OFPST_PORT request.
 
@@ -785,108 +684,6 @@ class TableStats(GenericStruct):
         self.active_count = active_count
         self.lookup_count = lookup_count
         self.matched_count = matched_count
-
-
-# Base Classes for other messages - not meant to be directly used, so, because
-# of that, they will not be inserted on the __all__ attribute.
-
-
-class AsyncConfig(GenericMessage):
-    """Asynchronous message configuration base class.
-
-    Common structure for SetAsync and GetAsyncReply messages.
-
-    AsyncConfig contains three 2-element arrays. Each array controls whether
-    the controller receives asynchronous messages with a specific
-    :class:`~.common.header.Type`. Within each array, element 0 specifies
-    messages of interest when the controller has a OFPCR_ROLE_EQUAL or
-    OFPCR_ROLE_MASTER role; element 1, when the controller has a
-    OFPCR_ROLE_SLAVE role. Each array element is a bit-mask in which a 0-bit
-    disables receiving a message sent with the reason code corresponding to the
-    bit index and a 1-bit enables receiving it.
-    """
-
-    #: OpenFlow :class:`~common.header.Header`
-    #: OFPT_GET_ASYNC_REPLY or OFPT_SET_ASYNC.
-    header = Header()
-    packet_in_mask1 = UBInt32(enum_ref=PacketInReason)
-    packet_in_mask2 = UBInt32(enum_ref=PacketInReason)
-    port_status_mask1 = UBInt32(enum_ref=PortReason)
-    port_status_mask2 = UBInt32(enum_ref=PortReason)
-    flow_removed_mask1 = UBInt32(enum_ref=FlowRemovedReason)
-    flow_removed_mask2 = UBInt32(enum_ref=FlowRemovedReason)
-
-    def __init__(self, xid=None, packet_in_mask1=None, packet_in_mask2=None,
-                 port_status_mask1=None, port_status_mask2=None,
-                 flow_removed_mask1=None, flow_removed_mask2=None):
-        """Base class for Asynchronous configuration messages.
-
-        Common structure for SetAsync and GetAsyncReply messages.
-
-        Args:
-            xid (int): xid to be used on the message header.
-            packet_in_mask1 (): .
-            packet_in_mask2 (): .
-            port_status_mask1 (): .
-            port_status_mask2 (): .
-            flow_removed_mask1 (): .
-            flow_removed_mask2 (): .
-        """
-        super().__init__(xid)
-        self.packet_in_mask1 = packet_in_mask1
-        self.packet_in_mask2 = packet_in_mask2
-        self.port_status_mask1 = port_status_mask1
-        self.port_status_mask2 = port_status_mask2
-        self.flow_removed_mask1 = flow_removed_mask1
-        self.flow_removed_mask2 = flow_removed_mask2
-
-
-class RoleBaseMessage(GenericMessage):
-    """Role basic structure for RoleRequest and RoleReply messages."""
-
-    #: :class:`~.common.header.Header`
-    #: Type OFPT_ROLE_REQUEST/OFPT_ROLE_REPLY.
-    header = Header()
-    #: One of NX_ROLE_*. (:class:`~.controller2switch.common.ControllerRole`)
-    role = UBInt32(enum_ref=ControllerRole)
-    #: Align to 64 bits.
-    pad = Pad(4)
-    #: Master Election Generation Id.
-    generation_id = UBInt64()
-
-    def __init__(self, xid=None, role=None, generation_id=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            xid (int): OpenFlow xid to the header.
-            role (:class:`~.controller2switch.common.ControllerRole`): .
-            generation_id (int): Master Election Generation Id.
-        """
-        super().__init__(xid)
-        self.role = role
-        self.generation_id = generation_id
-
-
-class SwitchConfig(GenericMessage):
-    """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
-
-    #: OpenFlow :class:`~common.header.Header`
-    header = Header()
-    flags = UBInt16(enum_ref=ConfigFlags)
-    miss_send_len = UBInt16()
-
-    def __init__(self, xid=None, flags=None, miss_send_len=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            xid (int): xid to be used on the message header.
-            flags (ConfigFlags): OFPC_* flags.
-            miss_send_len (int): UBInt16 max bytes of new flow that the
-                datapath should send to the controller.
-        """
-        super().__init__(xid)
-        self.flags = flags
-        self.miss_send_len = miss_send_len
 
 
 class MeterMultipartRequest(GenericStruct):

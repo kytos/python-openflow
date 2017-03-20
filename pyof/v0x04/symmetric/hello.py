@@ -10,7 +10,6 @@ from pyof.v0x04.common.header import Header, Type
 
 # Third-party imports
 
-
 __all__ = ('Hello', 'HelloElemHeader', 'HelloElemType',
            'HelloElemVersionbitmap', 'ListOfHelloElements')
 

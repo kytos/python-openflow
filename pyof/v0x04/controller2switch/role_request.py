@@ -6,7 +6,7 @@
 
 # Local source tree imports
 from pyof.v0x04.common.header import Type
-from pyof.v0x04.controller2switch.common import RoleBaseMessage
+from pyof.v0x04.controller2switch.common.messages import RoleBaseMessage
 
 __all__ = ('RoleRequest',)
 

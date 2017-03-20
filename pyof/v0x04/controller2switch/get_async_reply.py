@@ -9,7 +9,7 @@ Response to the GetAsyncRequest message.
 
 # Local imports
 from pyof.v0x04.common.header import Type
-from pyof.v0x04.controller2switch.common import AsyncConfig
+from pyof.v0x04.controller2switch.common.messages import AsyncConfig
 
 __all__ = ('GetAsyncReply',)
 
