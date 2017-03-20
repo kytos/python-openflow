@@ -70,7 +70,7 @@ class Hello(GenericMessage):
     extensions.
     """
 
-    header = Header(message_type=Type.OFPT_HELLO, length=8)
+    header = Header(message_type=Type.OFPT_HELLO)
     #: Hello element list
     elements = ListOfHelloElements()
 
