@@ -1,6 +1,7 @@
 """Testing v0x04 FlowRemoved message."""
 from pyof.v0x04.asynchronous.flow_removed import FlowRemoved
 from pyof.v0x04.common.flow_match import Match
+
 from tests.test_struct import TestStruct
 
 

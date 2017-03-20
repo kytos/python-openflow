@@ -1,5 +1,6 @@
 """GetAsyncRequest message tests."""
 from pyof.v0x04.controller2switch.get_async_request import GetAsyncRequest
+
 from tests.test_struct import TestStruct
 
 

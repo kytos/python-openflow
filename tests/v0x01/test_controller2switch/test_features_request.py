@@ -1,5 +1,6 @@
 """Feature request message tests."""
 from pyof.v0x01.controller2switch.features_request import FeaturesRequest
+
 from tests.test_struct import TestStruct
 
 

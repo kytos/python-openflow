@@ -1,7 +1,7 @@
 """group_mod tests."""
 from unittest import TestCase
 
-from pyof.v0x04.controller2switch.common import Bucket
+from pyof.v0x04.controller2switch.common.bucket import Bucket
 from pyof.v0x04.controller2switch.group_mod import GroupMod
 
 

@@ -2,6 +2,7 @@
 from pyof.v0x04.common.queue import (PacketQueue, QueuePropExperimenter,
                                      QueuePropHeader, QueuePropMaxRate,
                                      QueuePropMinRate)
+
 from tests.test_struct import TestStruct
 
 

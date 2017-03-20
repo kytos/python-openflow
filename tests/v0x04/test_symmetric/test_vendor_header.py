@@ -1,5 +1,6 @@
 """Experimenter message tests."""
 from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
+
 from tests.test_struct import TestStruct
 
 

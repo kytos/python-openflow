@@ -1,5 +1,6 @@
 """Automate struct tests."""
 import unittest
+
 from tests.raw_dump import RawDump
 
 

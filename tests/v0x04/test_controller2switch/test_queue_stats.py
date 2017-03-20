@@ -1,5 +1,6 @@
 """Stats queue message."""
-from pyof.v0x04.controller2switch.common import QueueStats
+from pyof.v0x04.controller2switch.common.multipart import QueueStats
+
 from tests.test_struct import TestStruct
 
 

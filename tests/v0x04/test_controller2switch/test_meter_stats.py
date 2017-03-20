@@ -1,10 +1,11 @@
 """Test of v0x04 meter stats module."""
 
 
-from pyof.v0x04.controller2switch.common import BandStats, MeterStats
+from pyof.v0x04.controller2switch.common.multipart import BandStats, MeterStats
 from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
                                                           MultipartReplyFlags,
                                                           MultipartTypes)
+
 from tests.v0x04.test_struct import TestStruct
 
 

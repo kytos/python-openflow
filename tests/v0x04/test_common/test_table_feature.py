@@ -7,6 +7,7 @@ from pyof.v0x04.common.table_feature import (InstructionsProperty,
 from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
                                                           MultipartReplyFlags,
                                                           MultipartTypes)
+
 from tests.v0x04.test_struct import TestStruct
 
 

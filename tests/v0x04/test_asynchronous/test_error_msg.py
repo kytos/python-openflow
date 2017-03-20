@@ -1,5 +1,6 @@
 """Testing v0x04 error message class."""
 from pyof.v0x04.asynchronous.error_msg import ErrorMsg
+
 from tests.test_struct import TestStruct
 
 
