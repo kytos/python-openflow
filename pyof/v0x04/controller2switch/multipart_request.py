@@ -35,7 +35,7 @@ class MultipartRequest(GenericMessage):
     """
 
     #: :class:`~.common.header.Header`
-    header = Header(message_type=Type.OFPT_PORT_MOD)
+    header = Header(message_type=Type.OFPT_MULTIPART_REQUEST)
     #: One of the OFPMP_* constants.
     multipart_type = UBInt16(enum_ref=MultipartTypes)
     #: OFPMPF_REQ_* flags.
