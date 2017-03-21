@@ -17,16 +17,25 @@ from pyof.v0x04.controller2switch.barrier_request import BarrierRequest
 from pyof.v0x04.controller2switch.features_reply import FeaturesReply
 from pyof.v0x04.controller2switch.features_request import FeaturesRequest
 from pyof.v0x04.controller2switch.flow_mod import FlowMod
+from pyof.v0x04.controller2switch.get_async_reply import GetAsyncReply
+from pyof.v0x04.controller2switch.get_async_request import GetAsyncRequest
 from pyof.v0x04.controller2switch.get_config_reply import GetConfigReply
 from pyof.v0x04.controller2switch.get_config_request import GetConfigRequest
+from pyof.v0x04.controller2switch.group_mod import GroupMod
+from pyof.v0x04.controller2switch.meter_mod import MeterMod
 from pyof.v0x04.controller2switch.multipart_reply import MultipartReply
+from pyof.v0x04.controller2switch.multipart_request import MultipartRequest
 from pyof.v0x04.controller2switch.packet_out import PacketOut
 from pyof.v0x04.controller2switch.port_mod import PortMod
 from pyof.v0x04.controller2switch.queue_get_config_reply import \
     QueueGetConfigReply
 from pyof.v0x04.controller2switch.queue_get_config_request import \
     QueueGetConfigRequest
+from pyof.v0x04.controller2switch.role_reply import RoleReply
+from pyof.v0x04.controller2switch.role_request import RoleRequest
+from pyof.v0x04.controller2switch.set_async import SetAsync
 from pyof.v0x04.controller2switch.set_config import SetConfig
+from pyof.v0x04.controller2switch.table_mod import TableMod
 # Importing symmetric messages
 from pyof.v0x04.symmetric.echo_reply import EchoReply
 from pyof.v0x04.symmetric.echo_request import EchoRequest
@@ -51,27 +60,64 @@ def new_message_from_message_type(message_type):
     message_type = str(message_type)
 
     available_classes = {
+
+        # Symetric/Immutable messages
         str(Type.OFPT_HELLO): Hello,
         str(Type.OFPT_ERROR): ErrorMsg,
         str(Type.OFPT_ECHO_REQUEST): EchoRequest,
         str(Type.OFPT_ECHO_REPLY): EchoReply,
         str(Type.OFPT_EXPERIMENTER): ExperimenterHeader,
+
+        # Switch configuration messages
+        # Controller/Switch messages
         str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
         str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
         str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,
         str(Type.OFPT_GET_CONFIG_REPLY): GetConfigReply,
         str(Type.OFPT_SET_CONFIG): SetConfig,
+
+        # Async messages
         str(Type.OFPT_PACKET_IN): PacketIn,
         str(Type.OFPT_FLOW_REMOVED): FlowRemoved,
         str(Type.OFPT_PORT_STATUS): PortStatus,
+
+        # Controller command messages
+        # Controller/Switch message
         str(Type.OFPT_PACKET_OUT): PacketOut,
         str(Type.OFPT_FLOW_MOD): FlowMod,
+        str(Type.OFPT_GROUP_MOD): GroupMod,
         str(Type.OFPT_PORT_MOD): PortMod,
+        str(Type.OFPT_TABLE_MOD): TableMod,
+
+        # Multipart messages.
+        # Controller/Switch message
+        str(Type.OFPT_MULTIPART_REPLY): MultipartReply,
+        str(Type.OFPT_MULTIPART_REQUEST): MultipartRequest,
+
+        # Barrier messages
+        # Controller/Switch message
         str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
         str(Type.OFPT_BARRIER_REPLY): BarrierReply,
+
+        # Queue Configuration messages
+        # Controller/Switch message
         str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
         str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply,
-        str(Type.OFPT_MULTIPART_REPLY): MultipartReply,
+
+        # Controller role change request message
+        # Controller/Switch message
+        str(Type.OFPT_ROLE_REQUEST): RoleRequest,
+        str(Type.OFPT_ROLE_REPLY): RoleReply,
+
+        # Asynchronous message configuration
+        # Controller/Switch message
+        str(Type.OFPT_GET_ASYNC_REQUEST): GetAsyncRequest,
+        str(Type.OFPT_GET_ASYNC_REPLY): GetAsyncReply,
+        str(Type.OFPT_SET_ASYNC): SetAsync,
+
+        # Meters and rate limiters configuration messages
+        # Controller/Switch message
+        str(Type.OFPT_METER_MOD): MeterMod,
     }
 
     if message_type not in available_classes:
