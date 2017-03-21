@@ -28,6 +28,9 @@ Quick Start
 Installing
 ==========
 
+We use python3.6. So in order to use this software please install python3.6
+into your environment beforehand.
+
 We are doing a huge effort to make Kytos and its components available on all
 common distros. So, we recommend you to download it from your distro repository.
 
