@@ -11,7 +11,7 @@ from pyof.v0x04.asynchronous.flow_removed import FlowRemoved
 from pyof.v0x04.asynchronous.packet_in import PacketIn
 from pyof.v0x04.asynchronous.port_status import PortStatus
 # Importing controller2switch messages
-from pyof.v0x04.common.header import Type
+from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.controller2switch.barrier_reply import BarrierReply
 from pyof.v0x04.controller2switch.barrier_request import BarrierRequest
 from pyof.v0x04.controller2switch.features_reply import FeaturesReply
@@ -160,4 +160,15 @@ def new_message_from_header(header):
     message.header.xid = header.xid
     message.header.length = header.length
 
+    return message
+
+
+def unpack_message(buffer):
+    """Unpack the whole buffer, including header pack."""
+    hdr_size = Header().get_size()
+    hdr_buff, msg_buff = buffer[:hdr_size], buffer[hdr_size:]
+    header = Header()
+    header.unpack(hdr_buff)
+    message = new_message_from_header(header)
+    message.unpack(msg_buff)
     return message
