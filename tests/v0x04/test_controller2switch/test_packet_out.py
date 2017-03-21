@@ -4,6 +4,7 @@ import logging
 from pyof.foundation.exceptions import ValidationError
 from pyof.v0x04.common.port import PortNo
 from pyof.v0x04.controller2switch.packet_out import PacketOut
+
 from tests.test_struct import TestStruct
 
 log = logging.getLogger()

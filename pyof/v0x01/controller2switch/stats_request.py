@@ -5,6 +5,7 @@
 # Third-party imports
 
 from importlib import import_module
+
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 # Local imports

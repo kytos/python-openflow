@@ -4,9 +4,9 @@ from copy import deepcopy
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, Pad, UBInt16, UBInt32
 from pyof.foundation.exceptions import PackException, ValidationError
+from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port, PortNo
-from pyof.v0x04.controller2switch.common import ListOfActions
 
 __all__ = ('PacketOut',)
 

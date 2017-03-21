@@ -1,5 +1,6 @@
 """Config Port Stats Request message tests."""
-from pyof.v0x04.controller2switch.common import PortStatsRequest
+from pyof.v0x04.controller2switch.multipart_request import PortStatsRequest
+
 from tests.test_struct import TestStruct
 
 

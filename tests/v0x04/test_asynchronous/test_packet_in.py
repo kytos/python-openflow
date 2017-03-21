@@ -1,5 +1,6 @@
 """Packet in message tests."""
 from pyof.v0x04.asynchronous.packet_in import PacketIn, PacketInReason
+
 from tests.test_struct import TestStruct
 
 

@@ -2,6 +2,7 @@
 from pyof.v0x04.common.queue import ListOfQueues, PacketQueue
 from pyof.v0x04.controller2switch.queue_get_config_reply import \
     QueueGetConfigReply
+
 from tests.test_struct import TestStruct
 
 

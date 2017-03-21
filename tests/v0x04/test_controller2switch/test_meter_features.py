@@ -1,8 +1,9 @@
 """Test of v0x04 meter features module."""
 
-from pyof.v0x04.controller2switch.common import MeterFeatures, MultipartTypes
+from pyof.v0x04.controller2switch.common import MultipartTypes
 from pyof.v0x04.controller2switch.meter_mod import MeterBandType, MeterFlags
-from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
+from pyof.v0x04.controller2switch.multipart_reply import (MeterFeatures,
+                                                          MultipartReply,
                                                           MultipartReplyFlags)
 
 from tests.v0x04.test_struct import TestStruct

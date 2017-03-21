@@ -4,12 +4,12 @@
 from enum import Enum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
-from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
-                                         UBInt16, UBInt32, UBInt64)
+from pyof.foundation.basic_types import (Char, Pad, UBInt8, UBInt16, UBInt32,
+                                         UBInt64)
 from pyof.foundation.constants import (DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN,
                                        SERIAL_NUM_LEN)
 # Local source tree imports
-from pyof.v0x01.common.action import ActionHeader
+from pyof.v0x01.common.action import ListOfActions
 from pyof.v0x01.common.flow_match import FlowWildCards, Match
 from pyof.v0x01.common.header import Header
 from pyof.v0x01.common.phy_port import Port
@@ -84,21 +84,6 @@ class SwitchConfig(GenericMessage):
         super().__init__(xid)
         self.flags = flags
         self.miss_send_len = miss_send_len
-
-
-class ListOfActions(FixedTypeList):
-    """List of actions.
-
-    Represented by instances of ActionHeader and used on ActionHeader objects.
-    """
-
-    def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            items (ActionHeader): Instance or a list of instances.
-        """
-        super().__init__(pyof_class=ActionHeader, items=items)
 
 
 class AggregateStatsReply(GenericStruct):

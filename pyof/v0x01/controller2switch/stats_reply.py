@@ -1,5 +1,6 @@
 """Response the stat request packet from the controller."""
 from importlib import import_module
+
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.v0x01.common.header import Header, Type

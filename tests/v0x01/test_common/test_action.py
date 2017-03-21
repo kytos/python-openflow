@@ -5,6 +5,7 @@ from pyof.v0x01.common.action import (ActionDLAddr, ActionEnqueue,
                                       ActionVendorHeader, ActionVlanPCP,
                                       ActionVlanVid)
 from pyof.v0x01.common.phy_port import Port
+
 from tests.test_struct import TestStruct
 
 
