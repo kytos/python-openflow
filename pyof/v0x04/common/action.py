@@ -12,7 +12,7 @@ from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
 __all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
            'ActionMPLSTTL', 'ActionNWTTL', 'ActionOutput', 'ActionPopMPLS',
            'ActionPush', 'ActionSetField', 'ActionSetQueue', 'ActionType',
-           'ControllerMaxLen')
+           'ControllerMaxLen', 'ListOfActions')
 
 # Enums
 

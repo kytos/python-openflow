@@ -1,10 +1,11 @@
 """Test of v0x04 meter stats module."""
 
-
-from pyof.v0x04.controller2switch.common.multipart import BandStats, MeterStats
-from pyof.v0x04.controller2switch.multipart_reply import (MultipartReply,
-                                                          MultipartReplyFlags,
-                                                          MultipartTypes)
+from pyof.v0x04.controller2switch.common import MultipartTypes
+from pyof.v0x04.controller2switch.meter_mod import Meter
+from pyof.v0x04.controller2switch.multipart_reply import (BandStats,
+                                                          MeterStats,
+                                                          MultipartReply,
+                                                          MultipartReplyFlags)
 
 from tests.v0x04.test_struct import TestStruct
 
@@ -25,7 +26,8 @@ class TestMeterStats(TestStruct):
     @classmethod
     def get_meter_stats_instance(cls):
         """Method used to create a MeterStats instance."""
-        return MeterStats(flow_count=2, packet_in_count=23, byte_in_count=44,
+        return MeterStats(meter_id=Meter.OFPM_ALL, flow_count=2,
+                          packet_in_count=23, byte_in_count=44,
                           duration_sec=33, duration_nsec=99,
                           band_stats=cls.get_list_of_bands_stats())
 
