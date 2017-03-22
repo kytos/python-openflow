@@ -88,16 +88,16 @@ class TestStruct(unittest.TestCase):
         """Pack the message, unpack and check whether they are the same."""
         if self._msg_cls:
             args, kwargs = self._msg_params
-            self._test_pack_unpack(self._msg_cls, args, kwargs)
+            self._test_pack_unpack(*args, **kwargs)
 
-    def _test_pack_unpack(self, cls, *args, **kwargs):
+    def _test_pack_unpack(self, *args, **kwargs):
         """Pack the message, unpack and check whether they are the same.
 
         Call this method multiple times if you want to test more than one
         object.
         """
-        args, kwargs = self._msg_params
-        packed = self._msg_cls(*args, **kwargs).pack()
+        obj = self._msg_cls(*args, **kwargs)
+        packed = obj.pack()
         header = Header()
         header_size = header.get_size()
         header.unpack(packed[:header_size])
