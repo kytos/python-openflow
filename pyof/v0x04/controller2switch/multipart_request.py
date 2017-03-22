@@ -5,18 +5,20 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericMessage, GenericStruct
-from pyof.foundation.basic_types import (BinaryData, Pad,
+from pyof.foundation.basic_types import (BinaryData, FixedTypeList, Pad,
                                          UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.controller2switch.common import MultipartTypes
+from pyof.v0x04.controller2switch.common import (ExperimenterMultipartHeader,
+                                                 MultipartTypes, TableFeatures)
 
 # Third-party imports
 
-
 __all__ = ('MultipartRequest', 'MultipartRequestFlags',
-           'AggregateStatsRequest', 'FlowStatsRequest', 'PortStatsRequest',
-           'QueueStatsRequest', 'GroupStatsRequest', 'MeterMultipartRequest')
+           'AggregateStatsRequest', 'FlowStatsRequest',
+           'PortStatsRequest', 'QueueStatsRequest',
+           'GroupStatsRequest', 'MeterMultipartRequest',
+           'TableFeatures')
 
 # Enum
 
@@ -63,8 +65,87 @@ class MultipartRequest(GenericMessage):
         self.flags = flags
         self.body = body
 
+    def pack(self, value=None):
+        """Pack a MultipartRequest using the object's attributes.
 
-# MultipartRequest body
+        This method will pack the attribute body and multipart_type before pack
+        the MultipartRequest object, then will return this struct as a
+         binary data.
+
+        Returns:
+            multiparty_packed (bytes): Binary data with MultipartRequest
+                                       packed.
+        """
+        buff = self.body
+        if not value:
+            value = self.body
+
+        if value:
+            if isinstance(value, (list, FixedTypeList)):
+                obj = self._get_body_instance()
+                obj.extend(value)
+            elif hasattr(value, 'pack'):
+                obj = value
+
+            self.body = obj.pack()
+
+        multiparty_packed = super().pack()
+        self.body = buff
+
+        return multiparty_packed
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results. It is an inplace method and it receives the binary data
+        of the message **without the header**.
+
+        This class' unpack method is like the :meth:`.GenericMessage.unpack`
+        one, except for the ``body`` attribute which has its type determined
+        by the ``multipart_type`` attribute.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked, without the
+                header.
+        """
+        super().unpack(buff[offset:])
+        self._unpack_body()
+
+    def _unpack_body(self):
+        """Unpack `body` replace it by the result."""
+        obj = self._get_body_instance()
+        obj.unpack(self.body.value)
+        self.body = obj
+
+    def _get_body_instance(self):
+        """Method used to return the body instance."""
+        simple_body = {
+            MultipartTypes.OFPMP_FLOW: FlowStatsRequest,
+            MultipartTypes.OFPMP_AGGREGATE: AggregateStatsRequest,
+            MultipartTypes.OFPMP_PORT_STATS: PortStatsRequest,
+            MultipartTypes.OFPMP_QUEUE: QueueStatsRequest,
+            MultipartTypes.OFPMP_GROUP: GroupStatsRequest,
+            MultipartTypes.OFPMP_METER: MeterMultipartRequest,
+            MultipartTypes.OFPMP_EXPERIMENTER: ExperimenterMultipartHeader
+        }
+
+        array_of_bodies = {MultipartTypes.OFPMP_TABLE_FEATURES: TableFeatures}
+
+        if isinstance(self.multipart_type, (int, UBInt16)):
+            self.multipart_type = self.multipart_type.enum_ref(
+                self.multipart_type.value)
+
+        pyof_class = simple_body.get(self.multipart_type, None)
+        if pyof_class:
+            return pyof_class()
+
+        array_of_class = array_of_bodies.get(self.multipart_type, None)
+        if array_of_class:
+            return FixedTypeList(pyof_class=array_of_class)
+
+        return BinaryData(b'')
+
 
 class AggregateStatsRequest(GenericStruct):
     """Body for ofp_stats_request of type OFPST_AGGREGATE."""
