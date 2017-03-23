@@ -90,7 +90,7 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       install_requires=requirements,
-      packages=find_packages(exclude=['tests', '*v0x02*', '*v0x04*']),
+      packages=find_packages(exclude=['tests', '*v0x02*']),
       cmdclass={
           'lint': Linter,
           'clean': Cleaner,
