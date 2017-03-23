@@ -10,7 +10,9 @@ from pyof.foundation.basic_types import (BinaryData, Char, FixedTypeList, Pad,
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.port import Port
 from pyof.v0x04.controller2switch.common import (Bucket, BucketCounter,
+                                                 ExperimenterMultipartHeader,
                                                  MultipartTypes, TableFeatures)
 from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
                                                     MeterBandType, MeterFlags)
@@ -93,8 +95,15 @@ class MultipartReply(GenericMessage):
         buff = self.body
         if not value:
             value = self.body
-        if value and hasattr(value, 'pack'):
-            self.body = BinaryData(value.pack())
+
+        if value:
+            if isinstance(value, (list, FixedTypeList)):
+                obj = self._get_body_instance()
+                obj.extend(value)
+            elif hasattr(value, 'pack'):
+                obj = value
+
+            self.body = obj.pack()
 
         multiparty_packed = super().pack()
         self.body = buff
@@ -127,19 +136,37 @@ class MultipartReply(GenericMessage):
 
     def _get_body_instance(self):
         """Method used to return the body instance."""
-        pyof_class = self._get_body_class()
-        if pyof_class is None:
-            return BinaryData(b'')
-        else:
-            return FixedTypeList(pyof_class=pyof_class)
+        exp_header = ExperimenterMultipartHeader
+        simple_body = {MultipartTypes.OFPMP_DESC: Desc,
+                       MultipartTypes.OFPMP_GROUP_FEATURES: GroupFeatures,
+                       MultipartTypes.OFPMP_METER_FEATURES: MeterFeatures,
+                       MultipartTypes.OFPMP_EXPERIMENTER: exp_header}
 
-    def _get_body_class(self):
-        """Method used to return the body class using the multipart_type."""
+        array_of_bodies = {MultipartTypes.OFPMP_FLOW: FlowStats,
+                           MultipartTypes.OFPMP_AGGREGATE: AggregateStatsReply,
+                           MultipartTypes.OFPMP_TABLE: TableStats,
+                           MultipartTypes.OFPMP_PORT_STATS: PortStats,
+                           MultipartTypes.OFPMP_QUEUE: QueueStats,
+                           MultipartTypes.OFPMP_GROUP: GroupStats,
+                           MultipartTypes.OFPMP_GROUP_DESC: GroupDescStats,
+                           MultipartTypes.OFPMP_METER: MeterStats,
+                           MultipartTypes.OFPMP_METER_CONFIG: MeterConfig,
+                           MultipartTypes.OFPMP_TABLE_FEATURES: TableFeatures,
+                           MultipartTypes.OFPMP_PORT_DESC: Port}
+
         if isinstance(self.multipart_type, (int, UBInt16)):
             self.multipart_type = self.multipart_type.enum_ref(
                 self.multipart_type.value)
-        if self.multipart_type.value == 12:
-            return TableFeatures
+
+        pyof_class = simple_body.get(self.multipart_type, None)
+        if pyof_class:
+            return pyof_class()
+
+        array_of_class = array_of_bodies.get(self.multipart_type, None)
+        if array_of_class:
+            return FixedTypeList(pyof_class=pyof_class)
+
+        return BinaryData(b'')
 
 
 # MultipartReply Body
