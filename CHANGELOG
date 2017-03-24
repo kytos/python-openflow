@@ -2,8 +2,7 @@
 Change log
 ##########
 
-All notable changes to the python-openflow project will be documented in this
-file.
+All notable changes to the python-openflow project is documented in this file.
 
 
 [Unreleased]
@@ -22,142 +21,107 @@ Added
 
 Changed
 =======
-    2017-24-03
-        - v0x04
-            - complete reimplementation without inheritance from v0x01
-            - multiple Tests improvements
-        - v0x01 - Numerous Fixes.
-        - Enable Openflow 1.3 in install script
-        - Improved multipart structures
-    2017/01/7
-        - Multiple Tests improvements
-            - Tests for 0x04
-            - OF v0x04 1.3.0 - Compliance fixes
-            - Adding test_helper for v0x04
-            - Updating tests of TableStats to use TestStruct.
-            - Improved tests and StatsReply.
-            - Run unit tests first, before doctest and linter
-        - New inheritance model, MetaStruct refactored
-        - Use of python3.6 class atribute order preservation
-    2017/01/11
-        - change of metaclass "MetaStruct" for improved inheritance application.
-        - Only Python 3.6 in CI
-        - improved docs organization
-        - sdded support to AggregationStats and FlowStats
-    2016/10/25
-        - update linter config
-        - statsRequest and reply packing/unpacking
-        - added installation process from PyPI and Source Code.
-        - fixed tests and basic_types.py
-        - unittest TestStruct refactoring
-    2016/09/14
-        - [v0x04] Adding multipart reply and request messages and tests
-        - Numerous 0x04 implementations
-    2016/09/10
-        - Improved travis config file
-        - multiple fixes on src and tests of v0x01
-        - Adding constants files to manage constants
-        - Moving foundation module to pyof root folder (same with tests)
-    2016/09/2
-        Improved versioning
+  - v0x04
+      - Finished implementation
+      - Test improvements
+  - v0x01 - Numerous Fixes
+  - New and updated tests for 0x04
+  - OF v0x04 1.3.0 - Compliance fixes
+  - Test improvements
+  - Refactoring:
+    - Use of Python 3.6 class attribute order preservation
+    - New inheritance model, MetaStruct refactored
+  - Support for Python 3.6 and later
+  - Improved docs organization
+  - Added support to AggregationStats and FlowStats
+  - StatsRequest/Reply packing/unpacking
+  - Updated docs: install instructions
+  - Test improvements: fixes, refactoring.
+  - Refactoring: basic_types.py
+  - [v0x04] Adding multipart reply and request messages with tests
+  - Numerous 0x04 implementations
+  - Improved continuous integration
+  - v0x01 fixes
+  - Adding constant files to manage constants in NApps
+  - Moving foundation module to pyof root folder (same with tests)
 
 [2016.1.a2] - alpha2 - 2016-11-09
 *********************************
 Changed
 =======
-    2016-11-09
-        - Enum fixes
-        - detailed unpack error messages
-        - importing classes instead of modules
-    2016/07/25
-        - lint fixes for documentation automation
-    2016/07/15
-        - pip install support
+  - Enum fixes
+  - More detailed unpack error messages
+  - Refactoring: import classes instead of modules
+  - lint fixes and docs generation
+  - Pip support
 
 [2016.1.a1] - alpha1 - 2016-06-08
 *********************************
 Changed
 =======
-    2016-06-08
-        - many doc and docstrings fixes and enhancements
-            - from markdown to restructuredtext
-            - doctests
-        - pypi
-        - code optimisations.
-        - many unittests added
-        - Pack, Unpack and GenericType refactor.
-        - added GenericBitMask class
-        - improved MetaBitMask class so the BitMask classes can behave like enums
-        - python3 compliance on metastruct inheritance declaration
-        - revision of bitmasks and enums
-        - fixes on enums and GenericStruct inheritance
-        - object equality comparison on Generic Types and Structs
-    2016/05/31
-        - Refactor in order to accept python basic types as messages attributes.
-        - The messages type conversion during the pack operation.
-        - better documentation
-        - Multiple Fixes
-            - Fixing GenericMessage pack method.
-        - Added ConstantTypeList to classes
-        - added BinaryData into packet in and out
-        - Added ListOf* classes
-    2016/05/20
-        - Added new basic types and new exceptions
-        - Changed message types from GenericStruct to GenericMessage
-        - Added new exceptions
-        - Added FeaturesReply Class
-        - Call validate on pack
-        - Fixes Package setup
-    2016/05/11
-        - added basic sphinx structure
-    2016/05
-        - new workflow for the project
-            - Added explanation and figures to illustrate the workflow.
-            - Added a special workflow to hotfix and security fix.
-        - better readme and contribute and hacking
-            - added a test badge to readme
-            - update LICENSE
-        - Numerous Tests improvements
-            - Enable test on setup with setuptools
-            - Added some files with OpenFlow binary data for testing
-        - added Port Status messages class and enums definitions
-        - added vendor message file and class implementation
-    2016/04/13
-        - Recode to transform the project into a Python Project
-        - multiple stats messages implementations
-        - added requirements file - no requirement up to here.
-        - improvements to project structure
-        - added Project Structure section on README
-    2016/04/11
-        - pack / unpack refactoring for compliance with OF v0x01
-        - added unit tests
-    2016/04/5
-        - docstrings documentation improvements
-        - Test restructure
-        - Added MIT License
-        - several compile fixes.
-        - package and imports structure refactoring.
-        - Added classes for flow statistics.
-    2016/03/30
-        - added classes for Exception Handling improvements
-        - refactoring for use of python3 Enum class
-    2016/03/22
-        - Added thread implementation for socket handle.
-    2016/03/11
-        - Use of metaclasses for messages and structs implementation.
-        - Fixes on HELLO Packet implementation
-        - initial skeleton to implement instrocpection
-        - MessageGeneric class
-        - better readme and hacking instructions
-        - better organization on problem description
-        - added messages, todo and instructions
-    2016/01
-        - Project restart
+  - many doc and docstrings fixes and enhancements
+      - from markdown to restructuredtext
+      - doctests
+  - pypi
+  - code optimizations.
+  - many unittests added
+  - Pack, Unpack and GenericType refactor.
+  - added GenericBitMask class
+  - BitMask classes can behave like enums
+  - python3 compliance on MetaStruct inheritance declaration
+  - revision of bitmasks and enums
+  - fixes on enums and GenericStruct inheritance
+  - object equality comparison on Generic Types and Structs
+  - Refactor to accept Python basic types as messages attributes.
+  - Messages type conversion during the pack operation.
+  - Better documentation
+  - Several fixes, including GenericMessage pack method.
+  - Added ConstantTypeList and ListOf* classes
+  - Added BinaryData into packet in and out
+  - Added new basic types and new exceptions
+  - Changed message types from GenericStruct to GenericMessage
+  - Added FeaturesReply Class
+  - Validation on pack
+  - Fix Package setup
+  - Docs: added support for Sphinx
+  - new workflow for the project
+      - Added explanation and figures to illustrate the workflow.
+      - Added a special workflow to hotfix and security fix.
+  - better readme on contribute and hacking
+      - added a test badge to readme
+      - update LICENSE
+  - Numerous test improvements
+      - Enable test on setup with setuptools
+      - Added some files with OpenFlow binary data for testing
+  - added Port Status messages class and enums definitions
+  - added vendor message file and class implementation
+  - Recode to transform the project into a Python Project
+  - multiple stats messages implementations
+  - added requirements file.
+  - improvements to project structure
+  - added Project Structure section on README
+  - pack / unpack refactoring for compliance with OF v0x01
+  - added unit tests
+  - docstrings documentation improvements
+  - Test restructure
+  - Added MIT License
+  - several compilation fixes.
+  - package and imports structure refactoring.
+  - Added classes for flow statistics.
+  - Classes to improve Exception Handling
+  - refactoring to use python3 Enum class
+  - Added thread implementation for socket handle.
+  - Use of metaclasses for messages and structs implementation.
+  - Fixes on HELLO Packet implementation
+  - initial skeleton to implement introspection
+  - MessageGeneric class
+  - better readme and hacking instructions
+  - better organization on problem description
+  - added messages, todo and instructions
 
-[2013.0.0] - Initial - 2013-06-8
-********************************
+[2013.0.0] - Initial - 2013-06-08
+*********************************
 Added
 =====
-    2013
-        - initial implementation
-        - support for OF v0x01 messages building and parsing
+  - initial implementation
+  - support for OF v0x01 messages building and parsing
