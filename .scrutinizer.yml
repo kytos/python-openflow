@@ -7,15 +7,18 @@ filter:
 build:
     environment:
         python: 3.6.0
+        postgresql: false
+        redis: false
     dependencies:
         override:
             - true
     tests:
         before:
-            - pip install -e .[test]
+            - pip install -r requirements-dev.txt
         override:
             -
                 command: 'coverage run setup.py test'
                 coverage:
                     file: '.coverage'
+                    config_file: '.coveragerc'
                     format: 'py-cc'
