@@ -110,7 +110,7 @@ This software is under *MIT-License*. For more information please read
 
 .. |Experimental| image:: https://img.shields.io/badge/stability-experimental-orange.svg
 .. |Openflow| image:: https://img.shields.io/badge/Openflow-1.3-brightgreen.svg
-   :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-spec-v1.0.0.pdf
+   :target: https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-switch-v1.3.5.pdf
 .. |Tag| image:: https://img.shields.io/github/tag/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/tags
 .. |Release| image:: https://img.shields.io/github/release/kytos/python-openflow.svg
