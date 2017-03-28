@@ -1,0 +1,21 @@
+checks:
+    python:
+        code_rating: true
+        duplicate_code: true
+filter:
+    paths: ["pyof/*", "tests/*"]
+build:
+    environment:
+        python: 3.6.0
+    dependencies:
+        override:
+            - true
+    tests:
+        before:
+            - pip install -e .[test]
+        override:
+            -
+                command: 'coverage run setup.py test'
+                coverage:
+                    file: '.coverage'
+                    format: 'py-cc'
