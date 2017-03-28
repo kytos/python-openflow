@@ -3,7 +3,7 @@
 Overview
 ########
 
-|Experimental| |Openflow| |Tag| |Release| |Tests| |License|
+|Experimental| |Openflow| |Tag| |Release| |License| |Build| |Coverage| |Quality|
 
 *python-openflow* is a low level library to parse and create OpenFlow messages.
 If you want to read an OpenFlow packet from an open socket or send a message to
@@ -115,7 +115,14 @@ This software is under *MIT-License*. For more information please read
    :target: https://github.com/kytos/python-openflow/tags
 .. |Release| image:: https://img.shields.io/github/release/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/releases
-.. |Tests| image:: https://travis-ci.org/kytos/python-openflow.svg?branch=master
-   :target: https://travis-ci.org/kytos/python-openflow
 .. |License| image:: https://img.shields.io/github/license/kytos/python-openflow.svg
    :target: https://github.com/kytos/python-openflow/blob/master/LICENSE
+.. |Build| image:: https://scrutinizer-ci.com/g/kytos/python-openflow/badges/build.png?b=master
+   :alt: Build status
+   :target: https://scrutinizer-ci.com/g/kytos/python-openflow/?branch=master
+.. |Coverage| image:: https://scrutinizer-ci.com/g/kytos/python-openflow/badges/coverage.png?b=master
+   :alt: Code coverage
+   :target: https://scrutinizer-ci.com/g/kytos/python-openflow/?branch=master
+.. |Quality| image:: https://scrutinizer-ci.com/g/kytos/python-openflow/badges/quality-score.png?b=master
+   :alt: Code-quality score
+   :target: https://scrutinizer-ci.com/g/kytos/python-openflow/?branch=master
