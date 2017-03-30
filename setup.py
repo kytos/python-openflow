@@ -89,6 +89,7 @@ setup(name='python-openflow',
       author_email='of-ng-dev@ncc.unesp.br',
       license='MIT',
       test_suite='tests',
+      include_package_data=True,
       install_requires=requirements,
       packages=find_packages(exclude=['tests', '*v0x02*']),
       cmdclass={
