@@ -36,7 +36,8 @@ class Ethernet(GenericStruct):
     #: data (:class:`BinaryData`): The content of the packet in binary format.
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, ether_type=None, data=b''):
+    def __init__(self, destination=None, source=None, ether_type=None,
+                 data=b''):
         """Create an instance and set its attributes."""
         super().__init__()
         self.destination = destination
