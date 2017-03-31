@@ -31,17 +31,18 @@ class Ethernet(GenericStruct):
     destination = HWAddress()
     #: source (:class:`HWAddress`): The source MAC address of the packet.
     source = HWAddress()
-    #: type (:class:`UBInt16`): The EtherType of the packet.
-    type = UBInt16()
+    #: ether_type (:class:`UBInt16`): The EtherType of the packet.
+    ether_type = UBInt16()
     #: data (:class:`BinaryData`): The content of the packet in binary format.
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, eth_type=None, data=b''):
+    def __init__(self, destination=None, source=None, ether_type=None,
+                 data=b''):
         """Create an instance and set its attributes."""
         super().__init__()
         self.destination = destination
         self.source = source
-        self.type = eth_type
+        self.ether_type = ether_type
         self.data = data
 
     def get_hash(self):
@@ -65,7 +66,7 @@ class GenericTLV(GenericStruct):
     def __init__(self, tlv_type=127, value=BinaryData()):
         """Create an instance and set its attributes."""
         super().__init__()
-        self.type = tlv_type
+        self.tlv_type = tlv_type
         self._value = value
 
     @property
@@ -86,7 +87,7 @@ class GenericTLV(GenericStruct):
         summing up 16 bits. To achieve that, we need to do some bitshift
         operations.
         """
-        return UBInt16(((self.type & 127) << 9) | (self.length & 511))
+        return UBInt16(((self.tlv_type & 127) << 9) | (self.length & 511))
 
     def pack(self, value=None):
         """Pack the TLV in a binary representation.
@@ -124,7 +125,7 @@ class GenericTLV(GenericStruct):
         """
         header = UBInt16()
         header.unpack(buffer[offset:offset+2])
-        self.type = header.value >> 9
+        self.tlv_type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
         self._value = BinaryData(buffer[begin:end])
@@ -172,7 +173,7 @@ class TLVWithSubType(GenericTLV):
         """
         header = UBInt16()
         header.unpack(buffer[offset:offset+2])
-        self.type = header.value >> 9
+        self.tlv_type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
         sub_type = UBInt8()
