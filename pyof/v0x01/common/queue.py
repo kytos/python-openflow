@@ -50,7 +50,7 @@ class QueuePropHeader(GenericStruct):
     """Describe the header of each queue property."""
 
     queue_property = UBInt16(enum_ref=QueueProperties)
-    len = UBInt16()
+    length = UBInt16()
     #: 64-bit alignment
     pad = Pad(4)
 
@@ -59,11 +59,11 @@ class QueuePropHeader(GenericStruct):
 
         Args:
             queue_property (QueueProperties): The queue property.
-            len (int): Length of property, including this header.
+            length (int): Length of property, including this header.
         """
         super().__init__()
         self.queue_property = queue_property
-        self.len = length
+        self.length = length
 
 
 class PacketQueue(GenericStruct):

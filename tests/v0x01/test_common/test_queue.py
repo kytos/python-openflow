@@ -11,7 +11,7 @@ class TestQueuePropHeader(unittest.TestCase):
         """Basic setup for test."""
         self.message = queue.QueuePropHeader()
         self.message.queue_property = queue.QueueProperties.OFPQT_MIN_RATE
-        self.message.len = 12
+        self.message.length = 12
 
     def test_get_size(self):
         """[Common/QueuePropHeader] - size 8."""

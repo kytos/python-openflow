@@ -47,7 +47,7 @@ class QueuePropHeader(GenericStruct):
 
         Args:
             queue_property (QueueProperties): The queue property.
-            len (int): Length of property, including this header.
+            length (int): Length of property, including this header.
         """
         super().__init__()
         self.queue_property = queue_property
