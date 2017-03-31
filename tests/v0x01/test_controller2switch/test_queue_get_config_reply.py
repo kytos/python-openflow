@@ -32,6 +32,6 @@ def _get_packet_queue():
 def _get_queue_properties():
     """Function used to return a list of queue properties."""
     properties = []
-    properties.append(QueuePropHeader(prop=QueueProperties.OFPQT_MIN_RATE,
-                                      length=12))
+    properties.append(QueuePropHeader(
+        queue_property=QueueProperties.OFPQT_MIN_RATE, length=12))
     return properties
