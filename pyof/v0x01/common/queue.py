@@ -49,21 +49,21 @@ class ListOfProperties(FixedTypeList):
 class QueuePropHeader(GenericStruct):
     """Describe the header of each queue property."""
 
-    property = UBInt16(enum_ref=QueueProperties)
-    len = UBInt16()
+    queue_property = UBInt16(enum_ref=QueueProperties)
+    length = UBInt16()
     #: 64-bit alignment
     pad = Pad(4)
 
-    def __init__(self, prop=None, length=None):
+    def __init__(self, queue_property=None, length=None):
         """The contructor takes the paremeters below.
 
         Args:
-            property (QueueProperties): The queue property.
-            len (int): Length of property, including this header.
+            queue_property (QueueProperties): The queue property.
+            length (int): Length of property, including this header.
         """
         super().__init__()
-        self.property = prop
-        self.len = length
+        self.queue_property = queue_property
+        self.length = length
 
 
 class PacketQueue(GenericStruct):
@@ -93,8 +93,8 @@ class PacketQueue(GenericStruct):
 class QueuePropMinRate(GenericStruct):
     """Define the minimum-rate type queue."""
 
-    prop_header = QueuePropHeader(prop=QueueProperties.OFPQT_MIN_RATE,
-                                  length=16)
+    prop_header = QueuePropHeader(
+        queue_property=QueueProperties.OFPQT_MIN_RATE, length=16)
     rate = UBInt16()
     #: 64-bit alignmet.
     pad = Pad(6)
