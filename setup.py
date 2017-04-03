@@ -79,8 +79,6 @@ class Test(TestCommand):
         Linter.lint()
 
 
-requirements = [i.strip() for i in open("requirements.txt").readlines()]
-
 setup(name='python-openflow',
       version=__version__,
       description='Library to parse and generate OpenFlow messages',
@@ -90,7 +88,6 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      install_requires=requirements,
       packages=find_packages(exclude=['tests', '*v0x02*']),
       cmdclass={
           'lint': Linter,
