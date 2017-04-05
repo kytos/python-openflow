@@ -97,4 +97,11 @@ setup(name='python-openflow',
           'clean': Cleaner,
           'test': Test
       },
-      zip_safe=False)
+      zip_safe=False,
+      classifiers=[
+          'License :: OSI Approved :: MIT License',
+          'Operating System :: POSIX :: Linux',
+          'Programming Language :: Python :: 3.6',
+          'Topic :: System :: Networking',
+          'Topic :: Software Development :: Libraries'
+      ])
