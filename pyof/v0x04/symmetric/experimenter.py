@@ -5,7 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import UBInt32
+from pyof.foundation.basic_types import BinaryData, UBInt32
 from pyof.v0x04.common.header import Header, Type
 
 __all__ = ('ExperimenterHeader',)
@@ -34,8 +34,9 @@ class ExperimenterHeader(GenericMessage):
     header = Header(message_type=Type.OFPT_EXPERIMENTER)
     experimenter = UBInt32()
     exp_type = UBInt32()
+    data = BinaryData()
 
-    def __init__(self, xid=None, experimenter=None, exp_type=None):
+    def __init__(self, xid=None, experimenter=None, exp_type=None, data=b''):
         """The constructor takes the parameters below.
 
         Args:
@@ -48,3 +49,4 @@ class ExperimenterHeader(GenericMessage):
         super().__init__(xid)
         self.experimenter = experimenter
         self.exp_type = exp_type
+        self.data = data
