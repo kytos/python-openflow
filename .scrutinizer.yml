@@ -12,13 +12,3 @@ build:
     dependencies:
         override:
             - true
-    tests:
-        before:
-            - pip install -r requirements-dev.txt
-        override:
-            -
-                command: 'coverage run setup.py test'
-                coverage:
-                    file: '.coverage'
-                    config_file: '.coveragerc'
-                    format: 'py-cc'
