@@ -31,11 +31,11 @@
 <footer class="footer">
   <div class="container footer-brand">
     <div class="row">
-      <div class="col-lg-3 col-md-3 col-sm-12  col-xs-12 brand-area">
+      <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12 brand-area">
         <h1 class="logo-kytos" style="margin-left:0">kytos</h1>
         <p><strong>Word definition:</strong> Cyto-: Prefix denoting a cell.</p><p> 'Cyto-' is derived from the Greek kytos meaning 'hollow, as a cell or container.</p>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 ">
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
         <h3>Repos</h3>
           <ul class="list-footer">
             <li><a href="">python-openflow</a></li>
@@ -46,7 +46,7 @@
             <li><a href="">python-odl</a></li>
           </ul>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 ">
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
         <h3>Get Involved</h3>
         <ul class="list-footer">
           <li><a href="">Translate</a></li>
@@ -57,32 +57,13 @@
           <li><a href="">Documentation</a></li>
         </ul>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 ">
-        <h3>Partners</h3>
-        <div class="row">
-          <ul class="list-partners">
-            <li class="col-sm-12 col-md-6 col-xs-3">
-              <a href="https://www.sprace.org.br/" title="SPRACE"><img src="{{ pathto('_static/images/partner-sprace.png', 1) }}" class="bw partner-logo"  alt="SPRACE"></a>
-            </li>
-            <li class="col-sm-12 col-md-6 col-xs-3">
-              <a href="http://www.huawei.com/" title="Huawei"><img src="{{ pathto('_static/images/partner-huawei.png', 1) }}" class="bw partner-logo"  alt="Huawei"></a>
-            </li>
-            <li class="col-sm-12 col-md-6 col-xs-3">
-              <a href="https://www.caltech.edu/" title="Caltech"><img src="{{ pathto('_static/images/partner-caltech.png', 1) }}" class="bw partner-logo"  alt="Caltech"></a>
-            </li>
-            <li class="col-sm-12 col-md-6 col-xs-3">
-              <a href="https://home.cern/" title="CERN"><img src="{{ pathto('_static/images/partner-cern.png', 1) }}" class="bw partner-logo"  alt="CERN"></a>
-            </li>
-          </ul>
-        </div>
-      </div>
     </div>
     <div class="row">
       <div class="text-center">
         <hr/>
         <p>
           {% trans copyright=copyright|e %}
-            &copy; Copyright {{ copyright }} - 2016 -
+            &copy; Copyright {{ copyright }} - 2016 - 2017
           {% endtrans %}
           Kytos is an Open Source software under MIT license.<br/>
           {%- if last_updated %}
