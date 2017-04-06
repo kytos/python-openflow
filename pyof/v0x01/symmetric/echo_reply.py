@@ -22,11 +22,12 @@ class EchoReply(GenericMessage):
     header = Header(message_type=Type.OFPT_ECHO_REPLY, length=8)
     data = BinaryData()
 
-    def __init__(self, xid=None, data=b''):
+    def __init__(self, xid=None, data=None):
         """The constructor takes the parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
+            data (bytes): arbitrary-length data field.
         """
         super().__init__(xid)
         self.data = data
