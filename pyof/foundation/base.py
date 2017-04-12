@@ -224,8 +224,7 @@ class GenericType:
         Returns:
             bool: Whether it is an :class:`~Enum`.
         """
-        return self.enum_ref and (issubclass(self.enum_ref, Enum) or
-                                  issubclass(self.enum_ref, IntEnum))
+        return self.enum_ref and issubclass(self.enum_ref, (Enum, IntEnum))
 
     def is_bitmask(self):
         """Test whether it is a :class:`GenericBitMask`.
