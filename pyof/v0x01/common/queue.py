@@ -1,7 +1,7 @@
 """Defines OpenFlow queues structures and related items."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
@@ -16,7 +16,7 @@ __all__ = ('QueuePropHeader', 'PacketQueue', 'QueuePropMinRate',
 # Enums
 
 
-class QueueProperties(Enum):
+class QueueProperties(IntEnum):
     """Describe queue properties."""
 
     #: No property defined for queue (default)

@@ -4,7 +4,7 @@ The flow instructions associated with a flow table entry are executed when a
 flow matches the entry.
 """
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
@@ -23,7 +23,7 @@ __all__ = ('InstructionApplyAction', 'InstructionClearAction',
 # Enums
 
 
-class InstructionType(Enum):
+class InstructionType(IntEnum):
     """List of instructions that are currently defined."""
 
     #: Setup the next table in the lookup pipeline

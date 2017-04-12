@@ -1,7 +1,7 @@
 """Defines Header classes and related items."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 from random import randint
 
 # Local source tree imports
@@ -17,7 +17,7 @@ __all__ = ('Header', 'Type')
 # Enums
 
 
-class Type(Enum):
+class Type(IntEnum):
     """Enumeration of Message Types."""
 
     # Symetric/Immutable messages

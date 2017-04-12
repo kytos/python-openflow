@@ -4,7 +4,7 @@ An OpenFlow match is composed of a flow match header and a sequence of zero or
 more flow match fields.
 """
 # System imports
-from enum import Enum
+from enum import Enum, IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
@@ -40,7 +40,7 @@ class Ipv6ExtHdrFlags(Enum):
     OFPIEH_UNSEQ = 1 << 8
 
 
-class MatchField(Enum):
+class MatchField(IntEnum):
     """OXM Flow match field types for OpenFlow basic class.
 
     A switch is not required to support all match field types, just those
@@ -131,7 +131,7 @@ class MatchField(Enum):
     OFPXMT_OFB_IPV6_EXTHDR = 39
 
 
-class MatchType(Enum):
+class MatchType(IntEnum):
     """Indicates the match structure in use.
 
     The match type is placed in the type field at the beginning of all match
@@ -147,7 +147,7 @@ class MatchType(Enum):
     OFPMT_OXM = 1
 
 
-class OxmOfbMatchField(Enum):
+class OxmOfbMatchField(IntEnum):
     """OpenFlow Extensible Match (OXM) Class IDs.
 
     The high order bit differentiate reserved classes from member classes.
@@ -166,7 +166,7 @@ class OxmOfbMatchField(Enum):
     OFPXMC_EXPERIMENTER = 0xFFFF
 
 
-class VlanId(Enum):
+class VlanId(IntEnum):
     """Indicates conditions of the Vlan.
 
     The VLAN id is 12-bits, so we can use the entire 16 bits to indicate

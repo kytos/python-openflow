@@ -20,7 +20,7 @@ import re
 import struct
 from collections import OrderedDict
 from copy import deepcopy
-from enum import Enum
+from enum import Enum, IntEnum
 
 # Local source tree imports
 from pyof.foundation.exceptions import (BadValueException, PackException,
@@ -224,7 +224,8 @@ class GenericType:
         Returns:
             bool: Whether it is an :class:`~Enum`.
         """
-        return self.enum_ref and issubclass(self.enum_ref, Enum)
+        return self.enum_ref and (issubclass(self.enum_ref, Enum) or
+                                  issubclass(self.enum_ref, IntEnum))
 
     def is_bitmask(self):
         """Test whether it is a :class:`GenericBitMask`.

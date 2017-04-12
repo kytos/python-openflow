@@ -1,7 +1,7 @@
 """Defines an Error Message."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation import exceptions
 from pyof.foundation.base import GenericMessage
@@ -20,7 +20,7 @@ __all__ = ('BadActionCode', 'BadInstructionCode', 'BadMatchCode', 'ErrorType',
 # Enums
 
 
-class BadActionCode(Enum):
+class BadActionCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -61,7 +61,7 @@ class BadActionCode(Enum):
     OFPBAC_BAD_SET_ARGUMENT = 15
 
 
-class BadInstructionCode(Enum):
+class BadInstructionCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_INSTRUCTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -87,7 +87,7 @@ class BadInstructionCode(Enum):
     OFPBIC_EPERM = 8
 
 
-class BadMatchCode(Enum):
+class BadMatchCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_MATCH.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -122,7 +122,7 @@ class BadMatchCode(Enum):
     OFPBMC_EPERM = 11
 
 
-class BadRequestCode(Enum):
+class BadRequestCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_REQUEST.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -159,7 +159,7 @@ class BadRequestCode(Enum):
     OFPBRC_MULTIPART_BUFFER_OVERFLOW = 13
 
 
-class ErrorType(Enum):
+class ErrorType(IntEnum):
     """Values for ’type’ in ofp_error_message.
 
     These values are immutable: they will not change in future versions of the
@@ -198,7 +198,7 @@ class ErrorType(Enum):
     OFPET_EXPERIMENTER = 0xffff
 
 
-class FlowModFailedCode(Enum):
+class FlowModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -222,7 +222,7 @@ class FlowModFailedCode(Enum):
     OFPFMFC_BAD_FLAGS = 7
 
 
-class GroupModFailedCode(Enum):
+class GroupModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_GROUP_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -262,7 +262,7 @@ class GroupModFailedCode(Enum):
     OFPGMFC_EPERM = 14
 
 
-class HelloFailedCode(Enum):
+class HelloFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_HELLO_FAILED.
 
     'data' contains an ASCII text string that may give failure details.
@@ -274,7 +274,7 @@ class HelloFailedCode(Enum):
     OFPHFC_EPERM = 1
 
 
-class MeterModFailedCode(Enum):
+class MeterModFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_METER_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -308,7 +308,7 @@ class MeterModFailedCode(Enum):
     OFPMMFC_OUT_OF_BANDS = 11
 
 
-class PortModFailedCode(Enum):
+class PortModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_PORT_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -326,7 +326,7 @@ class PortModFailedCode(Enum):
     OFPPMFC_EPERM = 4
 
 
-class QueueOpFailedCode(Enum):
+class QueueOpFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_QUEUE_OP_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -340,7 +340,7 @@ class QueueOpFailedCode(Enum):
     OFPQOFC_EPERM = 2
 
 
-class RoleRequestFailedCode(Enum):
+class RoleRequestFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_ROLE_REQUEST_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -354,7 +354,7 @@ class RoleRequestFailedCode(Enum):
     OFPRRFC_BAD_ROLE = 2
 
 
-class SwitchConfigFailedCode(Enum):
+class SwitchConfigFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_SWITCH_CONFIG_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -368,7 +368,7 @@ class SwitchConfigFailedCode(Enum):
     OFPQCFC_EPERM = 2
 
 
-class TableFeaturesFailedCode(Enum):
+class TableFeaturesFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_TABLE_FEATURES_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -388,7 +388,7 @@ class TableFeaturesFailedCode(Enum):
     OFPTFFC_EPERM = 5
 
 
-class TableModFailedCode(Enum):
+class TableModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_TABLE_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.

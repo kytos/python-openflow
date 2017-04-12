@@ -1,7 +1,7 @@
 """Defines common structures and enums for controller2switch."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, Pad, UBInt8, UBInt16, UBInt32,
@@ -24,7 +24,7 @@ __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
 # Enums
 
 
-class ConfigFlags(Enum):
+class ConfigFlags(IntEnum):
     """Configuration Flags. Handling of IP Fragments."""
 
     #: No special handling for fragments
@@ -36,7 +36,7 @@ class ConfigFlags(Enum):
     OFPC_FRAG_MASK = 3
 
 
-class StatsTypes(Enum):
+class StatsTypes(IntEnum):
     """Type field to be used both in both request and reply.
 
     It specifies the kind of information being passed and determines how the

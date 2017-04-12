@@ -1,7 +1,7 @@
 """Modifications to the flow table from the controller."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericBitMask, GenericMessage
 from pyof.foundation.basic_types import UBInt16, UBInt32, UBInt64
@@ -19,7 +19,7 @@ __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
 # Enums
 
 
-class FlowModCommand(Enum):
+class FlowModCommand(IntEnum):
     """List the possible commands for a flow."""
 
     #: New flow

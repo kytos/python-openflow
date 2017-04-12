@@ -1,6 +1,6 @@
 """The controller has requested to be notified when flows time out."""
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32, UBInt64
@@ -13,7 +13,7 @@ __all__ = ('FlowRemoved', 'FlowRemovedReason')
 # Enums
 
 
-class FlowRemovedReason(Enum):
+class FlowRemovedReason(IntEnum):
     """Why the flow was removed."""
 
     #: Flow idle time exceeded idle_timeout

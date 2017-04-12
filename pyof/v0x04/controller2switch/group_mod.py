@@ -1,5 +1,5 @@
 """Modify Group Entry Message."""
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
@@ -10,7 +10,7 @@ from pyof.v0x04.controller2switch.common import Bucket
 __all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group')
 
 
-class Group(Enum):
+class Group(IntEnum):
     """Group numbering. Groups can use any number up to OFPG_MAX."""
 
     #: Last usable group number.
@@ -23,7 +23,7 @@ class Group(Enum):
     OFPG_ANY = 0xffffffff
 
 
-class GroupModCommand(Enum):
+class GroupModCommand(IntEnum):
     """Group commands."""
 
     #: New group.
@@ -34,7 +34,7 @@ class GroupModCommand(Enum):
     OFPGC_DELETE = 2
 
 
-class GroupType(Enum):
+class GroupType(IntEnum):
     """Group types. Range [128, 255] is reserved for experimental use."""
 
     #: All (multicast/broadcast) group.

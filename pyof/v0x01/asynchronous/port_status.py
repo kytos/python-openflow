@@ -1,7 +1,7 @@
 """Defines an Error Message."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8
@@ -16,7 +16,7 @@ __all__ = ('PortStatus', 'PortReason')
 # Enums
 
 
-class PortReason(Enum):
+class PortReason(IntEnum):
     """What changed about the physical port."""
 
     #: The port was added
