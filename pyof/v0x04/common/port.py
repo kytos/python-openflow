@@ -151,7 +151,7 @@ class PortState(GenericBitMask):
 
     All port state bits are read-only and cannot be changed by the controller.
     When the port flags are changed, the switch sends an
-    :attr:`v0x02.common.header.Type.OFPT_PORT_STATUS` message to notify the
+    :attr:`v0x04.common.header.Type.OFPT_PORT_STATUS` message to notify the
     controller of the change.
     """
 
