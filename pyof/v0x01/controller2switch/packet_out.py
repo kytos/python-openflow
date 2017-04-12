@@ -115,7 +115,8 @@ class PacketOut(GenericMessage):
         if isinstance(port, Port):
             if port not in _VIRT_IN_PORTS:
                 valid = False
-        elif isinstance(port, int) and (port < 1 or port >= Port.OFPP_MAX.value):
+        elif isinstance(port, int) and (port < 1 or port >=
+                                        Port.OFPP_MAX.value):
             valid = False
         if not valid:
             raise ValidationError('{} is not a valid input port.'.format(port))
