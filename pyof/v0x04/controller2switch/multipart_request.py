@@ -132,7 +132,7 @@ class MultipartRequest(GenericMessage):
 
         array_of_bodies = {MultipartTypes.OFPMP_TABLE_FEATURES: TableFeatures}
 
-        if isinstance(self.multipart_type, (int, UBInt16)):
+        if isinstance(self.multipart_type, UBInt16):
             self.multipart_type = self.multipart_type.enum_ref(
                 self.multipart_type.value)
 
