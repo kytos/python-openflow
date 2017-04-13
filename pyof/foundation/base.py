@@ -250,7 +250,7 @@ class MetaStruct(type):
     def __prepare__(mcs, name, bases, **kwargs):
         return OrderedDict()
 
-    def __new__(cls, name, bases, classdict, **kwargs):
+    def __new__(mcs, name, bases, classdict, **kwargs):
         """Inherit attributes from parent class and update their versions.
 
         Here is the moment that the new class is going to be created. During
@@ -330,7 +330,7 @@ class MetaStruct(type):
             inherited_attributes.update(classdict)
             classdict = inherited_attributes
 
-        return super().__new__(cls, name, bases, classdict, **kwargs)
+        return super().__new__(mcs, name, bases, classdict, **kwargs)
 
     @staticmethod
     def get_pyof_version(module_fullname):
