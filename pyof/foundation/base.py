@@ -561,7 +561,7 @@ class GenericStruct(object, metaclass=MetaStruct):
     def _unpack_attribute(self, name, obj, buff, begin):
         attribute = deepcopy(obj)
         setattr(self, name, attribute)
-        if len(buff) == 0:
+        if not buff:
             size = 0
         else:
             try:

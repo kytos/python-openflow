@@ -430,7 +430,7 @@ class BinaryData(GenericType):
         if value is None:
             value = self._value
 
-        if isinstance(value, bytes) and len(value) > 0:
+        if isinstance(value, bytes) and value:
             return value
 
         return b''
@@ -552,7 +552,7 @@ class TypeList(list, GenericStruct):
             int: The size in bytes.
         """
         if value is None:
-            if len(self) == 0:
+            if not self:
                 # If this is a empty list, then returns zero
                 return 0
             elif issubclass(type(self[0]), GenericType):
@@ -668,7 +668,7 @@ class ConstantTypeList(TypeList):
         """
         if isinstance(item, list):
             self.extend(item)
-        elif len(self) == 0:
+        elif not self:
             list.append(self, item)
         elif item.__class__ == self[0].__class__:
             list.append(self, item)
@@ -687,7 +687,7 @@ class ConstantTypeList(TypeList):
             :exc:`~.exceptions.WrongListItemType`: If an item has a different
                 type than the first item to be stored.
         """
-        if len(self) == 0:
+        if not self:
             list.append(self, item)
         elif item.__class__ == self[0].__class__:
             list.insert(self, index, item)
