@@ -84,8 +84,8 @@ class StatsReply(GenericMessage):
             return BinaryData(b'')
         elif pyof_class is DescStats:
             return pyof_class()
-        else:
-            return FixedTypeList(pyof_class=pyof_class)
+
+        return FixedTypeList(pyof_class=pyof_class)
 
     def _get_body_class(self):
         if isinstance(self.body_type, (int, UBInt16)):

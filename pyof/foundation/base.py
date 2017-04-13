@@ -374,8 +374,8 @@ class MetaStruct(type):
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:
             return None
-        else:
-            return module_fullname.replace(module_version, version)
+
+        return module_fullname.replace(module_version, version)
 
     @staticmethod
     def get_pyof_obj_new_version(name, obj, new_version):
