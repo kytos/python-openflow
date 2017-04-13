@@ -485,7 +485,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             True: if the obj is a kytos attribute
             False: if the obj is not a kytos attribute
         """
-        return isinstance(obj, GenericType) or isinstance(obj, GenericStruct)
+        return isinstance(obj, (GenericType, GenericStruct))
 
     def _validate_attributes_type(self):
         """Validate the type of each attribute."""
