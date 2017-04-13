@@ -16,11 +16,3 @@ class FeaturesRequest(GenericMessage):
 
     header = Header(
         message_type=Type.OFPT_FEATURES_REQUEST)
-
-    def __init__(self, xid=None):
-        """The constructor takes the optional parameter below.
-
-        Args:
-            xid (int): xid to be used on the message header.
-        """
-        super().__init__(xid)

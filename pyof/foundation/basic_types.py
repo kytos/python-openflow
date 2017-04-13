@@ -316,7 +316,7 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):
+    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
         """The constructor takes the parameters below.
 
         Args:
@@ -407,7 +407,7 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):
+    def __init__(self, value=b''):  # noqa
         """The constructor takes the parameter below.
 
         Args:
@@ -644,7 +644,7 @@ class ConstantTypeList(TypeList):
     list operations.
     """
 
-    def __init__(self, items=None):
+    def __init__(self, items=None):  # noqa
         """The contructor can contain the items to be stored.
 
         Args:
