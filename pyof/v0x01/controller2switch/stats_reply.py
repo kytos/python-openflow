@@ -18,7 +18,6 @@ class StatsReply(GenericMessage):
     flags = UBInt16()
     body = BinaryData()
 
-
     def __init__(self, xid=None, body_type=None, flags=None, body=b''):
         """The constructor just assings parameters to object attributes.
 
