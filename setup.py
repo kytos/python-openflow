@@ -91,7 +91,7 @@ setup(name='python-openflow',
       test_suite='tests',
       include_package_data=True,
       install_requires=requirements,
-      packages=find_packages(exclude=['tests', '*v0x02*']),
+      packages=find_packages(exclude=['tests']),
       cmdclass={
           'clean': Cleaner,
           'coverage': TestCoverage,
