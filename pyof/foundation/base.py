@@ -293,8 +293,7 @@ class MetaStruct(type):
                     #: considering the version of the current class being
                     #: created.
                     attr = MetaStruct.get_pyof_obj_new_version(attr_name, obj,
-                                                               curr_version
-                                                               )
+                                                               curr_version)
 
                     if attr_name == 'header':
                         #: Here we are going to set the message_type on the
