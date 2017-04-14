@@ -296,20 +296,7 @@ class MetaStruct(type):
                                                                curr_version)
 
                     if attr_name == 'header':
-                        #: Here we are going to set the message_type on the
-                        #: header, according to the message_type of the
-                        #: parent class.
-                        old_enum = obj.message_type
-                        new_header = attr[1]
-                        new_enum = new_header.__class__.message_type.enum_ref
-                        #: This 'if' will be removed on the future with an
-                        #: improved version of __init_subclass__ method of the
-                        #: GenericMessage class
-                        if old_enum:
-                            msg_type_name = old_enum.name
-                            new_type = new_enum[msg_type_name]
-                            new_header.message_type = new_type
-                        attr = (attr[0], new_header)
+                        attr = mcs._header_message_type_update(obj, attr)
 
                     inherited_attributes.update([attr])
                 #: We are going to inherit just from the 'closest parent'
@@ -330,6 +317,25 @@ class MetaStruct(type):
             classdict = inherited_attributes
 
         return super().__new__(mcs, name, bases, classdict, **kwargs)
+
+    @staticmethod
+    def _header_message_type_update(obj, attr):
+        """Update the message type on the header.
+
+        Set the message_type of the header according to the message_type of
+        the parent class.
+        """
+        old_enum = obj.message_type
+        new_header = attr[1]
+        new_enum = new_header.__class__.message_type.enum_ref
+        #: This 'if' will be removed on the future with an
+        #: improved version of __init_subclass__ method of the
+        #: GenericMessage class
+        if old_enum:
+            msg_type_name = old_enum.name
+            new_type = new_enum[msg_type_name]
+            new_header.message_type = new_type
+        return (attr[0], new_header)
 
     @staticmethod
     def get_pyof_version(module_fullname):
