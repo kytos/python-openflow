@@ -560,7 +560,7 @@ class TypeList(list, GenericStruct):
                 # length of the list multiplied by the size of the GenericType.
                 return len(self) * self[0].get_size()
 
-            #Otherwise iter over the list accumulating the sizes.
+            # Otherwise iter over the list accumulating the sizes.
             return sum(item.get_size() for item in self)
 
         return type(self)(value).get_size()
