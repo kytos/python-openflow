@@ -506,7 +506,7 @@ class TypeList(list, GenericStruct):
         if value is None:
             value = self
         else:
-            container = type(self)()
+            container = type(self)(items=None)
             container.extend(value)
             value = container
 
