@@ -18,13 +18,11 @@ class TestUBInt8(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Foundation/BasicTypes/UBInt8] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Foundation/BasicTypes/UBInt8] - unpacking."""
-        # TODO
         pass
 
 
@@ -42,13 +40,11 @@ class TestUBInt16(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Foundation/BasicTypes/UBInt16] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Foundation/BasicTypes/UBInt16] - unpacking."""
-        # TODO
         pass
 
 
@@ -66,13 +62,11 @@ class TestUBInt32(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Foundation/BasicTypes/UBInt32] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Foundation/BasicTypes/UBInt32] - unpacking."""
-        # TODO
         pass
 
 

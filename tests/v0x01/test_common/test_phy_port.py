@@ -29,11 +29,9 @@ class TestPhyPort(TestCase):
     @skip('Not yet implemented')
     def test_pack(self):
         """[Common/PhyPort] - packing."""
-        # TODO
         pass
 
     @skip('Not yet implemented')
     def test_unpack(self):
         """[Common/PhyPort] - unpacking."""
-        # TODO
         pass

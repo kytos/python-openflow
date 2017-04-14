@@ -20,13 +20,11 @@ class TestQueuePropHeader(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Common/QueuePropHeader] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Common/QueuePropHeader] - unpacking."""
-        # TODO
         pass
 
 
@@ -46,13 +44,11 @@ class TestPacketQueue(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Common/PacketQueue] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Common/PacketQueue] - unpacking."""
-        # TODO
         pass
 
 
@@ -71,11 +67,9 @@ class TestQueuePropMinRate(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Common/PropMinRate] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Common/PropMinRate] - unpacking."""
-        # TODO
         pass

@@ -37,11 +37,9 @@ class TestMatch(unittest.TestCase):
     @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Common/FlowMatch] - packing."""
-        # TODO
         pass
 
     @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Common/FlowMatch] - unpacking."""
-        # TODO
         pass
