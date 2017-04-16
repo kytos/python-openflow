@@ -288,7 +288,7 @@ class MetaStruct(type):
             #: Check if we are inheriting from one of our classes.
             if isinstance(base, MetaStruct):
                 inherited_attributes = OrderedDict()
-                for attr_name, obj in base._get_class_attributes():
+                for attr_name, obj in base.get_class_attributes():
                     #: Get an updated version of this attribute,
                     #: considering the version of the current class being
                     #: created.
@@ -456,7 +456,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def __init__(self):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             setattr(self, name, deepcopy(value))
 
     def __eq__(self, other):
@@ -505,7 +505,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         return True
 
     @classmethod
-    def _get_class_attributes(cls):
+    def get_class_attributes(cls):
         """Return a generator for class attributes' names and value.
 
         This method strict relies on the PEP 520 (Preserving Class Attribute
@@ -516,9 +516,9 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         .. code-block:: python3
 
-            for _name, _value in self._get_class_attributes():
-                print("attribute name: {}".format(_name))
-                print("attribute type: {}".format(_value))
+            for name, value in self.get_class_attributes():
+                print("attribute name: {}".format(name))
+                print("attribute type: {}".format(value))
 
         returns:
             generator: tuples with attribute name and value.
@@ -544,7 +544,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             generator: tuples with attribute name and value.
         """
         for name, value in self.__dict__.items():
-            if name in map((lambda x: x[0]), self._get_class_attributes()):
+            if name in map((lambda x: x[0]), self.get_class_attributes()):
                 yield (name, value)
 
     def _get_attributes(self):
@@ -561,7 +561,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         return map((lambda i, c: (i[1], c[1])),
                    self._get_instance_attributes(),
-                   self._get_class_attributes())
+                   self.get_class_attributes())
 
     def _unpack_attribute(self, name, obj, buff, begin):
         attribute = deepcopy(obj)
@@ -646,7 +646,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             size = self._unpack_attribute(name, value, buff, begin)
             begin += size
 
@@ -750,7 +750,7 @@ class GenericMessage(GenericStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             if type(value).__name__ != "Header":
                 size = self._unpack_attribute(name, value, buff, begin)
                 begin += size

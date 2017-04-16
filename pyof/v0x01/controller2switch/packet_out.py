@@ -91,7 +91,7 @@ class PacketOut(GenericMessage):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for attribute_name, class_attribute in self._get_class_attributes():
+        for attribute_name, class_attribute in self.get_class_attributes():
             if type(class_attribute).__name__ != "Header":
                 attribute = deepcopy(class_attribute)
                 if attribute_name == 'actions':
