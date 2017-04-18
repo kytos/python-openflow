@@ -134,8 +134,8 @@ class GenericTLV(GenericStruct):
         """Return struct size."""
         if isinstance(value, type(self)):
             return value.get_size()
-        else:
-            return 2 + self.length
+
+        return 2 + self.length
 
 
 class TLVWithSubType(GenericTLV):

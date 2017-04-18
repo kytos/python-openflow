@@ -69,8 +69,8 @@ class TableFeaturePropType(Enum):
             return NextTablesProperty
         elif self.value <= 7:
             return ActionsProperty
-        else:
-            return OxmProperty
+
+        return OxmProperty
 
 
 # Classes

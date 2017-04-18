@@ -19,11 +19,3 @@ class Hello(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_HELLO, length=8)
-
-    def __init__(self, xid=None):
-        """The constructor takes the parameters below.
-
-        Args:
-            xid (int): xid to be used on the message header.
-        """
-        super().__init__(xid)

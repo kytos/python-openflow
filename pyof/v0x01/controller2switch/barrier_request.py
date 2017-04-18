@@ -19,11 +19,3 @@ class BarrierRequest(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_BARRIER_REQUEST)
-
-    def __init__(self, xid=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            xid (int): xid to be used on the message header.
-        """
-        super().__init__(xid)

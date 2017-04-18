@@ -82,22 +82,3 @@ class SwitchFeatures(GenericMessage):
 
 class FeaturesReply(SwitchFeatures):
     """'OFPT_FEATURES_REPLY' message."""
-
-    def __init__(self, xid=None, datapath_id=None, n_buffers=None,
-                 n_tables=None, auxiliary_id=None, capabilities=None,
-                 reserved=None):
-        """The constructor just assings parameters to object attributes.
-
-        Args:
-            xid (int): xid to be used on the message header.
-            datapath_id (int): Datapath unique ID.
-                The lower 48-bits are for MAC address, while
-                the upper 16-bits are implementer-defined.
-            n_buffers (int): Max packets buffered at once.
-            n_tables (int): Number of tables supported by datapath.
-            auxiliary_id (int): Identify auxiliary connections.
-            capabilities (int): bitmap of supported capabilities.
-            reserved (int): Reserved.
-        """
-        super().__init__(xid, datapath_id, n_buffers, n_tables, auxiliary_id,
-                         capabilities, reserved)

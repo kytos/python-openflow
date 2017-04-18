@@ -171,7 +171,7 @@ class Match(GenericStruct):
 
         default_value = getattr(Match, field)
         if isinstance(default_value, IPAddress):
-            if field is 'nw_dst':
+            if field == 'nw_dst':
                 self.wildcards |= FlowWildCards.OFPFW_NW_DST_MASK
                 shift = FlowWildCards.OFPFW_NW_DST_SHIFT
             else:

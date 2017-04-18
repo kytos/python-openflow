@@ -250,7 +250,7 @@ class MetaStruct(type):
     def __prepare__(mcs, name, bases, **kwargs):
         return OrderedDict()
 
-    def __new__(cls, name, bases, classdict, **kwargs):
+    def __new__(mcs, name, bases, classdict, **kwargs):
         """Inherit attributes from parent class and update their versions.
 
         Here is the moment that the new class is going to be created. During
@@ -288,29 +288,15 @@ class MetaStruct(type):
             #: Check if we are inheriting from one of our classes.
             if isinstance(base, MetaStruct):
                 inherited_attributes = OrderedDict()
-                for attr_name, obj in base._get_class_attributes():
+                for attr_name, obj in base.get_class_attributes():
                     #: Get an updated version of this attribute,
                     #: considering the version of the current class being
                     #: created.
                     attr = MetaStruct.get_pyof_obj_new_version(attr_name, obj,
-                                                               curr_version
-                                                               )
+                                                               curr_version)
 
                     if attr_name == 'header':
-                        #: Here we are going to set the message_type on the
-                        #: header, according to the message_type of the
-                        #: parent class.
-                        old_enum = obj.message_type
-                        new_header = attr[1]
-                        new_enum = new_header.__class__.message_type.enum_ref
-                        #: This 'if' will be removed on the future with an
-                        #: improved version of __init_subclass__ method of the
-                        #: GenericMessage class
-                        if old_enum:
-                            msg_type_name = old_enum.name
-                            new_type = new_enum[msg_type_name]
-                            new_header.message_type = new_type
-                        attr = (attr[0], new_header)
+                        attr = mcs._header_message_type_update(obj, attr)
 
                     inherited_attributes.update([attr])
                 #: We are going to inherit just from the 'closest parent'
@@ -330,7 +316,26 @@ class MetaStruct(type):
             inherited_attributes.update(classdict)
             classdict = inherited_attributes
 
-        return super().__new__(cls, name, bases, classdict, **kwargs)
+        return super().__new__(mcs, name, bases, classdict, **kwargs)
+
+    @staticmethod
+    def _header_message_type_update(obj, attr):
+        """Update the message type on the header.
+
+        Set the message_type of the header according to the message_type of
+        the parent class.
+        """
+        old_enum = obj.message_type
+        new_header = attr[1]
+        new_enum = new_header.__class__.message_type.enum_ref
+        #: This 'if' will be removed on the future with an
+        #: improved version of __init_subclass__ method of the
+        #: GenericMessage class
+        if old_enum:
+            msg_type_name = old_enum.name
+            new_type = new_enum[msg_type_name]
+            new_header.message_type = new_type
+        return (attr[0], new_header)
 
     @staticmethod
     def get_pyof_version(module_fullname):
@@ -374,8 +379,8 @@ class MetaStruct(type):
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:
             return None
-        else:
-            return module_fullname.replace(module_version, version)
+
+        return module_fullname.replace(module_version, version)
 
     @staticmethod
     def get_pyof_obj_new_version(name, obj, new_version):
@@ -451,7 +456,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
     def __init__(self):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             setattr(self, name, deepcopy(value))
 
     def __eq__(self, other):
@@ -485,7 +490,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             True: if the obj is a kytos attribute
             False: if the obj is not a kytos attribute
         """
-        return isinstance(obj, GenericType) or isinstance(obj, GenericStruct)
+        return isinstance(obj, (GenericType, GenericStruct))
 
     def _validate_attributes_type(self):
         """Validate the type of each attribute."""
@@ -500,7 +505,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         return True
 
     @classmethod
-    def _get_class_attributes(cls):
+    def get_class_attributes(cls):
         """Return a generator for class attributes' names and value.
 
         This method strict relies on the PEP 520 (Preserving Class Attribute
@@ -511,9 +516,9 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         .. code-block:: python3
 
-            for _name, _value in self._get_class_attributes():
-                print("attribute name: {}".format(_name))
-                print("attribute type: {}".format(_value))
+            for name, value in self.get_class_attributes():
+                print("attribute name: {}".format(name))
+                print("attribute type: {}".format(value))
 
         returns:
             generator: tuples with attribute name and value.
@@ -539,7 +544,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             generator: tuples with attribute name and value.
         """
         for name, value in self.__dict__.items():
-            if name in map((lambda x: x[0]), self._get_class_attributes()):
+            if name in map((lambda x: x[0]), self.get_class_attributes()):
                 yield (name, value)
 
     def _get_attributes(self):
@@ -556,12 +561,12 @@ class GenericStruct(object, metaclass=MetaStruct):
         """
         return map((lambda i, c: (i[1], c[1])),
                    self._get_instance_attributes(),
-                   self._get_class_attributes())
+                   self.get_class_attributes())
 
     def _unpack_attribute(self, name, obj, buff, begin):
         attribute = deepcopy(obj)
         setattr(self, name, attribute)
-        if len(buff) == 0:
+        if not buff:
             size = 0
         else:
             try:
@@ -641,7 +646,7 @@ class GenericStruct(object, metaclass=MetaStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             size = self._unpack_attribute(name, value, buff, begin)
             begin += size
 
@@ -745,7 +750,7 @@ class GenericMessage(GenericStruct):
             offset (int): Where to begin unpacking.
         """
         begin = offset
-        for name, value in self._get_class_attributes():
+        for name, value in self.get_class_attributes():
             if type(value).__name__ != "Header":
                 size = self._unpack_attribute(name, value, buff, begin)
                 begin += size

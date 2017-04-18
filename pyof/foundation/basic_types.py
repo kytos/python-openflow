@@ -316,7 +316,7 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):
+    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
         """The constructor takes the parameters below.
 
         Args:
@@ -407,7 +407,7 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):
+    def __init__(self, value=b''):  # noqa
         """The constructor takes the parameter below.
 
         Args:
@@ -430,10 +430,10 @@ class BinaryData(GenericType):
         if value is None:
             value = self._value
 
-        if isinstance(value, bytes) and len(value) > 0:
+        if isinstance(value, bytes) and value:
             return value
-        else:
-            return b''
+
+        return b''
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -462,8 +462,8 @@ class BinaryData(GenericType):
             return len(self._value)
         elif hasattr(value, 'get_size'):
             return value.get_size()
-        else:
-            return len(value)
+
+        return len(value)
 
 
 class TypeList(list, GenericStruct):
@@ -506,7 +506,7 @@ class TypeList(list, GenericStruct):
         if value is None:
             value = self
         else:
-            container = type(self)()
+            container = type(self)(items=None)
             container.extend(value)
             value = container
 
@@ -552,18 +552,18 @@ class TypeList(list, GenericStruct):
             int: The size in bytes.
         """
         if value is None:
-            if len(self) == 0:
+            if not self:
                 # If this is a empty list, then returns zero
                 return 0
             elif issubclass(type(self[0]), GenericType):
                 # If the type of the elements is GenericType, then returns the
                 # length of the list multiplied by the size of the GenericType.
                 return len(self) * self[0].get_size()
-            else:
-                # Otherwise iter over the list accumulating the sizes.
-                return sum(item.get_size() for item in self)
-        else:
-            return type(self)(value).get_size()
+
+            # Otherwise iter over the list accumulating the sizes.
+            return sum(item.get_size() for item in self)
+
+        return type(self)(value).get_size()
 
     def __str__(self):
         """Human-readable object representantion."""
@@ -644,7 +644,7 @@ class ConstantTypeList(TypeList):
     list operations.
     """
 
-    def __init__(self, items=None):
+    def __init__(self, items=None):  # noqa
         """The contructor can contain the items to be stored.
 
         Args:
@@ -668,7 +668,7 @@ class ConstantTypeList(TypeList):
         """
         if isinstance(item, list):
             self.extend(item)
-        elif len(self) == 0:
+        elif not self:
             list.append(self, item)
         elif item.__class__ == self[0].__class__:
             list.append(self, item)
@@ -687,7 +687,7 @@ class ConstantTypeList(TypeList):
             :exc:`~.exceptions.WrongListItemType`: If an item has a different
                 type than the first item to be stored.
         """
-        if len(self) == 0:
+        if not self:
             list.append(self, item)
         elif item.__class__ == self[0].__class__:
             list.insert(self, index, item)
