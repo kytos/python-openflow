@@ -1,6 +1,6 @@
 """Defines an PortStatus Message."""
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericMessage
@@ -15,7 +15,7 @@ __all__ = ('PortStatus', 'PortReason')
 # Enums
 
 
-class PortReason(Enum):
+class PortReason(IntEnum):
     """What changed about the physical port."""
 
     #: The port was added

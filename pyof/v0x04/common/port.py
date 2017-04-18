@@ -1,7 +1,7 @@
 """Defines physical port classes and related items."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
@@ -15,7 +15,7 @@ __all__ = ('ListOfPorts', 'Port', 'PortNo', 'PortConfig', 'PortFeatures',
            'PortState')
 
 
-class PortNo(Enum):
+class PortNo(IntEnum):
     """Port numbering.
 
     Ports are numbered starting from 1.

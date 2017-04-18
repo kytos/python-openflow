@@ -1,5 +1,5 @@
 """Flow Table Modification message."""
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8, UBInt32
@@ -8,7 +8,7 @@ from pyof.v0x04.common.header import Header, Type
 __all__ = ('Table', 'TableMod')
 
 
-class Table(Enum):
+class Table(IntEnum):
     """Table numbering. Tables can use any number up to OFPT_MAX."""
 
     #: Last usable table number.

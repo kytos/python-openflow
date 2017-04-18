@@ -1,7 +1,7 @@
 """For packets received by the datapath and sent to the controller."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import (BinaryData, Pad, UBInt8, UBInt16,
@@ -17,7 +17,7 @@ __all__ = ('PacketIn', 'PacketInReason')
 # Enums
 
 
-class PacketInReason(Enum):
+class PacketInReason(IntEnum):
     """Reason why this packet is being sent to the controller."""
 
     #: No matching flow

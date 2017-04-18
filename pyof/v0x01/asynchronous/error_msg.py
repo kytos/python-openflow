@@ -1,7 +1,7 @@
 """Defines an Error Message."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
@@ -17,7 +17,7 @@ __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
 
 # Enums
 
-class ErrorType(Enum):
+class ErrorType(IntEnum):
     """Values for ’type’ in ofp_error_message.
 
     These values are immutable: they will not change in future versions of the
@@ -38,7 +38,7 @@ class ErrorType(Enum):
     OFPET_QUEUE_OP_FAILED = 5
 
 
-class HelloFailedCode(Enum):
+class HelloFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_HELLO_FAILED.
 
     'data' contains an ASCII text string that may give failure details.
@@ -50,7 +50,7 @@ class HelloFailedCode(Enum):
     OFPHFC_EPERM = 1
 
 
-class BadRequestCode(Enum):
+class BadRequestCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_REQUEST.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -77,7 +77,7 @@ class BadRequestCode(Enum):
     OFPBRC_BUFFER_UNKNOWN = 8
 
 
-class BadActionCode(Enum):
+class BadActionCode(IntEnum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -103,7 +103,7 @@ class BadActionCode(Enum):
     OFPBAC_BAD_QUEUE = 8
 
 
-class FlowModFailedCode(Enum):
+class FlowModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -123,7 +123,7 @@ class FlowModFailedCode(Enum):
     OFPFMFC_UNSUPPORTED = 5
 
 
-class PortModFailedCode(Enum):
+class PortModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_PORT_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -135,7 +135,7 @@ class PortModFailedCode(Enum):
     OFPPMFC_BAD_HW_ADDR = 1
 
 
-class QueueOpFailedCode(Enum):
+class QueueOpFailedCode(IntEnum):
     """Error msg 'code' values for OFPET_QUEUE_OP_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.

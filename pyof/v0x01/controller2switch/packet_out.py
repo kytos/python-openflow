@@ -112,9 +112,11 @@ class PacketOut(GenericMessage):
     def _validate_in_port(self):
         port = self.in_port
         valid = True
-        if isinstance(port, int) and (port < 1 or port >= Port.OFPP_MAX.value):
-            valid = False
-        elif isinstance(port, Port) and port not in _VIRT_IN_PORTS:
+        if isinstance(port, Port):
+            if port not in _VIRT_IN_PORTS:
+                valid = False
+        elif isinstance(port, int) and (port < 1 or port >=
+                                        Port.OFPP_MAX.value):
             valid = False
         if not valid:
             raise ValidationError('{} is not a valid input port.'.format(port))

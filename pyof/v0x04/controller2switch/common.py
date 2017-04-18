@@ -1,7 +1,7 @@
 """Defines common structures and enums for controller2switch."""
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
@@ -26,7 +26,7 @@ __all__ = ('ConfigFlags', 'ControllerRole', 'Bucket', 'BucketCounter',
 
 # Enum
 
-class ConfigFlags(Enum):
+class ConfigFlags(IntEnum):
     """Handling of IP fragments."""
 
     #: No special handling for fragments.
@@ -38,7 +38,7 @@ class ConfigFlags(Enum):
     OFPC_FRAG_MASK = 3
 
 
-class ControllerRole(Enum):
+class ControllerRole(IntEnum):
     """Controller roles."""
 
     #: Don’t change current role.
@@ -51,7 +51,7 @@ class ControllerRole(Enum):
     OFPCR_ROLE_SLAVE = 3
 
 
-class TableFeaturePropType(Enum):
+class TableFeaturePropType(IntEnum):
     """Table Property Types.
 
     Low order bit cleared indicates a property for a regular Flow Entry.
@@ -103,7 +103,7 @@ class TableFeaturePropType(Enum):
         return OxmProperty
 
 
-class MultipartTypes(Enum):
+class MultipartTypes(IntEnum):
     """Types of Multipart Messages, both Request and Reply."""
 
     #: Description of this OpenFlow switch.

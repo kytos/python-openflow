@@ -2,7 +2,7 @@
 
 # System imports
 
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
@@ -16,7 +16,7 @@ __all__ = ('Hello', 'HelloElemHeader', 'HelloElemType',
 # Enums
 
 
-class HelloElemType(Enum):
+class HelloElemType(IntEnum):
     """Hello element types."""
 
     #: Bitmap of version supported.

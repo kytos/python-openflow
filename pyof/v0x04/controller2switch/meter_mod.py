@@ -1,5 +1,5 @@
 """Meter modification message."""
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericBitMask, GenericMessage
 from pyof.foundation.basic_types import (FixedTypeList, GenericStruct, Pad,
@@ -11,7 +11,7 @@ __all__ = ('MeterMod', 'Meter', 'MeterModCommand', 'MeterFlags',
            'MeterBandDscpRemark', 'MeterBandExperimenter')
 
 
-class Meter(Enum):
+class Meter(IntEnum):
     """Meter numbering. Flow meters can use any number up to OFPM_MAX."""
 
     #: Last usable meter.
@@ -26,7 +26,7 @@ class Meter(Enum):
     OFPM_ALL = 0xffffffff
 
 
-class MeterModCommand(Enum):
+class MeterModCommand(IntEnum):
     """Meter commands."""
 
     #: New meter.
@@ -50,7 +50,7 @@ class MeterFlags(GenericBitMask):
     OFPMF_STATS = 1 << 3
 
 
-class MeterBandType(Enum):
+class MeterBandType(IntEnum):
     """Meter band types."""
 
     #: Drop packet.

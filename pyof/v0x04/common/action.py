@@ -1,6 +1,6 @@
 """Defines actions that may be associated with flows packets."""
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
@@ -17,7 +17,7 @@ __all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
 # Enums
 
 
-class ActionType(Enum):
+class ActionType(IntEnum):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.
@@ -56,7 +56,7 @@ class ActionType(Enum):
     OFPAT_EXPERIMENTER = 0xffff
 
 
-class ControllerMaxLen(Enum):
+class ControllerMaxLen(IntEnum):
     """A max_len of OFPCML_NO_BUFFER means not to buffer.
 
     The packet should be sent.

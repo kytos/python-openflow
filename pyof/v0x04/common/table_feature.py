@@ -4,7 +4,7 @@ This module contains the Table Features struture and your Property types.
 """
 
 # System imports
-from enum import Enum
+from enum import IntEnum
 
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
@@ -21,7 +21,7 @@ __all__ = ('TableFeaturePropType', 'Property', 'InstructionsProperty',
            'ListOfProperty', 'TableFeatures')
 
 
-class TableFeaturePropType(Enum):
+class TableFeaturePropType(IntEnum):
     """Table Property Types.
 
     Low order bit cleared indicates a property for a regular Flow Entry.
