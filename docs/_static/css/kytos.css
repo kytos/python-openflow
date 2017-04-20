@@ -1,8 +1,8 @@
 /* navbar */
 #navbar.navbar-kytos {
-  background-image: -webkit-linear-gradient(left, #554077 0%, #2c3e50 100%);
-  background-image: -o-linear-gradient(left, #554077 0%, #2c3e50 100%);
-  background-image: linear-gradient(to right, #554077 0%, #2c3e50 100%);
+  background-image: -webkit-linear-gradient(left, #68286a 0%, #322c5d 100%);
+  background-image: -o-linear-gradient(left, #68286a 0%, #322c5d 100%);
+  background-image: linear-gradient(to right, #68286a 0%, #322c5d 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF554077', endColorstr='#FF2C3E50', GradientType=1);
   padding: 10px;
@@ -13,7 +13,7 @@
 }
 
 .navbar-kytos .navbar-nav>li>a:hover {
-  background: #554077;
+  background: #68286a;
 }
 
 .navbar-kytos .navbar-brand {
