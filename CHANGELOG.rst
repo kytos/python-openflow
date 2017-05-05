@@ -3,12 +3,25 @@ Change log
 ##########
 All notable changes to the python-openflow project is documented in this file.
 
-[Unreleased]
-************
+[UNRELEASED] - Under development
+********************************
 Added
 =====
+
 Changed
 =======
+
+Deprecated
+==========
+
+Removed
+=======
+
+Fixed
+=====
+
+Security
+========
 
 
 [2017.1b2] - "bethania" beta2 - 2017-05-05
