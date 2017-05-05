@@ -11,6 +11,30 @@ Changed
 =======
 
 
+[2017.1b2] - "bethania" beta2 - 2017-05-05
+******************************************
+Added
+=====
+- Continuous integration, with Code Quality Score and test coverage.
+
+Changed
+=======
+- Enums of the OpenFlow structures changed to IntEnums, to make easier
+  comparisons with integer values.
+- updated requirements.txt
+- 'data' fields included for symmetric messages as echo requests/replies.
+- Documentation updated.
+
+Removed
+=======
+- [v0x02] references, as it is not implemented yet.
+
+Fixed
+=====
+- Pypi package is fixed and working.
+- Several bug fixes.
+
+
 [2017.1b1] - "bethania" beta1 - 2017-24-03
 ******************************************
 Added
