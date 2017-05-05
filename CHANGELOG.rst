@@ -3,15 +3,52 @@ Change log
 ##########
 All notable changes to the python-openflow project is documented in this file.
 
-[Unreleased]
-************
+[UNRELEASED] - Under development
+********************************
 Added
 =====
+
 Changed
 =======
 
+Deprecated
+==========
 
-[2017.1b1] - "bethania" beta1 - 2017-24-03
+Removed
+=======
+
+Fixed
+=====
+
+Security
+========
+
+
+[2017.1b2] - "bethania" beta2 - 2017-05-05
+******************************************
+Added
+=====
+- Continuous integration, with Code Quality Score and test coverage.
+
+Changed
+=======
+- Enums of the OpenFlow structures changed to IntEnums, to make easier
+  comparisons with integer values.
+- Updated requirements.txt
+- 'data' fields included for symmetric messages, like echo requests/replies.
+- Documentation updated.
+
+Removed
+=======
+- [v0x02] references, as it is not implemented yet.
+
+Fixed
+=====
+- Pypi package is fixed and working.
+- Several bug fixes.
+
+
+[2017.1b1] - "bethania" beta1 - 2017-03-24
 ******************************************
 Added
 =====
@@ -43,7 +80,7 @@ Changed
 - Adding constant files to manage constants in NApps
 - Moving foundation module to pyof root folder (same with tests)
 
-[2016.2a1] - alpha1 - 2016-11-09
+[2016.2a1] - alpha1 - 2016-09-11
 ********************************
 Changed
 =======
@@ -53,7 +90,7 @@ Changed
 - lint fixes and docs generation
 - Pip support
 
-[2016.1a1] - alpha1 - 2016-06-08
+[2016.1a1] - alpha1 - 2016-08-06
 ********************************
 Changed
 =======
@@ -117,7 +154,7 @@ Changed
 - better organization on problem description
 - added messages, todo and instructions
 
-[2013.1a1] - Initial - 2013-06-08
+[2013.1a1] - Initial - 2013-08-06
 *********************************
 Added
 =====
