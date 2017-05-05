@@ -32,6 +32,9 @@ Added
 
 Changed
 =======
+- Attributes with Python reserved names were renamed:
+    - :code:`len` was renamed to :code:`length`
+    - :code:`type` and :code:`property` received a prefix with the Class name.
 - Enums of the OpenFlow structures changed to IntEnums, to make easier
   comparisons with integer values.
 - Updated requirements.txt
