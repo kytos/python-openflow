@@ -22,7 +22,7 @@ class PacketOut(GenericMessage):
 
     header = Header(message_type=Type.OFPT_PACKET_OUT)
     buffer_id = UBInt32()
-    in_port = UBInt16(enum_ref=Port)
+    in_port = UBInt16()
     actions_len = UBInt16()
     actions = ListOfActions()
     data = BinaryData()
