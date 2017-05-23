@@ -94,9 +94,10 @@ class HelloElemVersionbitmap(HelloElemHeader):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            bitmaps: -Exactly (length - 4) bytes containing the bitmaps,then
-                     -Exactly (length + 7)/8*8 - (length) (between 0 and 7)
-                      bytes of all-zero bytes.
+            bitmaps(BinaryData): A BinaryData with exactly (length - 4) bytes
+                                 containing the bitmaps, then exactly
+                                 (length + 7)/8*8 - (length) (between 0 and 7)
+                                 bytes of all-zero bytes.
         """
         super().__init__(element_type=HelloElemType.OFPHET_VERSIONBITMAP,
                          length=None)

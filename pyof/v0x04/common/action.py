@@ -277,11 +277,6 @@ class ActionSetField(GenericStruct):
     action_type = UBInt16(ActionType.OFPAT_SET_FIELD, enum_ref=ActionType)
     #: Length is padded to 64 bits.
     length = UBInt16()
-    #: Followed by:
-    #:     - Exactly oxm_len bytes containing a single OXM TLV, then
-    #:     - Exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4) (between 0 and 7)
-    #:       bytes of all-zero bytes
-
     #: OXM TLV - Make compiler happy
     field1 = UBInt8()
     field2 = UBInt8()
@@ -293,7 +288,10 @@ class ActionSetField(GenericStruct):
         """Action structure for OFPAT_SET_FIELD.
 
         Args:
-            length (int): length padded to 64 bits.
+            length (int): length padded to 64 bits, followed by exactly
+                          oxm_len bytes containing a single OXM TLV, then
+                          exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4)
+                          (between 0 and 7) bytes of all-zero bytes
             field1 (int): OXM field.
             field2 (int): OXM field.
             field3 (int): OXM field.

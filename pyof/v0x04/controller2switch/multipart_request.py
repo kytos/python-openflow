@@ -70,7 +70,7 @@ class MultipartRequest(GenericMessage):
 
         This method will pack the attribute body and multipart_type before pack
         the MultipartRequest object, then will return this struct as a
-         binary data.
+        binary data.
 
         Returns:
             multiparty_packed (bytes): Binary data with MultipartRequest

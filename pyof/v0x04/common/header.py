@@ -94,7 +94,7 @@ class Header(GenericStruct):
         """The constructor takes the optional parameters below.
 
         Args:
-            message_type (Type): One of the OFPT_ constants.
+            message_type (Type): One of the OFPT_* constants.
             length (int): Length including this ofp_header.
             xid (int): Transaction id associated with this packet. Replies use
                 the same id as was in the request to facilitate pairing.
