@@ -61,7 +61,7 @@ clean:
 
 .PHONY: html
 html:
-	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sphinx-apidoc -o . ../pyof/ -d10 -M -T
 	sed -i "/Submodules/,+1d" *.rst
 	sed -i "/Subpackages/,+1d" *.rst
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
@@ -70,7 +70,7 @@ html:
 
 .PHONY: dirhtml
 dirhtml:
-	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sphinx-apidoc -o . ../pyof/ -d10 -M -T
 	sed -i "/Submodules/,+1d" *.rst
 	sed -i "/Subpackages/,+1d" *.rst
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
@@ -242,7 +242,7 @@ dummy:
 	@echo "Build finished. Dummy builder generates no files."
 
 livehtml:
-	sphinx-apidoc -o . ../pyof/ -d10 -M
+	sphinx-apidoc -o . ../pyof/ -d10 -M -T
 	sed -i "/Submodules/,+1d" *.rst
 	sed -i "/Subpackages/,+1d" *.rst
 	sphinx-autobuild -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml -z ../pyof
