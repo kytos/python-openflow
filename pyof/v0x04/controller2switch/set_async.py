@@ -29,12 +29,24 @@ class SetAsync(AsyncConfig):
 
         Args:
             xid (int): xid to be used on the message header.
-            packet_in_mask1 (): .
-            packet_in_mask2 (): .
-            port_status_mask1 (): .
-            port_status_mask2 (): .
-            flow_removed_mask1 (): .
-            flow_removed_mask2 (): .
+            packet_in_mask1 \
+                (~pyof.v0x04.asynchronous.packet_in.PacketInReason):
+                    A instance of PacketInReason
+            packet_in_mask2 \
+                (~pyof.v0x04.asynchronous.packet_in.PacketInReason):
+                    A instance of PacketInReason
+            port_status_mask1 \
+                (~pyof.v0x04.asynchronous.port_status.PortReason):
+                    A instance of PortReason
+            port_status_mask2 \
+                (~pyof.v0x04.asynchronous.port_status.PortReason):
+                    A instance of PortReason
+            flow_removed_mask1 \
+                (~pyof.v0x04.asynchronous.flow_removed.FlowRemoved):
+                    A instance of FlowRemoved.
+            flow_removed_mask2 \
+                (~pyof.v0x04.asynchronous.flow_removed.FlowRemoved):
+                    A instance of FlowRemoved.
         """
         super().__init__(xid, packet_in_mask1, packet_in_mask2,
                          port_status_mask1, port_status_mask2,

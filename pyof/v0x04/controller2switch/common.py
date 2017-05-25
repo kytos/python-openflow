@@ -211,8 +211,8 @@ class Bucket(GenericStruct):
                 live. Only required for fast failover groups.
             watch_group (int): Group whose state affects whether this bucket is
                 live. Only required for fast failover groups.
-            actions (:func:`list` of :class:`.ActionHeader`): The action length
-                is inferred from the length field in the header.
+            actions (~pyof.v0x04.common.action.ListOfActions): The action
+                length is inferred from the length field in the header.
         """
         super().__init__()
         self.length = length
@@ -253,9 +253,9 @@ class AsyncConfig(GenericMessage):
 
     AsyncConfig contains three 2-element arrays. Each array controls whether
     the controller receives asynchronous messages with a specific
-    :class:`~.common.header.Type`. Within each array, element 0 specifies
-    messages of interest when the controller has a OFPCR_ROLE_EQUAL or
-    OFPCR_ROLE_MASTER role; element 1, when the controller has a
+    :class:`~pyof.v0x04.common.header.Type`. Within each array, element
+    0 specifies messages of interest when the controller has a OFPCR_ROLE_EQUAL
+    or OFPCR_ROLE_MASTER role; element 1, when the controller has a
     OFPCR_ROLE_SLAVE role. Each array element is a bit-mask in which a 0-bit
     disables receiving a message sent with the reason code corresponding to the
     bit index and a 1-bit enables receiving it.
@@ -280,12 +280,24 @@ class AsyncConfig(GenericMessage):
 
         Args:
             xid (int): xid to be used on the message header.
-            packet_in_mask1 (): .
-            packet_in_mask2 (): .
-            port_status_mask1 (): .
-            port_status_mask2 (): .
-            flow_removed_mask1 (): .
-            flow_removed_mask2 (): .
+            packet_in_mask1 \
+                (~pyof.v0x04.asynchronous.packet_in.PacketInReason):
+                    A instance of PacketInReason
+            packet_in_mask2 \
+                (~pyof.v0x04.asynchronous.packet_in.PacketInReason):
+                    A instance of PacketInReason
+            port_status_mask1 \
+                (~pyof.v0x04.asynchronous.port_status.PortReason):
+                    A instance of PortReason
+            port_status_mask2 \
+                (~pyof.v0x04.asynchronous.port_status.PortReason):
+                    A instance of PortReason
+            flow_removed_mask1 \
+                (~pyof.v0x04.asynchronous.flow_removed.FlowRemoved):
+                    A instance of FlowRemoved.
+            flow_removed_mask2 \
+                (~pyof.v0x04.asynchronous.flow_removed.FlowRemoved):
+                    A instance of FlowRemoved.
         """
         super().__init__(xid)
         self.packet_in_mask1 = packet_in_mask1
@@ -358,7 +370,8 @@ class ExperimenterMultipartHeader(GenericStruct):
 
         Args:
             experimenter: Experimenter ID which takes the same form as in
-                struct ofp_experimenter_header (:class: `ExperimenterHeader`).
+                struct ofp_experimenter_header (
+                :class:`~pyof.v0x04.symmetric.experimenter.ExperimenterHeader`)
             exp_type: Experimenter defined.
         """
         super().__init__()
@@ -379,7 +392,8 @@ class Property(GenericStruct):
         """Constructor of Generic Instruction receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
         """
         super().__init__()
         self.property_type = property_type
@@ -434,8 +448,11 @@ class InstructionsProperty(Property):
         """Constructor of InstructionProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
-            instruction_ids(ListOfInstruction): List of Instruction instances.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
+            instruction_ids \
+            (~pyof.v0x04.common.flow_instructions.ListOfInstruction):
+                    List of Instruction instances.
         """
         super().__init__(property_type=property_type)
         self.instruction_ids = instruction_ids if instruction_ids else []
@@ -457,9 +474,11 @@ class NextTablesProperty(Property):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
-            next_table_ids(ListOfInstruction): List of InstructionGotoTable
-                                               instances.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
+            next_table_ids
+                (~pyof.v0x04.common.flow_instructions.ListOfInstruction):
+                    List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
         self.next_table_ids = next_table_ids
@@ -484,8 +503,10 @@ class ActionsProperty(Property):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
-            action_ids(ListOfActions): List of Action instances.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
+            action_ids(~pyof.v0x04.common.action.ListOfActions):
+                List of Action instances.
         """
         super().__init__(property_type)
         self.action_ids = action_ids if action_ids else ListOfActions()
@@ -511,7 +532,8 @@ class OxmProperty(Property):
         """Constructor of OxmProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
             oxm_ids(ListOfOxmHeader): List of OxmHeader instances.
         """
         super().__init__(property_type)
@@ -529,7 +551,8 @@ class ListOfProperty(FixedTypeList):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            items (Property): Instance or a list of instances.
+            items (~pyof.v0x04.controller2switch.common.Property):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=Property, items=items)
 
@@ -583,7 +606,8 @@ class TableFeatures(GenericStruct):
             config(int):         Field reseved for future use.
             max_entries(int):    Describe the maximum number of flow entries
                                  that can be inserted into that table.
-            properties(ListOfProperty): List of Property intances.
+            properties(~pyof.v0x04.controller2switch.common.ListOfProperty):
+                                 List of Property intances.
         """
         super().__init__()
         self.table_id = table_id

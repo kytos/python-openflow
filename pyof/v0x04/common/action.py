@@ -138,7 +138,8 @@ class ActionHeader(GenericStruct):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (ActionType): The type of the action.
+            action_type (~pyof.v0x04.common.action.ActionType):
+                The type of the action.
             length (int): Length of action, including this header.
         """
         super().__init__()
@@ -335,6 +336,7 @@ class ListOfActions(FixedTypeList):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            items (ActionHeader): Instance or a list of instances.
+            items (~pyof.v0x04.common.action.ActionHeader):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=ActionHeader, items=items)

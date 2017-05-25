@@ -31,13 +31,13 @@ class PortReason(IntEnum):
 class PortStatus(GenericMessage):
     """A physical port has changed in the datapath."""
 
-    #: :class:`~.header.Header`: OpenFlow Header
+    #: :class:`~pyof.v0x04.common.action.ActionHeader`: OpenFlow Header
     header = Header(message_type=Type.OFPT_PORT_STATUS)
     #: One of OFPPR_*.
     reason = UBInt8(enum_ref=PortReason)
     #: Align to 32-bits.
     pad = Pad(7)
-    #: :class:`~.common.port.Port`
+    #: :class:`~pyof.v0x04.common.port.Port`
     desc = Port()
 
     def __init__(self, xid=None, reason=None, desc=None):
@@ -45,8 +45,9 @@ class PortStatus(GenericMessage):
 
         Args:
             xid (int): Header's xid.
-            reason (:class:`~PortReason`): Addition, deletion or modification.
-            desc (Port): Port description.
+            reason (~pyof.v0x04.asynchronous.port_status.PortReason):
+                Addition, deletion or modification.
+            desc (~pyof.v0x04.common.port.Port): Port description.
         """
         super().__init__(xid)
         self.reason = reason

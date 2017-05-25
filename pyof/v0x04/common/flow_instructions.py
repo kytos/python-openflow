@@ -18,7 +18,8 @@ from pyof.v0x04.controller2switch.meter_mod import Meter
 
 __all__ = ('InstructionApplyAction', 'InstructionClearAction',
            'InstructionGotoTable', 'InstructionMeter', 'InstructionType',
-           'InstructionWriteAction', 'InstructionWriteMetadata')
+           'InstructionWriteAction', 'InstructionWriteMetadata',
+           'ListOfInstruction')
 
 # Enums
 
