@@ -170,7 +170,7 @@ class ErrorMsg(GenericMessage):
     This message does not contain a body in addition to the OpenFlow Header.
     """
 
-    #: :class:`~.header.Header`: OpenFlow Header
+    #: :class:`~pyof.v0x01.common.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_ERROR)
     error_type = UBInt16(enum_ref=ErrorType)
     code = UBInt16()
@@ -181,10 +181,9 @@ class ErrorMsg(GenericMessage):
 
         Args:
             xid (int): To be included in the message header.
-            error_type (ErrorType): Error type.
-            code (Enum): Error code.
-            data (:func:`bytes` or packable): Its content is based on the error
-                type and code.
+            error_type (:class:`ErrorType`): Error type.
+            code (enum.IntEnum): Error code.
+            data (bytes): Its content is based on the error type and code.
         """
         super().__init__(xid)
         self.error_type = error_type
@@ -198,7 +197,7 @@ class ErrorMsg(GenericMessage):
         After that, :attr:`data`'s value is restored.
 
         Returns:
-            bytes: The binary representation.
+            bytes : The binary representation.
         """
         if value is None:
             data_backup = None
@@ -217,7 +216,18 @@ class ErrorMsg(GenericMessage):
             raise PackException(msg)
 
     def unpack(self, buff, offset=0):
-        """Unpack binary data into python object."""
+        """Unpack *buff* into this object.
+
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
         super().unpack(buff, offset)
         CodeClass = ErrorType(self.error_type).get_class()
         self.code = CodeClass(self.code)

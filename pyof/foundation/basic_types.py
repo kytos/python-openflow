@@ -401,9 +401,11 @@ class HWAddress(GenericType):
 class BinaryData(GenericType):
     """Class to create objects that represent binary data.
 
-    This is used in the ``data`` attribute from :class:`.PacketIn` and
-    :class:`.PacketOut` messages. Both the :meth:`pack` and :meth:`unpack`
-    methods will return the binary data itself. :meth:`get_size` method will
+    This is used in the ``data`` attribute from
+    :class:`~pyof.v0x01.asynchronous.packet_in.PacketIn` and
+    :class:`~pyof.v0x01.controller2switch.packet_out.PacketOut` messages.
+    Both the :meth:`pack` and :meth:`unpack` methods will return the
+    binary data itself. :meth:`get_size` method will
     return the size of the instance using Python's :func:`len`.
     """
 

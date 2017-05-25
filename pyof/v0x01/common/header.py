@@ -77,7 +77,7 @@ class Header(GenericStruct):
         """The constructor takes the optional parameters below.
 
         Args:
-            message_type (Type): Type of the message.
+            message_type (~pyof.v0x01.common.header.Type): Type of the message.
             xid (int): ID of the message. Defaults to a random integer.
             length (int): Length of the message, including the header itself.
         """

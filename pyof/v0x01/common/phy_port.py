@@ -133,13 +133,14 @@ class PhyPort(GenericStruct):
 
     The port_no field is a value the datapath associates with a physical port.
     The hw_addr field typically is the MAC address for the port;
-    :data:`.OFP_ETH_ALEN` is 6. The name field is a
+    :data:`OFP_ETH_ALEN` is 6. The name field is a
     null-terminated string containing a human-readable name for the interface.
-    The value of :data:`.OFP_MAX_PORT_NAME_LEN` is 16.
+    The value of :data:`OFP_MAX_PORT_NAME_LEN` is 16.
 
     :attr:`curr`, :attr:`advertised`, :attr:`supported` and :attr:`peer` are
-    bitmaps of :class:`PortFeatures` enum values that describe features. If
-    unsupported or unavailable, set all bits to zero.
+    bitmaps of :class:`~pyof.v0x01.common.phy_port.PortFeatures` enum values
+    that describe features. If unsupported or unavailable, set all bits to
+    zero.
     """
 
     port_no = UBInt16()
@@ -161,12 +162,17 @@ class PhyPort(GenericStruct):
             port_no (int): Port number.
             hw_addr (HWAddress): Hardware address.
             name(str): Null-terminated name.
-            config (PortConfig): Bitmap of OFPPC* flags.
-            state (PortState): Bitmap of OFPPS* flags.
-            curr (PortFeatures): Current features.
-            advertised (PortFeatures): Features being advertised by the port.
-            supported (PortFeatures): Features supported by the port.
-            peer (PortFeatures): Features advertised by peer.
+            config (~pyof.v0x01.common.phy_port.PortConfig):
+                Bitmap of OFPPC* flags.
+            state (~pyof.v0x01.common.phy_port.PortState):
+                Bitmap of OFPPS* flags.
+            curr (~pyof.v0x01.common.phy_port.PortFeatures): Current features.
+            advertised (~pyof.v0x01.common.phy_port.PortFeatures):
+                Features being advertised by the port.
+            supported (~pyof.v0x01.common.phy_port.PortFeatures):
+                Features supported by the port.
+            peer (~pyof.v0x01.common.phy_port.PortFeatures):
+                Features advertised by peer.
         """
         super().__init__()
         self.port_no = port_no
@@ -184,7 +190,9 @@ class ListOfPhyPorts(FixedTypeList):
     """List of PhyPorts.
 
     Represented by instances of PhyPort and used on
-    :class:`.FeaturesReply`/:class:`.SwitchFeatures` objects.
+    :class:`pyof.v0x01.common.phy_port.FeaturesReply`/
+    :class:`pyof.v0x01.controller2switch.features_reply.SwitchFeatures`
+    objects.
     """
 
     def __init__(self, items=None):

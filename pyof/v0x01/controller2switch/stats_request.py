@@ -18,7 +18,7 @@ __all__ = ('StatsRequest',)
 class StatsRequest(GenericMessage):
     """Request statistics to switch."""
 
-    #: OpenFlow :class:`.Header`
+    #: OpenFlow :class:`~pyof.v0x01.common.header.Header`
     header = Header(message_type=Type.OFPT_STATS_REQUEST)
     body_type = UBInt16(enum_ref=StatsTypes)
     flags = UBInt16()

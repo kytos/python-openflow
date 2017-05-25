@@ -71,20 +71,24 @@ class FlowMod(GenericMessage):
 
         Args:
             xid (int): xid to be used on the message header.
-            match (Match): Fields to match.
+            match (~pyof.v0x01.common.flow_match.Match): Fields to match.
             cookie (int): Opaque controller-issued identifier.
-            command (FlowModCommand): One of OFPFC_*.
+            command (~pyof.v0x01.controller2switch.flow_mod.FlowModCommand):
+                One of OFPFC_*.
             idle_timeout (int): Idle time before discarding (seconds).
             hard_timeout (int): Max time before discarding (seconds).
             priority (int): Priority level of flow entry.
             buffer_idle (int): Buffered packet to apply to (or -1).
                 Not meaningful for OFPFC_DELETE*.
-            out_port (Port): For OFPFC_DELETE* commands, require matching
-                entries to include this as an output port.
-                A value of OFPP_NONE indicates no restriction.
-            flags (FlowModFlags): One of OFPFF_*.
-            actions (ListOfActions): The action length is inferred from the
-                length field in the header.
+            out_port (~pyof.v0x01.common.phy_port.Port):
+                For OFPFC_DELETE* commands, require matching entries to include
+                this as an output port. A value of OFPP_NONE indicates no
+                restriction.
+            flags (~pyof.v0x01.controller2switch.flow_mod.FlowModFlags):
+                One of OFPFF_*.
+            actions (~pyof.v0x01.common.action.ListOfActions):
+                The action length is inferred from the length field in the
+                header.
         """
         super().__init__(xid)
         self.match = match

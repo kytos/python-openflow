@@ -261,7 +261,7 @@ class AsyncConfig(GenericMessage):
     bit index and a 1-bit enables receiving it.
     """
 
-    #: OpenFlow :class:`~common.header.Header`
+    #: OpenFlow :class:`~pyof.v0x04.common.header.Header`
     #: OFPT_GET_ASYNC_REPLY or OFPT_SET_ASYNC.
     header = Header()
     packet_in_mask1 = UBInt32(enum_ref=PacketInReason)
@@ -299,7 +299,7 @@ class AsyncConfig(GenericMessage):
 class RoleBaseMessage(GenericMessage):
     """Role basic structure for RoleRequest and RoleReply messages."""
 
-    #: :class:`~.common.header.Header`
+    #: :class:`~pyof.v0x04.common.header.Header`
     #: Type OFPT_ROLE_REQUEST/OFPT_ROLE_REPLY.
     header = Header()
     #: One of NX_ROLE_*. (:class:`~.controller2switch.common.ControllerRole`)
@@ -325,7 +325,7 @@ class RoleBaseMessage(GenericMessage):
 class SwitchConfig(GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
 
-    #: OpenFlow :class:`~common.header.Header`
+    #: OpenFlow :class:`~pyof.v0x04.common.header.Header`
     header = Header()
     flags = UBInt16(enum_ref=ConfigFlags)
     miss_send_len = UBInt16()
@@ -358,7 +358,7 @@ class ExperimenterMultipartHeader(GenericStruct):
 
         Args:
             experimenter: Experimenter ID which takes the same form as in
-                struct ofp_experimenter_header (class ExperimenterHeader).
+                struct ofp_experimenter_header (:class: `ExperimenterHeader`).
             exp_type: Experimenter defined.
         """
         super().__init__()

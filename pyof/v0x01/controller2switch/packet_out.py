@@ -20,6 +20,7 @@ _VIRT_IN_PORTS = (Port.OFPP_LOCAL, Port.OFPP_CONTROLLER, Port.OFPP_NONE)
 class PacketOut(GenericMessage):
     """Send packet (controller -> datapath)."""
 
+    #: :class:`~pyof.v0x01.common.header.Header`
     header = Header(message_type=Type.OFPT_PACKET_OUT)
     buffer_id = UBInt32()
     in_port = UBInt16()
@@ -34,13 +35,15 @@ class PacketOut(GenericMessage):
         Args:
             xid (int): xid of the message header.
             buffer_id (int): ID assigned by datapath (-1 if none).
-            in_port (:class:`int`, :class:`.Port`): Packet's input port
-                (:attr:`.Port.OFPP_NONE` if none). Virtual ports OFPP_IN_PORT,
-                OFPP_TABLE, OFPP_NORMAL, OFPP_FLOOD, and OFPP_ALL cannot be
-                used as input port.
-            actions (ListOfActions): Actions (class ActionHeader).
+            in_port \
+            (:class:`int` or :class:`~pyof.v0x01.common.phy_port.Port`):
+                Packet's input port (:attr:`.Port.OFPP_NONE` if none). Virtual
+                ports :attr:`Port.OFPP_IN_PORT`, :attr:`Port.OFPP_TABLE`,
+                :attr:`Port.OFPP_NORMAL`, :attr:`Port.OFPP_FLOOD`, and
+                :attr:`Port.OFPP_ALL` cannot be used as input port.
+            actions (~pyof.v0x01.common.action.ListOfActions): List of Actions.
             data (bytes): Packet data. The length is inferred from the length
-                field in the header. (Only meaningful if buffer_id == -1).
+                field in the header. (Only meaningful if ``buffer_id`` == -1).
         """
         super().__init__(xid)
         self.buffer_id = buffer_id
