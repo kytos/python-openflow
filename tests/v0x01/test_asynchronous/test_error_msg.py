@@ -17,5 +17,5 @@ class TestErrorMessage(TestStruct):
         super().set_raw_dump_object(ErrorMsg, xid=12,
                                     error_type=ErrorType.OFPET_BAD_REQUEST,
                                     code=BadRequestCode.OFPBRC_BAD_STAT,
-                                    data=BinaryData('object_test'))
+                                    data=BinaryData(b'object_test'))
         super().set_minimum_size(12)

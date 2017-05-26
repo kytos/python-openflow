@@ -2,6 +2,7 @@
 import unittest
 
 from pyof.foundation import basic_types
+from pyof.foundation.basic_types import BinaryData
 
 
 class TestUBInt8(unittest.TestCase):
@@ -160,3 +161,33 @@ class TestIPAddress(unittest.TestCase):
         """Testing get_size from IPAddress."""
         ip_addr = basic_types.IPAddress('192.168.0.1/24')
         self.assertEqual(ip_addr.get_size(), 4)
+
+
+class TestBinaryData(unittest.TestCase):
+    """Test Binary data type."""
+
+    def test_default_value(self):
+        """Default packed value should be an empty byte."""
+        expected = b''
+        actual = BinaryData().pack()
+        self.assertEqual(expected, actual)
+
+    def test_pack_bytes(self):
+        """Test packing some bytes."""
+        expected = b'forty two'
+        actual = BinaryData(expected).pack()
+        self.assertEqual(expected, actual)
+
+    def test_pack_empty_bytes(self):
+        """Test packing empty bytes."""
+        expected = b''
+        actual = BinaryData(expected).pack()
+        self.assertEqual(expected, actual)
+
+    def test_unexpected_value(self):
+        """Should raise ValueError if constructor value is not bytes."""
+        self.assertRaises(ValueError, BinaryData, "can't be string")
+
+    def test_unexpected_value_as_parameter(self):
+        """Should raise ValueError if pack value is not bytes."""
+        self.assertRaises(ValueError, BinaryData().pack, "can't be string")
