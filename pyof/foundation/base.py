@@ -375,8 +375,8 @@ class MetaStruct(type):
                    The new module fullname, with the replaced version,
                    on the format "pyof.v0x01.common.header". If the requested
                    version is the same as the one of the module_fullname or if
-                   the module_fullname is not a 'OF version' specific module
-                   the return is None.
+                   the module_fullname is not a 'OF version' specific module,
+                   returns None.
         """
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:
