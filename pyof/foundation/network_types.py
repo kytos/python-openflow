@@ -4,8 +4,8 @@ Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
 """
 
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import (BinaryData, HWAddress, IPAddress,
-                                         UBInt8, UBInt16)
+from pyof.foundation.basic_types import (
+    BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
 from pyof.foundation.exceptions import PackException
 
 __all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'TLVWithSubType', 'LLDP')
@@ -140,7 +140,7 @@ class GenericTLV(GenericStruct):
 
 
 class IPv4(GenericStruct):
-    """IPv4 packet "struct"
+    """IPv4 packet "struct".
 
     Contains all fields of an IP version 4 packet header, plus the upper layer
     content as binary data.
@@ -197,7 +197,7 @@ class IPv4(GenericStruct):
         self.data = data
 
     def _update_checksum(self):
-        """Updates the packet checksum to enable integrity check."""
+        """Update the packet checksum to enable integrity check."""
         source_list = [int(octet) for octet in self.source.split(".")]
         destination_list = [int(octet) for octet in
                             self.destination.split(".")]
@@ -218,6 +218,10 @@ class IPv4(GenericStruct):
         self.checksum = ~block_sum & 65535
 
     def pack(self, value=None):
+        """Pack the struct in a binary representation.
+
+        Merge some fields to ensure correct packing.
+        """
         # Set the correct IHL based on options size
         if self.options:
             self.ihl += int(len(self.options) / 4)
@@ -235,6 +239,10 @@ class IPv4(GenericStruct):
         return super().pack()
 
     def unpack(self, buff, offset=0):
+        """Unpack a binary struct into this object's attributes.
+
+        Return the values instead of the lib's basic types.
+        """
         super().unpack(buff, offset)
 
         self.version = self._version_ihl.value >> 4

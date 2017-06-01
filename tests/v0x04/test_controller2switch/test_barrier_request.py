@@ -1,6 +1,5 @@
 """Barrier request message tests."""
 from pyof.v0x04.controller2switch.barrier_request import BarrierRequest
-
 from tests.test_struct import TestStruct
 
 

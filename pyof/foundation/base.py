@@ -23,8 +23,8 @@ from copy import deepcopy
 from enum import Enum, IntEnum
 
 # Local source tree imports
-from pyof.foundation.exceptions import (BadValueException, PackException,
-                                        UnpackException, ValidationError)
+from pyof.foundation.exceptions import (
+    BadValueException, PackException, UnpackException, ValidationError)
 
 # Third-party imports
 

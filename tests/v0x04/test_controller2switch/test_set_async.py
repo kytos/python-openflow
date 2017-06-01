@@ -1,6 +1,5 @@
 """SetAsync message tests."""
 from pyof.v0x04.controller2switch.set_async import SetAsync
-
 from tests.test_struct import TestStruct
 
 

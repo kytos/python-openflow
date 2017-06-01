@@ -4,8 +4,8 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (FixedTypeList, HWAddress, Pad, UBInt8,
-                                         UBInt16, UBInt32)
+from pyof.foundation.basic_types import (
+    FixedTypeList, HWAddress, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.constants import UBINT16_MAX_VALUE
 
 # Third-party imports
