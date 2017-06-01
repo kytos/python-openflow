@@ -1,7 +1,6 @@
 """Test for AggregateStatsReply message."""
 from pyof.v0x01.controller2switch.common import AggregateStatsReply, StatsTypes
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
-
 from tests.test_struct import TestStruct
 
 

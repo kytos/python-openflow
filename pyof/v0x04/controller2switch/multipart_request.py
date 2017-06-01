@@ -5,12 +5,12 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericMessage, GenericStruct
-from pyof.foundation.basic_types import (BinaryData, FixedTypeList, Pad,
-                                         UBInt8, UBInt16, UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.controller2switch.common import (ExperimenterMultipartHeader,
-                                                 MultipartTypes, TableFeatures)
+from pyof.v0x04.controller2switch.common import (
+    ExperimenterMultipartHeader, MultipartTypes, TableFeatures)
 
 # Third-party imports
 

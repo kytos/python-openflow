@@ -1,6 +1,5 @@
 """RoleReply message tests."""
 from pyof.v0x04.controller2switch.role_reply import RoleReply
-
 from tests.test_struct import TestStruct
 
 

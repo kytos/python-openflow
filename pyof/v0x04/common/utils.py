@@ -27,10 +27,10 @@ from pyof.v0x04.controller2switch.multipart_reply import MultipartReply
 from pyof.v0x04.controller2switch.multipart_request import MultipartRequest
 from pyof.v0x04.controller2switch.packet_out import PacketOut
 from pyof.v0x04.controller2switch.port_mod import PortMod
-from pyof.v0x04.controller2switch.queue_get_config_reply import \
-    QueueGetConfigReply
-from pyof.v0x04.controller2switch.queue_get_config_request import \
-    QueueGetConfigRequest
+from pyof.v0x04.controller2switch.queue_get_config_reply import (
+    QueueGetConfigReply)
+from pyof.v0x04.controller2switch.queue_get_config_request import (
+    QueueGetConfigRequest)
 from pyof.v0x04.controller2switch.role_reply import RoleReply
 from pyof.v0x04.controller2switch.role_request import RoleRequest
 from pyof.v0x04.controller2switch.set_async import SetAsync

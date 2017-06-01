@@ -1,7 +1,6 @@
 """Test GetConfigReply message."""
 from pyof.v0x01.controller2switch.common import ConfigFlags
 from pyof.v0x01.controller2switch.get_config_reply import GetConfigReply
-
 from tests.test_struct import TestStruct
 
 

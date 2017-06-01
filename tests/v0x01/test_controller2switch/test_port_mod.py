@@ -1,7 +1,6 @@
 """Test PortMod message."""
 from pyof.v0x01.common.phy_port import PortConfig, PortFeatures
 from pyof.v0x01.controller2switch.port_mod import PortMod
-
 from tests.test_struct import TestStruct
 
 

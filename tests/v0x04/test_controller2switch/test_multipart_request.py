@@ -1,8 +1,7 @@
 """MultipartRequest message test."""
 from pyof.v0x04.controller2switch.multipart_request import (
-    MultipartRequest, MultipartRequestFlags, MultipartTypes,
-    PortStatsRequest, TableFeatures)
-
+    MultipartRequest, MultipartRequestFlags, MultipartTypes, PortStatsRequest,
+    TableFeatures)
 from tests.v0x04.test_struct import TestStruct
 
 
