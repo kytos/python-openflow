@@ -7,6 +7,7 @@ All notable changes to the python-openflow project is documented in this file.
 ********************************
 Added
 =====
+- IPv4 packet pack/unpack support.
 
 Changed
 =======
