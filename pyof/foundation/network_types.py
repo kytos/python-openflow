@@ -4,10 +4,11 @@ Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
 """
 
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import BinaryData, HWAddress, UBInt8, UBInt16
+from pyof.foundation.basic_types import (BinaryData, HWAddress, IPAddress,
+                                         UBInt8, UBInt16)
 from pyof.foundation.exceptions import PackException
 
-__all__ = ('Ethernet', 'GenericTLV', 'TLVWithSubType', 'LLDP')
+__all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'TLVWithSubType', 'LLDP')
 
 
 class Ethernet(GenericStruct):
@@ -136,6 +137,127 @@ class GenericTLV(GenericStruct):
             return value.get_size()
 
         return 2 + self.length
+
+
+class IPv4(GenericStruct):
+    """IPv4 packet "struct"
+
+    Contains all fields of an IP version 4 packet header, plus the upper layer
+    content as binary data.
+    Some of the fields were merged together because of their size being
+    inferior to 8 bits.
+    """
+
+    # IP protocol version + Internet Header Length (words)
+    _version_ihl = UBInt8()
+    # Differentiated Services Code Point (ToS - Type of Service) +
+    # Explicit Congestion Notification
+    _dscp_ecn = UBInt8()
+    # IP packet length (bytes)
+    length = UBInt16()
+    # Packet ID - common to all fragments
+    identification = UBInt16()
+    # Fragmentation flags + fragmentation offset
+    _flags_offset = UBInt16()
+    # Packet time-to-live
+    ttl = UBInt8()
+    # Upper layer protocol number
+    protocol = UBInt8()
+    # Header checksum
+    checksum = UBInt16()
+    # Source address
+    source = IPAddress()
+    # Destination address
+    destination = IPAddress()
+    # IP Options - up to 320 bits, always padded to 32 bits
+    options = BinaryData()
+    # Packet data
+    data = BinaryData()
+
+    def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0, # noqa
+                 identification=0, flags=0, offset=0, ttl=255, protocol=0,
+                 checksum=0, source="0.0.0.0", destination="0.0.0.0",
+                 options=b'', data=b''):
+        """Create the Packet and set instance attributes."""
+        super().__init__()
+        self.version = version
+        self.ihl = ihl
+        self.dscp = dscp
+        self.ecn = ecn
+        self.length = length
+        self.identification = identification
+        self.flags = flags
+        self.offset = offset
+        self.ttl = ttl
+        self.protocol = protocol
+        self.checksum = checksum
+        self.source = source
+        self.destination = destination
+        self.options = options
+        self.data = data
+
+    def _update_checksum(self):
+        """Updates the packet checksum to enable integrity check."""
+        source_list = [int(octet) for octet in self.source.split(".")]
+        destination_list = [int(octet) for octet in
+                            self.destination.split(".")]
+        source_upper = (source_list[0] << 8) + source_list[1]
+        source_lower = (source_list[2] << 8) + source_list[3]
+        destination_upper = (destination_list[0] << 8) + destination_list[1]
+        destination_lower = (destination_list[2] << 8) + destination_list[3]
+
+        block_sum = ((self._version_ihl << 8 | self._dscp_ecn) + self.length +
+                     self.identification + self._flags_offset +
+                     (self.ttl << 8 | self.protocol) + source_upper +
+                     source_lower + destination_upper + destination_lower)
+
+        while block_sum > 65535:
+            carry = block_sum >> 16
+            block_sum = (block_sum & 65535) + carry
+
+        self.checksum = ~block_sum & 65535
+
+    def pack(self, value=None):
+        # Set the correct IHL based on options size
+        if self.options:
+            self.ihl += int(len(self.options) / 4)
+
+        # Set the correct packet length based on header length and data
+        self.length = int(self.ihl * 4 + len(self.data))
+
+        self._version_ihl = self.version << 4 | self.ihl
+        self._dscp_ecn = self.dscp << 2 | self.ecn
+        self._flags_offset = self.flags << 13 | self.offset
+
+        # Set the checksum field before packing
+        self._update_checksum()
+
+        return super().pack()
+
+    def unpack(self, buff, offset=0):
+        super().unpack(buff, offset)
+
+        self.version = self._version_ihl.value >> 4
+        self.ihl = self._version_ihl.value & 15
+        self.dscp = self._dscp_ecn.value >> 2
+        self.ecn = self._dscp_ecn.value & 3
+        self.length = self.length.value
+        self.identification = self.identification.value
+        self.flags = self._flags_offset.value >> 13
+        self.offset = self._flags_offset.value & 8191
+        self.ttl = self.ttl.value
+        self.protocol = self.protocol.value
+        self.checksum = self.checksum.value
+        self.source = self.source.value
+        self.destination = self.destination.value
+
+        if self.ihl > 5:
+            options_size = (self.ihl - 5) * 4
+            self.data = self.options.value[options_size:]
+            self.options = self.options.value[:options_size]
+        else:
+            self.data = self.options.value
+            self.options = b''
 
 
 class TLVWithSubType(GenericTLV):
