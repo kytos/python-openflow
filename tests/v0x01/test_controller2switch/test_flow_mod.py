@@ -3,7 +3,6 @@ from pyof.v0x01.common.action import ActionOutput
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
-
 from tests.test_struct import TestStruct
 
 

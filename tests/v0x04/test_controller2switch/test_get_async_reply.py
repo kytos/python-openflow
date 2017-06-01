@@ -1,6 +1,5 @@
 """GetAsyncReply message tests."""
 from pyof.v0x04.controller2switch.get_async_reply import GetAsyncReply
-
 from tests.test_struct import TestStruct
 
 

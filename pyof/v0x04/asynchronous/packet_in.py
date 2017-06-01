@@ -4,8 +4,8 @@
 from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import (BinaryData, Pad, UBInt8, UBInt16,
-                                         UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    BinaryData, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 

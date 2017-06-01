@@ -8,8 +8,8 @@ from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
-                                         UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.controller2switch.meter_mod import Meter
 

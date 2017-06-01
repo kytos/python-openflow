@@ -1,11 +1,8 @@
 """Testing Port structures."""
-from pyof.v0x01.common.action import (ActionDLAddr, ActionEnqueue,
-                                      ActionNWAddr, ActionNWTos, ActionOutput,
-                                      ActionTPPort, ActionType,
-                                      ActionVendorHeader, ActionVlanPCP,
-                                      ActionVlanVid)
+from pyof.v0x01.common.action import (
+    ActionDLAddr, ActionEnqueue, ActionNWAddr, ActionNWTos, ActionOutput,
+    ActionTPPort, ActionType, ActionVendorHeader, ActionVlanPCP, ActionVlanVid)
 from pyof.v0x01.common.phy_port import Port
-
 from tests.test_struct import TestStruct
 
 

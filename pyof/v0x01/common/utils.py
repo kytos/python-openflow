@@ -21,10 +21,10 @@ from pyof.v0x01.controller2switch.get_config_reply import GetConfigReply
 from pyof.v0x01.controller2switch.get_config_request import GetConfigRequest
 from pyof.v0x01.controller2switch.packet_out import PacketOut
 from pyof.v0x01.controller2switch.port_mod import PortMod
-from pyof.v0x01.controller2switch.queue_get_config_reply import \
-    QueueGetConfigReply
-from pyof.v0x01.controller2switch.queue_get_config_request import \
-    QueueGetConfigRequest
+from pyof.v0x01.controller2switch.queue_get_config_reply import (
+    QueueGetConfigReply)
+from pyof.v0x01.controller2switch.queue_get_config_request import (
+    QueueGetConfigRequest)
 from pyof.v0x01.controller2switch.set_config import SetConfig
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 from pyof.v0x01.controller2switch.stats_request import StatsRequest

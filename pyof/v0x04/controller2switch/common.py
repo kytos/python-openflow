@@ -4,8 +4,8 @@
 from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
-from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
-                                         UBInt16, UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    Char, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
