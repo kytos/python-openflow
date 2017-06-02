@@ -145,33 +145,38 @@ class IPv4(GenericStruct):
     Contains all fields of an IP version 4 packet header, plus the upper layer
     content as binary data.
     Some of the fields were merged together because of their size being
-    inferior to 8 bits.
+    inferior to 8 bits. They are represented as a single class attribute, but
+    pack/unpack methods will take into account the values in individual
+    instance attributes.
     """
 
-    # IP protocol version + Internet Header Length (words)
+    #: _version_ihl (:class:`UBInt8`): IP protocol version + Internet Header
+    #: Length (words)
     _version_ihl = UBInt8()
-    # Differentiated Services Code Point (ToS - Type of Service) +
-    # Explicit Congestion Notification
+    #: _dscp_ecn (:class:`UBInt8`): Differentiated Services Code Point
+    #: (ToS - Type of Service) + Explicit Congestion Notification
     _dscp_ecn = UBInt8()
-    # IP packet length (bytes)
+    #: length (:class:`UBInt16`): IP packet length (bytes)
     length = UBInt16()
-    # Packet ID - common to all fragments
+    #: identification (:class:`UBInt16`): Packet ID - common to all fragments
     identification = UBInt16()
-    # Fragmentation flags + fragmentation offset
+    #: _flags_offset (:class:`UBInt16`): Fragmentation flags + fragmentation
+    #: offset
     _flags_offset = UBInt16()
-    # Packet time-to-live
+    #: ttl (:class:`UBInt8`): Packet time-to-live
     ttl = UBInt8()
-    # Upper layer protocol number
+    #: protocol (:class:`UBInt8`): Upper layer protocol number
     protocol = UBInt8()
-    # Header checksum
+    #: checksum (:class:`UBInt16`): Header checksum
     checksum = UBInt16()
-    # Source address
+    #: source (:class:`IPAddress`): Source IPv4 address
     source = IPAddress()
-    # Destination address
+    #: destination (:class:`IPAddress`): Destination IPv4 address
     destination = IPAddress()
-    # IP Options - up to 320 bits, always padded to 32 bits
+    #: options (:class:`BinaryData`): IP Options - up to 320 bits, always
+    #: padded to 32 bits
     options = BinaryData()
-    # Packet data
+    #: data (:class:`BinaryData`): Packet data
     data = BinaryData()
 
     def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0, # noqa
