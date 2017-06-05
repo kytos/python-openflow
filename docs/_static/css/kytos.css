@@ -16,6 +16,13 @@
   background: #68286a;
 }
 
+.navbar-kytos #dropdown-versions {
+  background-color: #322c5d;
+  border-color: #4D4778;
+  margin-top: 3%;
+  margin-left: 4%;
+}
+
 .navbar-kytos .navbar-brand {
   -webkit-transition: all .3s;
   -moz-transition: all .3s;

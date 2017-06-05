@@ -12,6 +12,7 @@ Added
 Changed
 =======
 - Raise ValueError if not using bytes (e.g. string) in BinaryData.
+- Changed docs to show a dropdown button with all python-openflow releases.
 
 Deprecated
 ==========
