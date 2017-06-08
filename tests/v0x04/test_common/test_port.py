@@ -1,6 +1,5 @@
 """Test of Port class from common module."""
 from pyof.v0x04.common.port import Port
-
 from tests.test_struct import TestStruct
 
 

@@ -1,6 +1,5 @@
 """Flow stats request message."""
 from pyof.v0x04.controller2switch.multipart_request import FlowStatsRequest
-
 from tests.test_struct import TestStruct
 
 
