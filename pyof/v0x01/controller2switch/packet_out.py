@@ -35,8 +35,7 @@ class PacketOut(GenericMessage):
         Args:
             xid (int): xid of the message header.
             buffer_id (int): ID assigned by datapath (-1 if none).
-            in_port \
-            (:class:`int` or :class:`~pyof.v0x01.common.phy_port.Port`):
+            in_port (:class:`int` / :class:`~pyof.v0x01.common.phy_port.Port`):
                 Packet's input port (:attr:`.Port.OFPP_NONE` if none). Virtual
                 ports :attr:`Port.OFPP_IN_PORT`, :attr:`Port.OFPP_TABLE`,
                 :attr:`Port.OFPP_NORMAL`, :attr:`Port.OFPP_FLOOD`, and
