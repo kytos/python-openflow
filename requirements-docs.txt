@@ -2,9 +2,9 @@
 # are required:
 
 # Sphinx is required for running doctests (and building documentation)
-Sphinx >= 1.4.5
+Sphinx == 1.5.6
 # To run "make livehtml", build docs and refresh browser automatically when
 # files change
 sphinx-autobuild >= 0.6.0
 sphinx-rtd-theme >= 0.1.9
-sphinx_bootstrap_theme
+sphinx_bootstrap_theme == 0.4.14

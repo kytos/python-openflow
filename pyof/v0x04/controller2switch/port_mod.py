@@ -39,10 +39,13 @@ class PortMod(GenericMessage):
             hw_addr (HWAddress): The hardware address is not configurable.
                 This is used to sanity-check the request,
                 so it must be the same as returned in an ofp_phy_port struct.
-            config (PortConfig): Bitmap of OFPPC_* flags
-            mask (PortConfig): Bitmap of OFPPC_* flags to be changed
-            advertise (PortFeatures): Bitmap of OFPPF_*. Zero all bits to
-                prevent any action taking place.
+            config (~pyof.v0x04.common.port.PortConfig):
+                Bitmap of OFPPC_* flags
+            mask (~pyof.v0x04.common.port.PortConfig):
+                Bitmap of OFPPC_* flags to be changed
+            advertise (~pyof.v0x04.common.port.PortFeatures):
+                Bitmap of OFPPF_*. Zero all bits to prevent any action taking
+                place.
         """
         super().__init__(xid)
         self.port_no = port_no

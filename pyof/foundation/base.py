@@ -5,9 +5,10 @@ python-openflow in a manner to make it easy to create new messages and OpenFlow
 structs. You can realize that when you see a message class definition.
 
 A **struct** here is a group of basic attributes and/or struct attributes (i.e.
-:class:`~.common.header.Header`). A **message** here is like a struct, but all
-messages have a header attribute (i.e.
-:class:`~.asynchronous.packet_in.PacketIn`).
+:class:`~pyof.v0x01.common.header.Header`). A **message** here is like a
+struct, but all messages have a header attribute (i.e.
+:class:`~pyof.v0x01.asynchronous.packet_in.PacketIn`).
+
 
 The main classes of this module are :class:`GenericStruct`,
 :class:`GenericMessage`, :class:`GenericBitMask` and :class:`GenericType`.
@@ -50,7 +51,7 @@ class GenericType:
 
         Args:
             value: The type's value.
-            enum_ref (:class:`type`): If :attr:`value` is from an Enum, specify
+            enum_ref (type): If :attr:`value` is from an Enum, specify
                 its type.
         """
         self._value = value
@@ -219,10 +220,10 @@ class GenericType:
             return False
 
     def isenum(self):
-        """Test whether it is an :class:`~Enum`.
+        """Test whether it is an :class:`~enum.Enum`.
 
         Returns:
-            bool: Whether it is an :class:`~Enum`.
+            bool: Whether it is an :class:`~enum.Enum`.
         """
         return self.enum_ref and issubclass(self.enum_ref, (Enum, IntEnum))
 
@@ -346,8 +347,8 @@ class MetaStruct(type):
                 (e.g.: pyof.v0x01.common.header)
 
         Returns:
-            version (str): The module version, on the format 'v0x0?' if any. Or
-            None (None): If there isn't a version on the fullname.
+            str: The module version, on the format 'v0x0?' if any. Or None
+                  if there isn't a version on the fullname.
         """
         ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
         matched = ver_module_re.match(module_fullname)
@@ -366,15 +367,16 @@ class MetaStruct(type):
 
         Args:
             module_fullname (str): The fullname of the module
-                (e.g.: pyof.v0x01.common.header)
+                                   (e.g.: pyof.v0x01.common.header)
             version (str): The version to be 'inserted' on the module fullname.
 
         Returns:
-            None (None): if the requested version is the same as the one of the
-                module_fullname or if the module_fullname is not a 'OF version'
-                specific module.
-            new_module_fullname (str): The new module fullname, with the
-                replaced version, on the format "pyof.v0x01.common.header".
+            str: module fullname
+                 The new module fullname, with the replaced version,
+                 on the format "pyof.v0x01.common.header". If the requested
+                 version is the same as the one of the module_fullname or if
+                 the module_fullname is not a 'OF version' specific module,
+                 returns None.
         """
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:
@@ -413,7 +415,7 @@ class MetaStruct(type):
                 'obj'.
 
         Return:
-            (name, obj): A tuple in which the first item is the name of the
+            (str, obj): A tuple in which the first item is the name of the
                 class attribute (the same that was passed), and the second item
                 is a instance of the passed class attribute. If the class
                 attribute is not a pyof versioned attribute, then the same
@@ -655,8 +657,9 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         This method will check whether all struct attributes have a proper
         value according to the OpenFlow specification. For instance, if you
-        have a struct with an attribute of type :class:`UBInt8()`
-        and you assign a string value to it, this method will return False.
+        have a struct with an attribute of type
+        :class:`~pyof.foundation.basic_types.UBInt8` and you assign a string
+        value to it, this method will return False.
 
         Returns:
             bool: Whether the struct is valid.

@@ -111,6 +111,9 @@ pygments_style = None
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
 
+# Remove nonlocal_uri warnings
+suppress_warnings = ['image.nonlocal_uri']
+
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
@@ -370,14 +373,8 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
-# Example configuration for intersphinx: refer to the Python standard library.
-# Note: links to Python doc only work if you are online or have python.inv
-#     file. To download it, run:
-#     curl https://docs.python.org/3/objects.inv >python.inv
-intersphinx_mapping = {'python': ('https://docs.python.org/3',
-                                  (None, 'python.inv')),
-                       'kytos': ('http://docs.kytos.io/kytos',
-                                 (None, 'kytos.inv'))}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                       'kytos': ('http://docs.kytos.io/kytos', None)}
 
 # Napoleon settings from http://www.sphinx-doc.org/en/stable/ext/napoleon.html
 napoleon_google_docstring = True

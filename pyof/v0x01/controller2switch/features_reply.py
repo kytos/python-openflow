@@ -58,7 +58,7 @@ class SwitchFeatures(GenericMessage):
 
         Args:
             xid (int): xid to be used on the message header.
-            datapath_id (str or :class:`.DPID`): datapath unique ID.
+            datapath_id (:class:`str` or :class:`.DPID`): datapath unique ID.
                 The lower 48-bits are for MAC address, while
                 the upper 16-bits are implementer-defined.
             n_buffers (int): UBInt32 max packets buffered at once.

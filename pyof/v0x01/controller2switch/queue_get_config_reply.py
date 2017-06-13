@@ -28,8 +28,10 @@ class QueueGetConfigReply(GenericMessage):
 
         Args:
             xid (int): xid of OpenFlow header.
-            port (Port): Target port for the query.
-            queue (ListOfQueues): List of configured queues.
+            port (~pyof.v0x01.common.phy_port.Port):
+                Target port for the query.
+            queue (~pyof.v0x01.common.queue.ListOfQueues):
+                List of configured queues.
         """
         super().__init__(xid)
         self.port = port

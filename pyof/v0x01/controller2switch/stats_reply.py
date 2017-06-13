@@ -12,7 +12,7 @@ __all__ = ('StatsReply',)
 class StatsReply(GenericMessage):
     """Class implements the response to the stats request."""
 
-    #: OpenFlow :class:`.Header`
+    #: OpenFlow :class:`~pyof.v0x01.common.header.Header`
     header = Header(message_type=Type.OFPT_STATS_REPLY)
     body_type = UBInt16(enum_ref=StatsTypes)
     flags = UBInt16()

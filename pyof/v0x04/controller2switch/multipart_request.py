@@ -40,7 +40,7 @@ class MultipartRequest(GenericMessage):
     datapath using the OFPT_MULTIPART_REQUEST message.
     """
 
-    #: :class:`~.common.header.Header`
+    #: Openflow :class:`~pyof.v0x04.common.header.Header`
     header = Header(message_type=Type.OFPT_MULTIPART_REQUEST)
     #: One of the OFPMP_* constants.
     multipart_type = UBInt16(enum_ref=MultipartTypes)
@@ -70,7 +70,7 @@ class MultipartRequest(GenericMessage):
 
         This method will pack the attribute body and multipart_type before pack
         the MultipartRequest object, then will return this struct as a
-         binary data.
+        binary data.
 
         Returns:
             multiparty_packed (bytes): Binary data with MultipartRequest
@@ -184,7 +184,8 @@ class AggregateStatsRequest(GenericStruct):
             cookie (int): Require matching entries to contain this cookie value
             cookie_mask (int): Mask used to restrict the cookie bits that must
                 match. A value of 0 indicates no restriction.
-            match (Match): Fields to match. Variable size
+            match (~pyof.v0x04.common.flow_match.Match):
+                Fields to match. Variable size
         """
         super().__init__()
         self.table_id = table_id
@@ -215,15 +216,15 @@ class FlowStatsRequest(GenericStruct):
         Args:
             table_id (int): ID of table to read (from pyof_table_stats)
                 0xff for all tables or 0xfe for emergency.
-            out_port (:class:`int`, :class:`.Port`): Require matching entries
-                to include this as an output port. A value of
-                :attr:`.Port.OFPP_NONE` indicates no restriction.
+            out_port (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+                Require matching entries to include this as an output port.
+                A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
             out_group: Require matching entries to include this as an output
                 group. A value of OFPG_ANY indicates no restriction.
             cookie: Requires matching entries to contain this cookie value
             cookie_mask: Mask used to restrict the cookie bits that must match.
                 A value of 0 indicates no restriction.
-            match (Match): Fields to match.
+            match (~pyof.v0x04.common.flow_match.Match): Fields to match.
         """
         super().__init__()
         self.table_id = table_id
@@ -245,10 +246,10 @@ class PortStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): OFPST_PORT message must
-                request statistics either for a single port (specified in
-                ``port_no``) or for all ports (if port_no ==
-                :attr:`.Port.OFPP_NONE`).
+            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+                OFPST_PORT message must request statistics either for a single
+                port (specified in ``port_no``) or for all ports
+                (if ``port_no`` == :attr:`.Port.OFPP_NONE`).
         """
         super().__init__()
         self.port_no = port_no
@@ -264,8 +265,8 @@ class QueueStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): All ports if
-                :attr:`.Port.OFPP_ALL`.
+            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+                All ports if :attr:`.Port.OFPP_ALL`.
             queue_id (int): All queues if OFPQ_ALL.
         """
         super().__init__()

@@ -12,6 +12,7 @@ Added
 Changed
 =======
 - Raise ValueError if not using bytes (e.g. string) in BinaryData.
+- Improved documentation: fixed links and build warnings.
 
 Deprecated
 ==========

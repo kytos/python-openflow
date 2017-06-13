@@ -58,7 +58,7 @@ class MultipartReply(GenericMessage):
     datapath using the OFPT_MULTIPART_REPLY message.
     """
 
-    #: :class:`~.common.header.Header`
+    #: Openflow :class:`~pyof.v0x04.common.header.Header`
     header = Header(message_type=Type.OFPT_MULTIPART_REPLY)
     #: One of the OFPMP_* constants.
     multipart_type = UBInt16(enum_ref=MultipartTypes)
@@ -273,7 +273,7 @@ class FlowStats(GenericStruct):
             cookie (int): Opaque controller-issued identifier.
             packet_count (int): Number of packets in flow.
             byte_count (int): Number of bytes in flow.
-            match (Match): Description of fields.
+            match (~pyof.v0x04.common.flow_match.Match): Description of fields.
         """
         super().__init__()
         self.length = length
@@ -324,7 +324,8 @@ class PortStats(GenericStruct):
         """The constructor assigns parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): Port number.
+            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+                Port number.
             rx_packets (int): Number of received packets.
             tx_packets (int): Number of transmitted packets.
             rx_bytes (int): Number of received bytes.
@@ -381,7 +382,8 @@ class QueueStats(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): Port Number.
+            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+                Port Number.
             queue_id (int): Queue ID.
             tx_bytes (int): Number of transmitted bytes.
             tx_packets (int): Number of transmitted packets.
