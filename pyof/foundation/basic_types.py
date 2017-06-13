@@ -411,7 +411,7 @@ class BinaryData(GenericType):
         """The constructor takes the parameter below.
 
         Args:
-            value (bytes, str): The binary data. Defaults to an empty value.
+            value (bytes): The binary data. Defaults to an empty value.
 
         Raises:
             ValueError: If given value is not bytes.
