@@ -7,7 +7,6 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt16
 from pyof.foundation.exceptions import PackException
 # Do not import new_message_from_header directly to avoid cyclic import.
-from pyof.v0x01 import common
 from pyof.v0x01.common.header import Header, Type
 
 __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
@@ -36,6 +35,20 @@ class ErrorType(IntEnum):
     OFPET_PORT_MOD_FAILED = 4
     #: Problem in modifying Queue entry
     OFPET_QUEUE_OP_FAILED = 5
+
+    def get_class(self):
+        """Method used to return a Code class based on current ErrorType value.
+
+        Returns:
+            error_code_class (IntEnum): class referenced by current error type.
+        """
+        classes = {'OFPET_HELLO_FAILED': HelloFailedCode,
+                   'OFPET_BAD_REQUEST': BadRequestCode,
+                   'OFPET_BAD_ACTION': BadActionCode,
+                   'OFPET_FLOW_MOD_FAILED': FlowModFailedCode,
+                   'OFPET_PORT_MOD_FAILED': PortModFailedCode,
+                   'OFPET_QUEUE_OP_FAILED': QueueOpFailedCode}
+        return classes[self.name]
 
 
 class HelloFailedCode(IntEnum):
@@ -206,20 +219,5 @@ class ErrorMsg(GenericMessage):
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
         super().unpack(buff, offset)
-        self.data = self._unpack_data()
-
-    def _unpack_data(self):
-        if self.data == b'':
-            return BinaryData()
-        # header unpacking
-        header = Header()
-        header_size = header.get_size()
-        header_data = self.data.value[:header_size]
-        header.unpack(header_data)
-
-        # message unpacking
-        msg = common.utils.new_message_from_header(header)
-        msg_data = self.data.value[header_size:]
-        msg.unpack(msg_data)
-
-        return msg
+        CodeClass = ErrorType(self.error_type).get_class()
+        self.code = CodeClass(self.code)
