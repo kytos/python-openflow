@@ -412,7 +412,12 @@ class BinaryData(GenericType):
 
         Args:
             value (bytes): The binary data. Defaults to an empty value.
+
+        Raises:
+            ValueError: If given value is not bytes.
         """
+        if not isinstance(value, bytes):
+            raise ValueError('BinaryData must contain bytes.')
         super().__init__(value)
 
     def pack(self, value=None):
@@ -430,8 +435,10 @@ class BinaryData(GenericType):
         if value is None:
             value = self._value
 
-        if isinstance(value, bytes) and value:
-            return value
+        if value:
+            if isinstance(value, bytes):
+                return value
+            raise ValueError('BinaryData must contain bytes.')
 
         return b''
 

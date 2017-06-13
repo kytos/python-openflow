@@ -16,7 +16,6 @@ class TestErrorMessage(TestStruct):
                                     error_type=ErrorType.OFPET_BAD_REQUEST,
                                     code=BadRequestCode.OFPBRC_BAD_STAT,
                                     data=b'')
-
         super().set_minimum_size(12)
 
     def test_unpack_error_msg(self):
