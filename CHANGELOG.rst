@@ -20,6 +20,7 @@ Removed
 
 Fixed
 =====
+- [v0x01] Fixed method to unpack error messages.
 
 Security
 ========
