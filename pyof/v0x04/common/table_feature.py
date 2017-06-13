@@ -7,8 +7,8 @@ This module contains the Table Features struture and your Property types.
 from enum import IntEnum
 
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import (Char, FixedTypeList, Pad, UBInt8,
-                                         UBInt16, UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    Char, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 # Local source tree imports
 from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.v0x04.common.action import ListOfActions

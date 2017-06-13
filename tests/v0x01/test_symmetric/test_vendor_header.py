@@ -1,6 +1,5 @@
 """Testing VendorHeader message."""
 from pyof.v0x01.symmetric.vendor_header import VendorHeader
-
 from tests.test_struct import TestStruct
 
 

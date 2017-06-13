@@ -2,7 +2,6 @@
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.controller2switch.common import FlowStatsRequest, StatsTypes
 from pyof.v0x01.controller2switch.stats_request import StatsRequest
-
 from tests.test_struct import TestStruct
 
 

@@ -1,7 +1,6 @@
 """Set Config message tests."""
 from pyof.v0x01.controller2switch.common import ConfigFlags
 from pyof.v0x01.controller2switch.set_config import SetConfig
-
 from tests.test_struct import TestStruct
 
 

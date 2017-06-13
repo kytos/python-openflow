@@ -5,17 +5,17 @@ from enum import Enum
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
-from pyof.foundation.basic_types import (BinaryData, Char, FixedTypeList, Pad,
-                                         UBInt8, UBInt16, UBInt32, UBInt64)
+from pyof.foundation.basic_types import (
+    BinaryData, Char, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port
-from pyof.v0x04.controller2switch.common import (Bucket, BucketCounter,
-                                                 ExperimenterMultipartHeader,
-                                                 MultipartTypes, TableFeatures)
-from pyof.v0x04.controller2switch.meter_mod import (ListOfMeterBandHeader,
-                                                    MeterBandType, MeterFlags)
+from pyof.v0x04.controller2switch.common import (
+    Bucket, BucketCounter, ExperimenterMultipartHeader, MultipartTypes,
+    TableFeatures)
+from pyof.v0x04.controller2switch.meter_mod import (
+    ListOfMeterBandHeader, MeterBandType, MeterFlags)
 
 # Third-party imports
 

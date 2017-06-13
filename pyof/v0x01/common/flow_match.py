@@ -6,8 +6,8 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (HWAddress, IPAddress, Pad, UBInt8,
-                                         UBInt16, UBInt32)
+from pyof.foundation.basic_types import (
+    HWAddress, IPAddress, Pad, UBInt8, UBInt16, UBInt32)
 
 __all__ = ('Match', 'FlowWildCards')
 

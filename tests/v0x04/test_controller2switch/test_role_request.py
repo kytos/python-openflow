@@ -1,6 +1,5 @@
 """RoleRequest message tests."""
 from pyof.v0x04.controller2switch.role_request import RoleRequest
-
 from tests.test_struct import TestStruct
 
 

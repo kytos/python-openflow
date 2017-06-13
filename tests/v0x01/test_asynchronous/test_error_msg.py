@@ -1,8 +1,7 @@
 """Testing Error Message."""
 from pyof.foundation.basic_types import BinaryData
-from pyof.v0x01.asynchronous.error_msg import (BadRequestCode, ErrorMsg,
-                                               ErrorType)
-
+from pyof.v0x01.asynchronous.error_msg import (
+    BadRequestCode, ErrorMsg, ErrorType)
 from tests.test_struct import TestStruct
 
 

@@ -2,8 +2,8 @@
 from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage
-from pyof.foundation.basic_types import (FixedTypeList, Pad, UBInt8, UBInt16,
-                                         UBInt32)
+from pyof.foundation.basic_types import (
+    FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.controller2switch.common import Bucket
 

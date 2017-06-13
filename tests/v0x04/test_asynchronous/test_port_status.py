@@ -3,7 +3,6 @@ from pyof.foundation.basic_types import HWAddress
 from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 from pyof.v0x04.asynchronous.port_status import PortReason, PortStatus
 from pyof.v0x04.common.port import Port, PortConfig, PortFeatures, PortState
-
 from tests.test_struct import TestStruct
 
 
