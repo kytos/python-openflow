@@ -50,9 +50,9 @@ class GenericType:
         """The constructor takes the optional parameters below.
 
         Args:
-            value : The type's value.
+            value: The type's value.
             enum_ref (type): If :attr:`value` is from an Enum, specify
-                             its type.
+                its type.
         """
         self._value = value
         self.enum_ref = enum_ref
@@ -347,7 +347,7 @@ class MetaStruct(type):
                 (e.g.: pyof.v0x01.common.header)
 
         Returns:
-            str : The module version, on the format 'v0x0?' if any. Or None
+            str: The module version, on the format 'v0x0?' if any. Or None
                   if there isn't a version on the fullname.
         """
         ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
@@ -371,12 +371,12 @@ class MetaStruct(type):
             version (str): The version to be 'inserted' on the module fullname.
 
         Returns:
-            str  : module fullname
-                   The new module fullname, with the replaced version,
-                   on the format "pyof.v0x01.common.header". If the requested
-                   version is the same as the one of the module_fullname or if
-                   the module_fullname is not a 'OF version' specific module,
-                   returns None.
+            str: module fullname
+                 The new module fullname, with the replaced version,
+                 on the format "pyof.v0x01.common.header". If the requested
+                 version is the same as the one of the module_fullname or if
+                 the module_fullname is not a 'OF version' specific module,
+                 returns None.
         """
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:

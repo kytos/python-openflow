@@ -133,9 +133,9 @@ class PhyPort(GenericStruct):
 
     The port_no field is a value the datapath associates with a physical port.
     The hw_addr field typically is the MAC address for the port;
-    :data:`OFP_ETH_ALEN` is 6. The name field is a
-    null-terminated string containing a human-readable name for the interface.
-    The value of :data:`OFP_MAX_PORT_NAME_LEN` is 16.
+    :data:`OFP_ETH_ALEN` is 6. The name field is a null-terminated string
+    containing a human-readable name for the interface. The value of
+    :data:`OFP_MAX_PORT_NAME_LEN` is 16.
 
     :attr:`curr`, :attr:`advertised`, :attr:`supported` and :attr:`peer` are
     bitmaps of :class:`~pyof.v0x01.common.phy_port.PortFeatures` enum values

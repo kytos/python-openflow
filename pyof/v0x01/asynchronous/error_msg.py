@@ -197,7 +197,7 @@ class ErrorMsg(GenericMessage):
         After that, :attr:`data`'s value is restored.
 
         Returns:
-            bytes : The binary representation.
+            bytes: The binary representation.
         """
         if value is None:
             data_backup = None

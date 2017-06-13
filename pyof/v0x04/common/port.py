@@ -53,8 +53,7 @@ class PortConfig(GenericBitMask):
     These flags are used in :class:`Port` to describe the current
     configuration. They are used in the
     :class:`~pyof.v0x04.controller2switch.port_mod.PortMod`
-    message to configure
-    the port's behavior.
+    message to configure the port's behavior.
 
     The :attr:`OFPPC_PORT_DOWN` bit indicates that the port has been
     administratively brought down and should not be used by OpenFlow. The
