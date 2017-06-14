@@ -89,7 +89,8 @@ class Property(GenericStruct):
         """Constructor of Generic Instruction receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
         """
         super().__init__()
         self.property_type = property_type
@@ -144,7 +145,8 @@ class InstructionsProperty(Property):
         """Constructor of InstructionProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
             instruction_ids(ListOfInstruction): List of Instruction instances.
         """
         super().__init__(property_type=property_type)
@@ -167,7 +169,8 @@ class NextTablesProperty(Property):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
             next_table_ids(ListOfInstruction): List of InstructionGotoTable
                                                instances.
         """
@@ -194,7 +197,8 @@ class ActionsProperty(Property):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePr):
+                Property Type value of this instance.
             action_ids(ListOfActions): List of Action instances.
         """
         super().__init__(property_type)
@@ -221,8 +225,10 @@ class OxmProperty(Property):
         """Constructor of OxmProperty receives the parameters bellow.
 
         Args:
-            type(TableFeaturePropType): Property Type value of this instance.
-            oxm_ids(ListOfOxmHeader): List of OxmHeader instances.
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+                Property Type value of this instance.
+            oxm_ids(~pyof.v0x04.common.flow_match.ListOfOxmHeader):
+                List of OxmHeader instances.
         """
         super().__init__(property_type)
         self.oxm_ids = oxm_ids
@@ -239,7 +245,8 @@ class ListOfProperty(FixedTypeList):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            items (Property): Instance or a list of instances.
+            items (~pyof.v0x04.controller2switch.common.Property):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=Property, items=items)
 
@@ -277,23 +284,22 @@ class TableFeatures(GenericStruct):
         """The constructor of TableFeatures receives the paramters below.
 
         Args:
-            table_id(int):       Indetifier of table.The default value
-                                 OFPTT_ALL(0xff) will apply the configuration
-                                 to all tables in the switch.
-            name(Char):          Characters representing the table name.
+            table_id(int): Indetifier of table.The default value
+               OFPTT_ALL(0xff) will apply the configuration to all tables in
+               the switch.
+            name(Char): Characters representing the table name.
             metadata_match(int): Indicate the bits of the metadata field that
-                                 the table can match on.The default value
-                                 0xFFFFFFFFFFFFFFFF indicates that the table
-                                 can match the full metadata field.
+                the table can match on.The default value 0xFFFFFFFFFFFFFFFF
+                indicates that the table can match the full metadata field.
             metadata_write(int): Indicates the bits of the metadata field that
-                                 the table can write using the
-                                 OFPIT_WRITE_METADATA instruction.The default
-                                 value 0xFFFFFFFFFFFFFFFF indicates that the
-                                 table can write the full metadata field.
-            config(int):         Field reseved for future use.
-            max_entries(int):    Describe the maximum number of flow entries
-                                 that can be inserted into that table.
-            properties(ListOfProperty): List of Property intances.
+               the table can write using the OFPIT_WRITE_METADATA instruction.
+               The default value 0xFFFFFFFFFFFFFFFF indicates that the table
+               can write the full metadata field.
+            config(int): Field reseved for future use.
+            max_entries(int): Describe the maximum number of flow entries that
+               can be inserted into that table.
+            properties(~pyof.v0x04.controller2switch.common.Property):
+               List of Property intances.
         """
         super().__init__()
         self.table_id = table_id

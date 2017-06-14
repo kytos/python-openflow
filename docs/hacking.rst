@@ -2,7 +2,7 @@
 Hacking
 #######
 
-.. note:: Before reading this file, please read the :doc:`guidelines` section
+.. note:: Before reading this file, please read the :doc:`kytos:contributing` section
     that contains the main guidelines of the project.
 
 Development Environment Setup

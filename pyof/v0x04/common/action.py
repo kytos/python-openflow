@@ -138,7 +138,8 @@ class ActionHeader(GenericStruct):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (ActionType): The type of the action.
+            action_type (~pyof.v0x04.common.action.ActionType):
+                The type of the action.
             length (int): Length of action, including this header.
         """
         super().__init__()
@@ -277,11 +278,6 @@ class ActionSetField(GenericStruct):
     action_type = UBInt16(ActionType.OFPAT_SET_FIELD, enum_ref=ActionType)
     #: Length is padded to 64 bits.
     length = UBInt16()
-    #: Followed by:
-    #:     - Exactly oxm_len bytes containing a single OXM TLV, then
-    #:     - Exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4) (between 0 and 7)
-    #:       bytes of all-zero bytes
-
     #: OXM TLV - Make compiler happy
     field1 = UBInt8()
     field2 = UBInt8()
@@ -293,7 +289,10 @@ class ActionSetField(GenericStruct):
         """Action structure for OFPAT_SET_FIELD.
 
         Args:
-            length (int): length padded to 64 bits.
+            length (int): length padded to 64 bits, followed by exactly
+                          oxm_len bytes containing a single OXM TLV, then
+                          exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4)
+                          (between 0 and 7) bytes of all-zero bytes
             field1 (int): OXM field.
             field2 (int): OXM field.
             field3 (int): OXM field.
@@ -337,6 +336,7 @@ class ListOfActions(FixedTypeList):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            items (ActionHeader): Instance or a list of instances.
+            items (~pyof.v0x04.common.action.ActionHeader):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=ActionHeader, items=items)

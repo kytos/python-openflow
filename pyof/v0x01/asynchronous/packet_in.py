@@ -32,7 +32,7 @@ class PacketInReason(IntEnum):
 class PacketIn(GenericMessage):
     """Packet received on port (datapath -> controller)."""
 
-    #: :class:`~.header.Header`: OpenFlow Header
+    #: :class:`~pyof.v0x01.common.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_PACKET_IN)
     buffer_id = UBInt32()
     total_len = UBInt16()
@@ -51,7 +51,8 @@ class PacketIn(GenericMessage):
             buffer_id (int): ID assigned by datapath.
             total_len (int): Full length of frame.
             in_port (int): Port on which frame was received.
-            reason (PacketInReason): The reason why the packet is being sent
+            reason (~pyof.v0x01.asynchronous.packet_in.PacketInReason):
+                The reason why the packet is being sent
             data (bytes): Ethernet frame, halfway through 32-bit word, so the
                 IP header is 32-bit aligned. The amount of data is inferred
                 from the length field in the header. Because of padding,

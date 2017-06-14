@@ -37,6 +37,7 @@ Changed
 Fixed
 =====
 - [v0x01] Fixed method to unpack error messages.
+- documentation: fixed links and build warnings.
 - A few bug fixes.
 
 

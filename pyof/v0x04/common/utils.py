@@ -134,7 +134,7 @@ def new_message_from_header(header):
     """Given an OF Header, return an empty message of header's message_type.
 
     Args:
-        header (Header): Unpacked OpenFlow Header.
+        header (~pyof.v0x04.common.header.Header): Unpacked OpenFlow Header.
 
     Returns:
         Empty OpenFlow message of the same type of message_type attribute from

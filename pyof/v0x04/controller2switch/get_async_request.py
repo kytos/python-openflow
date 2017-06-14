@@ -17,5 +17,5 @@ class GetAsyncRequest(GenericMessage):
     messages) on a given OpenFlow channel.
     """
 
-    #: OpenFlow :class:`~.header.Header`
+    #: OpenFlow :class:`~pyof.v0x04.common.header.Header`
     header = Header(message_type=Type.OFPT_GET_ASYNC_REQUEST)
