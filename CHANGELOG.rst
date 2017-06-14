@@ -3,15 +3,13 @@ Change log
 ##########
 All notable changes to the python-openflow project is documented in this file.
 
-UNRELEASED - [2017.1b3] - "bethania" beta3 - 2017-06-1X
-*******************************************************
+UNRELEASED - Under development
+******************************
 Added
 =====
-- IPv4 packet pack/unpack support.
 
 Changed
 =======
-- Raise ValueError if not using bytes (e.g. string) in BinaryData.
 
 Deprecated
 ==========
@@ -21,10 +19,25 @@ Removed
 
 Fixed
 =====
-- [v0x01] Fixed method to unpack error messages.
 
 Security
 ========
+
+
+[2017.1b3] - "bethania" beta3 - 2017-06-14
+******************************************
+Added
+=====
+- IPv4 packet pack/unpack support.
+
+Changed
+=======
+- Raise ValueError if not using bytes (e.g. string) in BinaryData.
+
+Fixed
+=====
+- [v0x01] Fixed method to unpack error messages.
+- A few bug fixes.
 
 
 [2017.1b2] - "bethania" beta2 - 2017-05-05
