@@ -18,6 +18,18 @@
     </div>
 
       <div class="collapse navbar-collapse nav-collapse">
+        {% if versions %}
+          <div class="dropdown pull-right">
+            <button id="dropdown-versions" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> {{ current_version }}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              {%- for version in versions.split(',') %}
+                <li><a href="/python-openflow/{{version}}">{{ version }}</a></li>
+              {%- endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
         {% block navbarsearch %}
           {% include "navbarsearchbox.html" %}
         {% endblock %}
