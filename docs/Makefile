@@ -6,6 +6,8 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
+VERSIONS      = master,bethania
+MAIN_REF      = bethania
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -53,6 +55,17 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
 	@echo "  dummy      to check syntax errors of document sources"
+	@echo "  versions   to make all docs HTML files"
+
+.PHONY: versions
+versions:
+	rm python-openflow -rf && mkdir python-openflow
+	for version in `echo $(VERSIONS) | sed 's/,/ /g'`; do \
+		git checkout $$version \
+		&& make SPHINXOPTS="-A versions=\"$(VERSIONS)\" -A current_version=\"$$version\"" \
+		&& mv _build/dirhtml python-openflow/$$version; \
+	done
+	cp python-openflow/$(MAIN_REF)/* python-openflow/ -R
 
 .PHONY: clean
 clean:
