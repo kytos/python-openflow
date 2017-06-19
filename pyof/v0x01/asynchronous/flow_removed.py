@@ -29,9 +29,9 @@ class FlowRemovedReason(IntEnum):
 class FlowRemoved(GenericMessage):
     """Flow removed (datapath -> controller)."""
 
-    #: :class:`~.header.Header`: OpenFlow Header
+    #: :class:`~pyof.v0x01.common.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_FLOW_REMOVED)
-    #: :class:`~.flow_match.Match`: OpenFlow Header
+    #: :class:`~pyof.v0x01.common.flow_match.Match`: OpenFlow Header
     match = Match()
     cookie = UBInt64()
 
@@ -56,10 +56,11 @@ class FlowRemoved(GenericMessage):
 
         Args:
             xid (int): OpenFlow Header's xid.
-            match (Match): Fields' description.
+            match (~pyof.v0x01.common.flow_match.Match): Fields' description.
             cookie (int): Opaque controller-issued identifier.
             priority (int): Priority level of flow entry.
-            reason (FlowRemovedReason): Why the flow was removed.
+            reason (~pyof.v0x01.asynchronous.flow_removed.FlowRemovedReason):
+                Why the flow was removed.
             duration_sec (int): Time the flow was alive in seconds.
             duration_nsec (int): Time the flow was alive in nanoseconds in
                 addition to duration_sec.

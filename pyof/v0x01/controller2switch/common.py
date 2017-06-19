@@ -122,7 +122,7 @@ class AggregateStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            match (Match): Fields to match.
+            match (~pyof.v0x01.common.flow_match.Match): Fields to match.
             table_id (int): ID of table to read (from pyof_table_stats) 0xff
                 for all tables or 0xfe for emergency.
             out_port (int): Require matching entries to include this as an
@@ -195,7 +195,7 @@ class FlowStats(GenericStruct):
         Args:
             length (int): Length of this entry.
             table_id (int): ID of table flow came from.
-            match (Match): Description of fields.
+            match (~pyof.v0x01.common.flow_match.Match): Description of fields.
             duration_sec (int): Time flow has been alive in seconds.
             duration_nsec (int): Time flow has been alive in nanoseconds in
                 addition to duration_sec.
@@ -251,12 +251,13 @@ class FlowStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            match (Match): Fields to match.
+            match (:class:`~pyof.v0x01.common.flow_match.Match`):
+                Fields to match.
             table_id (int): ID of table to read (from pyof_table_stats)
                 0xff for all tables or 0xfe for emergency.
-            out_port (:class:`int`, :class:`.Port`): Require matching entries
-                to include this as an output port. A value of
-                :attr:`.Port.OFPP_NONE` indicates no restriction.
+            out_port (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
+                Require matching entries to include this as an output port.
+                A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
         """
         super().__init__()
         self.match = match
@@ -294,7 +295,8 @@ class PortStats(GenericStruct):
         """The constructor assigns parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): Port number.
+            port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
+                Port number.
             rx_packets (int): Number of received packets.
             tx_packets (int): Number of transmitted packets.
             rx_bytes (int): Number of received bytes.
@@ -340,10 +342,10 @@ class PortStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): OFPST_PORT message must
-                request statistics either for a single port (specified in
-                ``port_no``) or for all ports (if port_no ==
-                :attr:`.Port.OFPP_NONE`).
+            port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
+                OFPST_PORT message must request statistics either for a single
+                port (specified in ``port_no``) or for all ports
+                (if ``port_no`` == :attr:`.Port.OFPP_NONE`).
         """
         super().__init__()
         self.port_no = port_no
@@ -365,7 +367,8 @@ class QueueStats(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): Port Number.
+            port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
+                Port Number.
             queue_id (int): Queue ID.
             tx_bytes (int): Number of transmitted bytes.
             tx_packets (int): Number of transmitted packets.
@@ -391,8 +394,8 @@ class QueueStatsRequest(GenericStruct):
         """The constructor just assings parameters to object attributes.
 
         Args:
-            port_no (:class:`int`, :class:`.Port`): All ports if
-                :attr:`.Port.OFPP_ALL`.
+            port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
+                 All ports if :attr:`.Port.OFPP_ALL`.
             queue_id (int): All queues if OFPQ_ALL.
         """
         super().__init__()
@@ -422,8 +425,8 @@ class TableStats(GenericStruct):
             table_id (int): Identifier of table.  Lower numbered tables are
                 consulted first.
             name (str): Table name.
-            wildcards (FlowWildCards): Bitmap of OFPFW_* wildcards that are
-                supported by the table.
+            wildcards (:class:`~pyof.v0x01.common.flow_match.FlowWildCards`):
+                Bitmap of OFPFW_* wildcards that are supported by the table.
             max_entries (int): Max number of entries supported.
             active_count (int): Number of active entries.
             count_lookup (int): Number of packets looked up in table.

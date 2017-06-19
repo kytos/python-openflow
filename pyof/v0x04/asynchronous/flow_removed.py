@@ -37,7 +37,7 @@ class FlowRemoved(GenericMessage):
     OFPT_FLOW_REMOVED message.
     """
 
-    #: :class:`~.header.Header`: OpenFlow Header
+    #: :class:`~pyof.v0x04.common.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_FLOW_REMOVED)
     #: Opaque controller-issued identifier.
     cookie = UBInt64()
@@ -58,7 +58,7 @@ class FlowRemoved(GenericMessage):
     packet_count = UBInt64()
     byte_count = UBInt64()
     #: Description of fields. Variable size.
-    #: :class:`~.common.flow_match.Match`
+    #: :class:`~pyof.v0x04.common.flow_match.Match`
     match = Match()
 
     def __init__(self, xid=None, cookie=None, priority=None, reason=None,
@@ -71,7 +71,8 @@ class FlowRemoved(GenericMessage):
             xid (int): OpenFlow Header's xid.
             cookie (int): Opaque controller-issued identifier.
             priority (int): Priority level of flow entry.
-            reason (FlowRemovedReason): Why the flow was removed.
+            reason (~pyof.v0x04.asynchronous.flow_removed.FlowRemovedReason):
+                Why the flow was removed.
             table_id (int): ID of the table.
             duration_sec (int): Time the flow was alive in seconds.
             duration_nsec (int): Time the flow was alive in nanoseconds in
@@ -80,7 +81,7 @@ class FlowRemoved(GenericMessage):
             hard_timeout (int): Hard timeout from original flow mod.
             packet_count (int): Number of packets.
             byte_count (int): Byte count.
-            match (Match): Fields' description.
+            match (~pyof.v0x04.common.flow_match.Match): Fields' description.
         """
         super().__init__(xid)
         self.cookie = cookie

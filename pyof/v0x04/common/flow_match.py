@@ -206,12 +206,6 @@ class Match(OxmHeader):
     match_type = UBInt16(enum_ref=MatchType)
     #: Length of Match (excluding padding)
     length = UBInt16()
-    #: Followed by:
-    #:     - Exactly (length - 4) (possibly 0) bytes containing OXM TLVs, then
-    #:     - Exactly ((length + 7)/8*8 - length) (between 0 and 7) bytes of
-    #:         all-zero bytes
-    #: In summary, ofp_match is padded as needed, to make its overall size a
-    #: multiple of 8, to preserve alignement in structures using it.
     oxm_field1 = UBInt8(enum_ref=OxmOfbMatchField)
     oxm_field2 = UBInt8(enum_ref=OxmOfbMatchField)
     oxm_field3 = UBInt8(enum_ref=OxmOfbMatchField)
@@ -222,12 +216,15 @@ class Match(OxmHeader):
         """Describe the flow match header structure.
 
         Args:
-            - match_type (MatchType): One of OFPMT_* (MatchType) items.
-            - length (int): Length of Match (excluding padding).
-            - oxm_field1 (:class:`~OXMClass`): .
-            - oxm_field2 (:class:`~OXMClass`): .
-            - oxm_field3 (:class:`~OXMClass`): .
-            - oxm_field4 (:class:`~OXMClass`): .
+            match_type (MatchType): One of OFPMT_* (MatchType) items.
+            length (int): Length of Match (excluding padding) followed by
+                          Exactly (length - 4) (possibly 0) bytes containing
+                          OXM TLVs, then exactly ((length + 7)/8*8 - length)
+                          (between 0 and 7) bytes of all-zero bytes.
+            oxm_field1 (OXMClass): Sample description.
+            oxm_field2 (OXMClass): Sample description.
+            oxm_field3 (OXMClass): Sample description.
+            oxm_field4 (OXMClass): Sample description.
         """
         super().__init__()
         self.match_type = match_type

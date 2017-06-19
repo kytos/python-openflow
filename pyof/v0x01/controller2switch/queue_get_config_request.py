@@ -26,7 +26,7 @@ class QueueGetConfigRequest(GenericMessage):
 
         Args:
             xid (int): xid of OpenFlow header
-            port (Port): Target port for the query
+            port (~pyof.v0x01.common.phy_port.Port): Target port for the query
         """
         super().__init__(xid)
         self.port = port

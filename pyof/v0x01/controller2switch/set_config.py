@@ -19,7 +19,8 @@ class SetConfig(SwitchConfig):
 
         Args:
             xid (int): xid to be used on the message header.
-            flags (ConfigFlags): OFPC_* flags.
+            flags (~pyof.v0x01.controller2switch.common.ConfigFlags):
+                OFPC_* flags.
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
         """

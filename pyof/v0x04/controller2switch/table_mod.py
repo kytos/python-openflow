@@ -31,7 +31,8 @@ class TableMod(GenericMessage):
         """Assing parameters to object attributes.
 
         Args:
-            xid (int): :class:`.Header`'s xid. Defaults to random.
+            xid (int): :class:`~pyof.v0x04.common.header.Header`'s xid.
+                Defaults to random.
             table_id (int): ID of the table, OFPTT_ALL indicates all tables.
             config (int): Bitmap of OFPTC_* flags
         """

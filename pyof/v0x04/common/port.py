@@ -50,9 +50,10 @@ class PortNo(IntEnum):
 class PortConfig(GenericBitMask):
     """Flags to indicate behavior of the physical port.
 
-    These flags are used in :class:`~Port` to describe the current
-    configuration. They are used in the :class:`~PortMod` message to configure
-    the port's behavior.
+    These flags are used in :class:`Port` to describe the current
+    configuration. They are used in the
+    :class:`~pyof.v0x04.controller2switch.port_mod.PortMod`
+    message to configure the port's behavior.
 
     The :attr:`OFPPC_PORT_DOWN` bit indicates that the port has been
     administratively brought down and should not be used by OpenFlow. The
@@ -206,12 +207,16 @@ class Port(GenericStruct):
             port_no (int): Port number.
             hw_addr (HWAddress): Hardware address.
             name (str): Null-terminated name.
-            config (PortConfig): Bitmap of OFPPC* flags.
-            state (PortState): Bitmap of OFPPS* flags.
-            curr (PortFeatures): Current features.
-            advertised (PortFeatures): Features being advertised by the port.
-            supported (PortFeatures): Features supported by the port.
-            peer (PortFeatures): Features advertised by peer.
+            config (~pyof.v0x04.common.port.PortConfig):
+                Bitmap of OFPPC* flags.
+            state (~pyof.v0x04.common.port.PortState): Bitmap of OFPPS* flags.
+            curr (~pyof.v0x04.common.port.PortFeatures): Current features.
+            advertised (~pyof.v0x04.common.port.PortFeatures):
+                Features being advertised by the port.
+            supported (~pyof.v0x04.common.port.PortFeatures):
+                Features supported by the port.
+            peer (~pyof.v0x04.common.port.PortFeatures):
+                Features advertised by peer.
             curr_speed (int): Current port bitrate in kbps.
             max_speed (int): Max port bitrate in kbps.
         """
@@ -233,15 +238,17 @@ class ListOfPorts(FixedTypeList):
     """List of Ports.
 
     Represented by instances of :class:`Port` and used on
-    :class:`.FeaturesReply`/:class:`.SwitchFeatures` objects.
+    :class:`~pyof.v0x04.controller2switch.features_reply.FeaturesReply`/
+    :class:`~pyof.v0x04.controller2switch.features_reply.SwitchFeatures`
+    objects.
     """
 
     def __init__(self, items=None):
         """The constructor takes the optional parameter below.
 
         Args:
-            items (:class:`list`, :class:`Port`): One :class:`Port`
-                instance or list.
+            items (:class:`list`, :class:`~pyof.v0x04.common.port.Port`):
+                One :class:`~pyof.v0x04.common.port.Port` instance or list.
         """
         super().__init__(pyof_class=Port,
                          items=items)

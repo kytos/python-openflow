@@ -16,7 +16,7 @@ __all__ = ('QueueGetConfigRequest',)
 class QueueGetConfigRequest(GenericMessage):
     """Query structure for configured queues on a port."""
 
-    #: :class:`~.common.header.Header`.
+    #: Openflow :class:`~pyof.v0x04.common.header.Header`.
     header = Header(message_type=Type.OFPT_GET_CONFIG_REQUEST)
     #: Port to be queried. Should refer to a valid physical port
     #: (i.e. < OFPP_MAX), or OFPP_ANY to request all configured queues.

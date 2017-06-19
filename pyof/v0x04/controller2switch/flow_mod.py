@@ -82,7 +82,8 @@ class FlowMod(GenericMessage):
             table_id (int): ID of the table to put the flow in. For
                 OFPFC_DELETE_* commands, OFPTT_ALL can also be used to delete
                 matching flows from all tables.
-            command (FlowModCommand): One of OFPFC_*.
+            command (~pyof.v0x04.controller2switch.flow_mod.FlowModCommand):
+                One of OFPFC_*.
             idle_timeout (int): Idle time before discarding (seconds).
             hard_timeout (int): Max time before discarding (seconds).
             priority (int): Priority level of flow entry.
@@ -94,8 +95,10 @@ class FlowMod(GenericMessage):
             out_group (int): For OFPFC_DELETE* commands, require matching
                 entries to include this as an output group. A value of OFPG_ANY
                 indicates no restriction.
-            flags (FlowModFlags): One of OFPFF_*.
-            match (Match): Fields to match. Variable size.
+            flags (~pyof.v0x04.controller2switch.flow_mod.FlowModFlags):
+                One of OFPFF_*.
+            match (~pyof.v0x04.common.flow_match.Match):
+                Fields to match. Variable size.
         """
         super().__init__(xid)
         self.cookie = cookie

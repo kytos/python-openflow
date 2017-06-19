@@ -58,7 +58,8 @@ class QueuePropHeader(GenericStruct):
         """The contructor takes the paremeters below.
 
         Args:
-            queue_property (QueueProperties): The queue property.
+            queue_property (~pyof.v0x01.common.queue.QueueProperties):
+                The queue property.
             length (int): Length of property, including this header.
         """
         super().__init__()
@@ -81,8 +82,8 @@ class PacketQueue(GenericStruct):
         Args:
             queue_id (int): ID of the specific queue.
             length (int): Length in bytes of this queue desc.
-            properties(ListOfProperties): Queue's list of properties. Default
-                is an empty list.
+            properties(~pyof.v0x01.common.queue.ListOfProperties):
+                Queue's list of properties. Default is an empty list.
         """
         super().__init__()
         self.queue_id = queue_id

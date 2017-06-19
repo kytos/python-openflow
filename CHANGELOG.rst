@@ -24,7 +24,7 @@ Security
 ========
 
 
-[2017.1b3] - "bethania" beta3 - 2017-06-14
+[2017.1b3] - "bethania" beta3 - 2017-06-16
 ******************************************
 Added
 =====
@@ -33,10 +33,12 @@ Added
 Changed
 =======
 - Raise ValueError if not using bytes (e.g. string) in BinaryData.
+- Changed docs to show a dropdown button with all python-openflow releases.
 
 Fixed
 =====
 - [v0x01] Fixed method to unpack error messages.
+- documentation: fixed links and build warnings.
 - A few bug fixes.
 
 
