@@ -28,18 +28,25 @@ class Ethernet(GenericStruct):
     http://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml#ieee-802-numbers-1
     """
 
-    #: destination (:class:`HWAddress`): The final destination MAC address.
     destination = HWAddress()
-    #: source (:class:`HWAddress`): The source MAC address of the packet.
     source = HWAddress()
-    #: ether_type (:class:`UBInt16`): The EtherType of the packet.
     ether_type = UBInt16()
-    #: data (:class:`BinaryData`): The content of the packet in binary format.
     data = BinaryData()
 
     def __init__(self, destination=None, source=None, ether_type=None,
                  data=b''):
-        """Create an instance and set its attributes."""
+        """Create an instance and set its attributes.
+
+        Args:
+            destination (:class:`~pyof.foundation.basic_types.HWAddress`):
+                The final destination MAC address.
+            source (:class:`~pyof.foundation.basic_types.HWAddress`):
+                The source Mac address of the packet.
+            ether_type (:class:`~pyof.foundation.basic_types.UBInt16`):
+                The EtherType of packet.
+            data (:class:`~pyof.foundation.basic_types.BinaryData`):
+                The content of the packet in binary format.
+        """
         super().__init__()
         self.destination = destination
         self.source = source
@@ -47,7 +54,11 @@ class Ethernet(GenericStruct):
         self.data = data
 
     def get_hash(self):
-        """Return a hash that identifies this instance."""
+        """Calculate a hash and returns it.
+
+        Returns:
+            int: Integer value that identifies this instance.
+        """
         return hash(self.pack())
 
 
@@ -65,19 +76,34 @@ class GenericTLV(GenericStruct):
     """
 
     def __init__(self, tlv_type=127, value=BinaryData()):
-        """Create an instance and set its attributes."""
+        """Create an instance and set its attributes.
+
+        Args:
+            tlv_type (int): Type used by this class. Defaults to 127.
+            value (:class:`~pyof.foundation.basic_types.BinaryData`):
+                Value stored by GenericTLV.
+        """
         super().__init__()
         self.tlv_type = tlv_type
         self._value = value
 
     @property
     def value(self):
-        """Return the value stored by GenericTLV."""
+        """Return the value stored by GenericTLV.
+
+        Returns:
+            :class:`~pyof.foundation.basic_types.BinaryData`:
+                Value stored by GenericTLV.
+        """
         return self._value
 
     @property
     def length(self):
-        """Struct length in bytes."""
+        """Return the length of value stored by GenericTLV.
+
+        Returns:
+            int: Value length in bytes.
+        """
         return len(self.value.pack())
 
     @property
@@ -87,6 +113,10 @@ class GenericTLV(GenericStruct):
         The header is composed by the Type (7 bits) and Length (9 bits),
         summing up 16 bits. To achieve that, we need to do some bitshift
         operations.
+
+        Returns:
+            :class:`~pyof.foundation.basic_types.UBInt16`:
+                Result after all operations.
         """
         return UBInt16(((self.tlv_type & 127) << 9) | (self.length & 511))
 
@@ -132,7 +162,11 @@ class GenericTLV(GenericStruct):
         self._value = BinaryData(buffer[begin:end])
 
     def get_size(self, value=None):
-        """Return struct size."""
+        """Return struct size.
+
+        Returns:
+            int: Returns the struct size based on inner attributes.
+        """
         if isinstance(value, type(self)):
             return value.get_size()
 
@@ -183,7 +217,25 @@ class IPv4(GenericStruct):
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",
                  options=b'', data=b''):
-        """Create the Packet and set instance attributes."""
+        """The contructor receives the parameters below.
+
+        Args:
+            version (int): IP protocol version. Defaults to 4.
+            ihl (int): Internet Header Length. Default is 5.
+            dscp (int): Differentiated Service Code Point. Defaults to 0.
+            ecn (int): Explicit Congestion Notification. Defaults to 0.
+            length (int): IP packet length in bytes. Defaults to 0.
+            identification (int): Packet Id. Defaults to 0.
+            flags (int): IPv4 Flags. Defults 0.
+            offset (int): IPv4 offset. Defaults to 0.
+            ttl (int): Packet time-to-live. Defaults to 255
+            protocol (int): Upper layer protocol number. Defaults to 0.
+            checksum (int): Header checksum. Defaults to 0.
+            source (str): Source IPv4 address. Defaults to "0.0.0.0"
+            destination (str): Destination IPv4 address. Defaults to "0.0.0.0"
+            options (bytes): IP options. Defaults to empty bytes.
+            data (bytes): Packet data. Defaults to empty bytes.
+        """
         super().__init__()
         self.version = version
         self.ihl = ihl
@@ -226,6 +278,9 @@ class IPv4(GenericStruct):
         """Pack the struct in a binary representation.
 
         Merge some fields to ensure correct packing.
+
+        Returns:
+            bytes: Binary representation of this instance.
         """
         # Set the correct IHL based on options size
         if self.options:
@@ -247,6 +302,13 @@ class IPv4(GenericStruct):
         """Unpack a binary struct into this object's attributes.
 
         Return the values instead of the lib's basic types.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         super().unpack(buff, offset)
 
@@ -277,19 +339,31 @@ class TLVWithSubType(GenericTLV):
     """Modify the :class:`GenericTLV` to a Organization Specific TLV structure.
 
     Beyond the standard TLV (type, length, value), we can also have a more
-    specific structure, with the *value* field being splitted into a *sub_type*
-    field and a new "*sub_value*" field.
+    specific structure, with the :attr:`value` field being splitted into a
+    :attr:`sub_type` field and a new :attr:`sub_value` field.
     """
 
     def __init__(self, tlv_type=1, sub_type=7, sub_value=BinaryData()):
-        """Create an instance and set its attributes."""
+        """Create an instance and set its attributes.
+
+        Args:
+            tlv_type (int): Type used by this class. Defaults to 1.
+            sub_type (int): Sub type value used by this class. Defaults to 7.
+            sub_value (:class:`~pyof.foundation.basic_types.BinaryData`):
+                Data stored by TLVWithSubType. Defaults to empty BinaryData.
+        """
         super().__init__(tlv_type)
         self.sub_type = sub_type
         self.sub_value = sub_value
 
     @property
     def value(self):
-        """Return sub type and sub value as binary data."""
+        """Return sub type and sub value as binary data.
+
+        Returns:
+            :class:`~pyof.foundation.basic_types.BinaryData`:
+                BinaryData calculated.
+        """
         binary = UBInt8(self.sub_type).pack() + self.sub_value.pack()
         return BinaryData(binary)
 
@@ -323,13 +397,17 @@ class LLDP(GenericStruct):
     Build a LLDP packet with TLVSubtype and Generic Subtypes.
 
     It contains a chassis_id TLV, a port_id TLV, a TTL (Time to live) and
-    another TVL to represent the end of the LLDP Packet.
+    another TLV to represent the end of the LLDP Packet.
     """
 
+    #: chassis_id (:class:`~TLVWithSubType`) with tlv_type = 1 and sub_type = 7
     chassis_id = TLVWithSubType(tlv_type=1, sub_type=7)
+    #: port_id (:class:`TLVWithSubType`) with tlv = 2 and sub_type = 7
     port_id = TLVWithSubType(tlv_type=2, sub_type=7)
-    #: TTL time is given in seconds, between 0 and 65535
+    #: TTL (:class:`GenericTLV`) time is given in seconds, between 0 and 65535,
+    #: with tlv_type = 3
     ttl = GenericTLV(tlv_type=3, value=UBInt16(120))
     # We are not using list of tlvs for now
     # tlvs = ListOfTLVs()
+    #: end (:class:`GenericTLV`) with tlv_type = 0
     end = GenericTLV(tlv_type=0)
