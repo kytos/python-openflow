@@ -6,7 +6,7 @@
 
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericMessage
-from pyof.foundation.basic_types import Pad, UBInt8, UBInt32, UBInt64
+from pyof.foundation.basic_types import DPID, Pad, UBInt8, UBInt32, UBInt64
 from pyof.v0x04.common.header import Header, Type
 
 __all__ = ('FeaturesReply', 'Capabilities', 'SwitchFeatures')
@@ -42,7 +42,7 @@ class SwitchFeatures(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_FEATURES_REPLY)
-    datapath_id = UBInt64()
+    datapath_id = DPID()
 
     n_buffers = UBInt32()
 
