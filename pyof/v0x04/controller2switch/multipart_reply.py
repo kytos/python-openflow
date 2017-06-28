@@ -70,7 +70,7 @@ class MultipartReply(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to the header.
@@ -184,7 +184,7 @@ class AggregateStatsReply(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             packet_count (int): Number of packets in flows
@@ -258,7 +258,7 @@ class FlowStats(GenericStruct):
                  duration_nsec=None, priority=None, idle_timeout=None,
                  hard_timeout=None, flags=None, cookie=None, packet_count=None,
                  byte_count=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length (int): Length of this entry.
@@ -379,7 +379,7 @@ class QueueStats(GenericStruct):
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None, duration_sec=None,
                  duration_nsec=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -487,7 +487,7 @@ class GroupStats(GenericStruct):
     def __init__(self, length=None, group_id=None, ref_count=None,
                  packet_count=None, byte_count=None, duration_sec=None,
                  duration_nsec=None, bucket_stats=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length: Length of this entry
@@ -582,7 +582,7 @@ class BandStats(GenericStruct):
     byte_band_count = UBInt64()
 
     def __init__(self, packet_band_count=None, byte_band_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             packet_band_count(int): Number of packets in band.
@@ -600,7 +600,7 @@ class ListOfBandStats(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             items (BandStats): Instance or a list of instances.
@@ -627,7 +627,7 @@ class MeterStats(GenericStruct):
     def __init__(self, meter_id=None, flow_count=None,
                  packet_in_count=None, byte_in_count=None, duration_sec=None,
                  duration_nsec=None, band_stats=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             meter_id(Meter):      Meter instance.
@@ -693,7 +693,7 @@ class TableStats(GenericStruct):
     def __init__(self, table_id=None, name=None, max_entries=None,
                  active_count=None, lookup_count=None,
                  matched_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): Identifier of table.  Lower numbered tables are

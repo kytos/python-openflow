@@ -52,7 +52,7 @@ class MultipartRequest(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to the header.
@@ -172,7 +172,7 @@ class AggregateStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): ID of table to read (from ofp_table_stats)
@@ -211,7 +211,7 @@ class FlowStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): ID of table to read (from pyof_table_stats)
@@ -243,7 +243,7 @@ class PortStatsRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, port_no=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -262,7 +262,7 @@ class QueueStatsRequest(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
