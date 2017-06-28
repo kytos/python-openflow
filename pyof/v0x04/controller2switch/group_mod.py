@@ -54,7 +54,7 @@ class ListOfBuckets(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             items (Bucket): Instance or a list of instances.

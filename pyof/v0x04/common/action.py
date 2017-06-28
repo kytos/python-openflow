@@ -333,7 +333,7 @@ class ListOfActions(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             items (~pyof.v0x04.common.action.ActionHeader):

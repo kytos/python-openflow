@@ -67,7 +67,7 @@ class FlowMod(GenericMessage):
                  idle_timeout=0, hard_timeout=0, priority=0,
                  buffer_id=NO_BUFFER, out_port=Port.OFPP_NONE,
                  flags=FlowModFlags.OFPFF_CHECK_OVERLAP, actions=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to be used on the message header.

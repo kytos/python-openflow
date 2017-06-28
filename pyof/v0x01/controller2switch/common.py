@@ -73,7 +73,7 @@ class SwitchConfig(GenericMessage):
     miss_send_len = UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to be used on the message header.
@@ -96,7 +96,7 @@ class AggregateStatsReply(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             packet_count (int): Number of packets in flows
@@ -119,7 +119,7 @@ class AggregateStatsRequest(GenericStruct):
     out_port = UBInt16()
 
     def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             match (~pyof.v0x01.common.flow_match.Match): Fields to match.
@@ -149,7 +149,7 @@ class DescStats(GenericStruct):
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             mfr_desc (str): Manufacturer description
@@ -249,7 +249,7 @@ class FlowStatsRequest(GenericStruct):
     out_port = UBInt16()
 
     def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             match (:class:`~pyof.v0x01.common.flow_match.Match`):
@@ -340,7 +340,7 @@ class PortStatsRequest(GenericStruct):
     pad = Pad(6)
 
     def __init__(self, port_no=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
@@ -365,7 +365,7 @@ class QueueStats(GenericStruct):
 
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
@@ -392,7 +392,7 @@ class QueueStatsRequest(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
@@ -420,7 +420,7 @@ class TableStats(GenericStruct):
     def __init__(self, table_id=None, name=None, wildcards=None,
                  max_entries=None, active_count=None, count_lookup=None,
                  count_matched=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): Identifier of table.  Lower numbered tables are
