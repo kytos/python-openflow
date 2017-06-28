@@ -121,7 +121,13 @@ def new_message_from_header(header):
 
 
 def unpack_message(buffer):
-    """Unpack the whole buffer, including header pack."""
+    """Unpack the whole buffer, including header pack.
+
+    Args:
+        buffer (bytes): Bytes representation of a openflow message.
+    Returns:
+        object: Instance of openflow message.
+    """
     hdr_size = Header().get_size()
     hdr_buff, msg_buff = buffer[:hdr_size], buffer[hdr_size:]
     header = Header()

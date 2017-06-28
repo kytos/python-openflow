@@ -190,7 +190,7 @@ class FlowStats(GenericStruct):
                  duration_sec=None, duration_nsec=None, priority=None,
                  idle_timeout=None, hard_timeout=None, cookie=None,
                  packet_count=None, byte_count=None, actions=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length (int): Length of this entry.
@@ -206,7 +206,8 @@ class FlowStats(GenericStruct):
             cookie (int): Opaque controller-issued identifier.
             packet_count (int): Number of packets in flow.
             byte_count (int): Number of bytes in flow.
-            actions (ListOfActions): Actions.
+            actions (:class:`~pyof.v0x01.common.actions.ListOfActions`):
+                List of Actions.
         """
         super().__init__()
         self.length = length
