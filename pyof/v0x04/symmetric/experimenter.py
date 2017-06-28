@@ -21,12 +21,12 @@ class ExperimenterHeader(GenericMessage):
     are the experimenter’s IEEE OUI. If the most significant byte is not zero,
     it is a value allocated by the Open Networking Foundation. If experimenter
     does not have (or wish to use) their OUI, they should contact the Open
-    Networking Foundation to obtain a unique experimenter ID.
+    Networking Foundation to obtain an unique experimenter ID.
 
     The rest of the body is uninterpreted by standard OpenFlow processing and
     is arbitrarily defined by the corresponding experimenter.
 
-    If a switch does not understand a experimenter extension, it must send an
+    If a switch does not understand an experimenter extension, it must send an
     OFPT_ERROR message with a OFPBRC_BAD_EXPERIMENTER error code and
     OFPET_BAD_REQUEST error type.
     """

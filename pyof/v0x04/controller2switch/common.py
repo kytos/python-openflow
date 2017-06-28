@@ -234,8 +234,8 @@ class BucketCounter(GenericStruct):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            packet_count: Number of packets processed by bucket.
-            byte_count: Number of bytes processed by bucket.
+            packet_count (int): Number of packets processed by bucket.
+            byte_count (int): Number of bytes processed by bucket.
         """
         super().__init__()
         self.packet_count = packet_count
@@ -445,14 +445,13 @@ class InstructionsProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_INSTRUCTIONS,
                  instruction_ids=None):
-        """Constructor of InstructionProperty receives the parameters bellow.
+        r"""Constructor of InstructionProperty receives the parameters bellow.
 
         Args:
             type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
                 Property Type value of this instance.
-            instruction_ids
-            (~pyof.v0x04.common.flow_instructions.ListOfInstruction):
-                    List of Instruction instances.
+            instruction_ids (:class:`ListOfInstruction`):
+                List of Instruction instances.
         """
         super().__init__(property_type=property_type)
         self.instruction_ids = instruction_ids if instruction_ids else []
@@ -476,9 +475,8 @@ class NextTablesProperty(Property):
         Args:
             type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
                 Property Type value of this instance.
-            next_table_ids
-                (~pyof.v0x04.common.flow_instructions.ListOfInstruction):
-                    List of InstructionGotoTable instances.
+            next_table_ids (:class:`ListOfInstruction`):
+                List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
         self.next_table_ids = next_table_ids
@@ -591,16 +589,16 @@ class TableFeatures(GenericStruct):
 
         Args:
             table_id(int): Indetifier of table.The default value
-                OFPTT_ALL(0xff) will apply the configuration to all tables in
-                the switch.
+                OFPTT_ALL(``0xff``) will apply the configuration to all tables
+                in the switch.
             name(Char): Characters representing the table name.
             metadata_match(int): Indicate the bits of the metadata field that
-               the table can match on.The default value 0xFFFFFFFFFFFFFFFF
+               the table can match on.The default value ``0xFFFFFFFFFFFFFFFF``
                indicates that the table can match the full metadata field.
             metadata_write(int): Indicates the bits of the metadata field that
                the table can write using the OFPIT_WRITE_METADATA instruction.
-               The default value 0xFFFFFFFFFFFFFFFF indicates that the table
-               can write the full metadata field.
+               The default value ``0xFFFFFFFFFFFFFFFF`` indicates that the
+               table can write the full metadata field.
             config(int): Field reseved for future use.
             max_entries(int): Describe the maximum number of flow entries that
                 can be inserted into that table.

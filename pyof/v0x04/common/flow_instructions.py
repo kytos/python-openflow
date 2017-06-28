@@ -112,11 +112,11 @@ class InstructionApplyAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """Instruction structure for OFPIT_APPLY_ACTIONS.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - actions (:class:`~.actions.ListOfActions`): Actions associated
-                with OFPIT_APPLY_ACTIONS.
+            actions (:class:`~.actions.ListOfActions`):
+                Actions associated with OFPIT_APPLY_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_APPLY_ACTIONS)
         self.actions = actions if actions else []
@@ -135,11 +135,11 @@ class InstructionClearAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """Instruction structure for OFPIT_CLEAR_ACTIONS.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - actions (:class:`~.actions.ListOfActions`): Actions associated
-                with OFPIT_CLEAR_ACTIONS.
+            actions (:class:`~.actions.ListOfActions`):
+                Actions associated with OFPIT_CLEAR_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_CLEAR_ACTIONS)
         self.actions = actions if actions else []
@@ -155,11 +155,11 @@ class InstructionGotoTable(Instruction):
     pad = Pad(3)
 
     def __init__(self, table_id=Meter.OFPM_ALL):
-        """Instruction structure for OFPIT_GOTO_TABLE.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - length (int): Length of this struct in bytes.
-            - table_id (int): set next table in the lookup pipeline.
+            length (int): Length of this struct in bytes.
+            table_id (int): set next table in the lookup pipeline.
         """
         super().__init__(InstructionType.OFPIT_GOTO_TABLE)
         self.table_id = table_id
@@ -176,10 +176,10 @@ class InstructionMeter(Instruction):
     meter_id = UBInt32()
 
     def __init__(self, meter_id=Meter.OFPM_ALL):
-        """Instruction structure for OFPIT_METER.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - meter_id (int): Meter instance.
+            meter_id (int): Meter instance.
         """
         super().__init__(InstructionType.OFPIT_METER)
         self.meter_id = meter_id
@@ -198,11 +198,11 @@ class InstructionWriteAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """Instruction structure for OFPIT_WRITE_ACTIONS.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - actions (:class:`~.actions.ListOfActions`): Actions associated
-                with OFPIT_WRITE_ACTIONS.
+            actions (:class:`~.actions.ListOfActions`):
+                Actions associated with OFPIT_WRITE_ACTIONS.
         """
         super().__init__(InstructionType.OFPIT_WRITE_ACTIONS)
         self.actions = actions if actions else []
@@ -220,11 +220,11 @@ class InstructionWriteMetadata(Instruction):
     metadata_mask = UBInt64()
 
     def __init__(self, metadata=0, metadata_mask=0):
-        """Instruction structure for OFPIT_WRITE_METADATA.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - metadata (int): Metadata value to write.
-            - metadata_mask (int): Metadata write bitmask.
+            metadata (int): Metadata value to write.
+            metadata_mask (int): Metadata write bitmask.
         """
         super().__init__(InstructionType.OFPIT_WRITE_METADATA)
         self.metadata = metadata
@@ -242,6 +242,7 @@ class ListOfInstruction(FixedTypeList):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (Instruction): Instance or a list of instances.
+            items (:class:`~pyof.v0x04.common.flow_instructions.Instruction`):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=Instruction, items=items)

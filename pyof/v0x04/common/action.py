@@ -85,7 +85,7 @@ class ActionExperimenterHeader(GenericStruct):
     experimenter = UBInt32()
 
     def __init__(self, length=None, experimenter=None):
-        """Action structure for OFPAT_EXPERIMENTER.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             experimenter (int): The experimenter field is the Experimenter ID,
@@ -107,7 +107,7 @@ class ActionGroup(GenericStruct):
     group_id = UBInt32()
 
     def __init__(self, group_id=None):
-        """Action structure for OFPAT_GROUP.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             group_id (int): The group_id indicates the group used to process
@@ -135,7 +135,7 @@ class ActionHeader(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, action_type=None, length=None):
-        """The following constructor parameters are optional.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             action_type (~pyof.v0x04.common.action.ActionType):
@@ -160,7 +160,7 @@ class ActionMPLSTTL(GenericStruct):
     pad = Pad(3)
 
     def __init__(self, mpls_ttl=None):
-        """Action structure for OFPAT_SET_MPLS_TTL.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
@@ -182,7 +182,7 @@ class ActionNWTTL(GenericStruct):
     pad = Pad(3)
 
     def __init__(self, nw_ttl=None):
-        """Action structure for OFPAT_SET_NW_TTL.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             nw_ttl (int): the TTL address to set in the IP header.
@@ -214,7 +214,7 @@ class ActionOutput(GenericStruct):
 
     def __init__(self, action_type=None, length=None, port=None,
                  max_length=None):
-        """The following constructor parameters are optional.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port (:class:`Port` or :class:`int`): Output port.
@@ -240,7 +240,7 @@ class ActionPopMPLS(GenericStruct):
     pad = Pad(2)
 
     def __init__(self, ethertype=None):
-        """Action structure for OFPAT_POP_MPLS.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             ethertype (int): indicates the Ethertype of the payload.
@@ -262,7 +262,7 @@ class ActionPush(GenericStruct):
     pad = Pad(2)
 
     def __init__(self, ethertype=None):
-        """Action structure for OFPAT_PUSH_VLAN/MPLS/PBB.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             ethertype (int): indicates the Ethertype of the new tag.
@@ -286,7 +286,7 @@ class ActionSetField(GenericStruct):
 
     def __init__(self, length=None, field1=None, field2=None, field3=None,
                  field4=None):
-        """Action structure for OFPAT_SET_FIELD.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length (int): length padded to 64 bits, followed by exactly
@@ -317,7 +317,7 @@ class ActionSetQueue(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, queue_id=None):
-        """Action structure for OFPAT_SET_QUEUE.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             queue_id (int): The queue_id send packets to given queue on port.

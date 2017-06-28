@@ -11,7 +11,7 @@ __all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group')
 
 
 class Group(IntEnum):
-    """Group numbering. Groups can use any number up to OFPG_MAX."""
+    """Group numbering. Groups can use any number up to attr:`OFPG_MAX`."""
 
     #: Last usable group number.
     OFPG_MAX = 0xffffff00
