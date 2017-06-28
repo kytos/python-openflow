@@ -70,9 +70,9 @@ class PortConfig(GenericBitMask):
 class PortFeatures(GenericBitMask):
     """Physical ports features.
 
-    The curr, advertised, supported, and peer fields indicate link modes
-    (10M to 10G full and half-duplex), link type (copper/fiber) and
-    link features (autone-gotiation and pause).
+    The :attr:`curr`, :attr:`advertised`, :attr:`supported`, and :attr:`peer`
+    fields indicate link modes (10M to 10G full and half-duplex), link type
+    (copper/fiber) and link features (autone-gotiation and pause).
     """
 
     #: 10 Mb half-duplex rate support.

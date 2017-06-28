@@ -40,7 +40,7 @@ class ErrorType(IntEnum):
         """Method used to return a Code class based on current ErrorType value.
 
         Returns:
-            error_code_class (IntEnum): class referenced by current error type.
+            enum.IntEnum: class referenced by current error type.
         """
         classes = {'OFPET_HELLO_FAILED': HelloFailedCode,
                    'OFPET_BAD_REQUEST': BadRequestCode,

@@ -197,9 +197,10 @@ class ActionsProperty(Property):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePr):
+            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
                 Property Type value of this instance.
-            action_ids(ListOfActions): List of Action instances.
+            action_ids(:class:`~pyof.v0x04.common.ListOfActions`): List of
+                Action instances.
         """
         super().__init__(property_type)
         self.action_ids = action_ids if action_ids else ListOfActions()

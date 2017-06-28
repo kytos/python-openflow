@@ -47,7 +47,8 @@ class PacketOut(GenericMessage):
                 Packet's input port (:attr:`Port.OFPP_NONE` if none).
                 Virtual ports OFPP_IN_PORT, OFPP_TABLE, OFPP_NORMAL,
                 OFPP_FLOOD, and OFPP_ALL cannot be used as input port.
-            actions (ListOfActions): Actions (class ActionHeader).
+            actions (:class:`~pyof.v0x04.common.action.ListOfActions`):
+                List of Action instances.
             data (bytes): Packet data. The length is inferred from the length
                 field in the header. (Only meaningful if ``buffer_id`` == -1).
         """
