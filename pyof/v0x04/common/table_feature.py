@@ -142,12 +142,13 @@ class InstructionsProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_INSTRUCTIONS,
                  instruction_ids=None):
-        """Constructor of InstructionProperty receives the parameters bellow.
+        """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
             type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
                 Property Type value of this instance.
-            instruction_ids(ListOfInstruction): List of Instruction instances.
+            next_table_ids(:class:`ListOfInstruction`):
+                List of InstructionGotoTable instances.
         """
         super().__init__(property_type=property_type)
         self.instruction_ids = instruction_ids if instruction_ids else []
@@ -171,8 +172,9 @@ class NextTablesProperty(Property):
         Args:
             type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
                 Property Type value of this instance.
-            next_table_ids(ListOfInstruction): List of InstructionGotoTable
-                                               instances.
+            next_table_ids \
+            (:class:`~pyof.v0x04.common.flow_instructions.ListOfInstruction`):
+                List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
         self.next_table_ids = next_table_ids

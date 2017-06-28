@@ -246,11 +246,11 @@ class OxmExperimenterHeader(OxmHeader):
     experimenter = UBInt32()
 
     def __init__(self, experimenter=None):
-        """Header for OXM experimenter match fields.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            - experimenter (int): Experimenter ID which takes the same form as
-                in struct ofp_experimenter_header
+            experimenter (int): Experimenter ID which takes the same form as
+              in struct ofp_experimenter_header
         """
         super().__init__()
         self.experimenter = experimenter

@@ -38,7 +38,7 @@ class StatsReply(GenericMessage):
         StatsReply object, then will return this struct as a binary data.
 
         Returns:
-            stats_reply_packed (bytes): Binary data with StatsReply packed.
+            bytes: Binary data with StatsReply packed.
         """
         buff = self.body
         if not value:

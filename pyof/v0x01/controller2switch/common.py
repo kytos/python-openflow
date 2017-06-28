@@ -230,7 +230,7 @@ class FlowStats(GenericStruct):
         Keep buff and offset just for compability with other unpack methods.
 
         Args:
-            buff: Buffer where data is located.
+            buff (bytes): Buffer where data is located.
             offset (int): Where data stream begins.
         """
         self.length = UBInt16()
@@ -397,7 +397,7 @@ class QueueStatsRequest(GenericStruct):
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x01.common.phy_port.Port`):
                  All ports if :attr:`.Port.OFPP_ALL`.
-            queue_id (int): All queues if OFPQ_ALL.
+            queue_id (int): All queues if OFPQ_ALL (``0xfffffff``).
         """
         super().__init__()
         self.port_no = port_no

@@ -417,10 +417,14 @@ class GroupDescStats(GenericStruct):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            length: Length of this entry.
-            group_type: One of OFPGT_*.
-            group_id: Group identifier.
-            buckets: List of buckets in group.
+            length (int): Length of this entry.
+            group_type\
+            (:class:`~pyof.v0x04.controller2switch.group_mod.GroupType`):
+                One of OFPGT_*.
+            group_id (int): Group identifier.
+            buckets \
+            (:class:`~pyof.v0x04.controller2switch.group_mod.ListOfBucket`):
+                List of buckets in group.
         """
         super().__init__()
         self.length = length
@@ -531,11 +535,15 @@ class MeterConfig(GenericStruct):
         """The Constructor of MeterConfig receives the parameters below.
 
         Args:
-            flags(MeterFlags): Meter configuration flags.The default value is
-                               MeterFlags.OFPMF_STATS
-            meter_id(Meter):   Meter Indentify.The value Meter.OFPM_ALL is used
-                               to refer to all Meters on the switch.
-            bands(list):       List of MeterBandHeader instances.
+            flags\
+            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterFlags`):
+                Meter configuration flags.The default value is \
+                MeterFlags.OFPMF_STATS
+            meter_id \
+                (:class:`~pyof.v0x04.controller2switch.meter_mod.Meter`):
+                Meter Indentify.The value Meter.OFPM_ALL is used to \
+                refer to all Meters on the switch.
+            bands(list): List of MeterBandHeader instances.
         """
         super().__init__()
         self.flags = flags
@@ -558,11 +566,15 @@ class MeterFeatures(GenericStruct):
         """The Constructor of MeterFeatures receives the parameters below.
 
         Args:
-            max_meter(int):           Maximum number of meters.
-            band_types(Meter):        Bitmaps of OFPMBT_* values supported.
-            capabilities(MeterFlags): Bitmaps of "ofp_meter_flags".
-            max_bands(int):           Maximum bands per meters
-            max_color(int):           Maximum color value
+            max_meter(int): Maximum number of meters.
+            band_types \
+            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterBandType`):
+                Bitmaps of OFPMBT_* values supported.
+            capabilities \
+            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterFlags`):
+                Bitmaps of "ofp_meter_flags".
+            max_bands(int): Maximum bands per meters
+            max_color(int): Maximum color value
         """
         super().__init__()
         self.max_meter = max_meter
@@ -603,7 +615,9 @@ class ListOfBandStats(FixedTypeList):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (BandStats): Instance or a list of instances.
+            items \
+            (:class:`~pyof.v0x04.controller2switch.multipart_reply.BandStats`):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=BandStats, items=items)
 
@@ -630,7 +644,9 @@ class MeterStats(GenericStruct):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            meter_id(Meter):      Meter instance.
+            meter_id \
+            (:class:`~pyof.v0x04.controller2switch.meter_mod.Meter`):
+                Meter instance.
             flow_count(int):      Number of flows bound to meter.
             packet_in_count(int): Number of packets in input.
             byte_in_count(int):   Number of bytes in input.
@@ -667,9 +683,11 @@ class MeterStats(GenericStruct):
 
         This method will convert a binary data into a readable value according
         to the attribute format.
+
         Args:
             buff (bytes): Binary buffer.
             offset (int): Where to begin unpacking.
+
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """

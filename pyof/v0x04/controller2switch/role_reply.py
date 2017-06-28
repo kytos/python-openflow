@@ -21,7 +21,8 @@ class RoleReply(RoleBaseMessage):
 
         Args:
             xid (int): OpenFlow xid to the header.
-            role (:class:`~.controller2switch.common.ControllerRole`): .
+            role (:class:`~.controller2switch.common.ControllerRole`):
+                Is the new role that the controller wants to assume.
             generation_id (int): Master Election Generation Id.
         """
         super().__init__(xid, role, generation_id)
