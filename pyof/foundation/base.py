@@ -31,8 +31,8 @@ from pyof.foundation.exceptions import (
 
 
 # This will determine the order on sphinx documentation.
-__all__ = ('GenericStruct', 'GenericMessage', 'GenericType', 'GenericBitMask',
-           'MetaStruct', 'MetaBitMask')
+__all__ = ('GenericStruct', 'GenericMessage', 'GenericType',
+           'GenericUBIntType', 'GenericBitMask', 'MetaStruct', 'MetaBitMask')
 
 # Classes
 
@@ -114,6 +114,12 @@ class GenericType:
 
     def __rxor__(self, other):
         return self.value ^ other
+
+    def __lshift__(self, other):
+        return self.value << other
+
+    def __rshift__(self, other):
+        return self.value >> other
 
     @property
     def value(self):
@@ -255,6 +261,40 @@ class GenericType:
             bool: Whether it is a :class:`GenericBitMask`.
         """
         return self._value and issubclass(type(self._value), GenericBitMask)
+
+
+class GenericUBIntType(GenericType):
+
+    _buff_size = 0
+
+    def _pack(self):
+        return self.value.to_bytes(self._buff_size, byteorder='big')
+
+    def unpack(self, buff, offset=0):
+        """Unpack *buff* into this object.
+
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        try:
+            self._value = int.from_bytes(buff[offset:offset + self._buff_size],
+                                         byteorder='big')
+            if self.enum_ref:
+                self._value = self.enum_ref(self._value)
+        except (struct.error, TypeError, ValueError) as e:
+            msg = '{}; fmt = {}, buff = {}, offset = {}.'.format(
+                e, 'UBInt' + 8 * self._buff_size, buff, offset)
+            raise UnpackException(msg)
+
+    def _get_size(self):
+        return self._buff_size
 
 
 class MetaStruct(type):

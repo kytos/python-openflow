@@ -5,13 +5,13 @@ import struct
 
 # Local source tree imports
 from pyof.foundation import exceptions
-from pyof.foundation.base import GenericStruct, GenericType
+from pyof.foundation.base import GenericStruct, GenericType, GenericUBIntType
 
 # Third-party imports
 
 __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
-           'UBInt32', 'UBInt64')
+           'UBInt24', 'UBInt32', 'UBInt64')
 
 
 class Pad(GenericType):
@@ -69,6 +69,15 @@ class UBInt16(GenericType):
     """
 
     _fmt = "!H"
+
+
+class UBInt24(GenericUBIntType):
+    """Format character for an Unsigned Short.
+
+    Class for an 16-bit (2-byte) Unsigned Integer.
+    """
+
+    _buff_size = 3
 
 
 class UBInt32(GenericType):
@@ -556,3 +565,47 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
+
+
+def get_custom_tlv_class(type_size=3, length_size=1):
+
+    size_classes = {1: UBInt8,
+                    2: UBInt16,
+                    3: UBInt24,
+                    4: UBInt32}
+
+    custom_type = size_classes[type_size]
+    custom_length = size_classes[length_size]
+
+    class CustomTLV(GenericStruct):
+        tlv_type = custom_type()
+        tlv_length = custom_length()
+        tlv_value = BinaryData()
+
+        def __init__(self, tlv_type=None, tlv_value=None):
+            super().__init__()
+            self.tlv_type = tlv_type
+            self.tlv_value = tlv_value
+            self._update_tlv_length()
+
+        def _update_tlv_length(self):
+            cls = type(self)
+            self.tlv_length = (type(cls.tlv_value)(self.tlv_value)).get_size()
+
+        def _pack(self):
+            self._update_tlv_length()
+            return super()._pack()
+
+        def unpack(self, buff, offset=0):
+            begin = offset
+            for name, value in list(self.get_class_attributes())[:-1]:
+                size = self._unpack_attribute(name, value, buff, begin)
+                begin += size
+            self._unpack_attribute('tlv_value', type(self).tlv_value,
+                                   buff[:begin + self.tlv_length],
+                                   begin)
+
+    return CustomTLV
+
+
+CustomTLV_24_8 = get_custom_tlv_class(type_size=3, length_size=1)
