@@ -340,21 +340,21 @@ class MetaStruct(type):
 
     @staticmethod
     def get_pyof_version(module_fullname):
-        r"""Get the module pyof version based on the module fullname.
+        """Get the module pyof version based on the module fullname.
 
         Args:
             module_fullname (str): The fullname of the module
                 (e.g.: pyof.v0x01.common.header)
 
         Returns:
-            str: The module version, on the format 'v0x0?' if any. Or None \
-                  if there isn't a version on the fullname.
+            str: openflow version.
+                 The openflow version, on the format 'v0x0?' if any. Or None
+                 if there isn't a version on the fullname.
         """
         ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
         matched = ver_module_re.match(module_fullname)
         if matched:
             version = matched.group(2)
-            # module = matched.group(3)
             return version
         return None
 
