@@ -184,6 +184,16 @@ class VlanId(IntEnum):
 
 # Classes
 
+class OxmType(GenericStruct):
+    oxm_class = UBInt16(enum_ref=OxmClass)
+    oxm_field = UBInt8()
+
+    def __init__(self, oxm_class, oxm_field):
+        cls = type(self)
+        self.oxm_class = type(cls.oxm_class)(oxm_class)
+        self.oxm_field = oxm_field
+
+
 class OxmTLV(GenericStruct):
 
     oxm_class = UBInt16(enum_ref=OxmClass)
