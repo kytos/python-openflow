@@ -303,7 +303,7 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):  # noqa
+    def __init__(self, value=None, enum_ref=None):  # noqa
         """The constructor takes the parameter below.
 
         Args:
@@ -312,6 +312,8 @@ class BinaryData(GenericType):
         Raises:
             ValueError: If given value is not bytes.
         """
+        if value is None:
+            value = b''
         if not isinstance(value, bytes):
             raise ValueError('BinaryData must contain bytes.')
         super().__init__(value, enum_ref=enum_ref)
