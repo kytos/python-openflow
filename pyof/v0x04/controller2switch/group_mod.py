@@ -7,7 +7,8 @@ from pyof.foundation.basic_types import (
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.controller2switch.common import Bucket
 
-__all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group')
+__all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group',
+           'ListOfBuckets')
 
 
 class Group(IntEnum):
