@@ -418,13 +418,9 @@ class GroupDescStats(GenericStruct):
 
         Args:
             length (int): Length of this entry.
-            group_type\
-            (:class:`~pyof.v0x04.controller2switch.group_mod.GroupType`):
-                One of OFPGT_*.
+            group_type (|GroupType_v0x04|): One of OFPGT_*.
             group_id (int): Group identifier.
-            buckets \
-            (:class:`~pyof.v0x04.controller2switch.group_mod.ListOfBucket`):
-                List of buckets in group.
+            buckets (|ListOfBuckets_v0x04|): List of buckets in group.
         """
         super().__init__()
         self.length = length
@@ -535,13 +531,11 @@ class MeterConfig(GenericStruct):
         """The Constructor of MeterConfig receives the parameters below.
 
         Args:
-            flags\
-            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterFlags`):
-                Meter configuration flags.The default value is \
+            flags (|MeterFlags_v0x04|):
+                Meter configuration flags.The default value is
                 MeterFlags.OFPMF_STATS
-            meter_id \
-                (:class:`~pyof.v0x04.controller2switch.meter_mod.Meter`):
-                Meter Indentify.The value Meter.OFPM_ALL is used to \
+            meter_id (|Meter_v0x04|):
+                Meter Indentify.The value Meter.OFPM_ALL is used to
                 refer to all Meters on the switch.
             bands(list): List of MeterBandHeader instances.
         """
@@ -567,12 +561,9 @@ class MeterFeatures(GenericStruct):
 
         Args:
             max_meter(int): Maximum number of meters.
-            band_types \
-            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterBandType`):
+            band_types (|MeterBandType_v0x04|):
                 Bitmaps of OFPMBT_* values supported.
-            capabilities \
-            (:class:`~pyof.v0x04.controller2switch.meter_mod.MeterFlags`):
-                Bitmaps of "ofp_meter_flags".
+            capabilities (|MeterFlags_v0x04|): Bitmaps of "ofp_meter_flags".
             max_bands(int): Maximum bands per meters
             max_color(int): Maximum color value
         """
@@ -615,9 +606,7 @@ class ListOfBandStats(FixedTypeList):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            items \
-            (:class:`~pyof.v0x04.controller2switch.multipart_reply.BandStats`):
-                Instance or a list of instances.
+            items (|BandStats_v0x04|): Instance or a list of instances.
         """
         super().__init__(pyof_class=BandStats, items=items)
 
@@ -644,9 +633,7 @@ class MeterStats(GenericStruct):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            meter_id \
-            (:class:`~pyof.v0x04.controller2switch.meter_mod.Meter`):
-                Meter instance.
+            meter_id (|Meter_v0x04|):  Meter instance.
             flow_count(int):      Number of flows bound to meter.
             packet_in_count(int): Number of packets in input.
             byte_in_count(int):   Number of bytes in input.

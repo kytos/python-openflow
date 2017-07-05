@@ -89,7 +89,7 @@ class Property(GenericStruct):
         """Constructor of Generic Instruction receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
         """
         super().__init__()
@@ -134,8 +134,8 @@ class InstructionsProperty(Property):
     """Instructions property.
 
     This class represents Property with the following types:
-        OFPTFPT_INSTRUCTIONS
-        OFPTFPT_INSTRUCTIONS_MISS
+        - OFPTFPT_INSTRUCTIONS
+        - OFPTFPT_INSTRUCTIONS_MISS
     """
 
     instruction_ids = ListOfInstruction()
@@ -145,9 +145,9 @@ class InstructionsProperty(Property):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            next_table_ids(:class:`ListOfInstruction`):
+            next_table_ids(|ListOfInstruction_v0x04|):
                 List of InstructionGotoTable instances.
         """
         super().__init__(property_type=property_type)
@@ -159,8 +159,8 @@ class NextTablesProperty(Property):
     """Next Tables Property.
 
     This class represents Property with the following types:
-        OFPTFPT_NEXT_TABLES
-        OFPTFPT_NEXT_TABLES_MISS
+        - OFPTFPT_NEXT_TABLES
+        - OFPTFPT_NEXT_TABLES_MISS
     """
 
     next_table_ids = ListOfInstruction()
@@ -170,10 +170,9 @@ class NextTablesProperty(Property):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            next_table_ids \
-            (:class:`~pyof.v0x04.common.flow_instructions.ListOfInstruction`):
+            next_table_ids (|ListOfInstruction_v0x04|):
                 List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
@@ -185,10 +184,10 @@ class ActionsProperty(Property):
     """Actions Property.
 
     This class represents Property with the following type:
-        OFPTFPT_WRITE_ACTIONS
-        OFPTFPT_WRITE_ACTIONS_MISS
-        OFPTFPT_APPLY_ACTIONS
-        OFPTFPT_APPLY_ACTIONS_MISS
+       - OFPTFPT_WRITE_ACTIONS
+       - OFPTFPT_WRITE_ACTIONS_MISS
+       - OFPTFPT_APPLY_ACTIONS
+       - OFPTFPT_APPLY_ACTIONS_MISS
     """
 
     action_ids = ListOfActions()
@@ -199,10 +198,10 @@ class ActionsProperty(Property):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            action_ids(:class:`~pyof.v0x04.common.ListOfActions`): List of
-                Action instances.
+            action_ids(|ListOfActions_v0x04|):
+                List of Action instances.
         """
         super().__init__(property_type)
         self.action_ids = action_ids if action_ids else ListOfActions()
@@ -213,12 +212,12 @@ class OxmProperty(Property):
     """"Match, Wildcard or Set-Field property.
 
     This class represents Property with the following types:
-        OFPTFPT_MATCH
-        OFPTFPT_WILDCARDS
-        OFPTFPT_WRITE_SETFIELD
-        OFPTFPT_WRITE_SETFIELD_MISS
-        OFPTFPT_APPLY_SETFIELD
-        OFPTFPT_APPLY_SETFIELD_MISS
+      -  OFPTFPT_MATCH
+      -  OFPTFPT_WILDCARDS
+      -  OFPTFPT_WRITE_SETFIELD
+      -  OFPTFPT_WRITE_SETFIELD_MISS
+      -  OFPTFPT_APPLY_SETFIELD
+      -  OFPTFPT_APPLY_SETFIELD_MISS
     """
 
     oxm_ids = ListOfOxmHeader()
@@ -228,9 +227,9 @@ class OxmProperty(Property):
         """Constructor of OxmProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            oxm_ids(~pyof.v0x04.common.flow_match.ListOfOxmHeader):
+            oxm_ids(|ListOfOxmHeader_v0x04|):
                 List of OxmHeader instances.
         """
         super().__init__(property_type)
@@ -248,8 +247,7 @@ class ListOfProperty(FixedTypeList):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (~pyof.v0x04.controller2switch.common.Property):
-                Instance or a list of instances.
+            items (|Property_v0x04|): Instance or a list of instances.
         """
         super().__init__(pyof_class=Property, items=items)
 
@@ -301,8 +299,7 @@ class TableFeatures(GenericStruct):
             config(int): Field reseved for future use.
             max_entries(int): Describe the maximum number of flow entries that
                can be inserted into that table.
-            properties(~pyof.v0x04.controller2switch.common.Property):
-               List of Property intances.
+            properties(Property_v0x04): List of Property intances.
         """
         super().__init__()
         self.table_id = table_id
