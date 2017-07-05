@@ -130,6 +130,18 @@ class GenericType:
         else:
             return self._value
 
+    def _work_or_pass(self, value, work_func):
+        if value is None:
+            return getattr(self, work_func)()
+        elif isinstance(value, type(self)):
+            return getattr(value, work_func)()
+        elif 'value' in dir(value):
+            # if it is enum or bitmask gets only the 'int' value
+            value = value.value
+
+        new_item = type(self)(value=value, enum_ref=self.enum_ref)
+        return getattr(new_item, work_func)()
+
     def pack(self, value=None):
         r"""Pack the value as a binary representation.
 
@@ -158,21 +170,16 @@ class GenericType:
             :exc:`~.exceptions.BadValueException`: If the value does not
                 fit the binary format.
         """
-        if isinstance(value, type(self)):
-            return value.pack()
+        return self._work_or_pass(value, '_pack')
 
-        if value is None:
-            value = self.value
-        elif 'value' in dir(value):
-            # if it is enum or bitmask gets only the 'int' value
-            value = value.value
-
+    def _pack(self):
         try:
-            return struct.pack(self._fmt, value)
+            return struct.pack(self._fmt, self.value)
         except struct.error:
-            msg = '{} could not pack {} = {}.'.format(type(self).__name__,
-                                                      type(value).__name__,
-                                                      value)
+            msg = '{} could not pack {} = {}.'.format(
+                type(self).__name__,
+                type(self.value).__name__,
+                self.value)
             raise PackException(msg)
 
     def unpack(self, buff, offset=0):
@@ -197,13 +204,16 @@ class GenericType:
                                                                  buff, offset)
             raise UnpackException(msg)
 
+    def _get_size(self):
+        return struct.calcsize(self._fmt)
+
     def get_size(self, value=None):
         """Return the size in bytes of this type.
 
         Returns:
             int: Size in bytes.
         """
-        return struct.calcsize(self._fmt)
+        return self._work_or_pass(value, '_get_size')
 
     def is_valid(self):
         """Check whether the value fits the binary format.
@@ -588,6 +598,20 @@ class GenericStruct(object, metaclass=MetaStruct):
                 raise UnpackException(msg)
         return size
 
+    def _work_or_pass(self, value, work_func):
+        if value is None:
+            return getattr(self, work_func)()
+        elif isinstance(value, type(self)):
+            return getattr(value, work_func)()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+
+    def _get_size(self):
+        return sum(cls_val.get_size(obj_val)
+                   for obj_val, cls_val in self._get_attributes())
+
     def get_size(self, value=None):
         """Calculate the total struct size in bytes.
 
@@ -604,15 +628,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             Exception: If the struct is not valid.
         """
-        if value is None:
-            return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
-                       self._get_attributes())
-        elif isinstance(value, type(self)):
-            return value.get_size()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        return self._work_or_pass(value, '_get_size')
 
     def pack(self, value=None):
         """Pack the struct in a binary representation.
@@ -627,23 +643,19 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             :exc:`~.exceptions.ValidationError`: If validation fails.
         """
-        if value is None:
-            if not self.is_valid():
-                error_msg = "Error on validation prior to pack() on class "
-                error_msg += "{}.".format(type(self).__name__)
-                raise ValidationError(error_msg)
-            else:
-                message = b''
-                # pylint: disable=no-member
-                for instance_attr, class_attr in self._get_attributes():
-                    message += class_attr.pack(instance_attr)
-                return message
-        elif isinstance(value, type(self)):
-            return value.pack()
+        return self._work_or_pass(value, '_pack')
+
+    def _pack(self):
+        if not self.is_valid():
+            error_msg = "Error on validation prior to pack() on class "
+            error_msg += "{}.".format(type(self).__name__)
+            raise ValidationError(error_msg)
         else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+            message = b''
+            # pylint: disable=no-member
+            for instance_attr, class_attr in self._get_attributes():
+                message += class_attr.pack(instance_attr)
+            return message
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -719,34 +731,9 @@ class GenericMessage(GenericStruct):
         # pylint: disable=unreachable
         return super().is_valid() and self._validate_message_length()
 
-    def pack(self, value=None):
-        """Pack the message into a binary data.
-
-        One of the basic operations on a Message is the pack operation. During
-        the packing process, we convert all message attributes to binary
-        format.
-
-        Since that this is usually used before sending the message to a switch,
-        here we also call :meth:`update_header_length`.
-
-        .. seealso:: This method call its parent's :meth:`GenericStruct.pack`
-            after :meth:`update_header_length`.
-
-        Returns:
-            bytes: A binary data thats represents the Message.
-
-        Raises:
-            Exception: If there are validation errors.
-        """
-        if value is None:
-            self.update_header_length()
-            return super().pack()
-        elif isinstance(value, type(self)):
-            return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+    def _pack(self):
+        self.update_header_length()
+        return super()._pack()
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

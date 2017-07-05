@@ -34,17 +34,7 @@ class Pad(GenericType):
     def __str__(self):
         return '0' * self._length
 
-    def get_size(self, value=None):
-        """Return the type size in bytes.
-
-        Args:
-            value (int): In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: Size in bytes.
-        """
+    def _get_size(self):
         return self._length
 
     def unpack(self, buff, offset=0):
@@ -59,17 +49,7 @@ class Pad(GenericType):
         """
         pass
 
-    def pack(self, value=None):
-        """Pack the object.
-
-        Args:
-            value (int): In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            bytes: the byte 0 (zero) *length* times.
-        """
+    def _pack(self):
         return b'\x00' * self._length
 
 
@@ -134,20 +114,9 @@ class DPID(GenericType):
         """
         return self._value
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-        if value is None:
-            value = self._value
-        return struct.pack('!8B', *[int(v, 16) for v in value.split(':')])
+    def _pack(self):
+        return struct.pack('!8B', *[int(v, 16)
+                                    for v in self.value.split(':')])
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -185,28 +154,9 @@ class Char(GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        try:
-            if value is None:
-                value = self.value
-            packed = struct.pack(self._fmt, bytes(value, 'ascii'))
-            return packed[:-1] + b'\0'  # null-terminated
-        except struct.error as err:
-            msg = "Char Pack error. "
-            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
-                                                         err)
-            raise exceptions.PackException(msg)
+    def _pack(self):
+        packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
+        return packed[:-1] + b'\0'  # null-terminated
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -251,29 +201,8 @@ class IPAddress(GenericType):
         super().__init__(address)
         self.netmask = int(netmask)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        If the value is None the self._value will be used to pack.
-
-        Args:
-            value (str): IP Address with ipv4 format.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
-        if value.find('/') >= 0:
-            value = value.split('/')[0]
-
+    def _pack(self):
+        value = self._value
         try:
             value = value.split('.')
             return struct.pack('!4B', *[int(x) for x in value])
@@ -302,17 +231,7 @@ class IPAddress(GenericType):
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
 
-    def get_size(self, value=None):
-        """Return the ip address size in bytes.
-
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
+    def _get_size(self):
         return 4
 
 
@@ -326,30 +245,12 @@ class HWAddress(GenericType):
             hw_address (bytes): Hardware address. Defaults to
                 '00:00:00:00:00:00'.
         """
+        if hw_address == 0:
+            hw_address = '00:00:00:00:00:00'
         super().__init__(hw_address)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        If the passed value (or the self._value) is zero (int), then the pack
-        will assume that the value to be packed is '00:00:00:00:00:00'.
-
-        Returns
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
-        if value == 0:
-            value = '00:00:00:00:00:00'
-
-        value = value.split(':')
+    def _pack(self):
+        value = self._value.split(':')
 
         try:
             return struct.pack('!6B', *[int(x, 16) for x in value])
@@ -383,17 +284,7 @@ class HWAddress(GenericType):
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
 
-    def get_size(self, value=None):
-        """Return the address size in bytes.
-
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
+    def _get_size(self):
         return 6
 
     def is_broadcast(self):
@@ -423,29 +314,10 @@ class BinaryData(GenericType):
         """
         if not isinstance(value, bytes):
             raise ValueError('BinaryData must contain bytes.')
-        super().__init__(value)
+        super().__init__(value, enum_ref=enum_ref)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
-        if value:
-            if isinstance(value, bytes):
-                return value
-            raise ValueError('BinaryData must contain bytes.')
-
-        return b''
+    def _pack(self):
+        return self._value
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -459,23 +331,8 @@ class BinaryData(GenericType):
         """
         self._value = buff[offset:]
 
-    def get_size(self, value=None):
-        """Return the size in bytes.
-
-        Args:
-            value (bytes): In structs, the user can assign other value instead
-                of this class' instance. Here, in such cases, ``self`` is a
-                class attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
-        if value is None:
-            return len(self._value)
-        elif hasattr(value, 'get_size'):
-            return value.get_size()
-
-        return len(value)
+    def _get_size(self):
+        return len(self._value)
 
 
 class TypeList(list, GenericStruct):
@@ -506,26 +363,11 @@ class TypeList(list, GenericStruct):
         for item in items:
             self.append(item)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self
-        else:
-            container = type(self)(items=None)
-            container.extend(value)
-            value = container
-
+    def _pack(self):
         bin_message = b''
         try:
-            for item in value:
-                bin_message += item.pack()
+            for item in self:
+                bin_message += item._pack()
             return bin_message
         except exceptions.PackException as err:
             msg = "{} pack error: {}".format(type(self).__name__, err)
@@ -552,30 +394,17 @@ class TypeList(list, GenericStruct):
             self.append(item)
             begin += item.get_size()
 
-    def get_size(self, value=None):
-        """Return the size in bytes.
+    def _get_size(self):
+        if not self:
+            # If this is a empty list, then returns zero
+            return 0
+        elif issubclass(type(self[0]), GenericType):
+            # If the type of the elements is GenericType, then returns the
+            # length of the list multiplied by the size of the GenericType.
+            return len(self) * self[0].get_size()
 
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The size in bytes.
-        """
-        if value is None:
-            if not self:
-                # If this is a empty list, then returns zero
-                return 0
-            elif issubclass(type(self[0]), GenericType):
-                # If the type of the elements is GenericType, then returns the
-                # length of the list multiplied by the size of the GenericType.
-                return len(self) * self[0].get_size()
-
-            # Otherwise iter over the list accumulating the sizes.
-            return sum(item.get_size() for item in self)
-
-        return type(self)(value).get_size()
+        # Otherwise iter over the list accumulating the sizes.
+        return sum(item.get_size() for item in self)
 
     def __str__(self):
         """Human-readable object representantion."""
