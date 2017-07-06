@@ -134,7 +134,7 @@ class DPID(GenericType):
         begin = offset
         hexas = []
         while begin < offset + 8:
-            number = struct.unpack("!B", buff[begin:begin+1])[0]
+            number = struct.unpack("!B", buff[begin:begin + 1])[0]
             hexas.append("%.2x" % number)
             begin += 1
         self._value = ':'.join(hexas)
@@ -229,7 +229,7 @@ class IPAddress(GenericType):
             Exception: If there is a struct unpacking error.
         """
         try:
-            unpacked_data = struct.unpack('!4B', buff[offset:offset+4])
+            unpacked_data = struct.unpack('!4B', buff[offset:offset + 4])
             self._value = '.'.join([str(x) for x in unpacked_data])
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
@@ -280,7 +280,7 @@ class HWAddress(GenericType):
             return "{0:0{1}x}".format(n, 2)
 
         try:
-            unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+            unpacked_data = struct.unpack('!6B', buff[offset:offset + 6])
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
 
