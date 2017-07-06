@@ -31,7 +31,7 @@ class PortMod(GenericMessage):
 
     def __init__(self, xid=None, port_no=None, hw_addr=None, config=None,
                  mask=None, advertise=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): OpenFlow xid to the header.

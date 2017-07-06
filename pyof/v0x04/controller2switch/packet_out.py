@@ -24,7 +24,6 @@ class PacketOut(GenericMessage):
     #: ID assigned by datapath (OFP_NO_BUFFER if none).
     buffer_id = UBInt32()
     #: Packet’s input port or OFPP_CONTROLLER.
-    #: TODO: This field have a enum_ref ?
     in_port = UBInt32(enum_ref=PortNo)
     #: Size of action array in bytes.
     actions_len = UBInt16()
@@ -38,7 +37,7 @@ class PacketOut(GenericMessage):
 
     def __init__(self, xid=None, buffer_id=None, in_port=None, actions=None,
                  data=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid of the message header.
@@ -47,7 +46,8 @@ class PacketOut(GenericMessage):
                 Packet's input port (:attr:`Port.OFPP_NONE` if none).
                 Virtual ports OFPP_IN_PORT, OFPP_TABLE, OFPP_NORMAL,
                 OFPP_FLOOD, and OFPP_ALL cannot be used as input port.
-            actions (ListOfActions): Actions (class ActionHeader).
+            actions (:class:`~pyof.v0x04.common.action.ListOfActions`):
+                List of Action instances.
             data (bytes): Packet data. The length is inferred from the length
                 field in the header. (Only meaningful if ``buffer_id`` == -1).
         """

@@ -19,7 +19,7 @@ class StatsReply(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, body_type=None, flags=None, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             body_type (StatsTypes): One of the OFPST_* constants.
@@ -38,7 +38,7 @@ class StatsReply(GenericMessage):
         StatsReply object, then will return this struct as a binary data.
 
         Returns:
-            stats_reply_packed (bytes): Binary data with StatsReply packed.
+            bytes: Binary data with StatsReply packed.
         """
         buff = self.body
         if not value:

@@ -7,11 +7,12 @@ from pyof.foundation.basic_types import (
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.controller2switch.common import Bucket
 
-__all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group')
+__all__ = ('GroupMod', 'GroupModCommand', 'GroupType', 'Group',
+           'ListOfBuckets')
 
 
 class Group(IntEnum):
-    """Group numbering. Groups can use any number up to OFPG_MAX."""
+    """Group numbering. Groups can use any number up to attr:`OFPG_MAX`."""
 
     #: Last usable group number.
     OFPG_MAX = 0xffffff00
@@ -54,7 +55,7 @@ class ListOfBuckets(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             items (Bucket): Instance or a list of instances.

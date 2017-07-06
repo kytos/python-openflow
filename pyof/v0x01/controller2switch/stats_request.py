@@ -25,7 +25,7 @@ class StatsRequest(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, body_type=None, flags=0, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             body_type (StatsTypes): One of the OFPST_* constants.

@@ -389,3 +389,47 @@ autoclass_content = 'both'
 # Order methods before attributes/properties on a class
 autodoc_member_order = 'groupwise'
 todo_include_todos = True
+
+rst_epilog = """
+.. |PacketInReason_v0x04| replace::
+   :class:`~pyof.v0x04.asynchronous.packet_in.PacketInReason`
+
+.. |PortReason_v0x04| replace::
+   :class:`~pyof.v0x04.asynchronous.port_status.PortReason`
+
+.. |FlowRemoved_v0x04| replace::
+   :class:`~pyof.v0x04.asynchronous.flow_removed.FlowRemoved`
+
+.. |TableFeaturePropType_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.common.TableFeaturePropType`
+
+.. |ListOfInstruction_v0x04| replace::
+   :class:`~pyof.v0x04.common.flow_instructions.ListOfInstruction`
+
+.. |GroupType_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.group_mod.GroupType`
+
+.. |ListOfBuckets_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.group_mod.ListOfBuckets`
+
+.. |MeterFlags_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.meter_mod.MeterFlags`
+
+.. |Meter_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.meter_mod.Meter`
+
+.. |MeterBandType_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.meter_mod.MeterBandType`
+
+.. |BandStats_v0x04| replace::
+   :class:`~.v0x04.controller2switch.multipart_reply.BandStats`
+
+.. |ListOfActions_v0x04| replace::
+   :class:`~pyof.v0x04.common.action.ListOfActions`
+
+.. |ListOfOxmHeader_v0x04| replace::
+   :class:`~pyof.v0x04.common.flow_match.ListOfOxmHeader`
+
+.. |Property_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.common.Property`
+"""

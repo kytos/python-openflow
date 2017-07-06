@@ -49,7 +49,8 @@ def new_message_from_message_type(message_type):
     """Given an OpenFlow Message Type, return an empty message of that type.
 
     Args:
-        messageType (:class:~.common.header.Type): Python-openflow message.
+        messageType (:class:`~pyof.v0x04.common.header.Type`):
+            Python-openflow message.
 
     Returns:
         Empty OpenFlow message of the requested message type.
@@ -134,7 +135,8 @@ def new_message_from_header(header):
     """Given an OF Header, return an empty message of header's message_type.
 
     Args:
-        header (~pyof.v0x04.common.header.Header): Unpacked OpenFlow Header.
+        header (:class:`~pyof.v0x04.common.header.Header`):
+            Unpacked OpenFlow Header.
 
     Returns:
         Empty OpenFlow message of the same type of message_type attribute from

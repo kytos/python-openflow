@@ -15,7 +15,7 @@ class SetConfig(SwitchConfig):
     """Set config message."""
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to be used on the message header.
