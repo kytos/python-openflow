@@ -119,7 +119,7 @@ class GenericType:
     def value(self):
         """Return this type's value.
 
-        The value of an enum, bitmask, etc.
+        Returns: The value of an enum, bitmask, etc.
         """
         if self.isenum():
             if isinstance(self._value, self.enum_ref):
@@ -347,14 +347,14 @@ class MetaStruct(type):
                 (e.g.: pyof.v0x01.common.header)
 
         Returns:
-            str: The module version, on the format 'v0x0?' if any. Or None
-                  if there isn't a version on the fullname.
+            str: openflow version.
+                 The openflow version, on the format 'v0x0?' if any. Or None
+                 if there isn't a version on the fullname.
         """
         ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
         matched = ver_module_re.match(module_fullname)
         if matched:
             version = matched.group(2)
-            # module = matched.group(3)
             return version
         return None
 
@@ -386,7 +386,7 @@ class MetaStruct(type):
 
     @staticmethod
     def get_pyof_obj_new_version(name, obj, new_version):
-        """Return a class atrribute on a different pyof version.
+        r"""Return a class attribute on a different pyof version.
 
         This method receives the name of a class attribute, the class attribute
         itself (object) and an openflow version.
@@ -399,14 +399,19 @@ class MetaStruct(type):
         an instance of the new version of the 'obj'.
 
         Example:
-            >> from pyof.v0x01.common.header import Header
-            >> name = 'header'
-            >> obj = Header()
-            >> obj
-            <pyof.v0x01.common.header.Header at 0x...>
-            >> new_version = 'v0x02'
-            >> MetaStruct.get_pyof_new_version(name, obj, new_version)
-            ('header', <pyof.v0x02.common.header.Header at 0x...)
+
+        >>> from pyof.foundation.base import MetaStruct as ms
+        >>> from pyof.v0x01.common.header import Header
+        >>> name = 'header'
+        >>> obj = Header()
+        >>> new_version = 'v0x04'
+        >>> header, obj2 = ms.get_pyof_obj_new_version(name, obj, new_version)
+        >>> header
+        'header'
+        >>> obj.version
+        UBInt8(1)
+        >>> obj2.version
+        UBInt8(4)
 
         Args:
             name (str): the name of the class attribute being handled.
@@ -415,13 +420,14 @@ class MetaStruct(type):
                 'obj'.
 
         Return:
-            (str, obj): A tuple in which the first item is the name of the
-                class attribute (the same that was passed), and the second item
-                is a instance of the passed class attribute. If the class
-                attribute is not a pyof versioned attribute, then the same
-                passed object is returned without any changes. Also, if the obj
-                is a pyof versioned attribute, but it is already on the right
-                version (same as new_version), then the passed obj is return.
+            (str, obj): Tuple with class name and object instance.
+                A tuple in which the first item is the name of the class
+                attribute (the same that was passed), and the second item is a
+                instance of the passed class attribute. If the class attribute
+                is not a pyof versioned attribute, then the same passed object
+                is returned without any changes. Also, if the obj is a pyof
+                versioned attribute, but it is already on the right version
+                (same as new_version), then the passed obj is return.
         """
         if new_version is None:
             return (name, obj)
@@ -469,6 +475,9 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Args:
             other (GenericStruct): The struct to be compared with.
+
+        Returns:
+            bool: Returns the result of comparation.
         """
         return self.pack() == other.pack()
 
@@ -488,9 +497,8 @@ class GenericStruct(object, metaclass=MetaStruct):
         To be a kytos attribute the item must be an instance of either
         GenericType or GenericStruct.
 
-        returns:
-            True: if the obj is a kytos attribute
-            False: if the obj is not a kytos attribute
+        Returns:
+            bool: Returns TRUE if the obj is a kytos attribute, otherwise False
         """
         return isinstance(obj, (GenericType, GenericStruct))
 

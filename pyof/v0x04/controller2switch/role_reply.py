@@ -17,11 +17,12 @@ class RoleReply(RoleBaseMessage):
     """RoleReply Message."""
 
     def __init__(self, xid=None, role=None, generation_id=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): OpenFlow xid to the header.
-            role (:class:`~.controller2switch.common.ControllerRole`): .
+            role (:class:`~.controller2switch.common.ControllerRole`):
+                Is the new role that the controller wants to assume.
             generation_id (int): Master Election Generation Id.
         """
         super().__init__(xid, role, generation_id)

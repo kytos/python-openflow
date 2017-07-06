@@ -148,8 +148,11 @@ class Match(GenericStruct):
         Keep buff and offset just for compability with other unpack methods.
 
         Args:
-            buff: Buffer where data is located.
-            offset (int): Where data stream begins.
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
         super().unpack(buff, offset)
         self.wildcards = UBInt32(value=FlowWildCards.OFPFW_ALL,

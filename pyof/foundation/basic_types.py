@@ -118,7 +118,7 @@ class DPID(GenericType):
         """Create an instance and optionally set its dpid value.
 
         Args:
-            dpid (str): E.g. 00:00:00:00:00:00:00:01.
+            dpid (str): String with DPID value(e.g. `00:00:00:00:00:00:00:01`).
         """
         super().__init__(value=dpid)
 
@@ -127,7 +127,11 @@ class DPID(GenericType):
 
     @property
     def value(self):
-        """Return dpid value."""
+        """Return dpid value.
+
+        Returns:
+            str: DataPath ID stored by DPID class.
+        """
         return self._value
 
     def pack(self, value=None):
@@ -237,8 +241,7 @@ class IPAddress(GenericType):
         """The constructor takes the parameters below.
 
         Args:
-            address (str): IP Address using ipv4.
-                Defaults to '0.0.0.0/32'
+            address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
         """
         if address.find('/') >= 0:
             address, netmask = address.split('/')
@@ -256,7 +259,7 @@ class IPAddress(GenericType):
         Args:
             value (str): IP Address with ipv4 format.
 
-        Returns
+        Returns:
             bytes: The binary representation.
 
         Raises:

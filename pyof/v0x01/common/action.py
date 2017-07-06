@@ -12,7 +12,8 @@ from pyof.foundation.constants import UBINT16_MAX_VALUE
 
 __all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
            'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr', 'ActionNWAddr',
-           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader')
+           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader',
+           'ListOfActions')
 
 # Enums
 
@@ -56,9 +57,9 @@ class ActionHeader(GenericStruct):
 
     action_type = UBInt16(enum_ref=ActionType)
     length = UBInt16()
-    #: Pad for 64-bit alignment.
-    #: This attribute will not be implemented since not all subclasses from
-    #: this class will hold it on the same place and with the same size.
+    # Pad for 64-bit alignment.
+    # This attribute will not be implemented since not all subclasses from
+    # this class will hold it on the same place and with the same size.
     # pad = Pad(4)
 
     _allowed_types = ()
@@ -220,7 +221,7 @@ class ActionDLAddr(ActionHeader):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (~pyof.v0x01.common.action.ActionType):
+            action_type (:class:`~pyof.v0x01.common.action.ActionType`):
                 :attr:`~ActionType.OFPAT_SET_DL_SRC` or
                 :attr:`~ActionType.OFPAT_SET_DL_DST`.
             dl_addr (:class:`~.HWAddress`): Ethernet address.
@@ -241,7 +242,7 @@ class ActionNWAddr(ActionHeader):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (~pyof.v0x01.common.action.ActionType):
+            action_type (:class:`~pyof.v0x01.common.action.ActionType`):
                 :attr:`~ActionType.OFPAT_SET_NW_SRC` or
                 :attr:`~ActionType.OFPAT_SET_NW_DST`.
             nw_addr (int): IP Address.
@@ -267,7 +268,7 @@ class ActionNWTos(ActionHeader):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (~pyof.v0x01.common.action.ActionType):
+            action_type (:class:`~pyof.v0x01.common.action.ActionType`):
                 :attr:`~ActionType.OFPAT_SET_NW_SRC` or
                 :attr:`~ActionType.OFPAT_SET_NW_DST`.
             nw_tos (int): IP ToS (DSCP field, 6 bits).
@@ -289,7 +290,7 @@ class ActionTPPort(ActionHeader):
         """The following constructor parameters are optional.
 
         Args:
-            action_type (~pyof.v0x01.common.action.ActionType):
+            action_type (:class:`~pyof.v0x01.common.action.ActionType`):
                 :attr:`~ActionType.OFPAT_SET_TP_SRC` or
                 :attr:`~ActionType.OFPAT_SET_TP_DST`.
             tp_port (int): TCP/UDP/other port to set.
@@ -327,9 +328,10 @@ class ListOfActions(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (ActionHeader): Instance or a list of instances.
+            items (:class:`~pyof.v0x01.common.action.ActionHeader`):
+                Instance or a list of instances.
         """
         super().__init__(pyof_class=ActionHeader, items=items)

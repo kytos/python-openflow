@@ -17,8 +17,7 @@ from pyof.v0x04.controller2switch.common import (
 __all__ = ('MultipartRequest', 'MultipartRequestFlags',
            'AggregateStatsRequest', 'FlowStatsRequest',
            'PortStatsRequest', 'QueueStatsRequest',
-           'GroupStatsRequest', 'MeterMultipartRequest',
-           'TableFeatures')
+           'GroupStatsRequest', 'MeterMultipartRequest')
 
 # Enum
 
@@ -52,7 +51,7 @@ class MultipartRequest(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to the header.
@@ -72,9 +71,11 @@ class MultipartRequest(GenericMessage):
         the MultipartRequest object, then will return this struct as a
         binary data.
 
+        Args:
+            value (:class:`~MultipartRequest`): Object to be packed.
+
         Returns:
-            multiparty_packed (bytes): Binary data with MultipartRequest
-                                       packed.
+            bytes: Binary data with MultipartRequest packed.
         """
         buff = self.body
         if not value:
@@ -172,7 +173,7 @@ class AggregateStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): ID of table to read (from ofp_table_stats)
@@ -211,7 +212,7 @@ class FlowStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): ID of table to read (from pyof_table_stats)
@@ -220,7 +221,8 @@ class FlowStatsRequest(GenericStruct):
                 Require matching entries to include this as an output port.
                 A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
             out_group: Require matching entries to include this as an output
-                group. A value of OFPG_ANY indicates no restriction.
+                group. A value of :attr:`Group.OFPG_ANY` indicates no
+                restriction.
             cookie: Requires matching entries to contain this cookie value
             cookie_mask: Mask used to restrict the cookie bits that must match.
                 A value of 0 indicates no restriction.
@@ -243,13 +245,13 @@ class PortStatsRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, port_no=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
-                OFPST_PORT message must request statistics either for a single
-                port (specified in ``port_no``) or for all ports
-                (if ``port_no`` == :attr:`.Port.OFPP_NONE`).
+                :attr:`StatsTypes.OFPST_PORT` message must request statistics
+                either for a single port (specified in ``port_no``) or for all
+                ports (if ``port_no`` == :attr:`.Port.OFPP_NONE`).
         """
         super().__init__()
         self.port_no = port_no
@@ -262,12 +264,12 @@ class QueueStatsRequest(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
                 All ports if :attr:`.Port.OFPP_ALL`.
-            queue_id (int): All queues if OFPQ_ALL.
+            queue_id (int): All queues if OFPQ_ALL (``0xfffffff``).
         """
         super().__init__()
         self.port_no = port_no

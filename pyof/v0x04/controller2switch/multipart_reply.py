@@ -70,7 +70,7 @@ class MultipartReply(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to the header.
@@ -184,7 +184,7 @@ class AggregateStatsReply(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             packet_count (int): Number of packets in flows
@@ -258,7 +258,7 @@ class FlowStats(GenericStruct):
                  duration_nsec=None, priority=None, idle_timeout=None,
                  hard_timeout=None, flags=None, cookie=None, packet_count=None,
                  byte_count=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length (int): Length of this entry.
@@ -379,7 +379,7 @@ class QueueStats(GenericStruct):
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None, duration_sec=None,
                  duration_nsec=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -417,10 +417,10 @@ class GroupDescStats(GenericStruct):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            length: Length of this entry.
-            group_type: One of OFPGT_*.
-            group_id: Group identifier.
-            buckets: List of buckets in group.
+            length (int): Length of this entry.
+            group_type (|GroupType_v0x04|): One of OFPGT_*.
+            group_id (int): Group identifier.
+            buckets (|ListOfBuckets_v0x04|): List of buckets in group.
         """
         super().__init__()
         self.length = length
@@ -487,7 +487,7 @@ class GroupStats(GenericStruct):
     def __init__(self, length=None, group_id=None, ref_count=None,
                  packet_count=None, byte_count=None, duration_sec=None,
                  duration_nsec=None, bucket_stats=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             length: Length of this entry
@@ -531,11 +531,13 @@ class MeterConfig(GenericStruct):
         """The Constructor of MeterConfig receives the parameters below.
 
         Args:
-            flags(MeterFlags): Meter configuration flags.The default value is
-                               MeterFlags.OFPMF_STATS
-            meter_id(Meter):   Meter Indentify.The value Meter.OFPM_ALL is used
-                               to refer to all Meters on the switch.
-            bands(list):       List of MeterBandHeader instances.
+            flags (|MeterFlags_v0x04|):
+                Meter configuration flags.The default value is
+                MeterFlags.OFPMF_STATS
+            meter_id (|Meter_v0x04|):
+                Meter Indentify.The value Meter.OFPM_ALL is used to
+                refer to all Meters on the switch.
+            bands(list): List of MeterBandHeader instances.
         """
         super().__init__()
         self.flags = flags
@@ -558,11 +560,12 @@ class MeterFeatures(GenericStruct):
         """The Constructor of MeterFeatures receives the parameters below.
 
         Args:
-            max_meter(int):           Maximum number of meters.
-            band_types(Meter):        Bitmaps of OFPMBT_* values supported.
-            capabilities(MeterFlags): Bitmaps of "ofp_meter_flags".
-            max_bands(int):           Maximum bands per meters
-            max_color(int):           Maximum color value
+            max_meter(int): Maximum number of meters.
+            band_types (|MeterBandType_v0x04|):
+                Bitmaps of OFPMBT_* values supported.
+            capabilities (|MeterFlags_v0x04|): Bitmaps of "ofp_meter_flags".
+            max_bands(int): Maximum bands per meters
+            max_color(int): Maximum color value
         """
         super().__init__()
         self.max_meter = max_meter
@@ -582,7 +585,7 @@ class BandStats(GenericStruct):
     byte_band_count = UBInt64()
 
     def __init__(self, packet_band_count=None, byte_band_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             packet_band_count(int): Number of packets in band.
@@ -600,10 +603,10 @@ class ListOfBandStats(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (BandStats): Instance or a list of instances.
+            items (|BandStats_v0x04|): Instance or a list of instances.
         """
         super().__init__(pyof_class=BandStats, items=items)
 
@@ -627,10 +630,10 @@ class MeterStats(GenericStruct):
     def __init__(self, meter_id=None, flow_count=None,
                  packet_in_count=None, byte_in_count=None, duration_sec=None,
                  duration_nsec=None, band_stats=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
-            meter_id(Meter):      Meter instance.
+            meter_id (|Meter_v0x04|):  Meter instance.
             flow_count(int):      Number of flows bound to meter.
             packet_in_count(int): Number of packets in input.
             byte_in_count(int):   Number of bytes in input.
@@ -667,9 +670,11 @@ class MeterStats(GenericStruct):
 
         This method will convert a binary data into a readable value according
         to the attribute format.
+
         Args:
             buff (bytes): Binary buffer.
             offset (int): Where to begin unpacking.
+
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
         """
@@ -693,7 +698,7 @@ class TableStats(GenericStruct):
     def __init__(self, table_id=None, name=None, max_entries=None,
                  active_count=None, lookup_count=None,
                  matched_count=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             table_id (int): Identifier of table.  Lower numbered tables are

@@ -71,7 +71,7 @@ class FlowMod(GenericMessage):
                  command=None, idle_timeout=None, hard_timeout=None,
                  priority=None, buffer_id=None, out_port=None, out_group=None,
                  flags=None, match=None):
-        """The constructor just assings parameters to object attributes.
+        """The constructor just assigns parameters to object attributes.
 
         Args:
             xid (int): xid to be used on the message header.
