@@ -42,6 +42,7 @@ class Pad(GenericType):
 
         Do nothing, since the _length is already defined and it is just a Pad.
         Keep buff and offset just for compability with other unpack methods.
+        [this will check if bytes are 0 for validity in the future]
 
         Args:
             buff: Buffer where data is located.
@@ -355,6 +356,10 @@ class BinaryData(GenericType):
         Unpack the binary value *buff* and update this object attributes based
         on the results. Since the *buff* is binary data, no conversion is done.
 
+        All the data in the buffer from the offset forward will be used,
+        so the buffer must be truncated using the desired size before passing
+        it to BinaryData.
+
         Args:
             buff (bytes): Binary data package to be unpacked.
             offset (int): Where to begin unpacking.
@@ -406,9 +411,9 @@ class TypeList(GenericStruct, list):
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.
 
-        This unpack method considers that all elements have the same size.
+        This unpack method considers that all elements are of the same type.
         To use this class with a pyof_class that accepts elements with
-        different sizes, you must reimplement the unpack method.
+        different classes, you must reimplement the unpack method.
 
         Args:
             buff (bytes): The binary data to be unpacked.
@@ -568,6 +573,15 @@ class ConstantTypeList(TypeList):
 
 
 def get_custom_tlv_class(type_size=3, length_size=1):
+    """ Generate a CUstomTLV class
+
+    Create a CustomTLV class with the defined number of bytes for type and
+    length fields.
+
+    Args:
+        type_size (int): length in bytes for the type field of the TLV
+        length_size (int): length in bytes for the length field of the TLV
+    """
 
     size_classes = {1: UBInt8,
                     2: UBInt16,
@@ -578,6 +592,12 @@ def get_custom_tlv_class(type_size=3, length_size=1):
     custom_length = size_classes[length_size]
 
     class CustomTLV(GenericStruct):
+        """ a compact TLV class
+
+        Args:
+            tlv_type: type field of the TLV
+            tlv_value: length field of the TLV
+        """
         tlv_type = custom_type()
         tlv_length = custom_length()
         tlv_value = BinaryData()
@@ -597,6 +617,13 @@ def get_custom_tlv_class(type_size=3, length_size=1):
             return super()._pack()
 
         def unpack(self, buff, offset=0):
+            """Unpack the buffer into a custom TLV
+
+            Args:
+                buff (bytes): The binary data to be unpacked.
+                offset (int): If we need to shift the beginning of the data.
+            """
+
             begin = offset
             for name, value in list(self.get_class_attributes())[:-1]:
                 size = self._unpack_attribute(name, value, buff, begin)

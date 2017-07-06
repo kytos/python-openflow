@@ -185,6 +185,15 @@ class VlanId(IntEnum):
 # Classes
 
 class OxmType(GenericStruct):
+    """ Oxm TLV `type` metafield.
+
+    OxmType is defined by the combination of a OxmClass and a OxmField,
+
+    Args:
+        oxm_class (:class:`OxmClass`, int): The oxm TLV defined class.
+        oxm_field (:class:`OxmOfbMatchField`, Oxm*MatchField, int): the oxm
+        TLV defined field of the correspondent class
+    """
     oxm_class = UBInt16(enum_ref=OxmClass)
     oxm_field = UBInt8()
 
@@ -195,6 +204,15 @@ class OxmType(GenericStruct):
 
 
 class OxmTLV(GenericStruct):
+    """ Oxm (Openflow Extensible Match) TLV.
+
+    Args:
+        oxm_class (:class:`OxmClass`, int): The oxm TLV defined class.
+        oxm_field (:class:`OxmOfbMatchField`, Oxm*MatchField, int): the oxm
+            TLV defined field of the correspondent oxm_class.
+        oxm_hasmask (bool):
+        oxm_value (:class:`BinaryData`, bytes):
+    """
 
     oxm_class = UBInt16(enum_ref=OxmClass)
     oxm_field = UBInt8()
@@ -212,6 +230,12 @@ class OxmTLV(GenericStruct):
         self.tlv_class = CustomTLV_24_8
 
     def unpack(self, buff, offset=0):
+        """Unpack the buffer into a OxmTLV.
+
+        Args:
+            buff (bytes): The binary data to be unpacked.
+            offset (int): If we need to shift the beginning of the data.
+        """
         tlv = self.tlv_class()
         tlv.unpack(buff, offset)
         # print('tlv unpack values:')
