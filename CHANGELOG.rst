@@ -24,6 +24,29 @@ Security
 ========
 
 
+[2017.1] - "bethania" - 2017-07-06
+**********************************
+Added
+=====
+
+Changed
+=======
+- Documentation updated and improved.
+
+Deprecated
+==========
+
+Removed
+=======
+
+Fixed
+=====
+- Some bug fixes
+
+Security
+========
+
+
 [2017.1b3] - "bethania" beta3 - 2017-06-16
 ******************************************
 Added
