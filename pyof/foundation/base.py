@@ -139,7 +139,12 @@ class GenericType:
             # if it is enum or bitmask gets only the 'int' value
             value = value.value
 
-        new_item = type(self)(value=value, enum_ref=self.enum_ref)
+        try:
+            new_item = type(self)(value=value, enum_ref=self.enum_ref)
+        except:  # noqa - there is no generic Initialization Exception...
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
         return getattr(new_item, work_func)()
 
     def pack(self, value=None):
@@ -604,9 +609,13 @@ class GenericStruct(object, metaclass=MetaStruct):
         elif isinstance(value, type(self)):
             return getattr(value, work_func)()
         else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+            try:
+                new_item = type(self)(value)
+            except:  # noqa - there is no generic Initialization Exception...
+                msg = "{} is not an instance of {}".format(value,
+                                                           type(self).__name__)
+                raise PackException(msg)
+            return getattr(new_item, work_func)()
 
     def _get_size(self):
         return sum(cls_val.get_size(obj_val)
