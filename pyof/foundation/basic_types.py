@@ -353,7 +353,7 @@ class BinaryData(GenericType):
         return len(self._value)
 
 
-class TypeList(list, GenericStruct):
+class TypeList(GenericStruct, list):
     """Base class for lists that store objects of one single type."""
 
     def __init__(self, items):
