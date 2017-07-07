@@ -71,17 +71,9 @@ class PacketOut(GenericMessage):
         except ValidationError:
             return False
 
-    def pack(self, value=None):
-        """Update the action_len attribute and call super's pack."""
-        if value is None:
+    def _pack(self, value=None):
             self._update_actions_len()
-            return super().pack()
-        elif isinstance(value, type(self)):
-            return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+            return super()._pack()
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
