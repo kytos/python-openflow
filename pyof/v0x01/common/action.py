@@ -133,6 +133,25 @@ class ActionOutput(ActionHeader):
         self.max_length = max_length
 
 
+class ActionStripVlan(ActionHeader):
+    """Strips VLAN information from packets.
+
+    Action defined for switches to remove the 802.1q VLAN information from
+    packets.
+    """
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_STRIP_VLAN,
+
+    def __init__(self):
+        """Construct the ActionHeader with the appropriate ActionType.
+
+        No parameters need to be specified.
+        """
+        super().__init__(action_type=ActionType.OFPAT_STRIP_VLAN, length=8)
+
+
 class ActionEnqueue(ActionHeader):
     """Send packets to a queue's port.
 
