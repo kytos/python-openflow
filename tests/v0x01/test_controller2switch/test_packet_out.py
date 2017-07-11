@@ -45,14 +45,14 @@ class TestPacketOut(TestStruct):
 
     def test_valid_physical_in_ports(self):
         """Physical port limits from 1.0.0 spec."""
-        max_valid = int(Port.OFPP_MAX.value) - 1
+        max_valid = int(Port.OFPP_MAX.value)
         for in_port in (1, max_valid):
             self.message.in_port = in_port
             self.assertTrue(self.message.is_valid())
 
     def test_invalid_physical_in_port(self):
         """Physical port limits from 1.0.0 spec."""
-        max_valid = int(Port.OFPP_MAX.value) - 1
+        max_valid = int(Port.OFPP_MAX.value)
         for in_port in (-1, 0, max_valid + 1, max_valid + 2):
             self.message.in_port = in_port
             self.assertFalse(self.message.is_valid())
