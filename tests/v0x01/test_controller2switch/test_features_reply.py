@@ -2,10 +2,10 @@
 from pyof.foundation.basic_types import DPID, HWAddress
 from pyof.v0x01.common.phy_port import PhyPort, PortConfig, PortState
 from pyof.v0x01.controller2switch.features_reply import FeaturesReply
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestFeaturesReply(TestStruct):
+class TestFeaturesReply(TestMsgDumpFile):
     """Feature reply message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_features_reply.dat'
