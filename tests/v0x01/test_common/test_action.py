@@ -44,7 +44,7 @@ class TestActionDLAddr(TestMsgDumpFile):
     """ActionDLAddr message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_dl_addr.dat'
-    obj = ActionDLAddr(dl_addr_type=ActionType.OFPAT_SET_DL_SRC,
+    obj = ActionDLAddr(action_type=ActionType.OFPAT_SET_DL_SRC,
                        dl_addr=[12, 12, 12, 12, 12, 12])
     min_size = 16
 
@@ -53,7 +53,7 @@ class TestActionNWAddr(TestMsgDumpFile):
     """ActionNWAddr message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_nw_addr.dat'
-    obj = ActionNWAddr(nw_addr_type=ActionType.OFPAT_SET_NW_SRC,
+    obj = ActionNWAddr(action_type=ActionType.OFPAT_SET_NW_SRC,
                        nw_addr=[12, 12, 12, 12, 12, 12])
     min_size = 8
 
@@ -62,7 +62,7 @@ class TestActionNWTos(TestMsgDumpFile):
     """ActionNWTos message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_nw_tos.dat'
-    obj = ActionNWTos(nw_tos_type=ActionType.OFPAT_SET_NW_SRC,
+    obj = ActionNWTos(action_type=ActionType.OFPAT_SET_NW_SRC,
                       nw_tos=123456)
     min_size = 8
 
@@ -71,7 +71,7 @@ class TestActionTPPort(TestMsgDumpFile):
     """ActionTPPort message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_tp_port.dat'
-    obj = ActionTPPort(tp_port_type=ActionType.OFPAT_SET_TP_SRC,
+    obj = ActionTPPort(action_type=ActionType.OFPAT_SET_TP_SRC,
                        tp_port=8888)
     min_size = 8
 
