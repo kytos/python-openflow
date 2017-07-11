@@ -20,7 +20,7 @@ class TestErrorMessage_dump(TestMsgDump):
     """Test the ErrorMsg class."""
 
     # dump needs to be checked
-    dump = b'\x01\x01\x00\x1b\x00\x00\x00\x18\x00\x03\x00\x02FLOW'
+    dump = b'\x01\x01\x00\x10\x00\x00\x00\x18\x00\x03\x00\x02FLOW'
     obj = ErrorMsg(xid=24,
                    error_type=ErrorType.OFPET_FLOW_MOD_FAILED,
                    code=FlowModFailedCode.OFPFMFC_EPERM,
