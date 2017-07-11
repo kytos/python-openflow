@@ -8,4 +8,4 @@ class TestGetConfigRequest(TestMsgDumpFile):
 
     dumpfile = 'v0x01/ofpt_get_config_request.dat'
     obj = GetConfigRequest(xid=1)
-    min_size = 9
+    min_size = 8
