@@ -1,75 +1,28 @@
 """Testing Queue structure."""
-import unittest
-
 from pyof.v0x01.common import queue
+from tests.test_struct import TestStructDump
 
 
-class TestQueuePropHeader(unittest.TestCase):
+class TestQueuePropHeader(TestStructDump):
     """Test QueuePropHeader."""
 
-    def setUp(self):
-        """Basic setup for test."""
-        self.message = queue.QueuePropHeader()
-        self.message.queue_property = queue.QueueProperties.OFPQT_MIN_RATE
-        self.message.length = 12
-
-    def test_get_size(self):
-        """[Common/QueuePropHeader] - size 8."""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/QueuePropHeader] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/QueuePropHeader] - unpacking."""
-        pass
+    dump = b'\x00\x01\x00\x0c\x00\x00\x00\x00'  # needs to be checked
+    obj = queue.QueuePropHeader(
+        queue_property=queue.QueueProperties.OFPQT_MIN_RATE,
+        length=12)
 
 
-class TestPacketQueue(unittest.TestCase):
+class TestPacketQueue(TestStructDump):
     """TestPacketQueue."""
 
-    def setUp(self):
-        """Basic setup for test."""
-        self.message = queue.PacketQueue()
-        self.message.queue_id = 1
-        self.message.length = 8
-
-    def test_get_size(self):
-        """[Common/PacketQueue] - size 8."""
-        self.assertEqual(self.message.get_size(), 8)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/PacketQueue] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/PacketQueue] - unpacking."""
-        pass
+    dump = b'\x00\x00\x00\x01\x00\x08\x00\x00'  # needs to be checked
+    obj = queue.PacketQueue(queue_id=1,
+                            length=8)
 
 
-class TestQueuePropMinRate(unittest.TestCase):
+class TestQueuePropMinRate(TestStructDump):
     """Test QueuePropMinRate."""
 
-    def setUp(self):
-        """Basic setup for test."""
-        self.message = queue.QueuePropMinRate()
-        self.message.rate = 1000
-
-    def test_get_size(self):
-        """[Common/PropMinRate] - size 16."""
-        self.assertEqual(self.message.get_size(), 16)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Common/PropMinRate] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Common/PropMinRate] - unpacking."""
-        pass
+    dump = b'\x00\x01\x00\x10\x00\x00\x00\x00\x03\xe8\x00\x00'
+    dump += b'\x00\x00\x00\x00'  # needs to be checked
+    obj = queue.QueuePropMinRate(rate=1000)
