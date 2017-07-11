@@ -8,24 +8,9 @@ from tests.test_struct import TestStruct
 class TestFeaturesReply(TestStruct):
     """Feature reply message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_features_reply')
-        kwargs = _get_kwargs()
-        super().set_raw_dump_object(FeaturesReply, **kwargs)
-        super().set_minimum_size(32)
+    dumpfile = 'v0x01/ofpt_features_reply.dat'
 
-
-def _get_kwargs():
-    return {'xid': 2, 'datapath_id': DPID('00:00:00:00:00:00:00:01'),
-            'n_buffers': 256, 'n_tables': 254, 'capabilities': 0x000000c7,
-            'actions': 4095, 'ports': _get_ports()}
-
-
-def _get_ports():
-    return [
+    ports = [
         PhyPort(port_no=65534,
                 hw_addr=HWAddress('0e:d3:98:a5:30:47'),
                 name='s1',
@@ -52,5 +37,11 @@ def _get_ports():
                 curr=0x000000c0,
                 advertised=0,
                 supported=0,
-                peer=0)
-    ]
+                peer=0)]
+
+    obj = FeaturesReply(xid=2,
+                        datapath_id=DPID('00:00:00:00:00:00:00:01'),
+                        n_buffers=256, n_tables=254,
+                        capabilities=0x000000c7,
+                        actions=4095, ports=ports)
+    min_size = 32
