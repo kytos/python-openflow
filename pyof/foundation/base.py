@@ -130,6 +130,9 @@ class GenericType:
         else:
             return self._value
 
+    def _get_new_instance(self, value):
+        return type(self)(value)
+
     def _work_or_pass(self, value, work_func):
         if value is None:
             return getattr(self, work_func)()
@@ -140,7 +143,7 @@ class GenericType:
             value = value.value
 
         try:
-            new_item = type(self)(value=value)
+            new_item = self._get_new_instance(value)
             if hasattr(self, 'enum_ref'):
                 new_item.enum_ref = self.enum_ref
         except Exception as e:  # noqa - there is no generic Initialization Exception...

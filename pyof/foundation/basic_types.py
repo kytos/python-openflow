@@ -94,13 +94,13 @@ class DPID(GenericType):
 
     _fmt = "!8B"
 
-    def __init__(self, dpid=None):
+    def __init__(self, value=None):
         """Create an instance and optionally set its dpid value.
 
         Args:
             dpid (str): String with DPID value(e.g. `00:00:00:00:00:00:00:01`).
         """
-        super().__init__(value=dpid)
+        super().__init__(value=value)
 
     def __str__(self):
         return self._value
@@ -154,6 +154,9 @@ class Char(GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
+    def _get_new_instance(self, value):
+        return type(self)(value, length=self.length)
+
     def _pack(self):
         packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
         return packed[:-1] + b'\0'  # null-terminated
@@ -187,18 +190,18 @@ class IPAddress(GenericType):
     netmask = UBInt32()
     max_prefix = UBInt32(32)
 
-    def __init__(self, address="0.0.0.0/32"):
+    def __init__(self, value="0.0.0.0/32"):
         """The constructor takes the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
         """
-        if address.find('/') >= 0:
-            address, netmask = address.split('/')
+        if value.find('/') >= 0:
+            value, netmask = value.split('/')
         else:
             netmask = 32
 
-        super().__init__(address)
+        super().__init__(value)
         self.netmask = int(netmask)
 
     def _pack(self):
@@ -238,16 +241,16 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
+    def __init__(self, value='00:00:00:00:00:00'):  # noqa
         """The constructor takes the parameters below.
 
         Args:
-            hw_address (bytes): Hardware address. Defaults to
+            value (bytes): Hardware address. Defaults to
                 '00:00:00:00:00:00'.
         """
-        if hw_address == 0:
-            hw_address = '00:00:00:00:00:00'
-        super().__init__(hw_address)
+        if value == 0:
+            value = '00:00:00:00:00:00'
+        super().__init__(value)
 
     def _pack(self):
         value = self._value.split(':')
