@@ -83,8 +83,6 @@ class Linter(SimpleCommand):
         call(cmd, shell=True)
 
 
-requirements = [i.strip() for i in open("requirements.txt").readlines()]
-
 setup(name='python-openflow',
       version=__version__,
       description='Library to parse and generate OpenFlow messages',
@@ -94,7 +92,25 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      install_requires=requirements,
+      extras_require={
+          'docs': [
+              'Sphinx~=1.5.0',
+              'sphinx-autobuild',
+              'sphinx-rtd-theme',
+              'sphinx_bootstrap_theme~=0.4.0'
+          ],
+          'dev': [
+              'coverage',
+              'tox',
+              'pip-tools',
+              'Sphinx~=1.5.0',
+              'sphinx_bootstrap_theme~=0.4.0',
+              'pydocstyle~=1.1.1',
+              'pylama~=7.3.3',
+              'pylama_pylint~=3.0.1',
+              'radon~=1.5.0'
+          ],
+      },
       packages=find_packages(exclude=['tests']),
       cmdclass={
           'clean': Cleaner,
