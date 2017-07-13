@@ -5,7 +5,6 @@ from pyof.utils import unpack
 from tests.raw_dump import RawDump
 
 
-# to be removed and replace by TestMsgDumpFile
 class TestStruct(unittest.TestCase):
     """Run tests related to struct packing and unpacking.
 
