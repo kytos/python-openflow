@@ -10,8 +10,7 @@ class TestActionOutput(TestMsgDumpFile):
     """ActionOutput message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_output.dat'
-    obj = ActionOutput(port=Port.OFPP_CONTROLLER,
-                       max_length=8)
+    obj = ActionOutput(port=Port.OFPP_CONTROLLER, max_length=8)
     min_size = 8
 
 
@@ -19,8 +18,7 @@ class TestActionEnqueue(TestMsgDumpFile):
     """ActionEnqueue message tests (also those in :class:`.TestDump`)."""
 
     dumpfile = 'v0x01/ofpt_action_enqueue.dat'
-    obj = ActionEnqueue(port=Port.OFPP_CONTROLLER,
-                        queue_id=4)
+    obj = ActionEnqueue(port=Port.OFPP_CONTROLLER, queue_id=4)
     min_size = 16
 
 

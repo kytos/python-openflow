@@ -4,7 +4,7 @@ from pyof.v0x01.asynchronous.error_msg import (
 from tests.test_struct import TestMsgDump, TestMsgDumpFile
 
 
-class TestErrorMessage_fromfile(TestMsgDumpFile):
+class TestErrorMessageFromFile(TestMsgDumpFile):
     """Test the ErrorMsg class."""
 
     dumpfile = 'v0x01/ofpt_error_msg.dat'
@@ -15,7 +15,7 @@ class TestErrorMessage_fromfile(TestMsgDumpFile):
     min_size = 12
 
 
-class TestErrorMessage_dump(TestMsgDump):
+class TestErrorMessageDump(TestMsgDump):
     """Test the ErrorMsg class."""
 
     # dump needs to be checked

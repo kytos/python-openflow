@@ -24,7 +24,7 @@ class TestMatch(TestStructDump):
                 tp_dst=22)
 
 
-class TestMatch_2(TestStructDump):
+class TestMatch2(TestStructDump):
     """Test Match structure."""
 
     dump = b'\x00\x0f\xff\x0c\x00P\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'

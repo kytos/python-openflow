@@ -6,23 +6,23 @@ from pyof.foundation.basic_types import BinaryData
 from tests.test_struct import TestStructDump
 
 
-class TestUBInt8_(unittest.TestCase):
+class TestUBInt8(TestStructDump):
     """Test UBInt8."""
 
     dump = b'\xff'
-    obj = basic_types.UBInt32(2**8 - 1)
+    obj = basic_types.UBInt8(2**8 - 1)
     min_size = 1
 
 
-class TestUBInt16_(unittest.TestCase):
+class TestUBInt16(TestStructDump):
     """Test UBInt16."""
 
     dump = b'\xff\xff'
-    obj = basic_types.UBInt32(2**16 - 1)
+    obj = basic_types.UBInt16(2**16 - 1)
     min_size = 2
 
 
-class TestUBInt32_(unittest.TestCase):
+class TestUBInt32(TestStructDump):
     """Test UBInt32."""
 
     dump = b'\xff\xff\xff\xff'
@@ -30,28 +30,28 @@ class TestUBInt32_(unittest.TestCase):
     min_size = 4
 
 
-class TestChar_3(unittest.TestCase):
+class TestChar3(TestStructDump):
     """Test Char with length 3."""
 
     dump = b'fo\x00'
     obj = basic_types.Char('foo', length=3)
 
 
-class TestChar_5(unittest.TestCase):
+class TestChar5(TestStructDump):
     """Test Char with length 5."""
 
     dump = b'foo\x00\x00'
     obj = basic_types.Char('foo', length=5)
 
 
-class TestHWAddress_default(TestStructDump):
+class TestHWAddressDefault(TestStructDump):
     """Test HWAddress default value."""
 
     dump = b'\x00\x00\x00\x00\x00\x00'
     obj = basic_types.HWAddress()
 
 
-class TestHWAddress_mac(TestStructDump):
+class TestHWAddressMac(TestStructDump):
     """Test HWAddress mac value."""
 
     mac = '00:00:00:00:00:00'
@@ -63,7 +63,7 @@ class TestHWAddress_mac(TestStructDump):
         self.assertEqual(self.obj.value, self.mac)
 
 
-class TestHWAddress_random(TestHWAddress_mac):
+class TestHWAddressRandom(TestHWAddressMac):
     """Test HWAddress mac value 0a:d3:98:a5:30:47."""
 
     mac = '0a:d3:98:a5:30:47'
@@ -71,7 +71,7 @@ class TestHWAddress_random(TestHWAddress_mac):
     obj = basic_types.HWAddress(mac)
 
 
-class TestIPAddress_netmask(TestStructDump):
+class TestIPAddressNetmask(TestStructDump):
     """Test IPAddress and its default netmask value."""
 
     dump = b'\xc0\xa8\x00\x01'
@@ -83,7 +83,7 @@ class TestIPAddress_netmask(TestStructDump):
         self.assertEqual(self.obj.netmask, self.netmask)
 
 
-class TestIPAddress_nonetmask(TestIPAddress_netmask):
+class TestIPAddressNoNetmask(TestIPAddressNetmask):
     """Test IPAdress and netmask value 16."""
 
     dump = b'\xc0\xa8\x00\x01'
@@ -91,7 +91,7 @@ class TestIPAddress_nonetmask(TestIPAddress_netmask):
     netmask = 16
 
 
-class TestBinaryData_empty(TestStructDump):
+class TestBinaryDataEmpty(TestStructDump):
     """Test empty BinaryData."""
 
     dump = b''
@@ -99,7 +99,7 @@ class TestBinaryData_empty(TestStructDump):
     min_size = 0
 
 
-class TestBinaryData_bytes(TestStructDump):
+class TestBinaryDataBytes(TestStructDump):
     """Test 'bytes' BinaryData."""
 
     dump = b'bytes'

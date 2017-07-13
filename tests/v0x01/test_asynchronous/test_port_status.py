@@ -7,7 +7,7 @@ from pyof.v0x01.common.phy_port import (
 from tests.test_struct import TestMsgDump, TestMsgDumpFile
 
 
-class TestPortStatus_1(TestMsgDumpFile):
+class TestPortStatus1(TestMsgDumpFile):
     """Test the PortStatus class."""
 
     dumpfile = 'v0x01/ofpt_port_status.dat'
@@ -27,7 +27,7 @@ class TestPortStatus_1(TestMsgDumpFile):
                      desc=desc)
 
 
-class TestPortStatus_2(TestMsgDump):
+class TestPortStatus2(TestMsgDump):
     """Test the PortStatus class."""
 
     dump = b'\x01\x0c\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
