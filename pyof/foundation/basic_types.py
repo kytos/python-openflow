@@ -314,12 +314,28 @@ class BinaryData(GenericType):
         """
         if value is None:
             value = b''
-        if not isinstance(value, bytes):
-            raise ValueError('BinaryData must contain bytes.')
+
+        value = self._pack_if_necessary(value)
         super().__init__(value, enum_ref=enum_ref)
+
+    def _pack_if_necessary(self, value):
+        if hasattr(value, 'pack') and callable(value.pack):
+            value = value.pack()
+
+        if not isinstance(value, bytes):
+            msg = 'BinaryData value must contain bytes or have pack method; '
+            msg += 'Received type {} value: {}'.format(type(value), value)
+            raise ValueError(msg)
+
+        return value
 
     def _pack(self):
         return self._value
+
+    def pack(self, value=None):
+        if value is not None:
+            value = self._pack_if_necessary(value)
+        return super().pack(value)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
