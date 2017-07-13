@@ -140,8 +140,11 @@ class GenericType:
             value = value.value
 
         try:
-            new_item = type(self)(value=value, enum_ref=self.enum_ref)
-        except:  # noqa - there is no generic Initialization Exception...
+            new_item = type(self)(value=value)
+            if hasattr(self, 'enum_ref'):
+                new_item.enum_ref = self.enum_ref
+        except Exception as e:  # noqa - there is no generic Initialization Exception...
+            print(e.args)
             msg = "{} is not an instance of {}".format(value,
                                                        type(self).__name__)
             raise PackException(msg)
