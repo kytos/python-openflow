@@ -6,6 +6,7 @@ descriptions.
 from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
 from distutils.command.clean import clean  # pylint: disable=E0401,E0611
+from os import path
 from subprocess import call
 
 from setuptools import Command, find_packages, setup
@@ -83,7 +84,23 @@ class Linter(SimpleCommand):
         call(cmd, shell=True)
 
 
-requirements = [i.strip() for i in open("requirements.txt").readlines()]
+def read_packages(filename):
+    """Return list of packages from a file with requirements.
+
+    Remove in-line comments.
+    """
+    filename = f'requirements/{filename}'
+    print(filename)
+    if not path.exists(filename):
+        return []
+    with open(filename) as lines:
+        return [line.split()[0] for line in lines if not line.startswith('#')]
+
+
+INSTALL_REQUIRES = {'install': read_packages('install.txt')}.values()
+EXTRA_REQUIRES = {k: read_packages(filename) for k, filename in {
+    'docs': 'docs.txt',
+    'dev': 'dev.txt'}.items()}
 
 setup(name='python-openflow',
       version=__version__,
@@ -94,7 +111,8 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      install_requires=requirements,
+      install_requires=INSTALL_REQUIRES,
+      extras_require=EXTRA_REQUIRES,
       packages=find_packages(exclude=['tests']),
       cmdclass={
           'clean': Cleaner,

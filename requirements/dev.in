@@ -1,5 +1,6 @@
 # For developers, the packages below are required.
 tox ~= 2.7.0
+pip-tools
 
 # For running doctests (during "python setup.py test")
 Sphinx == 1.5.6
