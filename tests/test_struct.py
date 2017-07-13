@@ -180,10 +180,12 @@ class TestStructDump(unittest.TestCase):
     Example:
         .. code-block:: python3
 
-            class TestMatch(TestStructDump):
-                dump = b'' # needs to be filled
-                obj = pyof.v0x01.common.flow_match.Match(xid=0)
-                min_size = 8
+            from pyof.v0x01.foundation.basic_type import BinaryData
+
+            class TestBinaryData(TestStructDump):
+                dump = b'data'
+                obj = BinaryData(xid=0)
+                min_size = 0
     """
 
     dump = b''
