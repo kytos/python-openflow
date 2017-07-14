@@ -9,13 +9,30 @@ pyof_version_libs = {0x01: pyof.v0x01,
                      0x04: pyof.v0x04}
 
 
+def validate_packet(packet):
+    """Check if packet is valid OF packet."""
+    if not isinstance(packet, bytes):
+        raise UnpackException('invalid packet')
+
+    packet_length = len(packet)
+
+    if packet_length < 8 or packet_length > 2**16:
+        raise UnpackException('invalid packet')
+
+    if packet_length != int.from_bytes(packet[2:4],
+                                       byteorder='big'):
+        raise UnpackException('invalid packet')
+
+    version = packet[0]
+    if version == 0 or version >= 128:
+        raise UnpackException('invalid packet')
+
+
 def unpack(packet):
     """Unpack the OpenFlow Packet and returns a message."""
-    try:
-        version = packet[0]
-    except IndexError:
-        raise UnpackException('null packet')
+    validate_packet(packet)
 
+    version = packet[0]
     try:
         pyof_lib = pyof_version_libs[version]
     except KeyError:
@@ -27,11 +44,7 @@ def unpack(packet):
         message = pyof_lib.common.utils.new_message_from_header(header)
         binary_data = packet[8:]
         if binary_data:
-            if len(binary_data) == header.length - 8:
-                message.unpack(binary_data)
-            else:
-                raise UnpackException(
-                    'packet size does not match packet length field')
+            message.unpack(binary_data)
         return message
     except (UnpackException, ValueError) as e:
         raise UnpackException(e)
