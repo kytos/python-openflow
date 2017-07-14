@@ -35,6 +35,7 @@ class TestChar3(TestStructDump):
 
     dump = b'fo\x00'
     obj = basic_types.Char('foo', length=3)
+    min_size = 3
 
 
 class TestChar5(TestStructDump):
@@ -42,33 +43,20 @@ class TestChar5(TestStructDump):
 
     dump = b'foo\x00\x00'
     obj = basic_types.Char('foo', length=5)
-
-
-class TestHWAddressDefault(TestStructDump):
-    """Test HWAddress default value."""
-
-    dump = b'\x00\x00\x00\x00\x00\x00'
-    obj = basic_types.HWAddress()
+    min_size = 5
 
 
 class TestHWAddressMac(TestStructDump):
     """Test HWAddress mac value."""
 
-    mac = '00:00:00:00:00:00'
-    dump = b'\x00\x00\x00\x00\x00\x00'
+    mac = '0a:d3:98:a5:30:47'
+    dump = b'\x0a\xd3\x98\xa5\x30\x47'
     obj = basic_types.HWAddress(mac)
+    min_size = 6
 
     def test_address_value(self):
         """Test HWAddress mac value."""
         self.assertEqual(self.obj.value, self.mac)
-
-
-class TestHWAddressRandom(TestHWAddressMac):
-    """Test HWAddress mac value 0a:d3:98:a5:30:47."""
-
-    mac = '0a:d3:98:a5:30:47'
-    dump = b'\x0a\xd3\x98\xa5\x30\x47'
-    obj = basic_types.HWAddress(mac)
 
 
 class TestIPAddressNetmask(TestStructDump):
@@ -77,6 +65,7 @@ class TestIPAddressNetmask(TestStructDump):
     dump = b'\xc0\xa8\x00\x01'
     obj = basic_types.IPAddress('192.168.0.1')
     netmask = 32
+    min_size = 4
 
     def test_netmask(self):
         """Test IPAddress netmask value."""
@@ -89,6 +78,7 @@ class TestIPAddressNoNetmask(TestIPAddressNetmask):
     dump = b'\xc0\xa8\x00\x01'
     obj = basic_types.IPAddress('192.168.0.1/16')
     netmask = 16
+    min_size = 4
 
 
 class TestBinaryDataEmpty(TestStructDump):
@@ -104,6 +94,7 @@ class TestBinaryDataBytes(TestStructDump):
 
     dump = b'bytes'
     obj = BinaryData(b'bytes')
+    min_size = 0
 
 
 class TestIPAddress(unittest.TestCase):
