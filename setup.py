@@ -6,7 +6,6 @@ descriptions.
 from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
 from distutils.command.clean import clean  # pylint: disable=E0401,E0611
-from os import path
 from subprocess import call
 
 from setuptools import Command, find_packages, setup
@@ -84,24 +83,6 @@ class Linter(SimpleCommand):
         call(cmd, shell=True)
 
 
-def read_packages(filename):
-    """Return list of packages from a file with requirements.
-
-    Remove in-line comments.
-    """
-    filename = f'requirements/{filename}'
-    print(filename)
-    if not path.exists(filename):
-        return []
-    with open(filename) as lines:
-        return [line.split()[0] for line in lines if not line.startswith('#')]
-
-
-INSTALL_REQUIRES = {'install': read_packages('install.txt')}.values()
-EXTRA_REQUIRES = {k: read_packages(filename) for k, filename in {
-    'docs': 'docs.txt',
-    'dev': 'dev.txt'}.items()}
-
 setup(name='python-openflow',
       version=__version__,
       description='Library to parse and generate OpenFlow messages',
@@ -111,8 +92,25 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      install_requires=INSTALL_REQUIRES,
-      extras_require=EXTRA_REQUIRES,
+      extras_require={
+          'docs': [
+              'Sphinx~=1.5.0',
+              'sphinx-autobuild',
+              'sphinx-rtd-theme',
+              'sphinx_bootstrap_theme~=0.4.0'
+          ],
+          'dev': [
+              'coverage',
+              'tox',
+              'pip-tools',
+              'Sphinx~=1.5.0',
+              'sphinx_bootstrap_theme~=0.4.0',
+              'pydocstyle~=1.1.1',
+              'pylama~=7.3.3',
+              'pylama_pylint~=3.0.1',
+              'radon~=1.5.0'
+          ],
+      },
       packages=find_packages(exclude=['tests']),
       cmdclass={
           'clean': Cleaner,
