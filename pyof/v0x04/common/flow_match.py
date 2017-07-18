@@ -8,16 +8,14 @@ from enum import Enum, IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import (FixedTypeList, UBInt8, UBInt16,
-                                         UBInt32, Pad, BinaryData,
-                                         CustomTLV_24_8)
-from pyof.foundation.exceptions import PackException
+from pyof.foundation.basic_types import (
+    BinaryData, CustomTLV_24_8, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 
 # Third-party imports
 
 
 __all__ = ('Ipv6ExtHdrFlags', 'Match', 'OxmOfbMatchField', 'MatchType',
-           'OxmExperimenterHeader', 'MatchField', 'VlanId')
+           'OxmExperimenterHeader', 'OxmMatchFields', 'VlanId')
 
 
 class Ipv6ExtHdrFlags(Enum):
@@ -185,7 +183,7 @@ class VlanId(IntEnum):
 # Classes
 
 class OxmType(GenericStruct):
-    """ Oxm TLV `type` metafield.
+    """Oxm TLV `type` metafield.
 
     OxmType is defined by the combination of a OxmClass and a OxmField,
 
@@ -194,17 +192,19 @@ class OxmType(GenericStruct):
         oxm_field (:class:`OxmOfbMatchField`, Oxm*MatchField, int): the oxm
         TLV defined field of the correspondent class
     """
+
     oxm_class = UBInt16(enum_ref=OxmClass)
     oxm_field = UBInt8()
 
     def __init__(self, oxm_class, oxm_field):
+        super().__init__()
         cls = type(self)
         self.oxm_class = type(cls.oxm_class)(oxm_class)
         self.oxm_field = oxm_field
 
 
 class OxmTLV(GenericStruct):
-    """ Oxm (Openflow Extensible Match) TLV.
+    """Oxm (Openflow Extensible Match) TLV.
 
     Args:
         oxm_class (:class:`OxmClass`, int): The oxm TLV defined class.
@@ -222,6 +222,7 @@ class OxmTLV(GenericStruct):
 
     def __init__(self, oxm_class=None, oxm_field=None,
                  oxm_hasmask=None, oxm_value=None):
+        super().__init__()
         self.oxm_class = oxm_class
         self.oxm_field = oxm_field
         self.oxm_hasmask = oxm_hasmask if oxm_hasmask else 0
@@ -255,7 +256,7 @@ class OxmTLV(GenericStruct):
 
         tlv_value = self.oxm_value
         tlv = self.tlv_class(tlv_type, tlv_value)
-        return tlv._pack()
+        return tlv._pack()   # noqa
 
     def _get_size(self):
         size = super()._get_size() - 1
@@ -327,6 +328,7 @@ class Match(GenericStruct):
         return super_size + (8 - (super_size % 8)) % 8
 
     def unpack(self, buff, offset=0):
+        """Unpack bytes buffer into this Instance."""
         begin = offset
         for name, value in list(self.get_class_attributes())[:-1]:
             size = self._unpack_attribute(name, value, buff, begin)

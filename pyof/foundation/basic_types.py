@@ -331,7 +331,8 @@ class BinaryData(GenericType):
         value = self._pack_if_necessary(value)
         super().__init__(value, enum_ref=enum_ref)
 
-    def _pack_if_necessary(self, value):
+    @staticmethod
+    def _pack_if_necessary(value):
         if hasattr(value, 'pack') and callable(value.pack):
             value = value.pack()
 
@@ -346,6 +347,7 @@ class BinaryData(GenericType):
         return self._value
 
     def pack(self, value=None):
+        """Pack the struct in a binary representation."""
         if value is not None:
             value = self._pack_if_necessary(value)
         return super().pack(value)
@@ -402,7 +404,7 @@ class TypeList(GenericStruct, list):
         bin_message = b''
         try:
             for item in self:
-                bin_message += item._pack()
+                bin_message += item._pack()  # noqa
             return bin_message
         except exceptions.PackException as err:
             msg = "{} pack error: {}".format(type(self).__name__, err)
@@ -573,16 +575,15 @@ class ConstantTypeList(TypeList):
 
 
 def get_custom_tlv_class(type_size=3, length_size=1):
-    """ Generate a CUstomTLV class
+    """Generate a CUstomTLV class.
 
     Create a CustomTLV class with the defined number of bytes for type and
     length fields.
 
     Args:
-        type_size (int): length in bytes for the type field of the TLV
-        length_size (int): length in bytes for the length field of the TLV
+        type_size (int): length in bytes for the type field of the TLV.
+        length_size (int): length in bytes for the length field of the TLV.
     """
-
     size_classes = {1: UBInt8,
                     2: UBInt16,
                     3: UBInt24,
@@ -592,12 +593,13 @@ def get_custom_tlv_class(type_size=3, length_size=1):
     custom_length = size_classes[length_size]
 
     class CustomTLV(GenericStruct):
-        """ a compact TLV class
+        """A compact TLV class.
 
         Args:
-            tlv_type: type field of the TLV
-            tlv_value: length field of the TLV
+            tlv_type: type field of the TLV.
+            tlv_value: length field of the TLV.
         """
+
         tlv_type = custom_type()
         tlv_length = custom_length()
         tlv_value = BinaryData()
@@ -617,13 +619,12 @@ def get_custom_tlv_class(type_size=3, length_size=1):
             return super()._pack()
 
         def unpack(self, buff, offset=0):
-            """Unpack the buffer into a custom TLV
+            """Unpack the buffer into a custom TLV.
 
             Args:
                 buff (bytes): The binary data to be unpacked.
                 offset (int): If we need to shift the beginning of the data.
             """
-
             begin = offset
             for name, value in list(self.get_class_attributes())[:-1]:
                 size = self._unpack_attribute(name, value, buff, begin)

@@ -264,6 +264,15 @@ class GenericType:
 
 
 class GenericUBIntType(GenericType):
+    r"""Base class for a generic Uint type.
+
+    example:
+        class Uint8(GenericUBIntType):
+            _buff_size = 1
+
+        Uint8.pack(255)
+        b'\xff'
+    """
 
     _buff_size = 0
 
@@ -523,10 +532,10 @@ class GenericStruct(object, metaclass=MetaStruct):
               too.
     """
 
-    def __init__(self):
+    def __init__(self, value=None):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for name, value in self.get_class_attributes():
-            setattr(self, name, deepcopy(value))
+        for name, att_value in self.get_class_attributes():
+            setattr(self, name, deepcopy(att_value))
 
     def __eq__(self, other):
         """Check whether two structures have the same structure and values.
@@ -654,14 +663,13 @@ class GenericStruct(object, metaclass=MetaStruct):
             return getattr(self, work_func)()
         elif isinstance(value, type(self)):
             return getattr(value, work_func)()
-        else:
-            try:
-                new_item = type(self)(value)
-            except:  # noqa - there is no generic Initialization Exception...
-                msg = "{} is not an instance of {}".format(value,
-                                                           type(self).__name__)
-                raise PackException(msg)
-            return getattr(new_item, work_func)()
+        try:
+            new_item = type(self)(value)
+        except:  # noqa - there is no generic Initialization Exception...
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+        return getattr(new_item, work_func)()
 
     def _get_size(self):
         return sum(cls_val.get_size(obj_val)
