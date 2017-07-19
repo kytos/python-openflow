@@ -10,9 +10,9 @@ from pyof.foundation.constants import UBINT16_MAX_VALUE
 
 # Third-party imports
 
-__all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionEnqueue',
-           'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr', 'ActionNWAddr',
-           'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader',
+__all__ = ('ActionType', 'ActionHeader', 'ActionOutput', 'ActionStripVlan',
+           'ActionEnqueue', 'ActionVlanVid', 'ActionVlanPCP', 'ActionDLAddr',
+           'ActionNWAddr', 'ActionNWTos', 'ActionTPPort', 'ActionVendorHeader',
            'ListOfActions')
 
 # Enums
