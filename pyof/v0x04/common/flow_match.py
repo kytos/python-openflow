@@ -222,6 +222,14 @@ class OxmTLV(GenericStruct):
 
     def __init__(self, oxm_class=None, oxm_field=None,
                  oxm_hasmask=None, oxm_value=None):
+        """Init OxmTLV with oxm class, field and value.
+
+        Args:
+            oxm_class (OxmClass): The oxm_class field.
+            oxm_field (int): The oxm_field field.
+            oxm_hasmask (int): The oxm_hasmask field.
+            oxm_value (int/bytes): The oxm_value field.
+        """
         super().__init__()
         self.oxm_class = oxm_class
         self.oxm_field = oxm_field
