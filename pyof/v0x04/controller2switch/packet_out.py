@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, Pad, UBInt16, UBInt32
-from pyof.foundation.exceptions import PackException, ValidationError
+from pyof.foundation.exceptions import ValidationError
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port, PortNo
@@ -71,17 +71,9 @@ class PacketOut(GenericMessage):
         except ValidationError:
             return False
 
-    def pack(self, value=None):
-        """Update the action_len attribute and call super's pack."""
-        if value is None:
-            self._update_actions_len()
-            return super().pack()
-        elif isinstance(value, type(self)):
-            return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+    def _pack(self, value=None):
+        self._update_actions_len()
+        return super()._pack()
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -105,7 +97,7 @@ class PacketOut(GenericMessage):
                 attribute = deepcopy(class_attribute)
                 if attribute_name == 'actions':
                     length = self.actions_len.value
-                    attribute.unpack(buff[begin:begin+length])
+                    attribute.unpack(buff[begin:begin + length])
                 else:
                     attribute.unpack(buff, begin)
                 setattr(self, attribute_name, attribute)

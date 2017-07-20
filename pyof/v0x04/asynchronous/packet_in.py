@@ -82,4 +82,5 @@ class PacketIn(GenericMessage):
         self.table_id = table_id
         self.cookie = cookie
         self.match = match
+        self.pad = Pad(2)
         self.data = data

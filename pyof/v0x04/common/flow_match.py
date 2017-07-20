@@ -8,14 +8,14 @@ from enum import Enum, IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import FixedTypeList, UBInt8, UBInt16, UBInt32
+from pyof.foundation.basic_types import (
+    BinaryData, CustomTLV_24_8, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 
 # Third-party imports
 
 
-__all__ = ('Ipv6ExtHdrFlags', 'Match', 'MatchField', 'MatchType',
-           'OxmExperimenterHeader', 'OxmOfbMatchField', 'VlanId',
-           'ListOfOxmHeader')
+__all__ = ('Ipv6ExtHdrFlags', 'Match', 'OxmOfbMatchField', 'MatchType',
+           'OxmExperimenterHeader', 'OxmMatchFields', 'VlanId', 'OxmTLV')
 
 
 class Ipv6ExtHdrFlags(Enum):
@@ -41,7 +41,7 @@ class Ipv6ExtHdrFlags(Enum):
     OFPIEH_UNSEQ = 1 << 8
 
 
-class MatchField(IntEnum):
+class OxmOfbMatchField(IntEnum):
     """OXM Flow match field types for OpenFlow basic class.
 
     A switch is not required to support all match field types, just those
@@ -148,7 +148,7 @@ class MatchType(IntEnum):
     OFPMT_OXM = 1
 
 
-class OxmOfbMatchField(IntEnum):
+class OxmClass(IntEnum):
     """OpenFlow Extensible Match (OXM) Class IDs.
 
     The high order bit differentiate reserved classes from member classes.
@@ -182,17 +182,111 @@ class VlanId(IntEnum):
 
 # Classes
 
+class OxmType(GenericStruct):
+    """Oxm TLV `type` metafield.
 
-class OxmHeader(GenericStruct):
+    OxmType is defined by the combination of a OxmClass and a OxmField,
+
+    Args:
+        oxm_class (:class:`OxmClass`, int): The oxm TLV defined class.
+        oxm_field (:class:`OxmOfbMatchField`, Oxm*MatchField, int): the oxm
+        TLV defined field of the correspondent class
+    """
+
+    oxm_class = UBInt16(enum_ref=OxmClass)
+    oxm_field = UBInt8()
+
+    def __init__(self, oxm_class, oxm_field):
+        super().__init__()
+        cls = type(self)
+        self.oxm_class = type(cls.oxm_class)(oxm_class)
+        self.oxm_field = oxm_field
+
+
+class OxmTLV(GenericStruct):
+    """Oxm (Openflow Extensible Match) TLV.
+
+    Args:
+        oxm_class (:class:`OxmClass`, int): The oxm TLV defined class.
+        oxm_field (:class:`OxmOfbMatchField`, Oxm*MatchField, int): the oxm
+            TLV defined field of the correspondent oxm_class.
+        oxm_hasmask (bool):
+        oxm_value (:class:`BinaryData`, bytes):
+    """
+
+    oxm_class = UBInt16(enum_ref=OxmClass)
+    oxm_field = UBInt8()
+    oxm_hasmask = UBInt8()
+    oxm_length = UBInt8()
+    oxm_value = BinaryData()
+
+    def __init__(self, oxm_class=None, oxm_field=None,
+                 oxm_hasmask=None, oxm_value=None):
+        """Init OxmTLV with oxm class, field and value.
+
+        Args:
+            oxm_class (OxmClass): The oxm_class field.
+            oxm_field (int): The oxm_field field.
+            oxm_hasmask (int): The oxm_hasmask field.
+            oxm_value (int/bytes): The oxm_value field.
+        """
+        super().__init__()
+        self.oxm_class = oxm_class
+        self.oxm_field = oxm_field
+        self.oxm_hasmask = oxm_hasmask if oxm_hasmask else 0
+        self.oxm_length = None
+        self.oxm_value = oxm_value
+        self.tlv_class = CustomTLV_24_8
+
+    def unpack(self, buff, offset=0):
+        """Unpack the buffer into a OxmTLV.
+
+        Args:
+            buff (bytes): The binary data to be unpacked.
+            offset (int): If we need to shift the beginning of the data.
+        """
+        tlv = self.tlv_class()
+        tlv.unpack(buff, offset)
+        # print('tlv unpack values:')
+        # print(type(tlv.tlv_type), tlv.tlv_type)
+        # print(type(tlv.tlv_length), tlv.tlv_length)
+        # print(type(tlv.tlv_value), tlv.tlv_value)
+        self.oxm_class = tlv.tlv_type >> 8
+        self.oxm_field = (tlv.tlv_type & 0xFF) >> 1
+        self.oxm_hasmask = tlv.tlv_type & 1
+        self.oxm_length = tlv.tlv_length
+        self.oxm_value = tlv.tlv_value
+
+    def _pack(self):
+        tlv_type = ((self.oxm_class << 8) +
+                    (self.oxm_field << 1) +
+                    self.oxm_hasmask)
+
+        tlv_value = self.oxm_value
+        tlv = self.tlv_class(tlv_type, tlv_value)
+        return tlv._pack()   # noqa
+
+    def _get_size(self):
+        size = super()._get_size() - 1
+        return size
+
+
+class OxmMatchFields(FixedTypeList):
     """Generic Openflow EXtensible Match header.
 
     Abstract class that can be instanciated as Match or OxmExperimenterHeader.
     """
 
-    pass
+    def __init__(self, items=None):
+        """The constructor just assings parameters to object attributes.
+
+        Args:
+            items (OxmHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=OxmTLV, items=items)
 
 
-class Match(OxmHeader):
+class Match(GenericStruct):
     """Describes the flow match header structure.
 
     These are the fields to match against flows.
@@ -207,13 +301,9 @@ class Match(OxmHeader):
     match_type = UBInt16(enum_ref=MatchType)
     #: Length of Match (excluding padding)
     length = UBInt16()
-    oxm_field1 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field2 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field3 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field4 = UBInt8(enum_ref=OxmOfbMatchField)
+    oxm_match_fields = OxmMatchFields()
 
-    def __init__(self, match_type=None, length=None, oxm_field1=None,
-                 oxm_field2=None, oxm_field3=None, oxm_field4=None):
+    def __init__(self, match_type=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
@@ -222,26 +312,46 @@ class Match(OxmHeader):
                           Exactly (length - 4) (possibly 0) bytes containing
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
-            oxm_field1 (OXMClass): Sample description.
-            oxm_field2 (OXMClass): Sample description.
-            oxm_field3 (OXMClass): Sample description.
-            oxm_field4 (OXMClass): Sample description.
+            oxm_fields (OxmMatchFields): Sample description.
         """
         super().__init__()
         self.match_type = match_type
-        self.length = length
-        self.oxm_field1 = oxm_field1
-        self.oxm_field2 = oxm_field2
-        self.oxm_field3 = oxm_field3
-        self.oxm_field4 = oxm_field4
+        self.oxm_match_fields = oxm_match_fields
+        self._update_match_length()
+
+    def _update_match_length(self):
+        self.length = super()._get_size()
+
+    def _pack(self):
+        self._update_match_length()
+        packet = super()._pack()
+        super_size = len(packet)
+        lacking_bytes = (8 - (super_size % 8)) % 8
+        if lacking_bytes != 0:
+            packet += Pad(lacking_bytes).pack()
+        return packet
+
+    def _get_size(self):
+        super_size = super()._get_size()
+        return super_size + (8 - (super_size % 8)) % 8
+
+    def unpack(self, buff, offset=0):
+        """Unpack bytes buffer into this Instance."""
+        begin = offset
+        for name, value in list(self.get_class_attributes())[:-1]:
+            size = self._unpack_attribute(name, value, buff, begin)
+            begin += size
+        self._unpack_attribute('oxm_match_fields', type(self).oxm_match_fields,
+                               buff[:offset + self.length],
+                               begin)
 
 
-class OxmExperimenterHeader(OxmHeader):
+class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
 
     #: oxm_class = OFPXMC_EXPERIMENTER
-    oxm_header = UBInt32(OxmOfbMatchField.OFPXMC_EXPERIMENTER,
-                         enum_ref=OxmOfbMatchField)
+    oxm_header = UBInt32(OxmClass.OFPXMC_EXPERIMENTER,
+                         enum_ref=OxmClass)
     #: Experimenter ID which takes the same form as in struct
     #:     ofp_experimenter_header
     experimenter = UBInt32()
@@ -269,4 +379,4 @@ class ListOfOxmHeader(FixedTypeList):
         Args:
             items (OxmHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=OxmHeader, items=items)
+        super().__init__(pyof_class=OxmTLV, items=items)

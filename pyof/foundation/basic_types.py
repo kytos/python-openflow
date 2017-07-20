@@ -5,13 +5,13 @@ import struct
 
 # Local source tree imports
 from pyof.foundation import exceptions
-from pyof.foundation.base import GenericStruct, GenericType
+from pyof.foundation.base import GenericStruct, GenericType, GenericUBIntType
 
 # Third-party imports
 
 __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
-           'UBInt32', 'UBInt64')
+           'UBInt24', 'UBInt32', 'UBInt64')
 
 
 class Pad(GenericType):
@@ -34,17 +34,7 @@ class Pad(GenericType):
     def __str__(self):
         return '0' * self._length
 
-    def get_size(self, value=None):
-        """Return the type size in bytes.
-
-        Args:
-            value (int): In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: Size in bytes.
-        """
+    def _get_size(self):
         return self._length
 
     def unpack(self, buff, offset=0):
@@ -52,6 +42,7 @@ class Pad(GenericType):
 
         Do nothing, since the _length is already defined and it is just a Pad.
         Keep buff and offset just for compability with other unpack methods.
+        [this will check if bytes are 0 for validity in the future]
 
         Args:
             buff: Buffer where data is located.
@@ -59,17 +50,7 @@ class Pad(GenericType):
         """
         pass
 
-    def pack(self, value=None):
-        """Pack the object.
-
-        Args:
-            value (int): In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            bytes: the byte 0 (zero) *length* times.
-        """
+    def _pack(self):
         return b'\x00' * self._length
 
 
@@ -89,6 +70,15 @@ class UBInt16(GenericType):
     """
 
     _fmt = "!H"
+
+
+class UBInt24(GenericUBIntType):
+    """Format character for an Unsigned Short.
+
+    Class for an 16-bit (2-byte) Unsigned Integer.
+    """
+
+    _buff_size = 3
 
 
 class UBInt32(GenericType):
@@ -114,13 +104,13 @@ class DPID(GenericType):
 
     _fmt = "!8B"
 
-    def __init__(self, dpid=None):
+    def __init__(self, value=None):
         """Create an instance and optionally set its dpid value.
 
         Args:
             dpid (str): String with DPID value(e.g. `00:00:00:00:00:00:00:01`).
         """
-        super().__init__(value=dpid)
+        super().__init__(value=value)
 
     def __str__(self):
         return self._value
@@ -134,20 +124,9 @@ class DPID(GenericType):
         """
         return self._value
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-        if value is None:
-            value = self._value
-        return struct.pack('!8B', *[int(v, 16) for v in value.split(':')])
+    def _pack(self):
+        return struct.pack('!8B', *[int(v, 16)
+                                    for v in self.value.split(':')])
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -165,7 +144,7 @@ class DPID(GenericType):
         begin = offset
         hexas = []
         while begin < offset + 8:
-            number = struct.unpack("!B", buff[begin:begin+1])[0]
+            number = struct.unpack("!B", buff[begin:begin + 1])[0]
             hexas.append("%.2x" % number)
             begin += 1
         self._value = ':'.join(hexas)
@@ -185,28 +164,12 @@ class Char(GenericType):
         self.length = length
         self._fmt = '!{}{}'.format(self.length, 's')
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
+    def _get_new_instance(self, value):
+        return type(self)(value, length=self.length)
 
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        try:
-            if value is None:
-                value = self.value
-            packed = struct.pack(self._fmt, bytes(value, 'ascii'))
-            return packed[:-1] + b'\0'  # null-terminated
-        except struct.error as err:
-            msg = "Char Pack error. "
-            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
-                                                         err)
-            raise exceptions.PackException(msg)
+    def _pack(self):
+        packed = struct.pack(self._fmt, bytes(self.value, 'ascii'))
+        return packed[:-1] + b'\0'  # null-terminated
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -237,43 +200,22 @@ class IPAddress(GenericType):
     netmask = UBInt32()
     max_prefix = UBInt32(32)
 
-    def __init__(self, address="0.0.0.0/32"):
+    def __init__(self, value="0.0.0.0/32"):
         """The constructor takes the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
         """
-        if address.find('/') >= 0:
-            address, netmask = address.split('/')
+        if value.find('/') >= 0:
+            value, netmask = value.split('/')
         else:
             netmask = 32
 
-        super().__init__(address)
+        super().__init__(value)
         self.netmask = int(netmask)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        If the value is None the self._value will be used to pack.
-
-        Args:
-            value (str): IP Address with ipv4 format.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
-        if value.find('/') >= 0:
-            value = value.split('/')[0]
-
+    def _pack(self):
+        value = self._value
         try:
             value = value.split('.')
             return struct.pack('!4B', *[int(x) for x in value])
@@ -297,59 +239,31 @@ class IPAddress(GenericType):
             Exception: If there is a struct unpacking error.
         """
         try:
-            unpacked_data = struct.unpack('!4B', buff[offset:offset+4])
+            unpacked_data = struct.unpack('!4B', buff[offset:offset + 4])
             self._value = '.'.join([str(x) for x in unpacked_data])
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
 
-    def get_size(self, value=None):
-        """Return the ip address size in bytes.
-
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
+    def _get_size(self):
         return 4
 
 
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
+    def __init__(self, value='00:00:00:00:00:00'):  # noqa
         """The constructor takes the parameters below.
 
         Args:
-            hw_address (bytes): Hardware address. Defaults to
+            value (bytes): Hardware address. Defaults to
                 '00:00:00:00:00:00'.
         """
-        super().__init__(hw_address)
-
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        If the passed value (or the self._value) is zero (int), then the pack
-        will assume that the value to be packed is '00:00:00:00:00:00'.
-
-        Returns
-            bytes: The binary representation.
-
-        Raises:
-            struct.error: If the value does not fit the binary format.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
         if value == 0:
             value = '00:00:00:00:00:00'
+        super().__init__(value)
 
-        value = value.split(':')
+    def _pack(self):
+        value = self._value.split(':')
 
         try:
             return struct.pack('!6B', *[int(x, 16) for x in value])
@@ -376,24 +290,14 @@ class HWAddress(GenericType):
             return "{0:0{1}x}".format(n, 2)
 
         try:
-            unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
+            unpacked_data = struct.unpack('!6B', buff[offset:offset + 6])
         except struct.error as e:
             raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
 
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
 
-    def get_size(self, value=None):
-        """Return the address size in bytes.
-
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
+    def _get_size(self):
         return 6
 
     def is_broadcast(self):
@@ -412,7 +316,7 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):  # noqa
+    def __init__(self, value=None, enum_ref=None):  # noqa
         """The constructor takes the parameter below.
 
         Args:
@@ -421,31 +325,32 @@ class BinaryData(GenericType):
         Raises:
             ValueError: If given value is not bytes.
         """
+        if value is None:
+            value = b''
+
+        value = self._pack_if_necessary(value)
+        super().__init__(value, enum_ref=enum_ref)
+
+    @staticmethod
+    def _pack_if_necessary(value):
+        if hasattr(value, 'pack') and callable(value.pack):
+            value = value.pack()
+
         if not isinstance(value, bytes):
-            raise ValueError('BinaryData must contain bytes.')
-        super().__init__(value)
+            msg = 'BinaryData value must contain bytes or have pack method; '
+            msg += 'Received type {} value: {}'.format(type(value), value)
+            raise ValueError(msg)
+
+        return value
+
+    def _pack(self):
+        return self._value
 
     def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-
-        Raises:
-            :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self._value
-
-        if value:
-            if isinstance(value, bytes):
-                return value
-            raise ValueError('BinaryData must contain bytes.')
-
-        return b''
+        """Pack the struct in a binary representation."""
+        if value is not None:
+            value = self._pack_if_necessary(value)
+        return super().pack(value)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -453,32 +358,21 @@ class BinaryData(GenericType):
         Unpack the binary value *buff* and update this object attributes based
         on the results. Since the *buff* is binary data, no conversion is done.
 
+        All the data in the buffer from the offset forward will be used,
+        so the buffer must be truncated using the desired size before passing
+        it to BinaryData.
+
         Args:
             buff (bytes): Binary data package to be unpacked.
             offset (int): Where to begin unpacking.
         """
         self._value = buff[offset:]
 
-    def get_size(self, value=None):
-        """Return the size in bytes.
-
-        Args:
-            value (bytes): In structs, the user can assign other value instead
-                of this class' instance. Here, in such cases, ``self`` is a
-                class attribute of the struct.
-
-        Returns:
-            int: The address size in bytes.
-        """
-        if value is None:
-            return len(self._value)
-        elif hasattr(value, 'get_size'):
-            return value.get_size()
-
-        return len(value)
+    def _get_size(self):
+        return len(self._value)
 
 
-class TypeList(list, GenericStruct):
+class TypeList(GenericStruct, list):
     """Base class for lists that store objects of one single type."""
 
     def __init__(self, items):
@@ -506,26 +400,11 @@ class TypeList(list, GenericStruct):
         for item in items:
             self.append(item)
 
-    def pack(self, value=None):
-        """Pack the value as a binary representation.
-
-        Returns:
-            bytes: The binary representation.
-        """
-        if isinstance(value, type(self)):
-            return value.pack()
-
-        if value is None:
-            value = self
-        else:
-            container = type(self)(items=None)
-            container.extend(value)
-            value = container
-
+    def _pack(self):
         bin_message = b''
         try:
-            for item in value:
-                bin_message += item.pack()
+            for item in self:
+                bin_message += item._pack()  # noqa
             return bin_message
         except exceptions.PackException as err:
             msg = "{} pack error: {}".format(type(self).__name__, err)
@@ -534,9 +413,9 @@ class TypeList(list, GenericStruct):
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.
 
-        This unpack method considers that all elements have the same size.
+        This unpack method considers that all elements are of the same type.
         To use this class with a pyof_class that accepts elements with
-        different sizes, you must reimplement the unpack method.
+        different classes, you must reimplement the unpack method.
 
         Args:
             buff (bytes): The binary data to be unpacked.
@@ -552,30 +431,17 @@ class TypeList(list, GenericStruct):
             self.append(item)
             begin += item.get_size()
 
-    def get_size(self, value=None):
-        """Return the size in bytes.
+    def _get_size(self):
+        if not self:
+            # If this is a empty list, then returns zero
+            return 0
+        elif issubclass(type(self[0]), GenericType):
+            # If the type of the elements is GenericType, then returns the
+            # length of the list multiplied by the size of the GenericType.
+            return len(self) * self[0].get_size()
 
-        Args:
-            value: In structs, the user can assign other value instead of
-                this class' instance. Here, in such cases, ``self`` is a class
-                attribute of the struct.
-
-        Returns:
-            int: The size in bytes.
-        """
-        if value is None:
-            if not self:
-                # If this is a empty list, then returns zero
-                return 0
-            elif issubclass(type(self[0]), GenericType):
-                # If the type of the elements is GenericType, then returns the
-                # length of the list multiplied by the size of the GenericType.
-                return len(self) * self[0].get_size()
-
-            # Otherwise iter over the list accumulating the sizes.
-            return sum(item.get_size() for item in self)
-
-        return type(self)(value).get_size()
+        # Otherwise iter over the list accumulating the sizes.
+        return sum(item.get_size() for item in self)
 
     def __str__(self):
         """Human-readable object representantion."""
@@ -706,3 +572,68 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
+
+
+def get_custom_tlv_class(type_size=3, length_size=1):
+    """Generate a CUstomTLV class.
+
+    Create a CustomTLV class with the defined number of bytes for type and
+    length fields.
+
+    Args:
+        type_size (int): length in bytes for the type field of the TLV.
+        length_size (int): length in bytes for the length field of the TLV.
+    """
+    size_classes = {1: UBInt8,
+                    2: UBInt16,
+                    3: UBInt24,
+                    4: UBInt32}
+
+    custom_type = size_classes[type_size]
+    custom_length = size_classes[length_size]
+
+    class CustomTLV(GenericStruct):
+        """A compact TLV class.
+
+        Args:
+            tlv_type: type field of the TLV.
+            tlv_value: length field of the TLV.
+        """
+
+        tlv_type = custom_type()
+        tlv_length = custom_length()
+        tlv_value = BinaryData()
+
+        def __init__(self, tlv_type=None, tlv_value=None):
+            super().__init__()
+            self.tlv_type = tlv_type
+            self.tlv_value = tlv_value
+            self._update_tlv_length()
+
+        def _update_tlv_length(self):
+            cls = type(self)
+            self.tlv_length = (type(cls.tlv_value)(self.tlv_value)).get_size()
+
+        def _pack(self):
+            self._update_tlv_length()
+            return super()._pack()
+
+        def unpack(self, buff, offset=0):
+            """Unpack the buffer into a custom TLV.
+
+            Args:
+                buff (bytes): The binary data to be unpacked.
+                offset (int): If we need to shift the beginning of the data.
+            """
+            begin = offset
+            for name, value in list(self.get_class_attributes())[:-1]:
+                size = self._unpack_attribute(name, value, buff, begin)
+                begin += size
+            self._unpack_attribute('tlv_value', type(self).tlv_value,
+                                   buff[:begin + self.tlv_length],
+                                   begin)
+
+    return CustomTLV
+
+
+CustomTLV_24_8 = get_custom_tlv_class(type_size=3, length_size=1)
