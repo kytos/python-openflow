@@ -47,7 +47,7 @@ class PacketOut(GenericMessage):
         super().__init__(xid)
         self.buffer_id = buffer_id
         self.in_port = in_port
-        self.actions = [] if actions is None else actions
+        self.actions = ListOfActions() if actions is None else actions
         self.data = data
 
     def validate(self):

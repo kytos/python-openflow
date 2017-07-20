@@ -31,8 +31,8 @@ from pyof.foundation.exceptions import (
 
 
 # This will determine the order on sphinx documentation.
-__all__ = ('GenericStruct', 'GenericMessage', 'GenericType', 'GenericBitMask',
-           'MetaStruct', 'MetaBitMask')
+__all__ = ('GenericStruct', 'GenericMessage', 'GenericType',
+           'GenericUBIntType', 'GenericBitMask', 'MetaStruct', 'MetaBitMask')
 
 # Classes
 
@@ -115,6 +115,12 @@ class GenericType:
     def __rxor__(self, other):
         return self.value ^ other
 
+    def __lshift__(self, other):
+        return self.value << other
+
+    def __rshift__(self, other):
+        return self.value >> other
+
     @property
     def value(self):
         """Return this type's value.
@@ -129,6 +135,29 @@ class GenericType:
             return self._value.bitmask
         else:
             return self._value
+
+    def _get_new_instance(self, value):
+        return type(self)(value)
+
+    def _work_or_pass(self, value, work_func):
+        if value is None:
+            return getattr(self, work_func)()
+        elif isinstance(value, type(self)):
+            return getattr(value, work_func)()
+        elif 'value' in dir(value):
+            # if it is enum or bitmask gets only the 'int' value
+            value = value.value
+
+        try:
+            new_item = self._get_new_instance(value)
+            if hasattr(self, 'enum_ref'):
+                new_item.enum_ref = self.enum_ref
+        except Exception as e:  # noqa - there is no generic Initialization Exception...
+            print(e.args)
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+        return getattr(new_item, work_func)()
 
     def pack(self, value=None):
         r"""Pack the value as a binary representation.
@@ -158,21 +187,16 @@ class GenericType:
             :exc:`~.exceptions.BadValueException`: If the value does not
                 fit the binary format.
         """
-        if isinstance(value, type(self)):
-            return value.pack()
+        return self._work_or_pass(value, '_pack')
 
-        if value is None:
-            value = self.value
-        elif 'value' in dir(value):
-            # if it is enum or bitmask gets only the 'int' value
-            value = value.value
-
+    def _pack(self):
         try:
-            return struct.pack(self._fmt, value)
+            return struct.pack(self._fmt, self.value)
         except struct.error:
-            msg = '{} could not pack {} = {}.'.format(type(self).__name__,
-                                                      type(value).__name__,
-                                                      value)
+            msg = '{} could not pack {} = {}.'.format(
+                type(self).__name__,
+                type(self.value).__name__,
+                self.value)
             raise PackException(msg)
 
     def unpack(self, buff, offset=0):
@@ -197,13 +221,16 @@ class GenericType:
                                                                  buff, offset)
             raise UnpackException(msg)
 
+    def _get_size(self):
+        return struct.calcsize(self._fmt)
+
     def get_size(self, value=None):
         """Return the size in bytes of this type.
 
         Returns:
             int: Size in bytes.
         """
-        return struct.calcsize(self._fmt)
+        return self._work_or_pass(value, '_get_size')
 
     def is_valid(self):
         """Check whether the value fits the binary format.
@@ -234,6 +261,49 @@ class GenericType:
             bool: Whether it is a :class:`GenericBitMask`.
         """
         return self._value and issubclass(type(self._value), GenericBitMask)
+
+
+class GenericUBIntType(GenericType):
+    r"""Base class for a generic Uint type.
+
+    example:
+        class Uint8(GenericUBIntType):
+            _buff_size = 1
+
+        Uint8.pack(255)
+        b'\xff'
+    """
+
+    _buff_size = 0
+
+    def _pack(self):
+        return self.value.to_bytes(self._buff_size, byteorder='big')
+
+    def unpack(self, buff, offset=0):
+        """Unpack *buff* into this object.
+
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        try:
+            self._value = int.from_bytes(buff[offset:offset + self._buff_size],
+                                         byteorder='big')
+            if self.enum_ref:
+                self._value = self.enum_ref(self._value)
+        except (struct.error, TypeError, ValueError) as e:
+            msg = '{}; fmt = {}, buff = {}, offset = {}.'.format(
+                e, 'UBInt' + 8 * self._buff_size, buff, offset)
+            raise UnpackException(msg)
+
+    def _get_size(self):
+        return self._buff_size
 
 
 class MetaStruct(type):
@@ -462,10 +532,10 @@ class GenericStruct(object, metaclass=MetaStruct):
               too.
     """
 
-    def __init__(self):
+    def __init__(self, value=None):
         """Contructor takes no argument and stores attributes' deep copies."""
-        for name, value in self.get_class_attributes():
-            setattr(self, name, deepcopy(value))
+        for name, att_value in self.get_class_attributes():
+            setattr(self, name, deepcopy(att_value))
 
     def __eq__(self, other):
         """Check whether two structures have the same structure and values.
@@ -588,6 +658,23 @@ class GenericStruct(object, metaclass=MetaStruct):
                 raise UnpackException(msg)
         return size
 
+    def _work_or_pass(self, value, work_func):
+        if value is None:
+            return getattr(self, work_func)()
+        elif isinstance(value, type(self)):
+            return getattr(value, work_func)()
+        try:
+            new_item = type(self)(value)
+        except:  # noqa - there is no generic Initialization Exception...
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+        return getattr(new_item, work_func)()
+
+    def _get_size(self):
+        return sum(cls_val.get_size(obj_val)
+                   for obj_val, cls_val in self._get_attributes())
+
     def get_size(self, value=None):
         """Calculate the total struct size in bytes.
 
@@ -604,15 +691,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             Exception: If the struct is not valid.
         """
-        if value is None:
-            return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
-                       self._get_attributes())
-        elif isinstance(value, type(self)):
-            return value.get_size()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        return self._work_or_pass(value, '_get_size')
 
     def pack(self, value=None):
         """Pack the struct in a binary representation.
@@ -627,23 +706,19 @@ class GenericStruct(object, metaclass=MetaStruct):
         Raises:
             :exc:`~.exceptions.ValidationError`: If validation fails.
         """
-        if value is None:
-            if not self.is_valid():
-                error_msg = "Error on validation prior to pack() on class "
-                error_msg += "{}.".format(type(self).__name__)
-                raise ValidationError(error_msg)
-            else:
-                message = b''
-                # pylint: disable=no-member
-                for instance_attr, class_attr in self._get_attributes():
-                    message += class_attr.pack(instance_attr)
-                return message
-        elif isinstance(value, type(self)):
-            return value.pack()
+        return self._work_or_pass(value, '_pack')
+
+    def _pack(self):
+        if not self.is_valid():
+            error_msg = "Error on validation prior to pack() on class "
+            error_msg += "{}.".format(type(self).__name__)
+            raise ValidationError(error_msg)
         else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+            message = b''
+            # pylint: disable=no-member
+            for instance_attr, class_attr in self._get_attributes():
+                message += class_attr.pack(instance_attr)
+            return message
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -719,34 +794,9 @@ class GenericMessage(GenericStruct):
         # pylint: disable=unreachable
         return super().is_valid() and self._validate_message_length()
 
-    def pack(self, value=None):
-        """Pack the message into a binary data.
-
-        One of the basic operations on a Message is the pack operation. During
-        the packing process, we convert all message attributes to binary
-        format.
-
-        Since that this is usually used before sending the message to a switch,
-        here we also call :meth:`update_header_length`.
-
-        .. seealso:: This method call its parent's :meth:`GenericStruct.pack`
-            after :meth:`update_header_length`.
-
-        Returns:
-            bytes: A binary data thats represents the Message.
-
-        Raises:
-            Exception: If there are validation errors.
-        """
-        if value is None:
-            self.update_header_length()
-            return super().pack()
-        elif isinstance(value, type(self)):
-            return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+    def _pack(self):
+        self.update_header_length()
+        return super()._pack()
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

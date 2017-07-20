@@ -14,5 +14,5 @@ class TestStatsRequest(TestStruct):
         super().set_raw_dump_file('v0x01', 'ofpt_stats_request')
         super().set_raw_dump_object(StatsRequest, xid=1,
                                     body_type=StatsTypes.OFPST_FLOW,
-                                    flags=1, body=[])
+                                    flags=1, body=b'')
         super().set_minimum_size(12)

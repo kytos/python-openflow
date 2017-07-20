@@ -100,4 +100,4 @@ class FlowMod(GenericMessage):
         self.buffer_id = buffer_id
         self.out_port = out_port
         self.flags = flags
-        self.actions = [] if actions is None else actions
+        self.actions = ListOfActions() if actions is None else actions

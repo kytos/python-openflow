@@ -6,6 +6,7 @@ from enum import IntEnum
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
+from pyof.v0x04.common.flow_match import OxmTLV
 
 # Third-party imports
 
@@ -278,14 +279,11 @@ class ActionSetField(GenericStruct):
     action_type = UBInt16(ActionType.OFPAT_SET_FIELD, enum_ref=ActionType)
     #: Length is padded to 64 bits.
     length = UBInt16()
+    pad = Pad(length=4)
     #: OXM TLV - Make compiler happy
-    field1 = UBInt8()
-    field2 = UBInt8()
-    field3 = UBInt8()
-    field4 = UBInt8()
+    field = OxmTLV()
 
-    def __init__(self, length=None, field1=None, field2=None, field3=None,
-                 field4=None):
+    def __init__(self, length=None, field=None):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -293,17 +291,27 @@ class ActionSetField(GenericStruct):
                           oxm_len bytes containing a single OXM TLV, then
                           exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4)
                           (between 0 and 7) bytes of all-zero bytes
-            field1 (int): OXM field.
-            field2 (int): OXM field.
-            field3 (int): OXM field.
-            field4 (int): OXM field.
+            field  (OcmTLV): OXM field.
         """
         super().__init__()
         self.length = length
-        self.field1 = field1
-        self.field2 = field2
-        self.field3 = field3
-        self.field4 = field4
+        self.field = field
+
+    def _get_size(self):
+        super_size = super()._get_size()
+        return super_size + (8 - (super_size % 8)) % 8
+
+    def _update_length(self):
+        self.length = self._get_size()
+
+    def _pack(self):
+        self._update_length()
+        packet = super()._pack()
+        super_size = len(packet)
+        lacking_bytes = self._get_size() - super_size
+        if lacking_bytes != 0:
+            packet += Pad(lacking_bytes).pack()
+        return packet
 
 
 class ActionSetQueue(GenericStruct):
