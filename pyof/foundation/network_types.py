@@ -8,7 +8,7 @@ from pyof.foundation.basic_types import (
     BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
 from pyof.foundation.exceptions import PackException
 
-__all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'TLVWithSubType', 'LLDP')
+__all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType', 'LLDP')
 
 
 class Ethernet(GenericStruct):
@@ -217,7 +217,7 @@ class IPv4(GenericStruct):
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",
                  options=b'', data=b''):
-        """The contructor receives the parameters below.
+        """The constructor receives the parameters below.
 
         Args:
             version (int): IP protocol version. Defaults to 4.
@@ -333,6 +333,75 @@ class IPv4(GenericStruct):
         else:
             self.data = self.options.value
             self.options = b''
+
+
+class VLAN(GenericStruct):
+    """802.1q VLAN header."""
+
+    #: tpid (:class:`UBInt16`): Tag Protocol Identifier
+    tpid = UBInt16(33024)
+    #: _tci (:class:`UBInt16`): Tag Control Information - has the
+    #: Priority Code Point, DEI/CFI bit and the VLAN ID
+    _tci = UBInt16()
+
+    def __init__(self, pcp=None, cfi=None, vid=None):
+        """The constructor receives the parameters below.
+
+        Args:
+            tpid (int): Tag Protocol Identifier. Defaults to 0x8100 for 802.1q.
+            pcp (int): 802.1p Priority Code Point. Defaults to 0 for Best
+                       Effort Queue.
+            cfi (int): Canonical Format Indicator. Defaults to 0 for Ethernet.
+            vid (int): VLAN ID. If no VLAN is specified, value is 0.
+        """
+        super().__init__()
+        self.tpid = 33024
+        self.pcp = pcp
+        self.cfi = cfi
+        self.vid = vid
+
+    def pack(self, value=None):
+        """Pack the struct in a binary representation.
+
+        Merge some fields to ensure correct packing.
+
+        Returns:
+            bytes: Binary representation of this instance.
+        """
+        if self.pcp is None and self.cfi is None and self.vid is None:
+            return b''
+        self.pcp = self.pcp if self.pcp is not None else 0
+        self.cfi = self.cfi if self.cfi is not None else 0
+        self.vid = self.vid if self.vid is not None else 0
+        self._tci = self.pcp << 13 | self.cfi << 12 | self.vid
+        return super().pack()
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary struct into this object's attributes.
+
+        Return the values instead of the lib's basic types.
+
+        After unpacking, the abscence of a `tpid` value causes the assignment
+        of `None` to the field values.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        super().unpack(buff, offset)
+        if self.tpid.value:
+            self.tpid = self.tpid.value
+            self.pcp = self._tci.value >> 13
+            self.cfi = (self._tci.value >> 12) & 1
+            self.vid = self._tci.value & 4095
+        else:
+            self.tpid = 33024
+            self.pcp = None
+            self.cfi = None
+            self.vid = None
 
 
 class TLVWithSubType(GenericTLV):
