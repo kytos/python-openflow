@@ -15,7 +15,7 @@ from pyof.foundation.basic_types import (
 
 
 __all__ = ('Ipv6ExtHdrFlags', 'Match', 'OxmOfbMatchField', 'MatchType',
-           'OxmExperimenterHeader', 'OxmMatchFields', 'VlanId')
+           'OxmExperimenterHeader', 'OxmMatchFields', 'VlanId', 'OxmTLV')
 
 
 class Ipv6ExtHdrFlags(Enum):
