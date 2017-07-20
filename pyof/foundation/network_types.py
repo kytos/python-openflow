@@ -45,6 +45,9 @@ class VLAN(GenericStruct):
         Returns:
             bytes: Binary representation of this instance.
         """
+        if isinstance(value, type(self)):
+            return value.pack()
+
         if self.pcp is None and self.cfi is None and self.vid is None:
             return b''
         self.pcp = self.pcp if self.pcp is not None else 0
@@ -104,7 +107,7 @@ class Ethernet(GenericStruct):
     ether_type = UBInt16()
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, vlan=None,
+    def __init__(self, destination=None, source=None, vlan=VLAN(),
                  ether_type=None, data=b''):
         """Create an instance and set its attributes.
 
