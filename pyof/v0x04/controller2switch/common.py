@@ -23,8 +23,8 @@ __all__ = ('ConfigFlags', 'ControllerRole', 'Bucket', 'BucketCounter',
            'NextTablesProperty', 'ActionsProperty', 'OxmProperty',
            'ListOfProperty', 'TableFeatures')
 
-
 # Enum
+
 
 class ConfigFlags(IntEnum):
     """Handling of IP fragments."""
@@ -392,7 +392,7 @@ class Property(GenericStruct):
         """Constructor of Generic Instruction receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
         """
         super().__init__()
@@ -445,13 +445,13 @@ class InstructionsProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_INSTRUCTIONS,
                  instruction_ids=None):
-        r"""Constructor of InstructionProperty receives the parameters bellow.
+        """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            instruction_ids (:class:`ListOfInstruction`):
-                List of Instruction instances.
+            next_table_ids(|ListOfInstruction_v0x04|):
+                List of InstructionGotoTable instances.
         """
         super().__init__(property_type=property_type)
         self.instruction_ids = instruction_ids if instruction_ids else []
@@ -473,9 +473,9 @@ class NextTablesProperty(Property):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            next_table_ids (:class:`ListOfInstruction`):
+            next_table_ids (|ListOfInstruction_v0x04|):
                 List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
@@ -501,9 +501,9 @@ class ActionsProperty(Property):
         """Constructor of ActionsProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            action_ids(~pyof.v0x04.common.action.ListOfActions):
+            action_ids(|ListOfActions_v0x04|):
                 List of Action instances.
         """
         super().__init__(property_type)
@@ -530,9 +530,10 @@ class OxmProperty(Property):
         """Constructor of OxmProperty receives the parameters bellow.
 
         Args:
-            type(~pyof.v0x04.controller2switch.common.TableFeaturePropType):
+            type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
-            oxm_ids(ListOfOxmHeader): List of OxmHeader instances.
+            oxm_ids(|ListOfOxmHeader_v0x04|):
+                List of OxmHeader instances.
         """
         super().__init__(property_type)
         self.oxm_ids = oxm_ids
@@ -549,8 +550,7 @@ class ListOfProperty(FixedTypeList):
         """The constructor just assigns parameters to object attributes.
 
         Args:
-            items (~pyof.v0x04.controller2switch.common.Property):
-                Instance or a list of instances.
+            items (|Property_v0x04|): Instance or a list of instances.
         """
         super().__init__(pyof_class=Property, items=items)
 
