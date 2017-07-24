@@ -7,7 +7,7 @@ from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
 from pyof.foundation.constants import VLAN_TPID
-from pyof.foundation.exceptions import PackException
+from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType', 'LLDP')
 
@@ -23,6 +23,10 @@ class VLAN(GenericStruct):
 
     def __init__(self, pcp=None, cfi=None, vid=None):
         """The constructor receives the parameters below.
+
+        If no arguments are set for a particular instance, it is interpreted as
+        abscence of VLAN information, and the pack() method will return an
+        empty binary string.
 
         Args:
             tpid (int): Tag Protocol Identifier. Defaults to 0x8100 for 802.1q.
@@ -42,6 +46,10 @@ class VLAN(GenericStruct):
 
         Merge some fields to ensure correct packing.
 
+        If no arguments are set for a particular instance, it is interpreted as
+        abscence of VLAN information, and the pack() method will return an
+        empty binary string.
+
         Returns:
             bytes: Binary representation of this instance.
         """
@@ -56,13 +64,20 @@ class VLAN(GenericStruct):
         self._tci = self.pcp << 13 | self.cfi << 12 | self.vid
         return super().pack()
 
+    def _validate(self):
+        """Assure this is a 802.1q VLAN header instance."""
+        if self.tpid.value != VLAN_TPID:
+            raise UnpackException
+        return
+
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
 
         Return the values instead of the lib's basic types.
 
         After unpacking, the abscence of a `tpid` value causes the assignment
-        of `None` to the field values.
+        of None to the field values to indicate that there is no VLAN
+        information.
 
         Args:
             buff (bytes): Binary buffer.
@@ -73,6 +88,7 @@ class VLAN(GenericStruct):
         """
         super().unpack(buff, offset)
         if self.tpid.value:
+            self._validate()
             self.tpid = self.tpid.value
             self.pcp = self._tci.value >> 13
             self.cfi = (self._tci.value >> 12) & 1
@@ -150,8 +166,12 @@ class Ethernet(GenericStruct):
             offset (int): Where to begin unpacking.
 
         Raises:
-            Exception: If there is a struct unpacking error.
+            UnpackException: If there is a struct unpacking error.
         """
+        # Checking if the EtherType bytes are actually equal to VLAN_TPID -
+        # indicating that the packet is tagged. If it is not, we insert the
+        # equivalent to 'NULL VLAN data' (\x00\x00\x00\x00) to enable the
+        # correct unpacking process.
         if buff[12:16] != VLAN_TPID.to_bytes(2, 'big'):
             buff = buff[0:12] + b'\x00\x00\x00\x00' + buff[12:]
 

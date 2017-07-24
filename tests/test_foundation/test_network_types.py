@@ -2,6 +2,7 @@
 import unittest
 
 from pyof.foundation.basic_types import BinaryData
+from pyof.foundation.exceptions import UnpackException
 from pyof.foundation.network_types import VLAN, Ethernet, GenericTLV, IPv4
 
 
@@ -81,6 +82,13 @@ class TestVLAN(unittest.TestCase):
         unpacked = VLAN()
         unpacked.unpack(raw)
         self.assertEqual(unpacked, expected)
+
+    def test_unpack_wrong_tpid(self):
+        """Raise UnpackException if the tpid is not VLAN_TPID."""
+        raw = b'\x12\x34\xa0{'
+        vlan = VLAN()
+        with self.assertRaises(UnpackException):
+            vlan.unpack(raw)
 
 
 class TestIPv4(unittest.TestCase):
