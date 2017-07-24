@@ -421,9 +421,6 @@ class BinaryData(GenericType):
         Raises:
             ValueError: If given value is not bytes.
         """
-        if value is None:
-            value = b''
-
         value = self._pack_if_necessary(value)
         super().__init__(value)
 
@@ -431,6 +428,8 @@ class BinaryData(GenericType):
     def _pack_if_necessary(value):
         if hasattr(value, 'pack') and callable(value.pack):
             value = value.pack()
+        elif not value:
+            value = b''
 
         if not isinstance(value, bytes):
             msg = 'BinaryData value must contain bytes or have pack method; '
