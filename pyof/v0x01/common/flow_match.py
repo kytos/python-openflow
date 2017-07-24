@@ -88,10 +88,10 @@ class Match(GenericStruct):
     nw_proto = UBInt8(0)
     #: Align to 64-bits.
     pad2 = Pad(2)
-    #: IP source address. (default: '0.0.0.0/32')
-    nw_src = IPAddress()
-    #: IP destination address. (default: '0.0.0.0/32')
-    nw_dst = IPAddress()
+    #: IP source address. (default: '0.0.0.0/0')
+    nw_src = IPAddress('0.0.0.0/0')
+    #: IP destination address. (default: '0.0.0.0/0')
+    nw_dst = IPAddress('0.0.0.0/0')
     #: TCP/UDP source port. (default: 0)
     tp_src = UBInt16(0)
     #: TCP/UDP destination port. (default: 0)
@@ -113,8 +113,8 @@ class Match(GenericStruct):
             nw_tos (int): IP ToS (actually DSCP field, 6 bits). (default: 0)
             nw_proto (int): IP protocol or lower 8 bits of ARP opcode.
                 (default: 0)
-            nw_src (IPAddress): IP source address. (default: '0.0.0.0/32')
-            nw_dst (IPAddress): IP destination address. (default: '0.0.0.0/32')
+            nw_src (IPAddress): IP source address. (default: '0.0.0.0/0')
+            nw_dst (IPAddress): IP destination address. (default: '0.0.0.0/0')
             tp_src (int): TCP/UDP source port. (default: 0)
             tp_dst (int): TCP/UDP destination port. (default: 0)
         """
@@ -175,13 +175,24 @@ class Match(GenericStruct):
         default_value = getattr(Match, field)
         if isinstance(default_value, IPAddress):
             if field == 'nw_dst':
-                self.wildcards |= FlowWildCards.OFPFW_NW_DST_MASK
                 shift = FlowWildCards.OFPFW_NW_DST_SHIFT
+                base_mask = FlowWildCards.OFPFW_NW_DST_MASK
             else:
-                self.wildcards |= FlowWildCards.OFPFW_NW_SRC_MASK
                 shift = FlowWildCards.OFPFW_NW_SRC_SHIFT
+                base_mask = FlowWildCards.OFPFW_NW_SRC_MASK
+
+            # First we clear the nw_dst/nw_src mask related bits on the current
+            # wildcard by setting 0 on all of them while we keep all other bits
+            # as they are.
+            self.wildcards &= FlowWildCards.OFPFW_ALL ^ base_mask
+
+            # nw_dst and nw_src wildcard fields have 6 bits each.
+            # "base_mask" is the 'all ones' for those 6 bits.
+            # Once we know the netmask, we can calculate the these 6 bits
+            # wildcard value and reverse them in order to insert them at the
+            # correct position in self.wildcards
             wildcard = (value.max_prefix - value.netmask) << shift
-            self.wildcards -= wildcard
+            self.wildcards |= wildcard
         else:
             wildcard_field = "OFPFW_{}".format(field.upper())
             wildcard = getattr(FlowWildCards, wildcard_field)
