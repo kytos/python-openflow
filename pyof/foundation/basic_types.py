@@ -428,7 +428,7 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):  # noqa
+    def __init__(self, value=None):  # noqa
         """The constructor takes the parameter below.
 
         Args:
@@ -438,9 +438,22 @@ class BinaryData(GenericType):
             ValueError: If given value is not bytes.
 
         """
-        if not isinstance(value, bytes):
-            raise ValueError('BinaryData must contain bytes.')
+        value = self._pack(value)
         super().__init__(value)
+
+    @staticmethod
+    def _pack(value):
+        if hasattr(value, 'pack') and callable(value.pack):
+            value = value.pack()
+        elif value is None:
+            value = b''
+
+        if not isinstance(value, bytes):
+            msg = 'BinaryData value must contain bytes or have pack method. '
+            msg += 'Received type {} value: "{}"'.format(type(value), value)
+            raise ValueError(msg)
+
+        return value
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
@@ -452,18 +465,9 @@ class BinaryData(GenericType):
             :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
 
         """
-        if isinstance(value, type(self)):
-            return value.pack()
-
         if value is None:
-            value = self._value
-
-        if value:
-            if isinstance(value, bytes):
-                return value
-            raise ValueError('BinaryData must contain bytes.')
-
-        return b''
+            return self._value
+        return self._pack(value)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
