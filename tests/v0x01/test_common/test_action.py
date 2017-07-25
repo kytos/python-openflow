@@ -3,122 +3,80 @@ from pyof.v0x01.common.action import (
     ActionDLAddr, ActionEnqueue, ActionNWAddr, ActionNWTos, ActionOutput,
     ActionTPPort, ActionType, ActionVendorHeader, ActionVlanPCP, ActionVlanVid)
 from pyof.v0x01.common.phy_port import Port
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestActionOutput(TestStruct):
+class TestActionOutput(TestMsgDumpFile):
     """ActionOutput message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_output')
-        super().set_raw_dump_object(ActionOutput, port=Port.OFPP_CONTROLLER,
-                                    max_length=8)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_output.dat'
+    obj = ActionOutput(port=Port.OFPP_CONTROLLER, max_length=8)
+    min_size = 8
 
 
-class TestActionEnqueue(TestStruct):
+class TestActionEnqueue(TestMsgDumpFile):
     """ActionEnqueue message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_enqueue')
-        super().set_raw_dump_object(ActionEnqueue, port=Port.OFPP_CONTROLLER,
-                                    queue_id=4)
-        super().set_minimum_size(16)
+    dumpfile = 'v0x01/ofpt_action_enqueue.dat'
+    obj = ActionEnqueue(port=Port.OFPP_CONTROLLER, queue_id=4)
+    min_size = 16
 
 
-class TestActionVlanVid(TestStruct):
+class TestActionVlanVid(TestMsgDumpFile):
     """ActionVlanVid message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_vid')
-        super().set_raw_dump_object(ActionVlanVid, vlan_id=5)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_vlan_vid.dat'
+    obj = ActionVlanVid(vlan_id=5)
+    min_size = 8
 
 
-class TestActionVlanPCP(TestStruct):
+class TestActionVlanPCP(TestMsgDumpFile):
     """ActionVlanPCP message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_vlan_pcp')
-        super().set_raw_dump_object(ActionVlanPCP, vlan_pcp=2)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_vlan_pcp.dat'
+    obj = ActionVlanPCP(vlan_pcp=2)
+    min_size = 8
 
 
-class TestActionDLAddr(TestStruct):
+class TestActionDLAddr(TestMsgDumpFile):
     """ActionDLAddr message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_dl_addr')
-        super().set_raw_dump_object(ActionDLAddr,
-                                    dl_addr_type=ActionType.OFPAT_SET_DL_SRC,
-                                    dl_addr=[12, 12, 12, 12, 12, 12])
-        super().set_minimum_size(16)
+    dumpfile = 'v0x01/ofpt_action_dl_addr.dat'
+    obj = ActionDLAddr(action_type=ActionType.OFPAT_SET_DL_SRC,
+                       dl_addr=[12, 12, 12, 12, 12, 12])
+    min_size = 16
 
 
-class TestActionNWAddr(TestStruct):
+class TestActionNWAddr(TestMsgDumpFile):
     """ActionNWAddr message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_nw_addr')
-        super().set_raw_dump_object(ActionNWAddr,
-                                    nw_addr_type=ActionType.OFPAT_SET_NW_SRC,
-                                    nw_addr=[12, 12, 12, 12, 12, 12])
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_nw_addr.dat'
+    obj = ActionNWAddr(action_type=ActionType.OFPAT_SET_NW_SRC,
+                       nw_addr=[12, 12, 12, 12, 12, 12])
+    min_size = 8
 
 
-class TestActionNWTos(TestStruct):
+class TestActionNWTos(TestMsgDumpFile):
     """ActionNWTos message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_nw_tos')
-        super().set_raw_dump_object(ActionNWTos,
-                                    nw_tos_type=ActionType.OFPAT_SET_NW_SRC,
-                                    nw_tos=123456)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_nw_tos.dat'
+    obj = ActionNWTos(action_type=ActionType.OFPAT_SET_NW_SRC,
+                      nw_tos=123456)
+    min_size = 8
 
 
-class TestActionTPPort(TestStruct):
+class TestActionTPPort(TestMsgDumpFile):
     """ActionTPPort message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_tp_port')
-        super().set_raw_dump_object(ActionTPPort,
-                                    tp_port_type=ActionType.OFPAT_SET_TP_SRC,
-                                    tp_port=8888)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_tp_port.dat'
+    obj = ActionTPPort(action_type=ActionType.OFPAT_SET_TP_SRC,
+                       tp_port=8888)
+    min_size = 8
 
 
-class TestActionVendorHeader(TestStruct):
+class TestActionVendorHeader(TestMsgDumpFile):
     """ActionVendorHeader message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_action_vendor_header')
-        super().set_raw_dump_object(ActionVendorHeader, length=16, vendor=1)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_action_vendor_header.dat'
+    obj = ActionVendorHeader(length=16, vendor=1)
+    min_size = 8

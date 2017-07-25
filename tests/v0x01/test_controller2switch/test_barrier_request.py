@@ -1,15 +1,11 @@
 """Barrier request message tests."""
 from pyof.v0x01.controller2switch.barrier_request import BarrierRequest
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestBarrierRequest(TestStruct):
-    """Barrier reply message tests (also those in :class:`.TestDump`)."""
+class TestBarrierRequest(TestMsgDumpFile):
+    """Barrier request message tests."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_barrier_request')
-        super().set_raw_dump_object(BarrierRequest, xid=5)
-        super().set_minimum_size(8)
+    dumpfile = 'v0x01/ofpt_barrier_request.dat'
+    obj = BarrierRequest(xid=5)
+    min_size = 8

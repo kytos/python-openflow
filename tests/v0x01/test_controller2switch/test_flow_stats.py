@@ -2,21 +2,7 @@
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.controller2switch.common import FlowStats, StatsTypes
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
-from tests.test_struct import TestStruct
-
-
-class TestFlowStats(TestStruct):
-    """Test class for TestFlowStats."""
-
-    @classmethod
-    def setUpClass(cls):
-        """[Controller2Switch/FlowStats] - size 88."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_flow_stats_reply')
-        super().set_raw_dump_object(StatsReply, xid=12,
-                                    body_type=StatsTypes.OFPST_FLOW,
-                                    flags=0, body=_get_flow_stats())
-        super().set_minimum_size(12)
+from tests.test_struct import TestMsgDumpFile
 
 
 def _get_flow_stats():
@@ -36,3 +22,13 @@ def _get_match():
                  nw_tos=1, nw_proto=1,
                  nw_src='192.168.0.1', nw_dst='192.168.0.1',
                  tp_src=80, tp_dst=80)
+
+
+class TestFlowStats(TestMsgDumpFile):
+    """Test class for TestFlowStats."""
+
+    dumpfile = 'v0x01/ofpt_flow_stats_reply.dat'
+    obj = StatsReply(xid=12,
+                     body_type=StatsTypes.OFPST_FLOW,
+                     flags=0, body=_get_flow_stats())
+    min_size = 12

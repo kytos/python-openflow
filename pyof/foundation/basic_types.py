@@ -171,19 +171,8 @@ class DPID(GenericType):
         self._value = ':'.join(hexas)
 
 
-class Char(GenericType):
-    """Build a double char type according to the length."""
-
-    def __init__(self, value=None, length=0):
-        """The constructor takes the optional parameters below.
-
-        Args:
-            value: The character to be build.
-            length (int): Character size.
-        """
-        super().__init__(value)
-        self.length = length
-        self._fmt = '!{}{}'.format(self.length, 's')
+class CharStringBase(GenericType):
+    """A null terminated ascii char string."""
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
@@ -229,6 +218,19 @@ class Char(GenericType):
             raise Exception("%s: %s" % (offset, buff))
 
         self._value = unpacked_data.decode('ascii').rstrip('\0')
+
+
+def Char(value=None, length=0):
+    """Return a CharString class with given length and initial value."""
+    string_length = length
+
+    class CharString(CharStringBase):
+        """Class for null terminated ascii strings of fixed length."""
+
+        length = string_length
+        _fmt = '!{}{}'.format(length, 's')
+
+    return CharString(value)
 
 
 class IPAddress(GenericType):

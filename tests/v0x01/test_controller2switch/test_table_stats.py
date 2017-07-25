@@ -3,25 +3,19 @@ from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.v0x01.common.flow_match import FlowWildCards
 from pyof.v0x01.controller2switch.common import StatsTypes, TableStats
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestTableStats(TestStruct):
+class TestTableStats(TestMsgDumpFile):
     """Test class for TableStats."""
 
-    @classmethod
-    def setUpClass(cls):
-        """[Controller2Switch/TableStats] - size 64."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_table_stats')
-        super().set_raw_dump_object(StatsReply, xid=14,
-                                    body_type=StatsTypes.OFPST_TABLE,
-                                    flags=0, body=_get_table_stats())
-        super().set_minimum_size(12)
+    dumpfile = 'v0x01/ofpt_table_stats.dat'
 
-
-def _get_table_stats():
-    return TableStats(table_id=1,
-                      name='X' * OFP_MAX_TABLE_NAME_LEN,
-                      wildcards=FlowWildCards.OFPFW_TP_DST, max_entries=1,
-                      active_count=10, count_lookup=10, count_matched=0)
+    table_stats = TableStats(
+        table_id=1,
+        name='X' * OFP_MAX_TABLE_NAME_LEN,
+        wildcards=FlowWildCards.OFPFW_TP_DST, max_entries=1,
+        active_count=10, count_lookup=10, count_matched=0)
+    obj = StatsReply(xid=14, body_type=StatsTypes.OFPST_TABLE,
+                     flags=0, body=table_stats)
+    min_size = 12

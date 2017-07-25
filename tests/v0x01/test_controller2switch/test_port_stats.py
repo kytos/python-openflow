@@ -1,27 +1,20 @@
 """Test for PortStats structure."""
 from pyof.v0x01.controller2switch.common import PortStats, StatsTypes
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestPortStats(TestStruct):
+class TestPortStats(TestMsgDumpFile):
     """Test for PortStats structure."""
 
-    @classmethod
-    def setUpClass(cls):
-        """[Controller2Switch/PortStats] - size 104."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_port_stats')
-        super().set_raw_dump_object(StatsReply, xid=13,
-                                    body_type=StatsTypes.OFPST_PORT,
-                                    flags=0, body=_get_port_stats())
-        super().set_minimum_size(12)
+    dumpfile = 'v0x01/ofpt_port_stats.dat'
 
-
-def _get_port_stats():
-    """Function used to return a PortStats instance."""
-    return PortStats(port_no=80, rx_packets=5, tx_packets=10,
-                     rx_bytes=200, tx_bytes=400, rx_dropped=0,
-                     tx_dropped=0, rx_errors=0, tx_errors=0,
-                     rx_frame_err=0, rx_over_err=0,
-                     rx_crc_err=0, collisions=0)
+    port_stats = PortStats(port_no=80, rx_packets=5, tx_packets=10,
+                           rx_bytes=200, tx_bytes=400, rx_dropped=0,
+                           tx_dropped=0, rx_errors=0, tx_errors=0,
+                           rx_frame_err=0, rx_over_err=0,
+                           rx_crc_err=0, collisions=0)
+    obj = StatsReply(xid=13,
+                     body_type=StatsTypes.OFPST_PORT,
+                     flags=0, body=port_stats)
+    min_size = 12

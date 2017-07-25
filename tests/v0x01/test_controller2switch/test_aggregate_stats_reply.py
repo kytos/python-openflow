@@ -1,20 +1,16 @@
 """Test for AggregateStatsReply message."""
 from pyof.v0x01.controller2switch.common import AggregateStatsReply, StatsTypes
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
-from tests.test_struct import TestStruct
+from tests.test_struct import TestMsgDumpFile
 
 
-class TestAggregateStatsReply(TestStruct):
+class TestAggregateStatsReply(TestMsgDumpFile):
     """Test for AggregateStatsReply message."""
 
-    @classmethod
-    def setUpClass(cls):
-        """[Controller2Switch/AggregateStatsReply] - size 24."""
-        aggregate_stats_reply = AggregateStatsReply(packet_count=5,
-                                                    byte_count=1, flow_count=8)
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_aggregate_stats_reply')
-        super().set_raw_dump_object(StatsReply, xid=17,
-                                    body_type=StatsTypes.OFPST_AGGREGATE,
-                                    flags=0, body=aggregate_stats_reply)
-        super().set_minimum_size(12)
+    dumpfile = 'v0x01/ofpt_aggregate_stats_reply.dat'
+    aggregate_stats_reply = AggregateStatsReply(packet_count=5,
+                                                byte_count=1, flow_count=8)
+    obj = StatsReply(xid=17,
+                     body_type=StatsTypes.OFPST_AGGREGATE,
+                     flags=0, body=aggregate_stats_reply)
+    min_size = 12

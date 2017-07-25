@@ -3,33 +3,7 @@ from pyof.v0x01.common.action import ActionOutput
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.flow_mod import FlowMod, FlowModCommand
-from tests.test_struct import TestStruct
-
-
-class TestFlowAdd(TestStruct):
-    """Flow addition message tests (also those in :class:`.TestDump`)."""
-
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_flow_add')
-        kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_ADD)
-        super().set_raw_dump_object(FlowMod, **kwargs)
-        super().set_minimum_size(72)
-
-
-class TestFlowDelete(TestStruct):
-    """Flow deletion message tests (also those in :class:`.TestDump`)."""
-
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_flow_delete')
-        kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_DELETE)
-        super().set_raw_dump_object(FlowMod, **kwargs)
-        # No need to test minimum size again.
+from tests.test_struct import TestMsgDumpFile
 
 
 def _get_flowmod_kwargs(command):
@@ -56,3 +30,20 @@ def _get_actions():
     """Return a List of actions registered by flow object."""
     action = ActionOutput(port=65533, max_length=65535)
     return [action]
+
+
+class TestFlowAdd(TestMsgDumpFile):
+    """Flow addition message tests (also those in :class:`.TestDump`)."""
+
+    dumpfile = 'v0x01/ofpt_flow_add.dat'
+    kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_ADD)
+    obj = FlowMod(**kwargs)
+    min_size = 72
+
+
+class TestFlowDelete(TestMsgDumpFile):
+    """Flow deletion message tests (also those in :class:`.TestDump`)."""
+
+    dumpfile = 'v0x01/ofpt_flow_delete.dat'
+    kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_DELETE)
+    obj = FlowMod(**kwargs)
