@@ -12,3 +12,13 @@ build:
     dependencies:
         override:
             - true
+    tests:
+        before:
+            - pip install coverage
+        override:
+            -
+                command: 'tox'
+                coverage:
+                    file: '.coverage'
+                    config_file: '.coveragerc'
+                    format: 'py-cc'
