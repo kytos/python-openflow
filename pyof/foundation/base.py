@@ -80,7 +80,7 @@ class GenericType:
         return self._value >= other
 
     def __lt__(self, other):
-        return self._value <= other
+        return self._value < other
 
     def __le__(self, other):
         return self._value <= other
