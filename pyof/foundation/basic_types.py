@@ -506,9 +506,6 @@ class FixedTypeList(list, GenericStruct):
 
         if value is None:
             value = self
-        else:
-            container = type(self)(items=value)
-            value = container
 
         bin_message = b''
         try:
