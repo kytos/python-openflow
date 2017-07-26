@@ -172,6 +172,12 @@ class TestBinaryData(unittest.TestCase):
         actual = BinaryData().pack()
         self.assertEqual(expected, actual)
 
+    def test_none_value(self):
+        """Pack of BinaryData initialized with None should be empty bytes."""
+        expected = b''
+        actual = BinaryData(None).pack()
+        self.assertEqual(expected, actual)
+
     def test_pack_bytes(self):
         """Test packing some bytes."""
         expected = b'forty two'
