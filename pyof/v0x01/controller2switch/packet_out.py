@@ -98,7 +98,7 @@ class PacketOut(GenericMessage):
                 attribute = deepcopy(class_attribute)
                 if attribute_name == 'actions':
                     length = self.actions_len.value
-                    attribute.unpack(buff[begin:begin + length])
+                    attribute.unpack(buff[begin:begin+length])
                 else:
                     attribute.unpack(buff, begin)
                 setattr(self, attribute_name, attribute)
