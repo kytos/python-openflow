@@ -124,7 +124,7 @@ class Ethernet(GenericStruct):
     data = BinaryData()
 
     def __init__(self, destination=None, source=None, vlan=VLAN(),
-                 ether_type=None, data=b''):
+                 ether_type=None, data=None):
         """Create an instance and set its attributes.
 
         Args:
@@ -142,7 +142,7 @@ class Ethernet(GenericStruct):
         self.source = source
         self.vlan = vlan
         self.ether_type = ether_type
-        self.data = data
+        self.data = b'' if data is None else data
 
     def get_hash(self):
         """Calculate a hash and returns it.
@@ -191,7 +191,7 @@ class GenericTLV(GenericStruct):
     type and value.
     """
 
-    def __init__(self, tlv_type=127, value=BinaryData()):
+    def __init__(self, tlv_type=127, value=None):
         """Create an instance and set its attributes.
 
         Args:
@@ -201,7 +201,7 @@ class GenericTLV(GenericStruct):
         """
         super().__init__()
         self.tlv_type = tlv_type
-        self._value = value
+        self._value = BinaryData() if value is None else value
 
     @property
     def value(self):
@@ -332,8 +332,8 @@ class IPv4(GenericStruct):
     def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0, # noqa
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",
-                 options=b'', data=b''):
-        """The constructor receives the parameters below.
+                 options=None, data=None):
+        """The contructor receives the parameters below.
 
         Args:
             version (int): IP protocol version. Defaults to 4.
@@ -366,8 +366,8 @@ class IPv4(GenericStruct):
         self.checksum = checksum
         self.source = source
         self.destination = destination
-        self.options = options
-        self.data = data
+        self.options = BinaryData() if options is None else options
+        self.data = BinaryData() if data is None else data
 
     def _update_checksum(self):
         """Update the packet checksum to enable integrity check."""
@@ -459,7 +459,7 @@ class TLVWithSubType(GenericTLV):
     :attr:`sub_type` field and a new :attr:`sub_value` field.
     """
 
-    def __init__(self, tlv_type=1, sub_type=7, sub_value=BinaryData()):
+    def __init__(self, tlv_type=1, sub_type=7, sub_value=None):
         """Create an instance and set its attributes.
 
         Args:
@@ -470,7 +470,7 @@ class TLVWithSubType(GenericTLV):
         """
         super().__init__(tlv_type)
         self.sub_type = sub_type
-        self.sub_value = sub_value
+        self.sub_value = BinaryData() if sub_value is None else sub_value
 
     @property
     def value(self):

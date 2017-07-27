@@ -29,7 +29,7 @@ class PacketOut(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=NO_BUFFER, in_port=Port.OFPP_NONE,
-                 actions=None, data=b''):
+                 actions=None, data=None):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -48,7 +48,7 @@ class PacketOut(GenericMessage):
         self.buffer_id = buffer_id
         self.in_port = in_port
         self.actions = [] if actions is None else actions
-        self.data = data
+        self.data = BinaryData() if data is None else data
 
     def validate(self):
         """Validate the entire message."""

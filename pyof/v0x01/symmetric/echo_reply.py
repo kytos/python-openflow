@@ -30,4 +30,4 @@ class EchoReply(GenericMessage):
             data (bytes): arbitrary-length data field.
         """
         super().__init__(xid)
-        self.data = data
+        self.data = BinaryData() if data is None else data

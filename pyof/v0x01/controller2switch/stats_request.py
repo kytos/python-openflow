@@ -24,7 +24,7 @@ class StatsRequest(GenericMessage):
     flags = UBInt16()
     body = BinaryData()
 
-    def __init__(self, xid=None, body_type=None, flags=0, body=b''):
+    def __init__(self, xid=None, body_type=None, flags=0, body=None):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -35,7 +35,7 @@ class StatsRequest(GenericMessage):
         super().__init__(xid)
         self.body_type = body_type
         self.flags = flags
-        self.body = body
+        self.body = BinaryData() if body is None else body
 
     def pack(self, value=None):
         """Pack according to :attr:`body_type`.

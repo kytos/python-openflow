@@ -43,7 +43,7 @@ class PacketIn(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=NO_BUFFER, total_len=None,
-                 in_port=None, reason=None, data=b''):
+                 in_port=None, reason=None, data=None):
         """Assign parameters to object attributes.
 
         Args:
@@ -64,4 +64,4 @@ class PacketIn(GenericMessage):
         self.total_len = total_len
         self.in_port = in_port
         self.reason = reason
-        self.data = data
+        self.data = BinaryData() if data is None else data

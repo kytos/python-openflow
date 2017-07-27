@@ -469,7 +469,7 @@ class NextTablesProperty(Property):
     next_table_ids = ListOfInstruction()
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_NEXT_TABLES,
-                 next_table_ids=ListOfInstruction()):
+                 next_table_ids=None):
         """Constructor of NextTablesProperty receives the parameters bellow.
 
         Args:
@@ -479,7 +479,8 @@ class NextTablesProperty(Property):
                 List of InstructionGotoTable instances.
         """
         super().__init__(property_type)
-        self.next_table_ids = next_table_ids
+        self.next_table_ids = ListOfInstruction() if next_table_ids is None \
+            else next_table_ids
         self.update_length()
 
 
@@ -526,7 +527,7 @@ class OxmProperty(Property):
     oxm_ids = ListOfOxmHeader()
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_MATCH,
-                 oxm_ids=ListOfOxmHeader()):
+                 oxm_ids=None):
         """Constructor of OxmProperty receives the parameters bellow.
 
         Args:
@@ -536,7 +537,7 @@ class OxmProperty(Property):
                 List of OxmHeader instances.
         """
         super().__init__(property_type)
-        self.oxm_ids = oxm_ids
+        self.oxm_ids = ListOfOxmHeader() if oxm_ids is None else oxm_ids
         self.update_length()
 
 
@@ -584,7 +585,7 @@ class TableFeatures(GenericStruct):
                  metadata_write=0xFFFFFFFFFFFFFFFF,
                  config=0,
                  max_entries=0,
-                 properties=ListOfProperty()):
+                 properties=None):
         """The constructor of TableFeatures receives the paramters below.
 
         Args:
@@ -612,7 +613,8 @@ class TableFeatures(GenericStruct):
         self.metadata_write = metadata_write
         self.config = config
         self.max_entries = max_entries
-        self.properties = properties
+        self.properties = ListOfProperty() if properties is None \
+            else properties
         self.update_length()
 
     def pack(self, value=None):

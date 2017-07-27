@@ -36,7 +36,7 @@ class ExperimenterHeader(GenericMessage):
     exp_type = UBInt32()
     data = BinaryData()
 
-    def __init__(self, xid=None, experimenter=None, exp_type=None, data=b''):
+    def __init__(self, xid=None, experimenter=None, exp_type=None, data=None):
         """The constructor takes the parameters below.
 
         Args:
@@ -49,4 +49,4 @@ class ExperimenterHeader(GenericMessage):
         super().__init__(xid)
         self.experimenter = experimenter
         self.exp_type = exp_type
-        self.data = data
+        self.data = BinaryData() if data is None else data

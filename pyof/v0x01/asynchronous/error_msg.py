@@ -176,7 +176,7 @@ class ErrorMsg(GenericMessage):
     code = UBInt16()
     data = BinaryData()
 
-    def __init__(self, xid=None, error_type=None, code=None, data=b''):
+    def __init__(self, xid=None, error_type=None, code=None, data=None):
         """Assign parameters to object attributes.
 
         Args:
@@ -188,7 +188,7 @@ class ErrorMsg(GenericMessage):
         super().__init__(xid)
         self.error_type = error_type
         self.code = code
-        self.data = data
+        self.data = BinaryData() if data is None else data
 
     def pack(self, value=None):
         """Pack the value as a binary representation.

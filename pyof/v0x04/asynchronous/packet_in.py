@@ -56,7 +56,7 @@ class PacketIn(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, buffer_id=None, total_len=None, reason=None,
-                 table_id=None, cookie=None, match=None, data=b''):
+                 table_id=None, cookie=None, match=None, data=None):
         """Assign parameters to object attributes.
 
         Args:
@@ -82,4 +82,4 @@ class PacketIn(GenericMessage):
         self.table_id = table_id
         self.cookie = cookie
         self.match = match
-        self.data = data
+        self.data = BinaryData() if data is None else data
