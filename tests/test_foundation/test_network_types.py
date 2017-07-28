@@ -2,7 +2,8 @@
 import unittest
 
 from pyof.foundation.basic_types import BinaryData
-from pyof.foundation.network_types import GenericTLV, IPv4
+from pyof.foundation.exceptions import UnpackException
+from pyof.foundation.network_types import VLAN, Ethernet, GenericTLV, IPv4
 
 
 class TestNetworkTypes(unittest.TestCase):
@@ -15,6 +16,79 @@ class TestNetworkTypes(unittest.TestCase):
         tlv_unpacked = GenericTLV()
         tlv_unpacked.unpack(tlv.pack())
         self.assertEqual(tlv.value.value, tlv_unpacked.value.value)
+
+
+class TestEthernet(unittest.TestCase):
+    """Test Ethernet frames."""
+
+    def test_Ethernet_pack(self):
+        """Test pack method of Ethernet class without VLAN tag."""
+        ethernet = Ethernet(destination='00:1f:3a:3e:9a:cf',
+                            source='00:15:af:d5:38:98', ether_type=0x800,
+                            data=b'testdata')
+        packed = ethernet.pack()
+        expected = b'\x00\x1f:>\x9a\xcf\x00\x15\xaf\xd58\x98\x08\x00testdata'
+        self.assertEqual(packed, expected)
+
+    def test_Ethernet_unpack(self):
+        """Test pack method of Ethernet class without VLAN tag."""
+        raw = b'\x00\x15\xaf\xd58\x98\x00\x1f:>\x9a\xcf\x08\x00testdata'
+        expected = Ethernet(destination='00:15:af:d5:38:98',
+                            source='00:1f:3a:3e:9a:cf', ether_type=0x800,
+                            data=b'testdata')
+        expected.pack()
+        unpacked = Ethernet()
+        unpacked.unpack(raw)
+        self.assertEqual(unpacked, expected)
+
+    def test_Tagged_Ethernet_pack(self):
+        """Test pack method of Ethernet class including VLAN tag."""
+        ethernet = Ethernet(destination='00:1f:3a:3e:9a:cf',
+                            source='00:15:af:d5:38:98', vlan=VLAN(vid=200),
+                            ether_type=0x800, data=b'testdata')
+        packed = ethernet.pack()
+        expected = b'\x00\x1f:>\x9a\xcf\x00\x15\xaf\xd58'
+        expected += b'\x98\x81\x00\x00\xc8\x08\x00testdata'
+        self.assertEqual(packed, expected)
+
+    def test_Tagged_Ethernet_unpack(self):
+        """Test pack method of Ethernet class including VLAN tag."""
+        raw = b'\x00\x15\xaf\xd58\x98\x00\x1f:>'
+        raw += b'\x9a\xcf\x81\x00!^\x08\x00testdata'
+        expected = Ethernet(destination='00:15:af:d5:38:98',
+                            source='00:1f:3a:3e:9a:cf', vlan=VLAN(pcp=1,
+                                                                  vid=350),
+                            ether_type=0x800, data=b'testdata')
+        expected.pack()
+        unpacked = Ethernet()
+        unpacked.unpack(raw)
+        self.assertEqual(unpacked, expected)
+
+
+class TestVLAN(unittest.TestCase):
+    """Test VLAN headers."""
+
+    def test_VLAN_pack(self):
+        """Test pack method of VLAN class."""
+        vlan = VLAN(pcp=3, vid=20)
+        packed = vlan.pack()
+        expected = b'\x81\x00`\x14'
+        self.assertEqual(packed, expected)
+
+    def test_VLAN_unpack(self):
+        """Test unpack method of VLAN class."""
+        raw = b'\x81\x00\xa0{'
+        expected = VLAN(pcp=5, vid=123)
+        unpacked = VLAN()
+        unpacked.unpack(raw)
+        self.assertEqual(unpacked, expected)
+
+    def test_unpack_wrong_tpid(self):
+        """Raise UnpackException if the tpid is not VLAN_TPID."""
+        raw = b'\x12\x34\xa0{'
+        vlan = VLAN()
+        with self.assertRaises(UnpackException):
+            vlan.unpack(raw)
 
 
 class TestIPv4(unittest.TestCase):
