@@ -5,17 +5,17 @@ more flow match fields.
 """
 # System imports
 from enum import Enum, IntEnum
+from math import ceil
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
-from pyof.foundation.basic_types import FixedTypeList, UBInt8, UBInt16, UBInt32
+from pyof.foundation.basic_types import (
+    BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
+from pyof.foundation.exceptions import PackException, UnpackException
 
-# Third-party imports
-
-
-__all__ = ('Ipv6ExtHdrFlags', 'Match', 'MatchField', 'MatchType',
-           'OxmExperimenterHeader', 'OxmOfbMatchField', 'VlanId',
-           'ListOfOxmHeader')
+__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'Match', 'MatchType',
+           'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
+           'OxmOfbMatchField', 'OxmTLV', 'VlanId')
 
 
 class Ipv6ExtHdrFlags(Enum):
@@ -41,7 +41,7 @@ class Ipv6ExtHdrFlags(Enum):
     OFPIEH_UNSEQ = 1 << 8
 
 
-class MatchField(IntEnum):
+class OxmOfbMatchField(IntEnum):
     """OXM Flow match field types for OpenFlow basic class.
 
     A switch is not required to support all match field types, just those
@@ -148,7 +148,7 @@ class MatchType(IntEnum):
     OFPMT_OXM = 1
 
 
-class OxmOfbMatchField(IntEnum):
+class OxmClass(IntEnum):
     """OpenFlow Extensible Match (OXM) Class IDs.
 
     The high order bit differentiate reserved classes from member classes.
@@ -182,17 +182,134 @@ class VlanId(IntEnum):
 
 # Classes
 
+class OxmTLV(GenericStruct):
+    """Oxm (OpenFlow Extensible Match) TLV."""
 
-class OxmHeader(GenericStruct):
+    oxm_class = UBInt16(enum_ref=OxmClass)
+    oxm_field_and_mask = UBInt8()
+    oxm_length = UBInt8()
+    oxm_value = BinaryData()
+
+    def __init__(self, oxm_class=None, oxm_field=None,
+                 oxm_hasmask=False, oxm_value=None):
+        """Inialize OXM TLV struct.
+
+        Args:
+            oxm_class (OxmClass): Match class: member class or reserved class
+            oxm_field (OxmMatchFields, OxmOfbMatchField): Match field within
+                the class
+            oxm_hasmask (bool): Set if OXM include a bitmask in payload
+            oxm_value (bytes): OXM Payload
+        """
+        super().__init__()
+        self.oxm_class = oxm_class
+        self.oxm_field_and_mask = None
+        self.oxm_length = None
+        self.oxm_value = oxm_value
+        # Attributes that are not packed
+        self.oxm_field = oxm_field
+        self.oxm_hasmask = oxm_hasmask
+
+    def unpack(self, buff, offset=0):
+        """Unpack the buffer into a OxmTLV.
+
+        Args:
+            buff (bytes): The binary data to be unpacked.
+            offset (int): If we need to shift the beginning of the data.
+        """
+        super().unpack(buff, offset)
+        # Recover field from field_and_hasmask.
+        try:
+            self.oxm_field = self._unpack_oxm_field()
+        except ValueError as e:
+            raise UnpackException(e)
+
+        # The last bit of field_and_mask is oxm_hasmask
+        self.oxm_hasmask = (self.oxm_field_and_mask & 1) == 1  # as boolean
+
+        # Unpack oxm_value that has oxm_length bytes
+        start = offset + 4  # 4 bytes: class, field_and_mask and length
+        end = start + self.oxm_length
+        self.oxm_value = buff[start:end]
+
+    def _unpack_oxm_field(self):
+        """Unpack oxm_field from oxm_field_and_mask.
+
+        Returns:
+            :class:`OxmOfbMatchField`, int: oxm_field from oxm_field_and_mask.
+
+        Raises:
+            ValueError: If oxm_class is OFPXMC_OPENFLOW_BASIC but
+                :class:`OxmOfbMatchField` has no such integer value.
+
+        """
+        field_int = self.oxm_field_and_mask >> 1
+        # We know that the class below requires a subset of the ofb enum
+        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OxmOfbMatchField(field_int)
+        return field_int
+
+    def _update_length(self):
+        payload = type(self).oxm_value.pack(self.oxm_value)
+        self.oxm_length = len(payload)
+
+    def pack(self, value=None):
+        """Join oxm_hasmask bit and 7-bit oxm_field."""
+        if value is not None:
+            return value.pack()
+
+        # Set oxm_field_and_mask instance attribute
+        # 1. Move field integer one bit to the left
+        try:
+            field_int = self._get_oxm_field_int()
+        except ValueError as e:
+            raise PackException(e)
+        field_bits = field_int << 1
+        # 2. hasmask bit
+        hasmask_bit = self.oxm_hasmask & 1
+        # 3. Add hasmask bit to field value
+        self.oxm_field_and_mask = field_bits + hasmask_bit
+
+        self._update_length()
+        return super().pack(value)
+
+    def _get_oxm_field_int(self):
+        """Return a valid integer value for oxm_field.
+
+        Used while packing.
+
+        Returns:
+            int: valid oxm_field value.
+
+        Raises:
+            ValueError: If :attribute:`oxm_field` is bigger than 7 bits or
+                should be :class:`OxmOfbMatchField` and the enum has no such
+                value.
+
+        """
+        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OxmOfbMatchField(self.oxm_field).value
+        elif not isinstance(self.oxm_field, int) or self.oxm_field > 127:
+            raise ValueError('oxm_field above 127: "{self.oxm_field}".')
+        return self.oxm_field
+
+
+class OxmMatchFields(FixedTypeList):
     """Generic Openflow EXtensible Match header.
 
     Abstract class that can be instanciated as Match or OxmExperimenterHeader.
     """
 
-    pass
+    def __init__(self, items=None):
+        """Initialize ``items`` attribute.
+
+        Args:
+            items (OxmHeader): Instance or a list of instances.
+        """
+        super().__init__(pyof_class=OxmTLV, items=items)
 
 
-class Match(OxmHeader):
+class Match(GenericStruct):
     """Describes the flow match header structure.
 
     These are the fields to match against flows.
@@ -207,13 +324,9 @@ class Match(OxmHeader):
     match_type = UBInt16(enum_ref=MatchType)
     #: Length of Match (excluding padding)
     length = UBInt16()
-    oxm_field1 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field2 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field3 = UBInt8(enum_ref=OxmOfbMatchField)
-    oxm_field4 = UBInt8(enum_ref=OxmOfbMatchField)
+    oxm_match_fields = OxmMatchFields()
 
-    def __init__(self, match_type=None, length=None, oxm_field1=None,
-                 oxm_field2=None, oxm_field3=None, oxm_field4=None):
+    def __init__(self, match_type=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
@@ -222,32 +335,65 @@ class Match(OxmHeader):
                           Exactly (length - 4) (possibly 0) bytes containing
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
-            oxm_field1 (OXMClass): Sample description.
-            oxm_field2 (OXMClass): Sample description.
-            oxm_field3 (OXMClass): Sample description.
-            oxm_field4 (OXMClass): Sample description.
+            oxm_fields (OxmMatchFields): Sample description.
         """
         super().__init__()
         self.match_type = match_type
-        self.length = length
-        self.oxm_field1 = oxm_field1
-        self.oxm_field2 = oxm_field2
-        self.oxm_field3 = oxm_field3
-        self.oxm_field4 = oxm_field4
+        self.oxm_match_fields = oxm_match_fields
+        self._update_match_length()
+
+    def _update_match_length(self):
+        self.length = super().get_size()
+
+    def pack(self, value=None):
+        """Pack and complete the last byte by padding."""
+        if isinstance(value, Match):
+            return value.pack()
+        elif value is None:
+            self._update_match_length()
+            packet = super().pack()
+            return self._complete_last_byte(packet)
+        raise PackException(f'Match can\'t unpack "{value}".')
+
+    def _complete_last_byte(self, packet):
+        """Pad until the packet length is a multiple of 8 (bytes)."""
+        padded_size = self.get_size()
+        padding_bytes = padded_size - len(packet)
+        if padding_bytes > 0:
+            packet += Pad(padding_bytes).pack()
+        return packet
+
+    def get_size(self, value=None):
+        """Return the packet length including the padding (multiple of 8)."""
+        if isinstance(value, Match):
+            return value.get_size()
+        elif value is None:
+            current_size = super().get_size()
+            return ceil(current_size / 8) * 8
+        raise ValueError(f'Invalid value "{value}" for Match.get_size()')
+
+    def unpack(self, buff, offset=0):
+        """Discard padding bytes using the unpacked length attribute."""
+        begin = offset
+        for name, value in list(self.get_class_attributes())[:-1]:
+            size = self._unpack_attribute(name, value, buff, begin)
+            begin += size
+        self._unpack_attribute('oxm_match_fields', type(self).oxm_match_fields,
+                               buff[:offset+self.length], begin)
 
 
-class OxmExperimenterHeader(OxmHeader):
+class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
 
     #: oxm_class = OFPXMC_EXPERIMENTER
-    oxm_header = UBInt32(OxmOfbMatchField.OFPXMC_EXPERIMENTER,
-                         enum_ref=OxmOfbMatchField)
+    oxm_header = UBInt32(OxmClass.OFPXMC_EXPERIMENTER,
+                         enum_ref=OxmClass)
     #: Experimenter ID which takes the same form as in struct
     #:     ofp_experimenter_header
     experimenter = UBInt32()
 
     def __init__(self, experimenter=None):
-        """The constructor just assigns parameters to object attributes.
+        """Initialize ``experimenter`` attribute.
 
         Args:
             experimenter (int): Experimenter ID which takes the same form as
@@ -264,9 +410,9 @@ class ListOfOxmHeader(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Initialize ``items`` attribute.
 
         Args:
             items (OxmHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=OxmHeader, items=items)
+        super().__init__(pyof_class=OxmTLV, items=items)

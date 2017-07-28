@@ -115,6 +115,12 @@ class GenericType:
     def __rxor__(self, other):
         return self.value ^ other
 
+    def __lshift__(self, n):
+        return self.value << n
+
+    def __rshift__(self, n):
+        return self.value >> n
+
     @property
     def value(self):
         """Return this type's value.
