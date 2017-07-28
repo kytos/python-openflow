@@ -398,6 +398,11 @@ class IPv4(GenericStruct):
         Returns:
             bytes: Binary representation of this instance.
         """
+        if isinstance(self.options, BinaryData):
+            self.options = self.options.pack()
+        if isinstance(self.data, BinaryData):
+            self.data = self.data.pack()
+
         # Set the correct IHL based on options size
         if self.options:
             self.ihl += int(len(self.options) / 4)
