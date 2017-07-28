@@ -22,7 +22,7 @@ class TestMultipartRequest(TestStruct):
     @staticmethod
     def get_attributes(multipart_type=MultipartTypes.OFPMP_DESC,
                        flags=MultipartRequestFlags.OFPMPF_REQ_MORE,
-                       body=''):
+                       body=b''):
         """Method used to return a dict with instance paramenters."""
         return {'xid': 32, 'multipart_type': multipart_type, 'flags': flags,
                 'body': body}

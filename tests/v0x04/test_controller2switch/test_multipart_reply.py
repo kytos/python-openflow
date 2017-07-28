@@ -16,13 +16,13 @@ class TestMultipartReply(TestStruct):
         super().set_message(MultipartReply, xid=16,
                             multipart_type=MultipartTypes.OFPMP_METER_CONFIG,
                             flags=MultipartReplyFlags.OFPMPF_REPLY_MORE,
-                            body='')
+                            body=b'')
         super().set_minimum_size(16)
 
     @staticmethod
     def get_attributes(multipart_type=MultipartTypes.OFPMP_DESC,
                        flags=MultipartReplyFlags.OFPMPF_REPLY_MORE,
-                       body=''):
+                       body=b''):
         """Method used to return a dict with instance paramenters."""
         return {'xid': 32, 'multipart_type': multipart_type, 'flags': flags,
                 'body': body}
