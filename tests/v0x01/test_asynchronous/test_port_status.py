@@ -14,17 +14,8 @@ class TestPortStatus(TestStruct):
     def setUpClass(cls):
         """Configure raw file and its object in parent class (TestDump)."""
         super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_port_status')
         super().set_raw_dump_object(_new_portstatus)
         super().set_minimum_size(64)
-
-    def test_pack(self):
-        """Skip pack test for now."""
-        self.skipTest('Need to recover dump contents.')
-
-    def test_unpack(self):
-        """Skipt unpack test for now."""
-        self.skipTest('Need to recover dump contents.')
 
 
 def _new_portstatus():
