@@ -6,10 +6,10 @@ from tests.test_struct import TestStruct
 class TestVendorHeader(TestStruct):
     """Vendor message tests (also those in :class:`.TestDump`)."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Configure raw file and its object in parent class (TestDump)."""
-        super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_vendor_header')
-        super().set_raw_dump_object(VendorHeader, xid=4, vendor=128)
-        super().set_minimum_size(12)
+    def test_unpack(self):
+        """Test unpack VendorHeader message."""
+        message = b'My custom vendor extra data.'
+        vendor_header = VendorHeader(xid=4, vendor=128,
+                                     data=message)
+        data = b'\x01\x04\x00(\x00\x00\x00\x04\x00\x00\x00\x80' + message
+        self._test_unpack(vendor_header, bytes2unpack=data)
