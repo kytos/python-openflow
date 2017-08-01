@@ -1,6 +1,7 @@
 """Automate struct tests."""
 import unittest
 
+from pyof.foundation.base import GenericMessage
 from tests.raw_dump import RawDump
 
 
@@ -108,7 +109,10 @@ class TestStruct(unittest.TestCase):
             A new object using class and parameters priviously set through
                 :meth:`set_raw_dump_object`.
         """
-        return cls._new_raw_object()
+        pyof_obj = cls._new_raw_object()
+        if isinstance(pyof_obj, GenericMessage):
+            pyof_obj.update_header_length()
+        return pyof_obj
 
     @classmethod
     def set_minimum_size(cls, size, msg_cls=None):
@@ -127,22 +131,54 @@ class TestStruct(unittest.TestCase):
         if msg_cls is not None:
             TestStruct._msg_cls = msg_cls
 
-    def test_pack(self):
+    def _test_pack(self, obj, expected_bytes):
         """Check whether packed objects equals to dump file."""
+        actual_bytes = obj.pack()
+        self.assertEqual(expected_bytes, actual_bytes)
+
+    def test_pack_equals_file(self):
+        """Check whether the pack result equals the file content.
+
+        The object to be packed is set with :method:`set_raw_object` and the
+        file, with :method:`set_raw_dump_file`.
+        """
         try:
-            raw_file = self.get_raw_dump().read()
-            msg = self.get_raw_object()
-            packed_obj = msg.pack()
-            self.assertEqual(packed_obj, raw_file)
+            obj = self.get_raw_object()
+            file_content = self.get_raw_dump().read()
+            self._test_pack(obj, file_content)
         except FileNotFoundError:
             raise self.skipTest('No raw dump file found.')
 
-    def test_unpack(self):
-        """Check whether the unpacked dump equals to expected object."""
+    def _test_unpack(self, pyof_obj, bytes2unpack=None):
+        """Check whether unpacking ``bytes2unpack`` equals ``pyof_obj``.
+
+        Args:
+            pyof_obj (GenericStruct, GenericType): Object supporting (un)pack
+                operations.
+            bytes2unpack (bytes): If not supplied, use ``pyof_obj.pack()``.
+        """
+        bytes2unpack = bytes2unpack or pyof_obj.pack()
+
+        unpacked = type(pyof_obj)()
+        # If it's a GenericMessage, unpack the Header first
+        if isinstance(pyof_obj, GenericMessage):
+            header_bytes = bytes2unpack[:8]
+            unpacked.header.unpack(header_bytes)
+            bytes2unpack = bytes2unpack[8:unpacked.header.length.value]
+        unpacked.unpack(bytes2unpack)
+
+        self.assertEqual(pyof_obj, unpacked)
+
+    def test_unpack_from_file(self):
+        """Check whether the unpacked dump equals to expected object.
+
+        The expected object is set with :method:`set_raw_object` and the file,
+        with :method:`set_raw_dump_file`.
+        """
         try:
-            unpacked = self.get_raw_dump().unpack()
-            obj = self.get_raw_object()
-            self.assertEqual(unpacked, obj)
+            bytes2unpack = self.get_raw_dump().read()
+            pyof_obj = self.get_raw_object()
+            self._test_unpack(pyof_obj, bytes2unpack)
         except FileNotFoundError:
             raise self.skipTest('No raw dump file found.')
 
