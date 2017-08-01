@@ -9,7 +9,82 @@ from pyof.foundation.basic_types import (
 from pyof.foundation.constants import VLAN_TPID
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType', 'LLDP')
+__all__ = ('ARP', 'Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType',
+           'LLDP')
+
+
+class ARP(GenericStruct):
+    """ARP packet "struct".
+
+    Contains fields for an ARP packet's header and data.
+    Designed for Ethernet and IPv4 only: needs to have some attributes changed
+    for other HTYPE and PTYPE implementations.
+    Must be encapsulated inside an Ethernet frame.
+    """
+
+    htype = UBInt16()
+    ptype = UBInt16()
+    hlen = UBInt8()
+    plen = UBInt8()
+    oper = UBInt16()
+    sha = HWAddress()
+    spa = IPAddress()
+    tha = HWAddress()
+    tpa = IPAddress()
+
+    def __init__(self, htype=1, ptype=0x800, hlen=6, plen=4, oper=1,
+                 sha='00:00:00:00:00:00', spa='0.0.0.0',
+                 tha="00:00:00:00:00:00", tpa='0.0.0.0'):
+        """The constructor receives the parameters below.
+
+        Args:
+            htype (int): Hardware protocol type. Defaults to 1 for Ethernet.
+            ptype (int): Network protocol type. Defaults to 0x800 for IPv4.
+            hlen (int): Length of the hardware address. Defaults to 6 for MAC
+                        addresses.
+            plen (int): Length of the networking protocol address. Defaults to
+                        4 for IPv4 addresses.
+            oper (int): Determines the operation for this ARP packet. Must be 1
+                        for ARP request or 2 for ARP reply. Defaults to 1.
+            sha (str): Sender hardware address. Defaults to
+                       '00:00:00:00:00:00'.
+            spa (str): Sender protocol address. Defaults to '0.0.0.0'.
+            tha (str): Target hardware address. Defaults to
+                       '00:00:00:00:00:00'.
+            tpa (str): Target protocol address. Defaults to '0.0.0.0'.
+        """
+        super().__init__()
+        self.htype = htype
+        self.ptype = ptype
+        self.hlen = hlen
+        self.plen = plen
+        self.oper = oper
+        self.sha = sha
+        self.spa = spa
+        self.tha = tha
+        self.tpa = tpa
+
+    def is_valid(self):
+        """Assure the ARP contains Ethernet and IPv4 information."""
+        return self.htype == 1 and self.ptype == 0x800
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary struct into this object's attributes.
+
+        Return the values instead of the lib's basic types.
+        Check if the protocols involved are Ethernet and IPv4. Other protocols
+        are currently not supported.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+        """
+        super().unpack(buff, offset)
+        if not self.is_valid():
+            raise UnpackException("Unsupported protocols in ARP packet")
 
 
 class VLAN(GenericStruct):
