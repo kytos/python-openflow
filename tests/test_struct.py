@@ -41,7 +41,7 @@ class TestStruct(unittest.TestCase):
     """
 
     def __init__(self, *args, **kwargs):
-        """The constructor will avoid that this class tests are executed.
+        """Avoid that this class tests are executed.
 
         The tests in this class are executed through the child, so there's no
         no need for them to be executed once more through the parent.
@@ -78,6 +78,7 @@ class TestStruct(unittest.TestCase):
         Returns:
             RawDump: with parameters previously set using
                 :meth:`set_raw_dump_file`.
+
         """
         if cls._new_raw_dump is None:
             raise FileNotFoundError()
@@ -108,6 +109,7 @@ class TestStruct(unittest.TestCase):
         Returns:
             A new object using class and parameters priviously set through
                 :meth:`set_raw_dump_object`.
+
         """
         pyof_obj = cls._new_raw_object()
         if isinstance(pyof_obj, GenericMessage):
