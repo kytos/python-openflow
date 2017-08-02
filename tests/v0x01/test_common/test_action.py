@@ -65,7 +65,7 @@ class TestActionDLAddr(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_dl_addr')
         super().set_raw_dump_object(ActionDLAddr,
-                                    dl_addr_type=ActionType.OFPAT_SET_DL_SRC,
+                                    action_type=ActionType.OFPAT_SET_DL_SRC,
                                     dl_addr=[12, 12, 12, 12, 12, 12])
         super().set_minimum_size(16)
 
@@ -79,7 +79,7 @@ class TestActionNWAddr(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_nw_addr')
         super().set_raw_dump_object(ActionNWAddr,
-                                    nw_addr_type=ActionType.OFPAT_SET_NW_SRC,
+                                    action_type=ActionType.OFPAT_SET_NW_SRC,
                                     nw_addr=[12, 12, 12, 12, 12, 12])
         super().set_minimum_size(8)
 
@@ -93,7 +93,7 @@ class TestActionNWTos(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_nw_tos')
         super().set_raw_dump_object(ActionNWTos,
-                                    nw_tos_type=ActionType.OFPAT_SET_NW_SRC,
+                                    action_type=ActionType.OFPAT_SET_NW_SRC,
                                     nw_tos=123456)
         super().set_minimum_size(8)
 
@@ -107,7 +107,7 @@ class TestActionTPPort(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_action_tp_port')
         super().set_raw_dump_object(ActionTPPort,
-                                    tp_port_type=ActionType.OFPAT_SET_TP_SRC,
+                                    action_type=ActionType.OFPAT_SET_TP_SRC,
                                     tp_port=8888)
         super().set_minimum_size(8)
 
