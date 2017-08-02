@@ -136,18 +136,20 @@ class TestStruct(unittest.TestCase):
         actual_bytes = obj.pack()
         self.assertEqual(expected_bytes, actual_bytes)
 
-    def test_pack_equals_file(self):
-        """Check whether the pack result equals the file content.
+    def test_raw_dump_file(self):
+        """Object pack should equal file; file unpack should equal object.
 
         The object to be packed is set with :method:`set_raw_object` and the
         file, with :method:`set_raw_dump_file`.
         """
         try:
-            obj = self.get_raw_object()
-            file_content = self.get_raw_dump().read()
-            self._test_pack(obj, file_content)
+            file_bytes = self.get_raw_dump().read()
         except FileNotFoundError:
             raise self.skipTest('No raw dump file found.')
+
+        pyof_obj = self.get_raw_object()
+        self._test_pack(pyof_obj, file_bytes)
+        self._test_unpack(pyof_obj, file_bytes)
 
     def _test_unpack(self, pyof_obj, bytes2unpack=None):
         """Check whether unpacking ``bytes2unpack`` equals ``pyof_obj``.
@@ -168,19 +170,7 @@ class TestStruct(unittest.TestCase):
         unpacked.unpack(bytes2unpack)
 
         self.assertEqual(pyof_obj, unpacked)
-
-    def test_unpack_from_file(self):
-        """Check whether the unpacked dump equals to expected object.
-
-        The expected object is set with :method:`set_raw_object` and the file,
-        with :method:`set_raw_dump_file`.
-        """
-        try:
-            bytes2unpack = self.get_raw_dump().read()
-            pyof_obj = self.get_raw_object()
-            self._test_unpack(pyof_obj, bytes2unpack)
-        except FileNotFoundError:
-            raise self.skipTest('No raw dump file found.')
+        self.assertEqual(pyof_obj.get_size(), unpacked.get_size())
 
     def test_minimum_size(self):
         """Test struct minimum size."""
@@ -188,12 +178,3 @@ class TestStruct(unittest.TestCase):
             raise self.skipTest('minimum size was not set.')
         obj = TestStruct._msg_cls()
         self.assertEqual(obj.get_size(), self._min_size)
-
-    def test_raw_dump_size(self):
-        """Check whether the unpacked dump has the expected size."""
-        try:
-            unpacked = self.get_raw_dump().unpack()
-            obj = self.get_raw_object()
-            self.assertEqual(obj.get_size(), unpacked.get_size())
-        except FileNotFoundError:
-            raise self.skipTest('No raw dump file found.')
