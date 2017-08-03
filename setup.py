@@ -93,17 +93,13 @@ setup(name='python-openflow',
       test_suite='tests',
       include_package_data=True,
       extras_require={
-          'docs': [
-              'Sphinx~=1.5.0',
-              'sphinx-autobuild',
-              'sphinx-rtd-theme',
-              'sphinx_bootstrap_theme~=0.4.0'
-          ],
           'dev': [
               'coverage',
               'tox',
               'pip-tools',
               'Sphinx~=1.5.0',
+              'sphinx-autobuild',
+              'sphinx-rtd-theme',
               'sphinx_bootstrap_theme~=0.4.0',
               'pydocstyle~=1.1.1',
               'pylama~=7.3.3',
