@@ -6,7 +6,7 @@ descriptions.
 from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
 from distutils.command.clean import clean  # pylint: disable=E0401,E0611
-from subprocess import call
+from subprocess import CalledProcessError, call, check_call
 
 from setuptools import Command, find_packages, setup
 
@@ -18,6 +18,12 @@ class SimpleCommand(Command):
 
     user_options = []
 
+    def __init__(self, *args, **kwargs):
+        """Store arguments so it's possible to call other commands later."""
+        super().__init__(*args, **kwargs)
+        self.__args = args
+        self.__kwargs = kwargs
+
     @abstractmethod
     def run(self):
         """Run when command is invoked.
@@ -25,6 +31,10 @@ class SimpleCommand(Command):
         Use *call* instead of *check_call* to ignore failures.
         """
         pass
+
+    def run_command(self, command_class):
+        """Run another command with same __init__ arguments."""
+        command_class(*self.__args, **self.__kwargs).run()
 
     def initialize_options(self):
         """Set defa ult values for options."""
@@ -55,9 +65,8 @@ class TestCoverage(SimpleCommand):
 
     def run(self):
         """Run unittest quietly and display coverage report."""
-        cmd = 'coverage3 run -m unittest discover -qs tests' \
-              ' && coverage3 report'
-        call(cmd, shell=True)
+        cmd = 'coverage3 run setup.py test && coverage3 report'
+        check_call(cmd, shell=True)
 
 
 class DocTest(SimpleCommand):
@@ -67,8 +76,19 @@ class DocTest(SimpleCommand):
 
     def run(self):
         """Run doctests using Sphinx Makefile."""
-        cmd = 'make -C docs/ doctest'
-        call(cmd, shell=True)
+        cmd = 'make -C docs/ default doctest'
+        check_call(cmd, shell=True)
+
+
+class CITest(SimpleCommand):
+    """Run all CI tests."""
+
+    description = 'run all CI tests: unit and doc tests, linter'
+
+    def run(self):
+        """Run unit tests with coverage, doc tests and linter."""
+        for command in TestCoverage, DocTest, Linter:
+            self.run_command(command)
 
 
 class Linter(SimpleCommand):
@@ -78,9 +98,12 @@ class Linter(SimpleCommand):
 
     def run(self):
         """Run pylama."""
-        print('Running pylama. This may take several seconds...')
-        cmd = 'pylama tests setup.py pyof'
-        call(cmd, shell=True)
+        print('Pylama is running. It may take several seconds...')
+        try:
+            check_call('pylama setup.py tests pyof', shell=True)
+            print('No linter error found.')
+        except CalledProcessError:
+            print('Linter check failed. Fix the error(s) above and try again.')
 
 
 setup(name='python-openflow',
@@ -109,6 +132,7 @@ setup(name='python-openflow',
       },
       packages=find_packages(exclude=['tests']),
       cmdclass={
+          'ci': CITest,
           'clean': Cleaner,
           'coverage': TestCoverage,
           'doctest': DocTest,
