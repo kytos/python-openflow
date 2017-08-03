@@ -3,7 +3,46 @@ import unittest
 
 from pyof.foundation.basic_types import BinaryData
 from pyof.foundation.exceptions import UnpackException
-from pyof.foundation.network_types import VLAN, Ethernet, GenericTLV, IPv4
+from pyof.foundation.network_types import ARP, VLAN, Ethernet, GenericTLV, IPv4
+
+
+class TestARP(unittest.TestCase):
+    """Test ARP packets, without Ethernet headers."""
+
+    def test_arp_pack(self):
+        """Test pack method of ARP class."""
+        arp = ARP(oper=1, sha='00:15:af:d5:38:98', spa='172.16.0.10',
+                  tpa='172.16.10.20')
+        packed = arp.pack()
+        expected = b'\x00\x01\x08\x00\x06\x04\x00\x01\x00\x15\xaf\xd58\x98\xac'
+        expected += b'\x10\x00\n\x00\x00\x00\x00\x00\x00\xac\x10\n\x14'
+        self.assertEqual(packed, expected)
+
+    def test_arp_unpack(self):
+        """Test unpack method of ARP class."""
+        raw = b'\x00\x01\x08\x00\x06\x04\x00\x02\x00\x1f:>\x9a\xcf\xac\x10\n'
+        raw += b'\x14\x00\x15\xaf\xd58\x98\xac\x10\x00\n'
+        expected = ARP(oper=2, sha='00:1f:3a:3e:9a:cf', spa='172.16.10.20',
+                       tha='00:15:af:d5:38:98', tpa='172.16.0.10')
+        unpacked = ARP()
+        unpacked.unpack(raw)
+        self.assertEqual(unpacked, expected)
+
+    def test_unpack_invalid_htype(self):
+        """Raise UnpackException when L2 protocol is not Ethernet."""
+        raw = b'\x01\x23\x08\x00\x06\x04\x00\x02\x00\x1f:>\x9a\xcf\xac\x10\n'
+        raw += b'\x14\x00\x15\xaf\xd58\x98\xac\x10\x00\n'
+        arp = ARP()
+        with self.assertRaises(UnpackException):
+            arp.unpack(raw)
+
+    def test_unpack_invalid_ptype(self):
+        """Raise UnpackException when L3 protocol is not IPv4."""
+        raw = b'\x00\x01\x08\x90\x06\x04\x00\x02\x00\x1f:>\x9a\xcf\xac\x10\n'
+        raw += b'\x14\x00\x15\xaf\xd58\x98\xac\x10\x00\n'
+        arp = ARP()
+        with self.assertRaises(UnpackException):
+            arp.unpack(raw)
 
 
 class TestNetworkTypes(unittest.TestCase):
