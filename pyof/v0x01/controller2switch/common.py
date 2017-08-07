@@ -5,7 +5,7 @@ from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (
-    Char, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
+    BinaryData, Char, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import (
     DESC_STR_LEN, OFP_MAX_TABLE_NAME_LEN, SERIAL_NUM_LEN)
 # Local source tree imports
@@ -19,7 +19,8 @@ from pyof.v0x01.common.phy_port import Port
 __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
            'AggregateStatsRequest', 'DescStats', 'FlowStats',
            'FlowStatsRequest', 'PortStats', 'PortStatsRequest', 'QueueStats',
-           'QueueStatsRequest', 'TableStats')
+           'QueueStatsRequest', 'TableStats', 'VendorStats',
+           'VendorStatsRequest')
 
 # Enums
 
@@ -441,3 +442,24 @@ class TableStats(GenericStruct):
         self.active_count = active_count
         self.count_lookup = count_lookup
         self.count_matched = count_matched
+
+
+class VendorStats(GenericStruct):
+    """Vendor extension."""
+
+    vendor = UBInt32()
+    body = BinaryData()
+
+    def __init__(self, vendor=None, body=b''):
+        """Create instance attributes.
+
+        Args:
+            vendor (int): 32-bit vendor ID.
+            body (bytes): Vendor-defined body
+        """
+        super().__init__()
+        self.vendor = vendor
+        self.body = body
+
+
+VendorStatsRequest = VendorStats
