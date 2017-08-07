@@ -153,9 +153,9 @@ class PhyPort(GenericStruct):
     supported = UBInt32(enum_ref=PortFeatures)
     peer = UBInt32(enum_ref=PortFeatures)
 
-    def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
-                 state=None, curr=None, advertised=None, supported=None,
-                 peer=None):
+    def __init__(self, port_no=None, hw_addr=None, name=None, config=0,
+                 state=PortState.OFPPS_STP_LISTEN, curr=0, advertised=0,
+                 supported=0, peer=0):
         """The constructor takes the optional parameters below.
 
         Args:
