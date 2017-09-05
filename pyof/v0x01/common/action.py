@@ -65,7 +65,7 @@ class ActionHeader(GenericStruct):
     _allowed_types = ()
 
     def __init__(self, action_type=None, length=None):
-        """The following constructor parameters are optional.
+        """Create a ActionHeader with the optional parameters below.
 
         Args:
             action_type (~pyof.v0x01.common.action.ActionType):
@@ -88,6 +88,7 @@ class ActionHeader(GenericStruct):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         self.action_type = UBInt16(enum_ref=ActionType)
         self.action_type.unpack(buff, offset)
@@ -121,7 +122,7 @@ class ActionOutput(ActionHeader):
     _allowed_types = ActionType.OFPAT_OUTPUT,
 
     def __init__(self, port=None, max_length=UBINT16_MAX_VALUE):
-        """The following constructor parameters are optional.
+        """Create a ActionOutput with the optional parameters below.
 
         Args:
             port (:class:`~pyof.v0x01.common.phy_port.Port` or :class:`int`):
@@ -170,7 +171,7 @@ class ActionEnqueue(ActionHeader):
     _allowed_types = ActionType.OFPAT_ENQUEUE,
 
     def __init__(self, port=None, queue_id=None):
-        """The following constructor parameters are optional.
+        """Create a ActionEnqueue with the optional parameters below.
 
         Args:
             port (physical port or :attr:`.Port.OFPP_IN_PORT`): Queue's port.
@@ -196,7 +197,7 @@ class ActionVlanVid(ActionHeader):
     _allowed_types = ActionType.OFPAT_SET_VLAN_VID,
 
     def __init__(self, vlan_id=None):
-        """The following constructor parameters are optional.
+        """Create a ActionVlanVid with the optional parameters below.
 
         Args:
             vlan_id (int): VLAN priority.
@@ -215,7 +216,7 @@ class ActionVlanPCP(ActionHeader):
     _allowed_types = ActionType.OFPAT_SET_VLAN_PCP,
 
     def __init__(self, vlan_pcp=None):
-        """The following constructor parameters are optional.
+        """Create a ActionVlanPCP with the optional parameters below.
 
         Args:
             vlan_pcp (int): VLAN Priority.
@@ -237,7 +238,7 @@ class ActionDLAddr(ActionHeader):
     _allowed_types = (ActionType.OFPAT_SET_DL_SRC, ActionType.OFPAT_SET_DL_DST)
 
     def __init__(self, action_type=None, dl_addr=None):
-        """The following constructor parameters are optional.
+        """Create a ActionDLAddr with the optional parameters below.
 
         Args:
             action_type (:class:`~pyof.v0x01.common.action.ActionType`):
@@ -258,7 +259,7 @@ class ActionNWAddr(ActionHeader):
     _allowed_types = (ActionType.OFPAT_SET_NW_SRC, ActionType.OFPAT_SET_NW_DST)
 
     def __init__(self, action_type=None, nw_addr=None):
-        """The following constructor parameters are optional.
+        """Create a ActionNWAddr with the optional parameters below.
 
         Args:
             action_type (:class:`~pyof.v0x01.common.action.ActionType`):
@@ -284,7 +285,7 @@ class ActionNWTos(ActionHeader):
     _allowed_types = ActionType.OFPAT_SET_NW_TOS,
 
     def __init__(self, action_type=None, nw_tos=None):
-        """The following constructor parameters are optional.
+        """Create a ActionNWTos with the optional parameters below.
 
         Args:
             action_type (:class:`~pyof.v0x01.common.action.ActionType`):
@@ -306,7 +307,7 @@ class ActionTPPort(ActionHeader):
     _allowed_types = (ActionType.OFPAT_SET_TP_SRC, ActionType.OFPAT_SET_TP_DST)
 
     def __init__(self, action_type=None, tp_port=None):
-        """The following constructor parameters are optional.
+        """Create a ActionTPPort with the optional parameters below.
 
         Args:
             action_type (:class:`~pyof.v0x01.common.action.ActionType`):
@@ -329,7 +330,7 @@ class ActionVendorHeader(ActionHeader):
     _allowed_types = ActionType.OFPAT_VENDOR,
 
     def __init__(self, length=None, vendor=None):
-        """The following constructor parameters are optional.
+        """Create a ActionVendorHeader with the optional parameters below.
 
         Args:
             length (int): Length is a multiple of 8.
@@ -347,7 +348,7 @@ class ListOfActions(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfActions with the optional parameters below.
 
         Args:
             items (:class:`~pyof.v0x01.common.action.ActionHeader`):

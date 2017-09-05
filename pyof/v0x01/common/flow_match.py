@@ -153,6 +153,7 @@ class Match(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         super().unpack(buff, offset)
         self.wildcards = UBInt32(value=FlowWildCards.OFPFW_ALL,

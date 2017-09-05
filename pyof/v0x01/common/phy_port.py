@@ -128,6 +128,7 @@ class PortState(GenericBitMask):
 # Classes
 
 
+# pylint: disable-msg=too-many-instance-attributes
 class PhyPort(GenericStruct):
     """Description of a physical port.
 
@@ -156,7 +157,7 @@ class PhyPort(GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=0,
                  state=PortState.OFPPS_STP_LISTEN, curr=0, advertised=0,
                  supported=0, peer=0):
-        """The constructor takes the optional parameters below.
+        """Create a PhyPort with the optional parameters below.
 
         Args:
             port_no (int): Port number.
@@ -196,7 +197,7 @@ class ListOfPhyPorts(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor takes the optional parameter below.
+        """Create a ListOfPhyPorts with the optional parameters below.
 
         Args:
             items (:class:`list`, :class:`PhyPort`): One :class:`PhyPort`

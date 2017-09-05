@@ -74,7 +74,7 @@ class Header(GenericStruct):
     xid = UBInt32()
 
     def __init__(self, message_type=None, length=None, xid=None):
-        """The constructor takes the optional parameters below.
+        """Create a Header with the optional parameters below.
 
         Args:
             message_type (~pyof.v0x01.common.header.Type): Type of the message.
