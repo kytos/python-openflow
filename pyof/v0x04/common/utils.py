@@ -57,6 +57,7 @@ def new_message_from_message_type(message_type):
 
     Raises:
         KytosUndefinedMessageType: Unkown Message_Type.
+
     """
     message_type = str(message_type)
 
@@ -145,6 +146,7 @@ def new_message_from_header(header):
 
     Raises:
         KytosUndefinedMessageType: Unkown Message_Type.
+
     """
     message_type = header.message_type
     if not isinstance(message_type, Type):
