@@ -31,7 +31,7 @@ class WrongListItemType(Exception):
     """
 
     def __init__(self, item_class, expected_class):
-        """The constructor takes parameters to inform the user about the error.
+        """Take the parameters to inform the user about the error.
 
         Args:
             item_class (:obj:`type`): The class of the item that was being

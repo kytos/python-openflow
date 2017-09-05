@@ -13,7 +13,7 @@ __all__ = ('ARP', 'Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType',
            'LLDP')
 
 
-class ARP(GenericStruct):
+class ARP(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
     """ARP packet "struct".
 
     Contains fields for an ARP packet's header and data.
@@ -32,10 +32,11 @@ class ARP(GenericStruct):
     tha = HWAddress()
     tpa = IPAddress()
 
+    # pylint: disable-msg=too-many-arguments
     def __init__(self, htype=1, ptype=0x800, hlen=6, plen=4, oper=1,
                  sha='00:00:00:00:00:00', spa='0.0.0.0',
                  tha="00:00:00:00:00:00", tpa='0.0.0.0'):
-        """The constructor receives the parameters below.
+        """Create a ARP with the parameters below.
 
         Args:
             htype (int): Hardware protocol type. Defaults to 1 for Ethernet.
@@ -81,6 +82,7 @@ class ARP(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         super().unpack(buff, offset)
         if not self.is_valid():
@@ -97,7 +99,7 @@ class VLAN(GenericStruct):
     _tci = UBInt16()
 
     def __init__(self, pcp=None, cfi=None, vid=None):
-        """The constructor receives the parameters below.
+        """Create a VLAN with the parameters below.
 
         If no arguments are set for a particular instance, it is interpreted as
         abscence of VLAN information, and the pack() method will return an
@@ -127,6 +129,7 @@ class VLAN(GenericStruct):
 
         Returns:
             bytes: Binary representation of this instance.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -160,6 +163,7 @@ class VLAN(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         super().unpack(buff, offset)
         if self.tpid.value:
@@ -198,8 +202,9 @@ class Ethernet(GenericStruct):
     ether_type = UBInt16()
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, vlan=VLAN(),
-                 ether_type=None, data=b''):
+    # pylint: disable-msg=too-many-arguments
+    def __init__(self, destination=None,
+                 source=None, vlan=VLAN(), ether_type=None, data=b''):
         """Create an instance and set its attributes.
 
         Args:
@@ -224,6 +229,7 @@ class Ethernet(GenericStruct):
 
         Returns:
             int: Integer value that identifies this instance.
+
         """
         return hash(self.pack())
 
@@ -242,6 +248,7 @@ class Ethernet(GenericStruct):
 
         Raises:
             UnpackException: If there is a struct unpacking error.
+
         """
         # Checking if the EtherType bytes are actually equal to VLAN_TPID -
         # indicating that the packet is tagged. If it is not, we insert the
@@ -285,6 +292,7 @@ class GenericTLV(GenericStruct):
         Returns:
             :class:`~pyof.foundation.basic_types.BinaryData`:
                 Value stored by GenericTLV.
+
         """
         return self._value
 
@@ -294,6 +302,7 @@ class GenericTLV(GenericStruct):
 
         Returns:
             int: Value length in bytes.
+
         """
         return len(self.value.pack())
 
@@ -308,6 +317,7 @@ class GenericTLV(GenericStruct):
         Returns:
             :class:`~pyof.foundation.basic_types.UBInt16`:
                 Result after all operations.
+
         """
         return UBInt16(((self.tlv_type & 127) << 9) | (self.length & 511))
 
@@ -319,6 +329,7 @@ class GenericTLV(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.ValidationError`: If validation fails.
+
         """
         if value is None:
             output = self.header.pack()
@@ -332,7 +343,7 @@ class GenericTLV(GenericStruct):
                                                        type(self).__name__)
             raise PackException(msg)
 
-    def unpack(self, buffer, offset=0):
+    def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
 
         Unpack the binary value *buff* and update this object attributes based
@@ -344,19 +355,21 @@ class GenericTLV(GenericStruct):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         header = UBInt16()
-        header.unpack(buffer[offset:offset+2])
+        header.unpack(buff[offset:offset+2])
         self.tlv_type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
-        self._value = BinaryData(buffer[begin:end])
+        self._value = BinaryData(buff[begin:end])
 
     def get_size(self, value=None):
         """Return struct size.
 
         Returns:
             int: Returns the struct size based on inner attributes.
+
         """
         if isinstance(value, type(self)):
             return value.get_size()
@@ -364,7 +377,7 @@ class GenericTLV(GenericStruct):
         return 2 + self.length
 
 
-class IPv4(GenericStruct):
+class IPv4(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
     """IPv4 packet "struct".
 
     Contains all fields of an IP version 4 packet header, plus the upper layer
@@ -404,11 +417,13 @@ class IPv4(GenericStruct):
     #: data (:class:`BinaryData`): Packet data
     data = BinaryData()
 
-    def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0, # noqa
+    # pylint: disable-msg=too-many-locals
+    # pylint: disable-msg=too-many-arguments
+    def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0,
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",
                  options=b'', data=b''):
-        """The constructor receives the parameters below.
+        """Instanciate a IPv4 with the parameters below.
 
         Args:
             version (int): IP protocol version. Defaults to 4.
@@ -472,6 +487,7 @@ class IPv4(GenericStruct):
 
         Returns:
             bytes: Binary representation of this instance.
+
         """
         # Set the correct IHL based on options size
         if self.options:
@@ -500,6 +516,7 @@ class IPv4(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         super().unpack(buff, offset)
 
@@ -554,11 +571,12 @@ class TLVWithSubType(GenericTLV):
         Returns:
             :class:`~pyof.foundation.basic_types.BinaryData`:
                 BinaryData calculated.
+
         """
         binary = UBInt8(self.sub_type).pack() + self.sub_value.pack()
         return BinaryData(binary)
 
-    def unpack(self, buffer, offset=0):
+    def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
 
         Unpack the binary value *buff* and update this object attributes based
@@ -570,16 +588,17 @@ class TLVWithSubType(GenericTLV):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         header = UBInt16()
-        header.unpack(buffer[offset:offset+2])
+        header.unpack(buff[offset:offset+2])
         self.tlv_type = header.value >> 9
         length = header.value & 511
         begin, end = offset + 2, offset + 2 + length
         sub_type = UBInt8()
-        sub_type.unpack(buffer[begin:begin+1])
+        sub_type.unpack(buff[begin:begin+1])
         self.sub_type = sub_type.value
-        self.sub_value = BinaryData(buffer[begin+1:end])
+        self.sub_value = BinaryData(buff[begin+1:end])
 
 
 class LLDP(GenericStruct):
