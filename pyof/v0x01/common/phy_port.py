@@ -128,7 +128,6 @@ class PortState(GenericBitMask):
 # Classes
 
 
-# pylint: disable-msg=too-many-instance-attributes
 class PhyPort(GenericStruct):
     """Description of a physical port.
 

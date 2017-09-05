@@ -45,9 +45,6 @@ class FlowModFlags(GenericBitMask):
 
 
 # Classes
-
-
-# pylint: disable-msg=too-many-instance-attributes
 class FlowMod(GenericMessage):
     """Modifies the flow table from the controller."""
 

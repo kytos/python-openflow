@@ -166,7 +166,6 @@ class PortState(GenericBitMask):
 
 # Classes
 
-# pylint: disable-msg=too-many-instance-attributes
 class Port(GenericStruct):
     """Description of a port.
 

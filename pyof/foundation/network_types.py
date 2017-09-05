@@ -13,7 +13,7 @@ __all__ = ('ARP', 'Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType',
            'LLDP')
 
 
-class ARP(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
+class ARP(GenericStruct):
     """ARP packet "struct".
 
     Contains fields for an ARP packet's header and data.
@@ -32,7 +32,6 @@ class ARP(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
     tha = HWAddress()
     tpa = IPAddress()
 
-    # pylint: disable-msg=too-many-arguments
     def __init__(self, htype=1, ptype=0x800, hlen=6, plen=4, oper=1,
                  sha='00:00:00:00:00:00', spa='0.0.0.0',
                  tha="00:00:00:00:00:00", tpa='0.0.0.0'):
@@ -202,7 +201,6 @@ class Ethernet(GenericStruct):
     ether_type = UBInt16()
     data = BinaryData()
 
-    # pylint: disable-msg=too-many-arguments
     def __init__(self, destination=None,
                  source=None, vlan=VLAN(), ether_type=None, data=b''):
         """Create an instance and set its attributes.
@@ -377,7 +375,7 @@ class GenericTLV(GenericStruct):
         return 2 + self.length
 
 
-class IPv4(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
+class IPv4(GenericStruct):
     """IPv4 packet "struct".
 
     Contains all fields of an IP version 4 packet header, plus the upper layer
@@ -417,8 +415,6 @@ class IPv4(GenericStruct):  # pylint: disable-msg=too-many-instance-attributes
     #: data (:class:`BinaryData`): Packet data
     data = BinaryData()
 
-    # pylint: disable-msg=too-many-locals
-    # pylint: disable-msg=too-many-arguments
     def __init__(self, version=4, ihl=5, dscp=0, ecn=0, length=0,
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",

@@ -208,8 +208,7 @@ class GenericType:
                                                                  buff, offset)
             raise UnpackException(msg)
 
-    # pylint: disable-msg=unused-argument
-    def get_size(self, value=None):
+    def get_size(self, value=None):  # pylint: disable-msg=unused-argument
         """Return the size in bytes of this type.
 
         Returns:

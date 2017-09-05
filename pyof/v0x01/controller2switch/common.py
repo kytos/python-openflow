@@ -167,7 +167,6 @@ class DescStats(GenericStruct):
         self.dp_desc = dp_desc
 
 
-# pylint: disable-msg=too-many-instance-attributes
 class FlowStats(GenericStruct):
     """Body of reply to OFPST_FLOW request."""
 
@@ -268,7 +267,6 @@ class FlowStatsRequest(GenericStruct):
         self.out_port = out_port
 
 
-# pylint: disable-msg=too-many-instance-attributes
 class PortStats(GenericStruct):
     """Body of reply to OFPST_PORT request.
 

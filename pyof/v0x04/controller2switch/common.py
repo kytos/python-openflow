@@ -554,7 +554,6 @@ class ListOfProperty(FixedTypeList):
         super().__init__(pyof_class=Property, items=items)
 
 
-# pylint: disable-msg=too-many-instance-attributes
 class TableFeatures(GenericStruct):
     """Abstration of common class Table Features.
 

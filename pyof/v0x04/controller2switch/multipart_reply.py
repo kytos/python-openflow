@@ -235,7 +235,6 @@ class Desc(GenericStruct):
         self.dp_desc = dp_desc
 
 
-# pylint: disable-msg=too-many-instance-attributes
 class FlowStats(GenericStruct):
     """Body of reply to OFPST_FLOW request."""
 
@@ -316,7 +315,7 @@ class PortStats(GenericStruct):
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
 
-    def __init__(self, port_no=None, rx_packets=None,  # pylint: disable=R0914
+    def __init__(self, port_no=None, rx_packets=None,
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,

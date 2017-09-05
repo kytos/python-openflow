@@ -5,7 +5,8 @@ descriptions.
 """
 from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
-from distutils.command.clean import clean  # pylint: disable=E0401,E0611
+# pylint: disable=import-error,no-name-in-module
+from distutils.command.clean import clean
 from subprocess import CalledProcessError, call, check_call
 
 from setuptools import Command, find_packages, setup
@@ -97,10 +98,10 @@ class Linter(SimpleCommand):
     description = 'lint Python source code'
 
     def run(self):
-        """Run pylama."""
-        print('Pylama is running. It may take several seconds...')
+        """Run yala."""
+        print('Yala is running. It may take several seconds...')
         try:
-            check_call('pylama setup.py tests pyof', shell=True)
+            check_call('yala pyof setup.py', shell=True)
             print('No linter error found.')
         except CalledProcessError:
             print('Linter check failed. Fix the error(s) above and try again.')
@@ -124,10 +125,9 @@ setup(name='python-openflow',
               'sphinx-autobuild',
               'sphinx-rtd-theme',
               'sphinx_bootstrap_theme~=0.4.0',
-              'pydocstyle~=1.1.1',
-              'pylama~=7.3.3',
-              'pylama_pylint~=3.0.1',
-              'radon~=1.5.0'
+              'pydocstyle',
+              'yala',
+              'radon'
           ],
       },
       packages=find_packages(exclude=['tests']),

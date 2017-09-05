@@ -27,8 +27,6 @@ class FlowRemovedReason(IntEnum):
 
 
 # Classes
-
-# pylint: disable-msg=too-many-instance-attributes
 class FlowRemoved(GenericMessage):
     """Flow removed (datapath -> controller).
 
