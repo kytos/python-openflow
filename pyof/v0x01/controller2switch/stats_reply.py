@@ -19,9 +19,10 @@ class StatsReply(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, body_type=None, flags=None, body=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a StatsReply with the optional parameters below.
 
         Args:
+            xid (int): xid to be used on the message header.
             body_type (StatsTypes): One of the OFPST_* constants.
             flags (int): OFPSF_REQ_* flags (none yet defined).
             body (BinaryData): Body of the request.
@@ -39,6 +40,7 @@ class StatsReply(GenericMessage):
 
         Returns:
             bytes: Binary data with StatsReply packed.
+
         """
         buff = self.body
         if not value:
@@ -76,7 +78,7 @@ class StatsReply(GenericMessage):
         self.body = obj
 
     def _get_body_instance(self):
-        """Method used to return the body instance."""
+        """Return the body instance."""
         pyof_class = self._get_body_class()
 
         if pyof_class is None:

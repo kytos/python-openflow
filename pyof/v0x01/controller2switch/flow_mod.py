@@ -46,8 +46,7 @@ class FlowModFlags(GenericBitMask):
 
 
 # Classes
-
-
+# pylint: disable-msg=too-many-instance-attributes
 class FlowMod(GenericMessage):
     """Modifies the flow table from the controller."""
 
@@ -67,7 +66,7 @@ class FlowMod(GenericMessage):
                  idle_timeout=0, hard_timeout=0, priority=0,
                  buffer_id=NO_BUFFER, out_port=Port.OFPP_NONE,
                  flags=FlowModFlags.OFPFF_CHECK_OVERLAP, actions=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a FlowMod with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

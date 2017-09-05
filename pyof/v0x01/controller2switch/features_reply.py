@@ -54,7 +54,7 @@ class SwitchFeatures(GenericMessage):
 
     def __init__(self, xid=None, datapath_id=None, n_buffers=None,
                  n_tables=None, capabilities=None, actions=None, ports=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a SwitchFeatures with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

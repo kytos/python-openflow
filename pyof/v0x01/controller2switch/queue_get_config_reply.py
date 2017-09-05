@@ -24,7 +24,7 @@ class QueueGetConfigReply(GenericMessage):
     queues = ListOfQueues()
 
     def __init__(self, xid=None, port=None, queues=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a QueueGetConfigReply with the optional parameters below.
 
         Args:
             xid (int): xid of OpenFlow header.

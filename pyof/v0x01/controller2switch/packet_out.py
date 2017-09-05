@@ -30,7 +30,7 @@ class PacketOut(GenericMessage):
 
     def __init__(self, xid=None, buffer_id=NO_BUFFER, in_port=Port.OFPP_NONE,
                  actions=None, data=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a PacketOut with the optional parameters below.
 
         Args:
             xid (int): xid of the message header.

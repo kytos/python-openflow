@@ -22,7 +22,7 @@ class QueueGetConfigRequest(GenericMessage):
     pad = Pad(2)
 
     def __init__(self, xid=None, port=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a QueueGetConfigRequest with the optional parameters below.
 
         Args:
             xid (int): xid of OpenFlow header
