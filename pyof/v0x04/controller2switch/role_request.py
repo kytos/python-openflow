@@ -21,7 +21,7 @@ class RoleRequest(RoleBaseMessage):
     """
 
     def __init__(self, xid=None, role=None, generation_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a RoleRequest with the optional parameters below.
 
         Args:
             xid (int): OpenFlow xid to the header.

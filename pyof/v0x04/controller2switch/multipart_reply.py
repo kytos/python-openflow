@@ -70,7 +70,7 @@ class MultipartReply(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a MultipartReply with the optional parameters below.
 
         Args:
             xid (int): xid to the header.
@@ -91,6 +91,7 @@ class MultipartReply(GenericMessage):
 
         Returns:
             stats_reply_packed (bytes): Binary data with StatsReply packed.
+
         """
         buff = self.body
         if not value:
@@ -135,7 +136,7 @@ class MultipartReply(GenericMessage):
         self.body = obj
 
     def _get_body_instance(self):
-        """Method used to return the body instance."""
+        """Return the body instance."""
         exp_header = ExperimenterMultipartHeader
         simple_body = {MultipartTypes.OFPMP_DESC: Desc,
                        MultipartTypes.OFPMP_GROUP_FEATURES: GroupFeatures,
@@ -184,7 +185,7 @@ class AggregateStatsReply(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, packet_count=None, byte_count=None, flow_count=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a AggregateStatsReply with the optional parameters below.
 
         Args:
             packet_count (int): Number of packets in flows
@@ -217,7 +218,7 @@ class Desc(GenericStruct):
 
     def __init__(self, mfr_desc=None, hw_desc=None, sw_desc=None,
                  serial_num=None, dp_desc=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a Desc with the optional parameters below.
 
         Args:
             mfr_desc (str): Manufacturer description
@@ -234,6 +235,7 @@ class Desc(GenericStruct):
         self.dp_desc = dp_desc
 
 
+# pylint: disable-msg=too-many-instance-attributes
 class FlowStats(GenericStruct):
     """Body of reply to OFPST_FLOW request."""
 
@@ -258,7 +260,7 @@ class FlowStats(GenericStruct):
                  duration_nsec=None, priority=None, idle_timeout=None,
                  hard_timeout=None, flags=None, cookie=None, packet_count=None,
                  byte_count=None, match=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a FlowStats with the optional parameters below.
 
         Args:
             length (int): Length of this entry.
@@ -287,6 +289,7 @@ class FlowStats(GenericStruct):
         self.cookie = cookie
         self.packet_count = packet_count
         self.byte_count = byte_count
+        self.match = match
 
 
 class PortStats(GenericStruct):
@@ -313,15 +316,13 @@ class PortStats(GenericStruct):
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
 
-    # Can't avoid "too many local variables" (R0914) in this struct.
-    # pylint: disable=R0914
-    def __init__(self, port_no=None, rx_packets=None,
+    def __init__(self, port_no=None, rx_packets=None,  # pylint: disable=R0914
                  tx_packets=None, rx_bytes=None, tx_bytes=None,
                  rx_dropped=None, tx_dropped=None, rx_errors=None,
                  tx_errors=None, rx_frame_err=None, rx_over_err=None,
                  rx_crc_err=None, collisions=None, duration_sec=None,
                  duration_nsec=None):
-        """The constructor assigns parameters to object attributes.
+        """Create a PortStats with the optional parameters below.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -379,7 +380,7 @@ class QueueStats(GenericStruct):
     def __init__(self, port_no=None, queue_id=None, tx_bytes=None,
                  tx_packets=None, tx_errors=None, duration_sec=None,
                  duration_nsec=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a QueueStats with the optional parameters below.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -414,7 +415,7 @@ class GroupDescStats(GenericStruct):
 
     def __init__(self, length=None, group_type=None, group_id=None,
                  buckets=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a GroupDescStats with the optional parameters below.
 
         Args:
             length (int): Length of this entry.
@@ -446,7 +447,7 @@ class GroupFeatures(GenericStruct):
     def __init__(self, types=None, capabilities=None, max_groups1=None,
                  max_groups2=None, max_groups3=None, max_groups4=None,
                  actions1=None, actions2=None, actions3=None, actions4=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a GroupFeatures with the optional parameters below.
 
         Args:
             types: Bitmap of OFPGT_* values supported.
@@ -487,7 +488,7 @@ class GroupStats(GenericStruct):
     def __init__(self, length=None, group_id=None, ref_count=None,
                  packet_count=None, byte_count=None, duration_sec=None,
                  duration_nsec=None, bucket_stats=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a GroupStats with the optional parameters below.
 
         Args:
             length: Length of this entry
@@ -528,7 +529,7 @@ class MeterConfig(GenericStruct):
 
     def __init__(self, flags=MeterFlags.OFPMF_STATS, meter_id=None,
                  bands=None):
-        """The Constructor of MeterConfig receives the parameters below.
+        """Create a MeterConfig with the optional parameters below.
 
         Args:
             flags (|MeterFlags_v0x04|):
@@ -557,7 +558,7 @@ class MeterFeatures(GenericStruct):
 
     def __init__(self, max_meter=None, band_types=None, capabilities=None,
                  max_bands=None, max_color=None):
-        """The Constructor of MeterFeatures receives the parameters below.
+        """Create a MeterFeatures with the optional parameters below.
 
         Args:
             max_meter(int): Maximum number of meters.
@@ -585,7 +586,7 @@ class BandStats(GenericStruct):
     byte_band_count = UBInt64()
 
     def __init__(self, packet_band_count=None, byte_band_count=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a BandStats with the optional parameters below.
 
         Args:
             packet_band_count(int): Number of packets in band.
@@ -603,7 +604,7 @@ class ListOfBandStats(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfBandStats with the optional parameters below.
 
         Args:
             items (|BandStats_v0x04|): Instance or a list of instances.
@@ -630,7 +631,7 @@ class MeterStats(GenericStruct):
     def __init__(self, meter_id=None, flow_count=None,
                  packet_in_count=None, byte_in_count=None, duration_sec=None,
                  duration_nsec=None, band_stats=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a MeterStats with the optional parameters below.
 
         Args:
             meter_id (|Meter_v0x04|):  Meter instance.
@@ -677,6 +678,7 @@ class MeterStats(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         length = UBInt16()
         length.unpack(buff, offset)
@@ -695,10 +697,9 @@ class TableStats(GenericStruct):
     lookup_count = UBInt64()
     matched_count = UBInt64()
 
-    def __init__(self, table_id=None, name=None, max_entries=None,
-                 active_count=None, lookup_count=None,
+    def __init__(self, table_id=None, active_count=None, lookup_count=None,
                  matched_count=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a TableStats with the optional parameters below.
 
         Args:
             table_id (int): Identifier of table.  Lower numbered tables are
