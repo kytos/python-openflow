@@ -37,10 +37,11 @@ class ErrorType(IntEnum):
     OFPET_QUEUE_OP_FAILED = 5
 
     def get_class(self):
-        """Method used to return a Code class based on current ErrorType value.
+        """Return a Code class based on current ErrorType value.
 
         Returns:
             enum.IntEnum: class referenced by current error type.
+
         """
         classes = {'OFPET_HELLO_FAILED': HelloFailedCode,
                    'OFPET_BAD_REQUEST': BadRequestCode,
@@ -198,6 +199,10 @@ class ErrorMsg(GenericMessage):
 
         Returns:
             bytes: The binary representation.
+
+        Raises:
+            :exc:`~.exceptions.PackException`: If pack fails.
+
         """
         if value is None:
             data_backup = None
@@ -227,7 +232,8 @@ class ErrorMsg(GenericMessage):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         super().unpack(buff, offset)
-        CodeClass = ErrorType(self.error_type).get_class()
-        self.code = CodeClass(self.code)
+        code_class = ErrorType(self.error_type).get_class()
+        self.code = code_class(self.code)
