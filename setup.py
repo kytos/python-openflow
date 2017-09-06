@@ -7,6 +7,7 @@ from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
 # pylint: disable=import-error,no-name-in-module
 from distutils.command.clean import clean
+# pylint: enable=import-error,no-name-in-module
 from subprocess import CalledProcessError, call, check_call
 
 from setuptools import Command, find_packages, setup

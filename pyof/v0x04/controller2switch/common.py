@@ -526,7 +526,7 @@ class OxmProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_MATCH,
                  oxm_ids=ListOfOxmHeader()):
-        """Create a OxmProperty with the optional parameters below.
+        """Create an OxmProperty with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):

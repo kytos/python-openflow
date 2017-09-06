@@ -192,7 +192,7 @@ class OxmTLV(GenericStruct):
 
     def __init__(self, oxm_class=None, oxm_field=None,
                  oxm_hasmask=False, oxm_value=None):
-        """Create a OXM TLV struct with the optional parameters below.
+        """Create an OXM TLV struct with the optional parameters below.
 
         Args:
             oxm_class (OxmClass): Match class: member class or reserved class

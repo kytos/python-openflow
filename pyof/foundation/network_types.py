@@ -35,7 +35,7 @@ class ARP(GenericStruct):
     def __init__(self, htype=1, ptype=0x800, hlen=6, plen=4, oper=1,
                  sha='00:00:00:00:00:00', spa='0.0.0.0',
                  tha="00:00:00:00:00:00", tpa='0.0.0.0'):
-        """Create a ARP with the parameters below.
+        """Create an ARP with the parameters below.
 
         Args:
             htype (int): Hardware protocol type. Defaults to 1 for Ethernet.
@@ -201,8 +201,8 @@ class Ethernet(GenericStruct):
     ether_type = UBInt16()
     data = BinaryData()
 
-    def __init__(self, destination=None,
-                 source=None, vlan=VLAN(), ether_type=None, data=b''):
+    def __init__(self, destination=None, source=None, vlan=VLAN(),
+                 ether_type=None, data=b''):
         """Create an instance and set its attributes.
 
         Args:
@@ -419,7 +419,7 @@ class IPv4(GenericStruct):
                  identification=0, flags=0, offset=0, ttl=255, protocol=0,
                  checksum=0, source="0.0.0.0", destination="0.0.0.0",
                  options=b'', data=b''):
-        """Instanciate a IPv4 with the parameters below.
+        """Create an IPv4 with the parameters below.
 
         Args:
             version (int): IP protocol version. Defaults to 4.

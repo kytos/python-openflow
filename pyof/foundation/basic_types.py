@@ -245,7 +245,7 @@ class IPAddress(GenericType):
     max_prefix = UBInt32(32)
 
     def __init__(self, address="0.0.0.0/32"):
-        """Create a IPAddress with the parameters below.
+        """Create an IPAddress with the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
@@ -330,7 +330,7 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    # pylint: disable-msg=useless-super-delegation
+    # pylint: disable=useless-super-delegation
     def __init__(self, hw_address='00:00:00:00:00:00'):
         """Create a HWAddress with the parameters below.
 
@@ -552,7 +552,7 @@ class TypeList(list, GenericStruct):
             msg = "{} pack error: {}".format(type(self).__name__, err)
             raise exceptions.PackException(msg)
 
-    # pylint: disable-msg=arguments-differ
+    # pylint: disable=arguments-differ
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.
 
@@ -573,6 +573,7 @@ class TypeList(list, GenericStruct):
             item.unpack(buff, begin)
             self.append(item)
             begin += item.get_size()
+    # pylint: enable=arguments-differ
 
     def get_size(self, value=None):
         """Return the size in bytes.
@@ -659,8 +660,7 @@ class FixedTypeList(TypeList):
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self._pyof_class.__name__)
 
-    # pylint: disable-msg=arguments-differ
-    def unpack(self, buff, offset=0):
+    def unpack(self, buff, offset=0):  # pylint: disable=arguments-differ
         """Unpack the elements of the list.
 
         This unpack method considers that all elements have the same size.
@@ -682,7 +682,7 @@ class ConstantTypeList(TypeList):
     list operations.
     """
 
-    # pylint: disable-msg=useless-super-delegation
+    # pylint: disable=useless-super-delegation
     def __init__(self, items=None):
         """Create a ConstantTypeList that can contain itens to be stored.
 
