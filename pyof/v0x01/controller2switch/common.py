@@ -249,7 +249,7 @@ class FlowStatsRequest(GenericStruct):
     pad = Pad(1)
     out_port = UBInt16()
 
-    def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
+    def __init__(self, match=None, table_id=0xff, out_port=Port.OFPP_NONE):
         """Create a FlowStatsRequest with the optional parameters below.
 
         Args:
@@ -262,7 +262,7 @@ class FlowStatsRequest(GenericStruct):
                 A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
         """
         super().__init__()
-        self.match = match
+        self.match = Match() if match is None else match
         self.table_id = table_id
         self.out_port = out_port
 
