@@ -69,7 +69,7 @@ class MultipartReply(GenericMessage):
     #: Body of the reply
     body = BinaryData()
 
-    def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
+    def __init__(self, xid=None, multipart_type=None, flags=None, body=None):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -81,7 +81,7 @@ class MultipartReply(GenericMessage):
         super().__init__(xid)
         self.multipart_type = multipart_type
         self.flags = flags
-        self.body = body
+        self.body = BinaryData() if body is None else body
 
     def pack(self, value=None):
         """Pack a StatsReply using the object's attributes.

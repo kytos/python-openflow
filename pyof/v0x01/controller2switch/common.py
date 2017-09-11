@@ -119,7 +119,7 @@ class AggregateStatsRequest(GenericStruct):
     pad = Pad(1)
     out_port = UBInt16()
 
-    def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
+    def __init__(self, match=None, table_id=0xff, out_port=Port.OFPP_NONE):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -130,7 +130,7 @@ class AggregateStatsRequest(GenericStruct):
                 output port. A value of OFPP_NONE indicates no restriction.
         """
         super().__init__()
-        self.match = match
+        self.match = Match() if match is None else match
         self.table_id = table_id
         self.out_port = out_port
 
@@ -249,7 +249,7 @@ class FlowStatsRequest(GenericStruct):
     pad = Pad(1)
     out_port = UBInt16()
 
-    def __init__(self, match=Match(), table_id=0xff, out_port=Port.OFPP_NONE):
+    def __init__(self, match=None, table_id=0xff, out_port=Port.OFPP_NONE):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -262,7 +262,7 @@ class FlowStatsRequest(GenericStruct):
                 A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
         """
         super().__init__()
-        self.match = match
+        self.match = Match if match is None else match
         self.table_id = table_id
         self.out_port = out_port
 

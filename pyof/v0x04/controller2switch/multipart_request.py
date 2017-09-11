@@ -50,7 +50,7 @@ class MultipartRequest(GenericMessage):
     #: Body of the request
     body = BinaryData()
 
-    def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
+    def __init__(self, xid=None, multipart_type=None, flags=None, body=None):
         """The constructor just assigns parameters to object attributes.
 
         Args:
@@ -62,7 +62,7 @@ class MultipartRequest(GenericMessage):
         super().__init__(xid)
         self.multipart_type = multipart_type
         self.flags = flags
-        self.body = body
+        self.body = BinaryData() if body is None else body
 
     def pack(self, value=None):
         """Pack a MultipartRequest using the object's attributes.

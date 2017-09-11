@@ -90,7 +90,7 @@ class Header(GenericStruct):
     length = UBInt16()
     xid = UBInt32()
 
-    def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
+    def __init__(self, message_type=None, length=None, xid=None):
         """The constructor takes the optional parameters below.
 
         Args:
@@ -103,4 +103,4 @@ class Header(GenericStruct):
         super().__init__()
         self.message_type = message_type
         self.length = length
-        self.xid = xid
+        self.xid = randint(0, MAXID) if xid is None else xid

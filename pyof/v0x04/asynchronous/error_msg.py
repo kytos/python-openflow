@@ -419,7 +419,7 @@ class ErrorMsg(GenericMessage):
     #: Variable-length data interpreted based on the type and code. No padding.
     data = BinaryData()
 
-    def __init__(self, xid=None, error_type=None, code=None, data=b''):
+    def __init__(self, xid=None, error_type=None, code=None, data=None):
         """Assign parameters to object attributes.
 
         Args:
@@ -435,7 +435,7 @@ class ErrorMsg(GenericMessage):
         super().__init__(xid)
         self.error_type = error_type
         self.code = code
-        self.data = data
+        self.data = b'' if data is None else data
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
@@ -463,7 +463,7 @@ class ErrorExperimenterMsg(GenericMessage):
     #: Variable-length data interpreted based on the type and code. No padding.
     data = BinaryData()
 
-    def __init__(self, xid=None, exp_type=None, experimenter=None, data=b''):
+    def __init__(self, xid=None, exp_type=None, experimenter=None, data=None):
         """Assign parameters to object attributes.
 
         Args:
@@ -477,7 +477,7 @@ class ErrorExperimenterMsg(GenericMessage):
         super().__init__(xid)
         self.exp_type = exp_type
         self.experimenter = experimenter
-        self.data = data
+        self.data = b'' if data is None else data
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
