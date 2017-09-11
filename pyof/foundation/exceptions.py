@@ -25,9 +25,8 @@ class BadValueException(Exception):
 class WrongListItemType(Exception):
     """When an item of a wrong type is inserted into a list.
 
-    Exception used by :class:`.FixedTypeList` and :class:`.ConstantTypeList`
-    when the user tries to insert an item that does not match the expected
-    type.
+    Exception used by :class:`.FixedTypeList` when the user tries to insert
+    an item that does not match the expected type.
     """
 
     def __init__(self, item_class, expected_class):

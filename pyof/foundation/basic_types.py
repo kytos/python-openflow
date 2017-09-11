@@ -9,9 +9,8 @@ from pyof.foundation.base import GenericStruct, GenericType
 
 # Third-party imports
 
-__all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
-           'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
-           'UBInt32', 'UBInt64')
+__all__ = ('BinaryData', 'Char', 'FixedTypeList', 'IPAddress', 'DPID',
+           'HWAddress', 'Pad', 'UBInt8', 'UBInt16', 'UBInt32', 'UBInt64')
 
 
 class Pad(GenericType):
@@ -478,33 +477,22 @@ class BinaryData(GenericType):
         return len(value)
 
 
-class TypeList(list, GenericStruct):
-    """Base class for lists that store objects of one single type."""
+class FixedTypeList(list, GenericStruct):
+    """A list that stores instances of one pyof class."""
 
-    def __init__(self, items):
-        """Initialize the list with one item or a list of items.
+    _pyof_class = None
+
+    def __init__(self, pyof_class, items=None):
+        """The constructor parameters follows.
 
         Args:
+            pyof_class (:obj:`type`): Class of the items to be stored.
             items (iterable, ``pyof_class``): Items to be stored.
         """
-        super().__init__()
-        if isinstance(items, list):
-            self.extend(items)
-        elif items:
-            self.append(items)
-
-    def extend(self, items):
-        """Extend the list by adding all items of ``items``.
-
-        Args:
-            items (iterable): Items to be added to the list.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If an item has an unexpected
-                type.
-        """
-        for item in items:
-            self.append(item)
+        self._pyof_class = pyof_class
+        if items is None:
+            items = []
+        super().__init__(items)
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
@@ -517,40 +505,17 @@ class TypeList(list, GenericStruct):
 
         if value is None:
             value = self
-        else:
-            container = type(self)(items=None)
-            container.extend(value)
-            value = container
 
         bin_message = b''
         try:
             for item in value:
+                if not isinstance(item, self._pyof_class):
+                    item = self._pyof_class(item)
                 bin_message += item.pack()
             return bin_message
         except exceptions.PackException as err:
             msg = "{} pack error: {}".format(type(self).__name__, err)
             raise exceptions.PackException(msg)
-
-    def unpack(self, buff, item_class, offset=0):
-        """Unpack the elements of the list.
-
-        This unpack method considers that all elements have the same size.
-        To use this class with a pyof_class that accepts elements with
-        different sizes, you must reimplement the unpack method.
-
-        Args:
-            buff (bytes): The binary data to be unpacked.
-            item_class (:obj:`type`): Class of the expected items on this list.
-            offset (int): If we need to shift the beginning of the data.
-        """
-        begin = offset
-        limit_buff = len(buff)
-
-        while begin < limit_buff:
-            item = item_class()
-            item.unpack(buff, begin)
-            self.append(item)
-            begin += item.get_size()
 
     def get_size(self, value=None):
         """Return the size in bytes.
@@ -567,142 +532,24 @@ class TypeList(list, GenericStruct):
             if not self:
                 # If this is a empty list, then returns zero
                 return 0
-            elif issubclass(type(self[0]), GenericType):
-                # If the type of the elements is GenericType, then returns the
-                # length of the list multiplied by the size of the GenericType.
-                return len(self) * self[0].get_size()
-
             # Otherwise iter over the list accumulating the sizes.
             return sum(item.get_size() for item in self)
-
         return type(self)(value).get_size()
-
-    def __str__(self):
-        """Human-readable object representantion."""
-        return "{}".format([str(item) for item in self])
-
-
-class FixedTypeList(TypeList):
-    """A list that stores instances of one pyof class."""
-
-    _pyof_class = None
-
-    def __init__(self, pyof_class, items=None):
-        """The constructor parameters follows.
-
-        Args:
-            pyof_class (:obj:`type`): Class of the items to be stored.
-            items (iterable, ``pyof_class``): Items to be stored.
-        """
-        self._pyof_class = pyof_class
-        super().__init__(items)
-
-    def append(self, item):
-        """Append one item to the list.
-
-        Args:
-            item: Item to be appended. Its type must match the one defined in
-                the constructor.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If the item has a different
-                type than the one specified in the constructor.
-        """
-        if isinstance(item, list):
-            self.extend(item)
-        elif issubclass(item.__class__, self._pyof_class):
-            list.append(self, item)
-        else:
-            raise exceptions.WrongListItemType(item.__class__.__name__,
-                                               self._pyof_class.__name__)
-
-    def insert(self, index, item):
-        """Insert an item at the specified index.
-
-        Args:
-            index (int): Position to insert the item.
-            item: Item to be inserted. It must have the type specified in the
-                constructor.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If the item has a different
-                type than the one specified in the constructor.
-        """
-        if issubclass(item.__class__, self._pyof_class):
-            list.insert(self, index, item)
-        else:
-            raise exceptions.WrongListItemType(item.__class__.__name__,
-                                               self._pyof_class.__name__)
 
     def unpack(self, buff, offset=0):
         """Unpack the elements of the list.
 
-        This unpack method considers that all elements have the same size.
-        To use this class with a pyof_class that accepts elements with
-        different sizes, you must reimplement the unpack method.
+        This unpack method considers that all elements have the same type.
 
         Args:
             buff (bytes): The binary data to be unpacked.
             offset (int): If we need to shift the beginning of the data.
         """
-        super().unpack(buff, self._pyof_class, offset)
+        begin = offset
+        limit_buff = len(buff)
 
-
-class ConstantTypeList(TypeList):
-    """List that contains only objects of the same type (class).
-
-    The types of all items are expected to be the same as the first item's.
-    Otherwise, :exc:`~.exceptions.WrongListItemType` is raised in many
-    list operations.
-    """
-
-    def __init__(self, items=None):  # noqa
-        """The contructor can contain the items to be stored.
-
-        Args:
-            items (iterable, :class:`object`): Items to be stored.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If an item has a different
-                type than the first item to be stored.
-        """
-        super().__init__(items)
-
-    def append(self, item):
-        """Append one item to the list.
-
-        Args:
-            item: Item to be appended.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If an item has a different
-                type than the first item to be stored.
-        """
-        if isinstance(item, list):
-            self.extend(item)
-        elif not self:
-            list.append(self, item)
-        elif item.__class__ == self[0].__class__:
-            list.append(self, item)
-        else:
-            raise exceptions.WrongListItemType(item.__class__.__name__,
-                                               self[0].__class__.__name__)
-
-    def insert(self, index, item):
-        """Insert an item at the specified index.
-
-        Args:
-            index (int): Position to insert the item.
-            item: Item to be inserted.
-
-        Raises:
-            :exc:`~.exceptions.WrongListItemType`: If an item has a different
-                type than the first item to be stored.
-        """
-        if not self:
-            list.append(self, item)
-        elif item.__class__ == self[0].__class__:
-            list.insert(self, index, item)
-        else:
-            raise exceptions.WrongListItemType(item.__class__.__name__,
-                                               self[0].__class__.__name__)
+        while begin < limit_buff:
+            item = self._pyof_class()
+            item.unpack(buff, begin)
+            self.append(item)
+            begin += item.get_size()
