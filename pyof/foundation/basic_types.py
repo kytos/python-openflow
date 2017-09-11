@@ -19,13 +19,16 @@ class Pad(GenericType):
 
     _fmt = ''
 
-    def __init__(self, length=0):
+    def __init__(self, length=None):
         """Pad up to ``length``, in bytes.
 
         Args:
             length (int): Total length, in bytes.
+            value (int): Ignored, always 0.
         """
         super().__init__()
+        if length is None:
+            length = 0
         self._length = length
 
     def __repr__(self):
@@ -114,13 +117,15 @@ class DPID(GenericType):
 
     _fmt = "!8B"
 
-    def __init__(self, dpid=None):
+    def __init__(self, value=None):
         """Create an instance and optionally set its dpid value.
 
         Args:
-            dpid (str): String with DPID value(e.g. `00:00:00:00:00:00:00:01`).
+            dpid (str): String with DPID value. ('00:00:00:00:00:00:00:00').
         """
-        super().__init__(value=dpid)
+        if value is None:
+            value = '00:00:00:00:00:00:00:00'
+        super().__init__(value)
 
     def __str__(self):
         return self._value
@@ -237,18 +242,20 @@ class IPAddress(GenericType):
     netmask = UBInt32()
     max_prefix = UBInt32(32)
 
-    def __init__(self, address="0.0.0.0/32"):
+    def __init__(self, value=None):
         """The constructor takes the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
         """
-        if address.find('/') >= 0:
-            address, netmask = address.split('/')
+        if value is None:
+            value = "0.0.0.0/32"
+        if value.find('/') >= 0:
+            value, netmask = value.split('/')
         else:
             netmask = 32
 
-        super().__init__(address)
+        super().__init__(value)
         self.netmask = int(netmask)
 
     def pack(self, value=None):
@@ -319,14 +326,16 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
+    def __init__(self, value=None):  # noqa
         """The constructor takes the parameters below.
 
         Args:
-            hw_address (bytes): Hardware address. Defaults to
+            value (bytes): Hardware address. Defaults to
                 '00:00:00:00:00:00'.
         """
-        super().__init__(hw_address)
+        if value is None:
+            value = '00:00:00:00:00:00'
+        super().__init__(value)
 
     def pack(self, value=None):
         """Pack the value as a binary representation.
