@@ -121,6 +121,9 @@ class GenericType:
     def __rshift__(self, shift):
         return self.value >> shift
 
+    def __len__(self):
+        return self.get_size()
+
     @property
     def value(self):
         """Return this type's value.
