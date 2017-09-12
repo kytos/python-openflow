@@ -247,7 +247,7 @@ class Ethernet(GenericStruct):
         # indicating that the packet is tagged. If it is not, we insert the
         # equivalent to 'NULL VLAN data' (\x00\x00\x00\x00) to enable the
         # correct unpacking process.
-        if buff[12:16] != VLAN_TPID.to_bytes(2, 'big'):
+        if buff[12:14] != VLAN_TPID.to_bytes(2, 'big'):
             buff = buff[0:12] + b'\x00\x00\x00\x00' + buff[12:]
 
         super().unpack(buff, offset)
