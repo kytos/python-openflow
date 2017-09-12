@@ -85,7 +85,7 @@ class ActionExperimenterHeader(GenericStruct):
     experimenter = UBInt32()
 
     def __init__(self, length=None, experimenter=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create ActionExperimenterHeader with the optional parameters below.
 
         Args:
             experimenter (int): The experimenter field is the Experimenter ID,
@@ -107,7 +107,7 @@ class ActionGroup(GenericStruct):
     group_id = UBInt32()
 
     def __init__(self, group_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionGroup with the optional parameters below.
 
         Args:
             group_id (int): The group_id indicates the group used to process
@@ -135,7 +135,7 @@ class ActionHeader(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, action_type=None, length=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionHeader with the optional parameters below.
 
         Args:
             action_type (~pyof.v0x04.common.action.ActionType):
@@ -160,7 +160,7 @@ class ActionMPLSTTL(GenericStruct):
     pad = Pad(3)
 
     def __init__(self, mpls_ttl=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionMPLSTTL with the optional parameters below.
 
         Args:
             mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
@@ -182,7 +182,7 @@ class ActionNWTTL(GenericStruct):
     pad = Pad(3)
 
     def __init__(self, nw_ttl=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionNWTTL with the optional parameters below.
 
         Args:
             nw_ttl (int): the TTL address to set in the IP header.
@@ -214,7 +214,7 @@ class ActionOutput(GenericStruct):
 
     def __init__(self, action_type=None, length=None, port=None,
                  max_length=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionOutput with the optional parameters below.
 
         Args:
             port (:class:`Port` or :class:`int`): Output port.
@@ -240,7 +240,7 @@ class ActionPopMPLS(GenericStruct):
     pad = Pad(2)
 
     def __init__(self, ethertype=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionPopMPLS with the optional parameters below.
 
         Args:
             ethertype (int): indicates the Ethertype of the payload.
@@ -262,7 +262,7 @@ class ActionPush(GenericStruct):
     pad = Pad(2)
 
     def __init__(self, ethertype=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionPush with the optional parameters below.
 
         Args:
             ethertype (int): indicates the Ethertype of the new tag.
@@ -286,7 +286,7 @@ class ActionSetField(GenericStruct):
 
     def __init__(self, length=None, field1=None, field2=None, field3=None,
                  field4=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionSetField with the optional parameters below.
 
         Args:
             length (int): length padded to 64 bits, followed by exactly
@@ -317,7 +317,7 @@ class ActionSetQueue(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, queue_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ActionSetQueue with the optional parameters below.
 
         Args:
             queue_id (int): The queue_id send packets to given queue on port.
@@ -333,7 +333,7 @@ class ListOfActions(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfActions with the optional parameters below.
 
         Args:
             items (~pyof.v0x04.common.action.ActionHeader):

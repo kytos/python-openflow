@@ -23,7 +23,7 @@ class EchoRequest(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, data=None):
-        """The constructor takes the parameters below.
+        """Create a EchoRequest with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

@@ -43,7 +43,7 @@ class InstructionType(IntEnum):
     OFPIT_EXPERIMENTER = 0xFFFF
 
     def find_class(self):
-        """Method used to return a class related with this type."""
+        """Return a class related with this type."""
         classes = {1: InstructionGotoTable, 2: InstructionWriteMetadata,
                    3: InstructionWriteAction, 4: InstructionApplyAction,
                    5: InstructionClearAction, 6: InstructionMeter}
@@ -64,7 +64,7 @@ class Instruction(GenericStruct):
     length = UBInt16()
 
     def __init__(self, instruction_type=None):
-        """Constructor of Generic Instruction receives the parameters bellow.
+        """Create a Instruction with the optional parameters below.
 
         Args:
             instruction_type(InstructionType): Type of instruction.
@@ -73,7 +73,7 @@ class Instruction(GenericStruct):
         self.instruction_type = instruction_type
 
     def update_length(self):
-        """Method used to update length attribute."""
+        """Update length attribute."""
         self.length = self.get_size()
 
     def unpack(self, buff=None, offset=0):
@@ -88,6 +88,7 @@ class Instruction(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         instruction_type = UBInt16(enum_ref=InstructionType)
         instruction_type.unpack(buff, offset)
@@ -112,7 +113,7 @@ class InstructionApplyAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a InstructionApplyAction with the optional parameters below.
 
         Args:
             actions (:class:`~.actions.ListOfActions`):
@@ -135,7 +136,7 @@ class InstructionClearAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a InstructionClearAction with the optional parameters below.
 
         Args:
             actions (:class:`~.actions.ListOfActions`):
@@ -155,7 +156,7 @@ class InstructionGotoTable(Instruction):
     pad = Pad(3)
 
     def __init__(self, table_id=Meter.OFPM_ALL):
-        """The constructor just assigns parameters to object attributes.
+        """Create a InstructionGotoTable with the optional parameters below.
 
         Args:
             length (int): Length of this struct in bytes.
@@ -176,7 +177,7 @@ class InstructionMeter(Instruction):
     meter_id = UBInt32()
 
     def __init__(self, meter_id=Meter.OFPM_ALL):
-        """The constructor just assigns parameters to object attributes.
+        """Create a InstructionMeter with the optional parameters below.
 
         Args:
             meter_id (int): Meter instance.
@@ -198,7 +199,7 @@ class InstructionWriteAction(Instruction):
     actions = ListOfActions()
 
     def __init__(self, actions=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a InstructionWriteAction with the optional parameters below.
 
         Args:
             actions (:class:`~.actions.ListOfActions`):
@@ -220,7 +221,7 @@ class InstructionWriteMetadata(Instruction):
     metadata_mask = UBInt64()
 
     def __init__(self, metadata=0, metadata_mask=0):
-        """The constructor just assigns parameters to object attributes.
+        """Create InstructionWriteMetadata with the optional parameters below.
 
         Args:
             metadata (int): Metadata value to write.
@@ -239,7 +240,7 @@ class ListOfInstruction(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create ListOfInstruction with the optional parameters below.
 
         Args:
             items (:class:`~pyof.v0x04.common.flow_instructions.Instruction`):

@@ -25,9 +25,10 @@ class StatsRequest(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, body_type=None, flags=0, body=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a StatsRequest with the optional parameters below.
 
         Args:
+            xid (int): xid to be used on the message header.
             body_type (StatsTypes): One of the OFPST_* constants.
             flags (int): OFPSF_REQ_* flags (none yet defined).
             body (BinaryData): Body of the request.

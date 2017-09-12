@@ -33,7 +33,7 @@ class HelloElemHeader(GenericStruct):
     length = UBInt16()
 
     def __init__(self, element_type=None, length=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a HelloElemHeader with the optional parameters below.
 
         Args:
             element_type: One of OFPHET_*.
@@ -53,7 +53,7 @@ class ListOfHelloElements(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfHelloElements with the optional parameters below.
 
         Args:
             items (HelloElemHeader): Instance or a list of instances.
@@ -74,7 +74,7 @@ class Hello(GenericMessage):
     elements = ListOfHelloElements()
 
     def __init__(self, xid=None, elements=None):
-        """The constructor takes the parameters below.
+        """Create a Hello with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
@@ -91,7 +91,7 @@ class HelloElemVersionbitmap(HelloElemHeader):
     bitmaps = BinaryData()
 
     def __init__(self, bitmaps=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a HelloElemVersionbitmap with the optional parameters below.
 
         Args:
             bitmaps(BinaryData): A BinaryData with exactly (length - 4) bytes

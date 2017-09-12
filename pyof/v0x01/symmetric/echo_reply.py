@@ -23,7 +23,7 @@ class EchoReply(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, data=None):
-        """The constructor takes the parameters below.
+        """Create an EchoReply with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

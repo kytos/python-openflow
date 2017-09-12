@@ -55,7 +55,7 @@ class ListOfBuckets(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfBuckets with the optional parameters below.
 
         Args:
             items (Bucket): Instance or a list of instances.
@@ -76,7 +76,7 @@ class GroupMod(GenericMessage):
 
     def __init__(self, xid=None, command=None, group_type=None, group_id=None,
                  buckets=None):
-        """Initialize all instance variables.
+        """Create a GroupMod with the optional parameters below.
 
         Args:
             xid (int): Header's transaction id. Defaults to random.

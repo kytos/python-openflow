@@ -47,7 +47,7 @@ class GenericType:
     _fmt = None
 
     def __init__(self, value=None, enum_ref=None):
-        """The constructor takes the optional parameters below.
+        """Create a GenericType with the optional parameters below.
 
         Args:
             value: The type's value.
@@ -115,17 +115,19 @@ class GenericType:
     def __rxor__(self, other):
         return self.value ^ other
 
-    def __lshift__(self, n):
-        return self.value << n
+    def __lshift__(self, shift):
+        return self.value << shift
 
-    def __rshift__(self, n):
-        return self.value >> n
+    def __rshift__(self, shift):
+        return self.value >> shift
 
     @property
     def value(self):
         """Return this type's value.
 
-        Returns: The value of an enum, bitmask, etc.
+        Returns:
+            object: The value of an enum, bitmask, etc.
+
         """
         if self.isenum():
             if isinstance(self._value, self.enum_ref):
@@ -163,6 +165,7 @@ class GenericType:
         Raises:
             :exc:`~.exceptions.BadValueException`: If the value does not
                 fit the binary format.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -193,21 +196,24 @@ class GenericType:
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         try:
             self._value = struct.unpack_from(self._fmt, buff, offset)[0]
             if self.enum_ref:
                 self._value = self.enum_ref(self._value)
-        except (struct.error, TypeError, ValueError) as e:
-            msg = '{}; fmt = {}, buff = {}, offset = {}.'.format(e, self._fmt,
+        except (struct.error, TypeError, ValueError) as exception:
+            msg = '{}; fmt = {}, buff = {}, offset = {}.'.format(exception,
+                                                                 self._fmt,
                                                                  buff, offset)
             raise UnpackException(msg)
 
-    def get_size(self, value=None):
+    def get_size(self, value=None):  # pylint: disable=unused-argument
         """Return the size in bytes of this type.
 
         Returns:
             int: Size in bytes.
+
         """
         return struct.calcsize(self._fmt)
 
@@ -218,6 +224,7 @@ class GenericType:
 
         Returns:
             bool: Whether the value is valid for this type.
+
         """
         try:
             self.pack()
@@ -230,6 +237,7 @@ class GenericType:
 
         Returns:
             bool: Whether it is an :class:`~enum.Enum`.
+
         """
         return self.enum_ref and issubclass(self.enum_ref, (Enum, IntEnum))
 
@@ -238,6 +246,7 @@ class GenericType:
 
         Returns:
             bool: Whether it is a :class:`GenericBitMask`.
+
         """
         return self._value and issubclass(type(self._value), GenericBitMask)
 
@@ -356,6 +365,7 @@ class MetaStruct(type):
             str: openflow version.
                  The openflow version, on the format 'v0x0?' if any. Or None
                  if there isn't a version on the fullname.
+
         """
         ver_module_re = re.compile(r'(pyof\.)(v0x\d+)(\..*)')
         matched = ver_module_re.match(module_fullname)
@@ -383,6 +393,7 @@ class MetaStruct(type):
                  version is the same as the one of the module_fullname or if
                  the module_fullname is not a 'OF version' specific module,
                  returns None.
+
         """
         module_version = MetaStruct.get_pyof_version(module_fullname)
         if not module_version or module_version == version:
@@ -434,6 +445,7 @@ class MetaStruct(type):
                 is returned without any changes. Also, if the obj is a pyof
                 versioned attribute, but it is already on the right version
                 (same as new_version), then the passed obj is return.
+
         """
         if new_version is None:
             return (name, obj)
@@ -484,6 +496,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Returns:
             bool: Returns the result of comparation.
+
         """
         return self.pack() == other.pack()
 
@@ -505,6 +518,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Returns:
             bool: Returns TRUE if the obj is a kytos attribute, otherwise False
+
         """
         return isinstance(obj, (GenericType, GenericStruct))
 
@@ -536,8 +550,9 @@ class GenericStruct(object, metaclass=MetaStruct):
                 print("attribute name: {}".format(name))
                 print("attribute type: {}".format(value))
 
-        returns:
+        Returns:
             generator: tuples with attribute name and value.
+
         """
         #: see this method docstring for a important notice about the use of
         #: cls.__dict__
@@ -556,8 +571,9 @@ class GenericStruct(object, metaclass=MetaStruct):
                 print("attribute name: {}".format(_name))
                 print("attribute value: {}".format(_value))
 
-        returns:
+        Returns:
             generator: tuples with attribute name and value.
+
         """
         for name, value in self.__dict__.items():
             if name in map((lambda x: x[0]), self.get_class_attributes()):
@@ -574,6 +590,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Returns:
             generator: Tuples with instance attribute and class attribute
+
         """
         return map((lambda i, c: (i[1], c[1])),
                    self._get_instance_attributes(),
@@ -588,9 +605,9 @@ class GenericStruct(object, metaclass=MetaStruct):
             try:
                 attribute.unpack(buff, begin)
                 size = attribute.get_size()
-            except UnpackException as e:
+            except UnpackException as exception:
                 child_cls = type(self).__name__
-                msg = '{}.{}; {}'.format(child_cls, name, e)
+                msg = '{}.{}; {}'.format(child_cls, name, exception)
                 raise UnpackException(msg)
         return size
 
@@ -609,6 +626,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Raises:
             Exception: If the struct is not valid.
+
         """
         if value is None:
             return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
@@ -632,6 +650,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Raises:
             :exc:`~.exceptions.ValidationError`: If validation fails.
+
         """
         if value is None:
             if not self.is_valid():
@@ -677,6 +696,7 @@ class GenericStruct(object, metaclass=MetaStruct):
 
         Returns:
             bool: Whether the struct is valid.
+
         """
         return True
         # pylint: disable=unreachable
@@ -720,6 +740,7 @@ class GenericMessage(GenericStruct):
 
         Returns:
             bool: Whether the message is valid.
+
         """
         return True
         # pylint: disable=unreachable
@@ -743,6 +764,7 @@ class GenericMessage(GenericStruct):
 
         Raises:
             Exception: If there are validation errors.
+
         """
         if value is None:
             self.update_header_length()
@@ -820,7 +842,7 @@ class GenericBitMask(object, metaclass=MetaBitMask):
     """Base class for enums that use bitmask values."""
 
     def __init__(self, bitmask=None):
-        """The constructor has the optional parameter below.
+        """Create a GenericBitMask with the optional parameter below.
 
         Args:
             bitmask: Bitmask value.
@@ -840,6 +862,7 @@ class GenericBitMask(object, metaclass=MetaBitMask):
 
         Returns:
             list: Enum names.
+
         """
         result = []
         for key, value in self.iteritems():
@@ -848,10 +871,11 @@ class GenericBitMask(object, metaclass=MetaBitMask):
         return result
 
     def iteritems(self):
-        """Generator for attributes' name-value pairs.
+        """Create a generator for attributes' name-value pairs.
 
         Returns:
             generator: Attributes' (name, value) tuples.
+
         """
         for key, value in self._enum.items():
             yield (key, value)

@@ -37,7 +37,7 @@ class ExperimenterHeader(GenericMessage):
     data = BinaryData()
 
     def __init__(self, xid=None, experimenter=None, exp_type=None, data=b''):
-        """The constructor takes the parameters below.
+        """Create a ExperimenterHeader with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

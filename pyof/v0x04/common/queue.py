@@ -41,9 +41,8 @@ class QueuePropHeader(GenericStruct):
     #: 64-bit alignment
     pad = Pad(4)
 
-    # pylint: disable=redefined-builtin
     def __init__(self, queue_property=None, length=None):
-        """The contructor takes the paremeters below.
+        """Create a QueuePropHeader with the optional parameters below.
 
         Args:
             queue_property (~pyof.v0x04.common.queue.QueueProperties):
@@ -63,7 +62,7 @@ class ListOfProperties(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The contructor takes the paremeters below.
+        """Create a ListOfProperties with the optional parameters below.
 
         Args:
             items (:class:`list` of/or :class:`QueuePropHeader`):
@@ -88,7 +87,7 @@ class PacketQueue(GenericStruct):
     properties = ListOfProperties()
 
     def __init__(self, queue_id=None, port=None, length=None, properties=None):
-        """The contructor takes the paremeters below.
+        """Create a PacketQueue with the optional parameters below.
 
         Args:
             queue_id (int): ID of the specific queue.
@@ -112,7 +111,7 @@ class ListOfQueues(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The contructor takes the paremeters below.
+        """Create a ListOfQueues with the optional parameters below.
 
         Args:
             items (:class:`list` of/or :class:`PacketQueue`):
@@ -136,7 +135,7 @@ class QueuePropExperimenter(GenericStruct):
     data = BinaryData()
 
     def __init__(self, experimenter=None, data=None):
-        """The contructor takes the paremeters below.
+        """Create a QueuePropExperimenter with the optional parameters below.
 
         Args:
             experimenter (int): Experimenter ID which takes the same form as in
@@ -159,7 +158,7 @@ class QueuePropMaxRate(GenericStruct):
     pad = Pad(6)
 
     def __init__(self, rate=None):
-        """The contructor takes the paremeters below.
+        """Create a QueuePropMaxRate with the optional parameters below.
 
         Args:
             rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.
@@ -179,7 +178,7 @@ class QueuePropMinRate(GenericStruct):
     pad = Pad(6)
 
     def __init__(self, rate=None):
-        """The contructor takes the paremeters below.
+        """Create a QueuePropMinRate with the optional parameters below.
 
         Args:
             rate (int): In 1/10 of a percent (1000 -> 100%); >1000 -> disabled.

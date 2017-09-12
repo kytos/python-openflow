@@ -44,6 +44,7 @@ class Pad(GenericType):
 
         Returns:
             int: Size in bytes.
+
         """
         return self._length
 
@@ -69,6 +70,7 @@ class Pad(GenericType):
 
         Returns:
             bytes: the byte 0 (zero) *length* times.
+
         """
         return b'\x00' * self._length
 
@@ -131,6 +133,7 @@ class DPID(GenericType):
 
         Returns:
             str: DataPath ID stored by DPID class.
+
         """
         return self._value
 
@@ -142,6 +145,7 @@ class DPID(GenericType):
 
         Raises:
             struct.error: If the value does not fit the binary format.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -161,6 +165,7 @@ class DPID(GenericType):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         begin = offset
         hexas = []
@@ -175,7 +180,7 @@ class Char(GenericType):
     """Build a double char type according to the length."""
 
     def __init__(self, value=None, length=0):
-        """The constructor takes the optional parameters below.
+        """Create a Char with the optional parameters below.
 
         Args:
             value: The character to be build.
@@ -193,6 +198,7 @@ class Char(GenericType):
 
         Raises:
             struct.error: If the value does not fit the binary format.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -220,6 +226,7 @@ class Char(GenericType):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         try:
             begin = offset
@@ -238,7 +245,7 @@ class IPAddress(GenericType):
     max_prefix = UBInt32(32)
 
     def __init__(self, address="0.0.0.0/32"):
-        """The constructor takes the parameters below.
+        """Create an IPAddress with the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
@@ -264,6 +271,7 @@ class IPAddress(GenericType):
 
         Raises:
             struct.error: If the value does not fit the binary format.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -295,12 +303,14 @@ class IPAddress(GenericType):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
         try:
             unpacked_data = struct.unpack('!4B', buff[offset:offset+4])
             self._value = '.'.join([str(x) for x in unpacked_data])
-        except struct.error as e:
-            raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
+        except struct.error as exception:
+            raise exceptions.UnpackException('%s; %s: %s' % (exception,
+                                                             offset, buff))
 
     def get_size(self, value=None):
         """Return the ip address size in bytes.
@@ -312,6 +322,7 @@ class IPAddress(GenericType):
 
         Returns:
             int: The address size in bytes.
+
         """
         return 4
 
@@ -319,8 +330,9 @@ class IPAddress(GenericType):
 class HWAddress(GenericType):
     """Defines a hardware address."""
 
-    def __init__(self, hw_address='00:00:00:00:00:00'):  # noqa
-        """The constructor takes the parameters below.
+    # pylint: disable=useless-super-delegation
+    def __init__(self, hw_address='00:00:00:00:00:00'):
+        """Create a HWAddress with the parameters below.
 
         Args:
             hw_address (bytes): Hardware address. Defaults to
@@ -339,6 +351,7 @@ class HWAddress(GenericType):
 
         Raises:
             struct.error: If the value does not fit the binary format.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -371,14 +384,16 @@ class HWAddress(GenericType):
 
         Raises:
             Exception: If there is a struct unpacking error.
+
         """
-        def _int2hex(n):
-            return "{0:0{1}x}".format(n, 2)
+        def _int2hex(number):
+            return "{0:0{1}x}".format(number, 2)
 
         try:
             unpacked_data = struct.unpack('!6B', buff[offset:offset+6])
-        except struct.error as e:
-            raise exceptions.UnpackException('%s; %s: %s' % (e, offset, buff))
+        except struct.error as exception:
+            raise exceptions.UnpackException('%s; %s: %s' % (exception,
+                                                             offset, buff))
 
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
@@ -393,6 +408,7 @@ class HWAddress(GenericType):
 
         Returns:
             int: The address size in bytes.
+
         """
         return 6
 
@@ -420,6 +436,7 @@ class BinaryData(GenericType):
 
         Raises:
             ValueError: If given value is not bytes.
+
         """
         if not isinstance(value, bytes):
             raise ValueError('BinaryData must contain bytes.')
@@ -433,6 +450,7 @@ class BinaryData(GenericType):
 
         Raises:
             :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -469,6 +487,7 @@ class BinaryData(GenericType):
 
         Returns:
             int: The address size in bytes.
+
         """
         if value is None:
             return len(self._value)
@@ -502,6 +521,7 @@ class TypeList(list, GenericStruct):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If an item has an unexpected
                 type.
+
         """
         for item in items:
             self.append(item)
@@ -511,6 +531,7 @@ class TypeList(list, GenericStruct):
 
         Returns:
             bytes: The binary representation.
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -531,6 +552,7 @@ class TypeList(list, GenericStruct):
             msg = "{} pack error: {}".format(type(self).__name__, err)
             raise exceptions.PackException(msg)
 
+    # pylint: disable=arguments-differ
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.
 
@@ -551,6 +573,7 @@ class TypeList(list, GenericStruct):
             item.unpack(buff, begin)
             self.append(item)
             begin += item.get_size()
+    # pylint: enable=arguments-differ
 
     def get_size(self, value=None):
         """Return the size in bytes.
@@ -562,6 +585,7 @@ class TypeList(list, GenericStruct):
 
         Returns:
             int: The size in bytes.
+
         """
         if value is None:
             if not self:
@@ -588,7 +612,7 @@ class FixedTypeList(TypeList):
     _pyof_class = None
 
     def __init__(self, pyof_class, items=None):
-        """The constructor parameters follows.
+        """Create a FixedTypeList with the parameters follows.
 
         Args:
             pyof_class (:obj:`type`): Class of the items to be stored.
@@ -607,6 +631,7 @@ class FixedTypeList(TypeList):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If the item has a different
                 type than the one specified in the constructor.
+
         """
         if isinstance(item, list):
             self.extend(item)
@@ -627,6 +652,7 @@ class FixedTypeList(TypeList):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If the item has a different
                 type than the one specified in the constructor.
+
         """
         if issubclass(item.__class__, self._pyof_class):
             list.insert(self, index, item)
@@ -634,7 +660,7 @@ class FixedTypeList(TypeList):
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self._pyof_class.__name__)
 
-    def unpack(self, buff, offset=0):
+    def unpack(self, buff, offset=0):  # pylint: disable=arguments-differ
         """Unpack the elements of the list.
 
         This unpack method considers that all elements have the same size.
@@ -656,8 +682,9 @@ class ConstantTypeList(TypeList):
     list operations.
     """
 
-    def __init__(self, items=None):  # noqa
-        """The contructor can contain the items to be stored.
+    # pylint: disable=useless-super-delegation
+    def __init__(self, items=None):
+        """Create a ConstantTypeList that can contain itens to be stored.
 
         Args:
             items (iterable, :class:`object`): Items to be stored.
@@ -665,6 +692,7 @@ class ConstantTypeList(TypeList):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If an item has a different
                 type than the first item to be stored.
+
         """
         super().__init__(items)
 
@@ -677,6 +705,7 @@ class ConstantTypeList(TypeList):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If an item has a different
                 type than the first item to be stored.
+
         """
         if isinstance(item, list):
             self.extend(item)
@@ -698,6 +727,7 @@ class ConstantTypeList(TypeList):
         Raises:
             :exc:`~.exceptions.WrongListItemType`: If an item has a different
                 type than the first item to be stored.
+
         """
         if not self:
             list.append(self, item)

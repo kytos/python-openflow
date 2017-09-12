@@ -23,7 +23,7 @@ class VendorHeader(GenericMessage):
     vendor = UBInt32()
 
     def __init__(self, xid=None, vendor=None):
-        """The constructor takes the parameters below.
+        """Create a VendorHeader with the options parameters below.
 
         Args:
             xid (int): xid to be used on the message header.

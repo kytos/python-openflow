@@ -51,7 +51,7 @@ class MultipartRequest(GenericMessage):
     body = BinaryData()
 
     def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
-        """The constructor just assigns parameters to object attributes.
+        """Create a MultipartRequest with the optional parameters below.
 
         Args:
             xid (int): xid to the header.
@@ -76,6 +76,7 @@ class MultipartRequest(GenericMessage):
 
         Returns:
             bytes: Binary data with MultipartRequest packed.
+
         """
         buff = self.body
         if not value:
@@ -120,7 +121,7 @@ class MultipartRequest(GenericMessage):
         self.body = obj
 
     def _get_body_instance(self):
-        """Method used to return the body instance."""
+        """Return the body instance."""
         simple_body = {
             MultipartTypes.OFPMP_FLOW: FlowStatsRequest,
             MultipartTypes.OFPMP_AGGREGATE: AggregateStatsRequest,
@@ -173,7 +174,7 @@ class AggregateStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a AggregateStatsRequest with the optional parameters below.
 
         Args:
             table_id (int): ID of table to read (from ofp_table_stats)
@@ -212,7 +213,7 @@ class FlowStatsRequest(GenericStruct):
 
     def __init__(self, table_id=None, out_port=None, out_group=None,
                  cookie=None, cookie_mask=None, match=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a FlowStatsRequest with the optional parameters below.
 
         Args:
             table_id (int): ID of table to read (from pyof_table_stats)
@@ -245,7 +246,7 @@ class PortStatsRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, port_no=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a PortStatsRequest with the optional parameters below.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -264,7 +265,7 @@ class QueueStatsRequest(GenericStruct):
     queue_id = UBInt32()
 
     def __init__(self, port_no=None, queue_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a QueueStatsRequest with the optional parameters below.
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
@@ -285,7 +286,7 @@ class GroupStatsRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, group_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a GroupStatsRequest with the optional parameters below.
 
         Args:
             group_id(int): ID of group to read. OFPG_ALL to request informatio
@@ -309,7 +310,7 @@ class MeterMultipartRequest(GenericStruct):
     pad = Pad(4)
 
     def __init__(self, meter_id=None):
-        """Constructor of MeterMultipartRequest receives the parameters below.
+        """Create a MeterMultipartRequest with the optional parameters below.
 
         Args:
             meter_id(Meter): Meter Indentify.The value Meter.OFPM_ALL is used

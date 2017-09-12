@@ -61,7 +61,7 @@ class MeterBandType(IntEnum):
     OFPMBT_EXPERIMENTER = 0xFFFF
 
     def find_class(self):
-        """Method used to return a class related with this type."""
+        """Return a class related with this type."""
         types = {1: MeterBandDrop, 2: MeterBandDscpRemark,
                  3: MeterBandExperimenter}
         return types[self.value]
@@ -76,7 +76,7 @@ class MeterBandHeader(GenericStruct):
     burst_size = UBInt32()
 
     def __init__(self, band_type=None, rate=None, burst_size=None):
-        """Instance attributes assignments.
+        """Create a MeterBandHeader with the optional parameters below.
 
         Args:
             band_type (MeterBandType): One of OFPMBT_*.
@@ -105,6 +105,7 @@ class MeterBandHeader(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         band_type = UBInt16(enum_ref=MeterBandType)
         band_type.unpack(buff, offset)
@@ -127,7 +128,7 @@ class MeterMod(GenericMessage):
 
     def __init__(self, xid=None, command=None, flags=None, meter_id=None,
                  bands=None):
-        """Instance attributes assignment.
+        """Create a MeterMod with the optional parameters below.
 
         Args:
             xid (int): Headers transaction id. Defaults to random.
@@ -150,7 +151,7 @@ class MeterBandDrop(MeterBandHeader):
     pad = Pad(4)
 
     def __init__(self, rate=None, burst_size=None):
-        """Instance attributes assignment.
+        """Create a MeterBandDrop with the optional parameters below.
 
         Args:
             rate (int): Rate for dropping packets.
@@ -166,7 +167,7 @@ class MeterBandDscpRemark(MeterBandHeader):
     pad = Pad(3)
 
     def __init__(self, rate=None, burst_size=None, prec_level=None):
-        """Instance attributes assignment.
+        """Create a MeterBandDscpRemark with the optional parameters below.
 
         Args:
             rate (int): Rate for remarking packets.
@@ -183,7 +184,7 @@ class MeterBandExperimenter(MeterBandHeader):
     experimenter = UBInt32()
 
     def __init__(self, rate=None, burst_size=None, experimenter=None):
-        """Instance attributes assignment.
+        """Create a MeterBandExperimenter with the optional parameters below.
 
         Args:
             rate (int): Rate for remarking packets.
@@ -202,7 +203,7 @@ class ListOfMeterBandHeader(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfMeterBandHeader with the optional parameters below.
 
         Args:
         items (MeterBandHeader): Instance or a list of instances.

@@ -166,7 +166,6 @@ class PortState(GenericBitMask):
 
 # Classes
 
-
 class Port(GenericStruct):
     """Description of a port.
 
@@ -201,7 +200,7 @@ class Port(GenericStruct):
     def __init__(self, port_no=None, hw_addr=None, name=None, config=None,
                  state=None, curr=None, advertised=None, supported=None,
                  peer=None, curr_speed=None, max_speed=None):
-        """The constructor takes the optional parameters below.
+        """Create a Port with the optional parameters below.
 
         Args:
             port_no (int): Port number.
@@ -244,7 +243,7 @@ class ListOfPorts(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor takes the optional parameter below.
+        """Create a ListOfPort with the optional parameters below.
 
         Args:
             items (:class:`list`, :class:`~pyof.v0x04.common.port.Port`):

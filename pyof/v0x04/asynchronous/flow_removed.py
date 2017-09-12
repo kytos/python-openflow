@@ -27,8 +27,6 @@ class FlowRemovedReason(IntEnum):
 
 
 # Classes
-
-
 class FlowRemoved(GenericMessage):
     """Flow removed (datapath -> controller).
 
@@ -87,6 +85,7 @@ class FlowRemoved(GenericMessage):
         self.cookie = cookie
         self.priority = priority
         self.reason = reason
+        self.table_id = table_id
         self.duration_sec = duration_sec
         self.duration_nsec = duration_nsec
         self.idle_timeout = idle_timeout

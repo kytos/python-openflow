@@ -192,7 +192,7 @@ class OxmTLV(GenericStruct):
 
     def __init__(self, oxm_class=None, oxm_field=None,
                  oxm_hasmask=False, oxm_value=None):
-        """Inialize OXM TLV struct.
+        """Create an OXM TLV struct with the optional parameters below.
 
         Args:
             oxm_class (OxmClass): Match class: member class or reserved class
@@ -221,8 +221,8 @@ class OxmTLV(GenericStruct):
         # Recover field from field_and_hasmask.
         try:
             self.oxm_field = self._unpack_oxm_field()
-        except ValueError as e:
-            raise UnpackException(e)
+        except ValueError as exception:
+            raise UnpackException(exception)
 
         # The last bit of field_and_mask is oxm_hasmask
         self.oxm_hasmask = (self.oxm_field_and_mask & 1) == 1  # as boolean
@@ -262,8 +262,8 @@ class OxmTLV(GenericStruct):
         # 1. Move field integer one bit to the left
         try:
             field_int = self._get_oxm_field_int()
-        except ValueError as e:
-            raise PackException(e)
+        except ValueError as exception:
+            raise PackException(exception)
         field_bits = field_int << 1
         # 2. hasmask bit
         hasmask_bit = self.oxm_hasmask & 1

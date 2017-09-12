@@ -92,7 +92,7 @@ class TableFeaturePropType(IntEnum):
     OFPTFPT_EXPERIMENTER_MISS = 0xFFFF
 
     def find_class(self):
-        """Method used to return a class related with this type."""
+        """Return a class related with this type."""
         if self.value <= 1:
             return InstructionsProperty
         elif self.value <= 3:
@@ -231,7 +231,7 @@ class BucketCounter(GenericStruct):
     byte_count = UBInt64()
 
     def __init__(self, packet_count=None, byte_count=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create BucketCounter with the optional parameters below.
 
         Args:
             packet_count (int): Number of packets processed by bucket.
@@ -274,9 +274,7 @@ class AsyncConfig(GenericMessage):
     def __init__(self, xid=None, packet_in_mask1=None, packet_in_mask2=None,
                  port_status_mask1=None, port_status_mask2=None,
                  flow_removed_mask1=None, flow_removed_mask2=None):
-        """Base class for Asynchronous configuration messages.
-
-        Common structure for SetAsync and GetAsyncReply messages.
+        """Create a AsyncConfig with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
@@ -322,7 +320,7 @@ class RoleBaseMessage(GenericMessage):
     generation_id = UBInt64()
 
     def __init__(self, xid=None, role=None, generation_id=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a RoleBaseMessage with the optional parameters below.
 
         Args:
             xid (int): OpenFlow xid to the header.
@@ -343,7 +341,7 @@ class SwitchConfig(GenericMessage):
     miss_send_len = UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a SwitchConfig with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
@@ -366,7 +364,7 @@ class ExperimenterMultipartHeader(GenericStruct):
     #: Followed by experimenter-defined arbitrary data.
 
     def __init__(self, experimenter=None, exp_type=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ExperimenterMultipartHeader with the parameters below.
 
         Args:
             experimenter: Experimenter ID which takes the same form as in
@@ -389,7 +387,7 @@ class Property(GenericStruct):
     length = UBInt16(4)
 
     def __init__(self, property_type=None):
-        """Constructor of Generic Instruction receives the parameters bellow.
+        """Create a Property with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):
@@ -419,6 +417,7 @@ class Property(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         property_type = UBInt16(enum_ref=TableFeaturePropType)
         property_type.unpack(buff, offset)
@@ -445,7 +444,7 @@ class InstructionsProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_INSTRUCTIONS,
                  instruction_ids=None):
-        """Constructor of NextTablesProperty receives the parameters bellow.
+        """Create a InstructionsProperty with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):
@@ -470,7 +469,7 @@ class NextTablesProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_NEXT_TABLES,
                  next_table_ids=ListOfInstruction()):
-        """Constructor of NextTablesProperty receives the parameters bellow.
+        """Create a NextTablesProperty with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):
@@ -498,7 +497,7 @@ class ActionsProperty(Property):
     def __init__(self,
                  property_type=TableFeaturePropType.OFPTFPT_WRITE_ACTIONS,
                  action_ids=None):
-        """Constructor of ActionsProperty receives the parameters bellow.
+        """Create a ActionsProperty with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):
@@ -512,7 +511,7 @@ class ActionsProperty(Property):
 
 
 class OxmProperty(Property):
-    """"Match, Wildcard or Set-Field property.
+    """Match, Wildcard or Set-Field property.
 
     This class represents Property with the following types:
         OFPTFPT_MATCH
@@ -527,7 +526,7 @@ class OxmProperty(Property):
 
     def __init__(self, property_type=TableFeaturePropType.OFPTFPT_MATCH,
                  oxm_ids=ListOfOxmHeader()):
-        """Constructor of OxmProperty receives the parameters bellow.
+        """Create an OxmProperty with the optional parameters below.
 
         Args:
             type(|TableFeaturePropType_v0x04|):
@@ -547,7 +546,7 @@ class ListOfProperty(FixedTypeList):
     """
 
     def __init__(self, items=None):
-        """The constructor just assigns parameters to object attributes.
+        """Create a ListOfProperty with the optional parameters below.
 
         Args:
             items (|Property_v0x04|): Instance or a list of instances.
@@ -585,7 +584,7 @@ class TableFeatures(GenericStruct):
                  config=0,
                  max_entries=0,
                  properties=ListOfProperty()):
-        """The constructor of TableFeatures receives the paramters below.
+        """Create a TableFeatures with the optional parameters below.
 
         Args:
             table_id(int): Indetifier of table.The default value
@@ -640,6 +639,7 @@ class TableFeatures(GenericStruct):
 
         Raises:
             :exc:`~.exceptions.UnpackException`: If unpack fails.
+
         """
         length = UBInt16()
         length.unpack(buff, offset)
