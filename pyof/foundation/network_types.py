@@ -201,7 +201,7 @@ class Ethernet(GenericStruct):
     ether_type = UBInt16()
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, vlan=VLAN(),
+    def __init__(self, destination=None, source=None, vlan=None,
                  ether_type=None, data=b''):
         """Create an instance and set its attributes.
 
@@ -218,7 +218,7 @@ class Ethernet(GenericStruct):
         super().__init__()
         self.destination = destination
         self.source = source
-        self.vlan = vlan
+        self.vlan = VLAN() if vlan is None else vlan
         self.ether_type = ether_type
         self.data = data
 
@@ -271,7 +271,7 @@ class GenericTLV(GenericStruct):
     type and value.
     """
 
-    def __init__(self, tlv_type=127, value=BinaryData()):
+    def __init__(self, tlv_type=127, value=None):
         """Create an instance and set its attributes.
 
         Args:
@@ -281,7 +281,7 @@ class GenericTLV(GenericStruct):
         """
         super().__init__()
         self.tlv_type = tlv_type
-        self._value = value
+        self._value = BinaryData() if value is None else value
 
     @property
     def value(self):
@@ -547,7 +547,7 @@ class TLVWithSubType(GenericTLV):
     :attr:`sub_type` field and a new :attr:`sub_value` field.
     """
 
-    def __init__(self, tlv_type=1, sub_type=7, sub_value=BinaryData()):
+    def __init__(self, tlv_type=1, sub_type=7, sub_value=None):
         """Create an instance and set its attributes.
 
         Args:
@@ -558,7 +558,7 @@ class TLVWithSubType(GenericTLV):
         """
         super().__init__(tlv_type)
         self.sub_type = sub_type
-        self.sub_value = sub_value
+        self.sub_value = BinaryData() if sub_value is None else sub_value
 
     @property
     def value(self):
