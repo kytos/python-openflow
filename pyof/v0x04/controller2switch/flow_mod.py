@@ -6,6 +6,7 @@ from enum import IntEnum
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32, UBInt64
+from pyof.v0x04.common.flow_instructions import ListOfInstruction
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 
@@ -64,11 +65,12 @@ class FlowMod(GenericMessage):
     flags = UBInt16(enum_ref=FlowModFlags)
     pad = Pad(2)
     match = Match()
+    instructions = ListOfInstruction()
 
     def __init__(self, xid=None, cookie=None, cookie_mask=None, table_id=None,
                  command=None, idle_timeout=None, hard_timeout=None,
                  priority=None, buffer_id=None, out_port=None, out_group=None,
-                 flags=None, match=None):
+                 flags=None, match=None, instructions=None):
         """Create a FlowMod with the optional parameters below.
 
         Args:
@@ -111,3 +113,4 @@ class FlowMod(GenericMessage):
         self.out_group = out_group
         self.flags = flags
         self.match = match
+        self.instructions = instructions

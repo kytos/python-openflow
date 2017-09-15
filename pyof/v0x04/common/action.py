@@ -10,7 +10,9 @@ from pyof.foundation.basic_types import (
 # Third-party imports
 
 __all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
-           'ActionMPLSTTL', 'ActionNWTTL', 'ActionOutput', 'ActionPopMPLS',
+           'ActionCopyTTLIn', 'ActionCopyTTLOut', 'ActionDecMPLSTTL',
+           'ActionSetMPLSTTL', 'ActionDecNWTTL', 'ActionSetNWTTL',
+           'ActionOutput', 'ActionPopMPLS', 'ActionPopPBB', 'ActionPopVLAN',
            'ActionPush', 'ActionSetField', 'ActionSetQueue', 'ActionType',
            'ControllerMaxLen', 'ListOfActions')
 
@@ -73,51 +75,6 @@ class ControllerMaxLen(IntEnum):
 # Classes
 
 
-class ActionExperimenterHeader(GenericStruct):
-    """Action structure for OFPAT_EXPERIMENTER."""
-
-    #: OFPAT_EXPERIMENTER.
-    action_type = UBInt16(ActionType.OFPAT_EXPERIMENTER, enum_ref=ActionType)
-    #: Length is multiple of 8.
-    length = UBInt16()
-    #: Experimenter ID which takes the same form as in struct
-    #:     ofp_experimenter_header
-    experimenter = UBInt32()
-
-    def __init__(self, length=None, experimenter=None):
-        """Create ActionExperimenterHeader with the optional parameters below.
-
-        Args:
-            experimenter (int): The experimenter field is the Experimenter ID,
-                which takes the same form as in struct ofp_experimenter.
-        """
-        super().__init__()
-        self.length = length
-        self.experimenter = experimenter
-
-
-class ActionGroup(GenericStruct):
-    """Action structure for OFPAT_GROUP."""
-
-    #: OFPAT_GROUP.
-    action_type = UBInt16(ActionType.OFPAT_GROUP, enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: Group identifier.
-    group_id = UBInt32()
-
-    def __init__(self, group_id=None):
-        """Create a ActionGroup with the optional parameters below.
-
-        Args:
-            group_id (int): The group_id indicates the group used to process
-                this packet. The set of buckets to apply depends on the group
-                type.
-        """
-        super().__init__()
-        self.group_id = group_id
-
-
 class ActionHeader(GenericStruct):
     """Action header that is common to all actions.
 
@@ -131,11 +88,14 @@ class ActionHeader(GenericStruct):
     #: Length of action, including this header. This is the length of actions,
     #:    including any padding to make it 64-bit aligned.
     length = UBInt16()
-    #: Pad for 64-bit alignment.
-    pad = Pad(4)
+    # Pad for 64-bit alignment.
+    # This should not be implemented, as each action type has its own padding.
+    # pad = Pad(4)
+
+    _allowed_types = ()
 
     def __init__(self, action_type=None, length=None):
-        """Create a ActionHeader with the optional parameters below.
+        """Create an ActionHeader with the optional parameters below.
 
         Args:
             action_type (~pyof.v0x04.common.action.ActionType):
@@ -146,52 +106,183 @@ class ActionHeader(GenericStruct):
         self.action_type = action_type
         self.length = length
 
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
 
-class ActionMPLSTTL(GenericStruct):
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            Exception: If there is a struct unpacking error.
+
+        """
+        self.action_type = UBInt16(enum_ref=ActionType)
+        self.action_type.unpack(buff, offset)
+
+        for cls in ActionHeader.__subclasses__():
+            if self.action_type.value in cls.get_allowed_types():
+                self.__class__ = cls
+                break
+
+        super().unpack(buff, offset)
+
+    @classmethod
+    def get_allowed_types(cls):
+        """Return allowed types for the class."""
+        return cls._allowed_types
+
+
+class ActionExperimenterHeader(ActionHeader):
+    """Action structure for OFPAT_EXPERIMENTER."""
+
+    experimenter = UBInt32()
+
+    _allowed_types = ActionType.OFPAT_EXPERIMENTER,
+
+    def __init__(self, length=None, experimenter=None):
+        """Create ActionExperimenterHeader with the optional parameters below.
+
+        Args:
+            experimenter (int): The experimenter field is the Experimenter ID,
+                which takes the same form as in struct ofp_experimenter.
+        """
+        super().__init__(action_type=ActionType.OFPAT_EXPERIMENTER)
+        self.length = length
+        self.experimenter = experimenter
+
+
+class ActionGroup(ActionHeader):
+    """Action structure for OFPAT_GROUP."""
+
+    group_id = UBInt32()
+
+    _allowed_types = ActionType.OFPAT_GROUP,
+
+    def __init__(self, group_id=None):
+        """Create an ActionGroup with the optional parameters below.
+
+        Args:
+            group_id (int): The group_id indicates the group used to process
+                this packet. The set of buckets to apply depends on the group
+                type.
+        """
+        super().__init__(action_type=ActionType.OFPAT_GROUP, length=8)
+        self.group_id = group_id
+
+
+class ActionDecMPLSTTL(ActionHeader):
+    """Action structure for OFPAT_DEC_MPLS_TTL."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_DEC_MPLS_TTL,
+
+    def __init__(self):
+        """Create an ActionDecMPLSTTL."""
+        super().__init__(action_type=ActionType.OFPAT_DEC_MPLS_TTL, length=8)
+
+
+class ActionSetMPLSTTL(ActionHeader):
     """Action structure for OFPAT_SET_MPLS_TTL."""
 
-    #: OFPAT_SET_MPLS_TTL.
-    action_type = UBInt16(ActionType.OFPAT_SET_MPLS_TTL, enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: MPLS TTL
     mpls_ttl = UBInt8()
-    #: Padding
     pad = Pad(3)
 
+    _allowed_types = ActionType.OFPAT_SET_MPLS_TTL,
+
     def __init__(self, mpls_ttl=None):
-        """Create a ActionMPLSTTL with the optional parameters below.
+        """Create an ActionSetMPLSTTL with the optional parameters below.
 
         Args:
             mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_SET_MPLS_TTL, length=8)
         self.mpls_ttl = mpls_ttl
 
 
-class ActionNWTTL(GenericStruct):
+class ActionCopyTTLIn(ActionHeader):
+    """Action structure for OFPAT_COPY_TTL_IN."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_COPY_TTL_IN,
+
+    def __init__(self):
+        """Create an ActionCopyTTLIn."""
+        super().__init__(action_type=ActionType.OFPAT_COPY_TTL_IN, length=8)
+
+
+class ActionCopyTTLOut(ActionHeader):
+    """Action structure for OFPAT_COPY_TTL_OUT."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_COPY_TTL_OUT,
+
+    def __init__(self):
+        """Create an ActionCopyTTLOut."""
+        super().__init__(action_type=ActionType.OFPAT_COPY_TTL_OUT, length=8)
+
+
+class ActionPopVLAN(ActionHeader):
+    """Action structure for OFPAT_POP_VLAN."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_POP_VLAN,
+
+    def __init__(self):
+        """Create an ActionPopVLAN."""
+        super().__init__(action_type=ActionType.OFPAT_POP_VLAN, length=8)
+
+
+class ActionPopPBB(ActionHeader):
+    """Action structure for OFPAT_POP_PBB."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_POP_PBB,
+
+    def __init__(self):
+        """Create an ActionPopPBB."""
+        super().__init__(action_type=ActionType.OFPAT_POP_PBB, length=8)
+
+
+class ActionDecNWTTL(ActionHeader):
+    """Action structure for OFPAT_DEC_NW_TTL."""
+
+    pad = Pad(4)
+
+    _allowed_types = ActionType.OFPAT_DEC_NW_TTL,
+
+    def __init__(self):
+        """Create a ActionDecNWTTL."""
+        super().__init__(action_type=ActionType.OFPAT_DEC_NW_TTL, length=8)
+
+
+class ActionSetNWTTL(ActionHeader):
     """Action structure for OFPAT_SET_NW_TTL."""
 
-    #: OFPAT_SET_NW_TTL.
-    action_type = UBInt16(ActionType.OFPAT_SET_NW_TTL, enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: IP TTL
     nw_ttl = UBInt8()
-    #: Padding
     pad = Pad(3)
 
+    _allowed_types = ActionType.OFPAT_SET_NW_TTL,
+
     def __init__(self, nw_ttl=None):
-        """Create a ActionNWTTL with the optional parameters below.
+        """Create an ActionSetNWTTL with the optional parameters below.
 
         Args:
             nw_ttl (int): the TTL address to set in the IP header.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_SET_NW_TTL, length=8)
         self.nw_ttl = nw_ttl
 
 
-class ActionOutput(GenericStruct):
+class ActionOutput(ActionHeader):
     """Defines the actions output.
 
     Action structure for :attr:`ActionType.OFPAT_OUTPUT`, which sends packets
@@ -201,73 +292,60 @@ class ActionOutput(GenericStruct):
     should be sent.
     """
 
-    #: OFPAT_OUTPUT.
-    action_type = UBInt16(ActionType.OFPAT_OUTPUT, enum_ref=ActionType)
-    #: Length is 16.
-    length = UBInt16(16)
-    #: Output port.
-    port = UBInt16()
-    #: Max length to send to controller.
+    port = UBInt32()
     max_length = UBInt16()
-    #: Pad to 64 bits.
     pad = Pad(6)
 
-    def __init__(self, action_type=None, length=None, port=None,
-                 max_length=None):
+    _allowed_types = ActionType.OFPAT_OUTPUT,
+
+    def __init__(self, port=None, max_length=None):
         """Create a ActionOutput with the optional parameters below.
 
         Args:
             port (:class:`Port` or :class:`int`): Output port.
             max_length (int): Max length to send to controller.
         """
-        super().__init__()
-        self.action_type = action_type
-        self.length = length
+        super().__init__(action_type=ActionType.OFPAT_OUTPUT, length=16)
         self.port = port
         self.max_length = max_length
 
 
-class ActionPopMPLS(GenericStruct):
+class ActionPopMPLS(ActionHeader):
     """Action structure for OFPAT_POP_MPLS."""
 
-    #: OFPAT_POP_MPLS.
-    action_type = UBInt16(ActionType.OFPAT_POP_MPLS, enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: Ethertype
     ethertype = UBInt16()
-    #: Padding
     pad = Pad(2)
 
+    _allowed_types = ActionType.OFPAT_POP_MPLS,
+
     def __init__(self, ethertype=None):
-        """Create a ActionPopMPLS with the optional parameters below.
+        """Create an ActionPopMPLS with the optional parameters below.
 
         Args:
             ethertype (int): indicates the Ethertype of the payload.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_POP_MPLS)
         self.ethertype = ethertype
 
 
-class ActionPush(GenericStruct):
-    """Action structure for OFPAT_PUSH_VLAN/MPLS/PBB."""
+class ActionPush(ActionHeader):
+    """Action structure for OFPAT_PUSH_[VLAN/MPLS/PBB]."""
 
-    #: OFPAT_PUSH_VLAN/MPLS/PBB.
-    action_type = UBInt16(enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: Ethertype
     ethertype = UBInt16()
-    #: Padding
     pad = Pad(2)
 
-    def __init__(self, ethertype=None):
+    _allowed_types = (ActionType.OFPAT_PUSH_VLAN, ActionType.OFPAT_PUSH_MPLS,
+                      ActionType.OFPAT_PUSH_PBB)
+
+    def __init__(self, action_type=None, ethertype=None):
         """Create a ActionPush with the optional parameters below.
 
         Args:
+            action_type (:class:`ActionType`): indicates which tag will be
+            pushed (VLAN, MPLS, PBB).
             ethertype (int): indicates the Ethertype of the new tag.
         """
-        super().__init__()
+        super().__init__(action_type, length=8)
         self.ethertype = ethertype
 
 
@@ -306,23 +384,20 @@ class ActionSetField(GenericStruct):
         self.field4 = field4
 
 
-class ActionSetQueue(GenericStruct):
+class ActionSetQueue(ActionHeader):
     """Action structure for OFPAT_SET_QUEUE."""
 
-    #: OFPAT_SET_QUEUE.
-    action_type = UBInt16(ActionType.OFPAT_SET_QUEUE, enum_ref=ActionType)
-    #: Length is 8.
-    length = UBInt16(8)
-    #: Queue id for the packets.
     queue_id = UBInt32()
 
+    _allowed_types = ActionType.OFPAT_SET_QUEUE,
+
     def __init__(self, queue_id=None):
-        """Create a ActionSetQueue with the optional parameters below.
+        """Create an ActionSetQueue with the optional parameters below.
 
         Args:
             queue_id (int): The queue_id send packets to given queue on port.
         """
-        super().__init__()
+        super().__init__(action_type=ActionType.OFPAT_SET_QUEUE, length=8)
         self.queue_id = queue_id
 
 
