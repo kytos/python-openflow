@@ -172,13 +172,13 @@ class TestBinaryData(unittest.TestCase):
         actual = BinaryData().pack()
         self.assertEqual(expected, actual)
 
-    def test_none_value(self):
-        """Pack of BinaryData initialized with None should be empty bytes."""
+    def test_pack_none_value(self):
+        """Test packing None value."""
         expected = b''
         actual = BinaryData(None).pack()
         self.assertEqual(expected, actual)
 
-    def test_pack_bytes(self):
+    def test_pack_bytes_value(self):
         """Test packing some bytes."""
         expected = b'forty two'
         actual = BinaryData(expected).pack()
@@ -190,10 +190,14 @@ class TestBinaryData(unittest.TestCase):
         actual = BinaryData(expected).pack()
         self.assertEqual(expected, actual)
 
-    def test_unexpected_value(self):
-        """Should raise ValueError if constructor value is not bytes."""
-        self.assertRaises(ValueError, BinaryData, "can't be string")
+    def test_pack_packable_value(self):
+        """Test packing packable value."""
+        hw_addr = basic_types.HWAddress('0a:d3:98:a5:30:47')
+        expected = hw_addr.pack()
+        actual = BinaryData(hw_addr).pack()
+        self.assertEqual(expected, actual)
 
     def test_unexpected_value_as_parameter(self):
         """Should raise ValueError if pack value is not bytes."""
-        self.assertRaises(ValueError, BinaryData().pack, "can't be string")
+        data= BinaryData('Some string')
+        self.assertRaises(ValueError, data.pack, "can't be string")
