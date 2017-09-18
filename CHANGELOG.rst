@@ -1,7 +1,7 @@
 ##########
 Change log
 ##########
-All notable changes to the python-openflow project is documented in this file.
+All notable changes to the python-openflow project are documented in this file.
 
 UNRELEASED - Under development
 ******************************
@@ -24,27 +24,40 @@ Security
 ========
 
 
-[2017.1] - "bethania" - 2017-07-06
-**********************************
+[2017.2b1] - "chico" beta1 - 2017-09-18
+***************************************
 Added
 =====
+- OpenFlow Extensible Match structures.
+- ARP packet pack/unpack support.
+- 802.1q VLAN packet pack/unpack support.
 
+Changed
+=======
+- Improved packet validation and unpacking.
+- Yala substitutes Pylama as the main linter checker.
+- Requirements files updated and restructured.
+
+Removed
+=======
+- Unused and duplicated files.
+
+Fixed
+=====
+- Some missing classes and elements were included.
+- Some test fixes.
+- Several bug fixes.
+
+
+[2017.1] - "bethania" - 2017-07-06
+**********************************
 Changed
 =======
 - Documentation updated and improved.
 
-Deprecated
-==========
-
-Removed
-=======
-
 Fixed
 =====
-- Some bug fixes
-
-Security
-========
+- Some bug fixes.
 
 
 [2017.1b3] - "bethania" beta3 - 2017-06-16
