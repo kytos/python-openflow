@@ -428,18 +428,12 @@ class BinaryData(GenericType):
     return the size of the instance using Python's :func:`len`.
     """
 
-    def __init__(self, value=b''):  # noqa
+    def __init__(self, value=None):  # pylint: disable=useless-super-delegation
         """The constructor takes the parameter below.
 
         Args:
             value (bytes): The binary data. Defaults to an empty value.
-
-        Raises:
-            ValueError: If given value is not bytes.
-
         """
-        if not isinstance(value, bytes):
-            raise ValueError('BinaryData must contain bytes.')
         super().__init__(value)
 
     def pack(self, value=None):
@@ -449,21 +443,20 @@ class BinaryData(GenericType):
             bytes: The binary representation.
 
         Raises:
-            :exc:`~.exceptions.NotBinaryData`: If value is not :class:`bytes`.
+            ValueError: If value can't be represented with bytes
 
         """
-        if isinstance(value, type(self)):
-            return value.pack()
-
         if value is None:
             value = self._value
 
-        if value:
-            if isinstance(value, bytes):
-                return value
-            raise ValueError('BinaryData must contain bytes.')
-
-        return b''
+        if hasattr(value, 'pack') and callable(value.pack):
+            return value.pack()
+        elif isinstance(value, bytes):
+            return value
+        elif value is None:
+            return b''
+        else:
+            raise ValueError(f"BinaryData can't be {type(value)} = '{value}'")
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -490,11 +483,12 @@ class BinaryData(GenericType):
 
         """
         if value is None:
-            return len(self._value)
-        elif hasattr(value, 'get_size'):
+            value = self._value
+
+        if hasattr(value, 'get_size'):
             return value.get_size()
 
-        return len(value)
+        return len(self.pack(value))
 
 
 class TypeList(list, GenericStruct):
