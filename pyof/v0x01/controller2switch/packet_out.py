@@ -112,13 +112,17 @@ class PacketOut(GenericMessage):
             self.actions_len = ListOfActions(self.actions).get_size()
 
     def _validate_in_port(self):
-        port = self.in_port
         valid = True
-        if isinstance(port, Port):
-            if port not in _VIRT_IN_PORTS:
+        if (isinstance(self.in_port, int) and
+                (self.in_port > 0 and self.in_port < Port.OFPP_MAX.value)):
+            return
+        if not isinstance(self.in_port, Port):
+            try:
+                self.in_port = Port(self.in_port)
+            except ValueError:
                 valid = False
-        elif isinstance(port, int) and (port < 1 or port >=
-                                        Port.OFPP_MAX.value):
+        if self.in_port not in _VIRT_IN_PORTS:
             valid = False
         if not valid:
-            raise ValidationError('{} is not a valid input port.'.format(port))
+            raise ValidationError(
+                '{} is not a valid input port.'.format(self.in_port))
