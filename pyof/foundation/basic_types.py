@@ -429,7 +429,7 @@ class BinaryData(GenericType):
     """
 
     def __init__(self, value=None):  # pylint: disable=useless-super-delegation
-        """The constructor takes the parameter below.
+        """Initialize with a value (optional).
 
         Args:
             value (bytes): The binary data. Defaults to an empty value.

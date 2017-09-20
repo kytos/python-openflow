@@ -15,6 +15,7 @@ def validate_packet(packet):
 
     Raises:
         UnpackException: If the packet is invalid.
+
     """
     if not isinstance(packet, bytes):
         raise UnpackException('invalid packet')
@@ -41,6 +42,7 @@ def unpack(packet):
 
     Raises:
         UnpackException: if the packet can't be unpacked.
+
     """
     validate_packet(packet)
 
