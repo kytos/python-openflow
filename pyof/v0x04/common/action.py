@@ -342,7 +342,7 @@ class ActionPush(ActionHeader):
 
         Args:
             action_type (:class:`ActionType`): indicates which tag will be
-            pushed (VLAN, MPLS, PBB).
+                pushed (VLAN, MPLS, PBB).
             ethertype (int): indicates the Ethertype of the new tag.
         """
         super().__init__(action_type, length=8)
