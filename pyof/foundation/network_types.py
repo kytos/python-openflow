@@ -10,7 +10,6 @@ from enum import IntEnum
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
-from pyof.foundation.constants import VLAN_TPID
 from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('ARP', 'Ethernet', 'EtherType', 'GenericTLV', 'IPv4', 'VLAN',
@@ -75,7 +74,7 @@ class ARP(GenericStruct):
     tha = HWAddress()
     tpa = IPAddress()
 
-    def __init__(self, htype=1, ptype=0x800, hlen=6, plen=4, oper=1,
+    def __init__(self, htype=1, ptype=EtherType.IPV4, hlen=6, plen=4, oper=1,
                  sha='00:00:00:00:00:00', spa='0.0.0.0',
                  tha="00:00:00:00:00:00", tpa='0.0.0.0'):
         """Create an ARP with the parameters below.
@@ -109,7 +108,7 @@ class ARP(GenericStruct):
 
     def is_valid(self):
         """Assure the ARP contains Ethernet and IPv4 information."""
-        return self.htype == 1 and self.ptype == 0x800
+        return self.htype == 1 and self.ptype == EtherType.IPV4
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -135,7 +134,7 @@ class VLAN(GenericStruct):
     """802.1q VLAN header."""
 
     #: tpid (:class:`UBInt16`): Tag Protocol Identifier
-    tpid = UBInt16(VLAN_TPID)
+    tpid = UBInt16(EtherType.VLAN)
     #: _tci (:class:`UBInt16`): Tag Control Information - has the
     #: Priority Code Point, DEI/CFI bit and the VLAN ID
     _tci = UBInt16()
@@ -155,7 +154,7 @@ class VLAN(GenericStruct):
             vid (int): VLAN ID. If no VLAN is specified, value is 0.
         """
         super().__init__()
-        self.tpid = VLAN_TPID
+        self.tpid = EtherType.VLAN
         self.pcp = pcp
         self.cfi = cfi
         self.vid = vid
@@ -186,7 +185,7 @@ class VLAN(GenericStruct):
 
     def _validate(self):
         """Assure this is a 802.1q VLAN header instance."""
-        if self.tpid.value != VLAN_TPID:
+        if self.tpid.value != EtherType.VLAN:
             raise UnpackException
         return
 
@@ -215,7 +214,7 @@ class VLAN(GenericStruct):
             self.cfi = (self._tci.value >> 12) & 1
             self.vid = self._tci.value & 4095
         else:
-            self.tpid = VLAN_TPID
+            self.tpid = EtherType.VLAN
             self.pcp = None
             self.cfi = None
             self.vid = None
@@ -291,11 +290,11 @@ class Ethernet(GenericStruct):
             UnpackException: If there is a struct unpacking error.
 
         """
-        # Checking if the EtherType bytes are actually equal to VLAN_TPID -
+        # Check if the EtherType bytes are actually equal to EtherType.VLAN,
         # indicating that the packet is tagged. If it is not, we insert the
         # equivalent to 'NULL VLAN data' (\x00\x00\x00\x00) to enable the
         # correct unpacking process.
-        if buff[12:14] != VLAN_TPID.to_bytes(2, 'big'):
+        if buff[12:14] != EtherType.VLAN.to_bytes(2, 'big'):
             buff = buff[0:12] + b'\x00\x00\x00\x00' + buff[12:]
 
         super().unpack(buff, offset)
