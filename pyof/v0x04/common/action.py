@@ -6,6 +6,7 @@ from enum import IntEnum
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
+from pyof.v0x04.common.flow_match import OxmTLV
 
 # Third-party imports
 
@@ -350,21 +351,12 @@ class ActionPush(ActionHeader):
         self.ethertype = ethertype
 
 
-class ActionSetField(GenericStruct):
+class ActionSetField(ActionHeader):
     """Action structure for OFPAT_SET_FIELD."""
 
-    #: OFPAT_SET_FIELD.
-    action_type = UBInt16(ActionType.OFPAT_SET_FIELD, enum_ref=ActionType)
-    #: Length is padded to 64 bits.
-    length = UBInt16()
-    #: OXM TLV - Make compiler happy
-    field1 = UBInt8()
-    field2 = UBInt8()
-    field3 = UBInt8()
-    field4 = UBInt8()
+    field = OxmTLV()
 
-    def __init__(self, length=None, field1=None, field2=None, field3=None,
-                 field4=None):
+    def __init__(self, field=None):
         """Create a ActionSetField with the optional parameters below.
 
         Args:
@@ -372,17 +364,32 @@ class ActionSetField(GenericStruct):
                           oxm_len bytes containing a single OXM TLV, then
                           exactly ((oxm_len + 4) + 7)/8*8 - (oxm_len + 4)
                           (between 0 and 7) bytes of all-zero bytes
-            field1 (int): OXM field.
-            field2 (int): OXM field.
-            field3 (int): OXM field.
-            field4 (int): OXM field.
+            field (:class:`OxmTLV`): OXM field and value.
         """
-        super().__init__()
-        self.length = length
-        self.field1 = field1
-        self.field2 = field2
-        self.field3 = field3
-        self.field4 = field4
+        super().__init__(action_type=ActionType.OFPAT_SET_FIELD)
+        self.field = OxmTLV() if field is None else field
+
+    def pack(self, value=None):
+        """Pack this structure updating the length and padding it."""
+        self._update_length()
+        packet = super().pack()
+        return self._complete_last_byte(packet)
+
+    def _update_length(self):
+        """Update the length field of the struct."""
+        action_length = 4 + len(self.field.pack())
+        overflow = action_length % 8
+        self.length = action_length
+        if overflow:
+            self.length = action_length + 8 - overflow
+
+    def _complete_last_byte(self, packet):
+        """Pad until the packet length is a multiple of 8 (bytes)."""
+        padded_size = self.length
+        padding_bytes = padded_size - len(packet)
+        if padding_bytes > 0:
+            packet += Pad(padding_bytes).pack()
+        return packet
 
 
 class ActionSetQueue(ActionHeader):
