@@ -298,7 +298,8 @@ class ActionOutput(ActionHeader):
 
     _allowed_types = ActionType.OFPAT_OUTPUT,
 
-    def __init__(self, port=None, max_length=None):
+    def __init__(self, port=None,
+                 max_length=ControllerMaxLen.OFPCML_NO_BUFFER):
         """Create a ActionOutput with the optional parameters below.
 
         Args:

@@ -190,8 +190,8 @@ class OxmTLV(GenericStruct):
     oxm_length = UBInt8()
     oxm_value = BinaryData()
 
-    def __init__(self, oxm_class=None, oxm_field=None,
-                 oxm_hasmask=False, oxm_value=None):
+    def __init__(self, oxm_class=OxmClass.OFPXMC_OPENFLOW_BASIC,
+                 oxm_field=None, oxm_hasmask=False, oxm_value=None):
         """Create an OXM TLV struct with the optional parameters below.
 
         Args:
@@ -326,7 +326,7 @@ class Match(GenericStruct):
     length = UBInt16()
     oxm_match_fields = OxmMatchFields()
 
-    def __init__(self, match_type=None, oxm_match_fields=None):
+    def __init__(self, match_type=MatchType.OFPMT_OXM, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
@@ -339,7 +339,8 @@ class Match(GenericStruct):
         """
         super().__init__()
         self.match_type = match_type
-        self.oxm_match_fields = oxm_match_fields
+        self.oxm_match_fields = oxm_match_fields or OxmMatchFields()
+
         self._update_match_length()
 
     def _update_match_length(self):

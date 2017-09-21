@@ -11,7 +11,8 @@ from pyof.v0x04.asynchronous.flow_removed import FlowRemovedReason
 from pyof.v0x04.asynchronous.packet_in import PacketInReason
 from pyof.v0x04.asynchronous.port_status import PortReason
 # Local source tree imports
-from pyof.v0x04.common.action import ActionHeader, ListOfActions
+from pyof.v0x04.common.action import (
+    ActionHeader, ControllerMaxLen, ListOfActions)
 from pyof.v0x04.common.flow_instructions import ListOfInstruction
 from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.common.header import Header
@@ -340,7 +341,8 @@ class SwitchConfig(GenericMessage):
     flags = UBInt16(enum_ref=ConfigFlags)
     miss_send_len = UBInt16()
 
-    def __init__(self, xid=None, flags=None, miss_send_len=None):
+    def __init__(self, xid=None, flags=ConfigFlags.OFPC_FRAG_NORMAL,
+                 miss_send_len=ControllerMaxLen.OFPCML_NO_BUFFER):
         """Create a SwitchConfig with the optional parameters below.
 
         Args:

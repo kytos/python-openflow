@@ -5,8 +5,9 @@
 # Third-party imports
 
 # Local imports
+from pyof.v0x04.common.action import ControllerMaxLen
 from pyof.v0x04.common.header import Type
-from pyof.v0x04.controller2switch.common import SwitchConfig
+from pyof.v0x04.controller2switch.common import ConfigFlags, SwitchConfig
 
 __all__ = ('SetConfig',)
 
@@ -14,7 +15,8 @@ __all__ = ('SetConfig',)
 class SetConfig(SwitchConfig):
     """Set config message."""
 
-    def __init__(self, xid=None, flags=None, miss_send_len=None):
+    def __init__(self, xid=None, flags=ConfigFlags.OFPC_FRAG_NORMAL,
+                 miss_send_len=ControllerMaxLen.OFPCML_NO_BUFFER):
         """Create a SetConfig with the optional parameters below.
 
         Args:

@@ -22,7 +22,7 @@ class EchoReply(GenericMessage):
     header = Header(message_type=Type.OFPT_ECHO_REPLY, length=8)
     data = BinaryData()
 
-    def __init__(self, xid=None, data=None):
+    def __init__(self, xid=None, data=b''):
         """Create a EchoReply with the optional parameters below.
 
         Args:
