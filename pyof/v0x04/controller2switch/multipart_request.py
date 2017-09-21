@@ -9,8 +9,12 @@ from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.port import PortNo
 from pyof.v0x04.controller2switch.common import (
     ExperimenterMultipartHeader, MultipartTypes, TableFeatures)
+from pyof.v0x04.controller2switch.group_mod import Group
+from pyof.v0x04.controller2switch.meter_mod import Meter
+from pyof.v0x04.controller2switch.table_mod import Table
 
 # Third-party imports
 
@@ -50,7 +54,7 @@ class MultipartRequest(GenericMessage):
     #: Body of the request
     body = BinaryData()
 
-    def __init__(self, xid=None, multipart_type=None, flags=None, body=b''):
+    def __init__(self, xid=None, multipart_type=None, flags=0, body=b''):
         """Create a MultipartRequest with the optional parameters below.
 
         Args:
@@ -172,8 +176,9 @@ class AggregateStatsRequest(GenericStruct):
     #: Fields to match. Variable size.
     match = Match()
 
-    def __init__(self, table_id=None, out_port=None, out_group=None,
-                 cookie=None, cookie_mask=None, match=None):
+    def __init__(self, table_id=Table.OFPTT_ALL, out_port=PortNo.OFPP_ANY,
+                 out_group=Group.OFPG_ANY, cookie=0, cookie_mask=0,
+                 match=None):
         """Create a AggregateStatsRequest with the optional parameters below.
 
         Args:
@@ -181,7 +186,7 @@ class AggregateStatsRequest(GenericStruct):
                 OFPTT_ALL for all tables.
             out_port (int): Require matching entries to include this as an
                 output port. A value of OFPP_ANY indicates no restriction.
-            out_group (in): Require matching entries to include this as an
+            out_group (int): Require matching entries to include this as an
                 output group. A value of OFPG_ANY indicates no restriction.
             cookie (int): Require matching entries to contain this cookie value
             cookie_mask (int): Mask used to restrict the cookie bits that must
@@ -195,7 +200,7 @@ class AggregateStatsRequest(GenericStruct):
         self.out_group = out_group
         self.cookie = cookie
         self.cookie_mask = cookie_mask
-        self.match = match
+        self.match = Match() if match is None else match
 
 
 class FlowStatsRequest(GenericStruct):
@@ -211,16 +216,17 @@ class FlowStatsRequest(GenericStruct):
     cookie_mask = UBInt64()
     match = Match()
 
-    def __init__(self, table_id=None, out_port=None, out_group=None,
-                 cookie=None, cookie_mask=None, match=None):
+    def __init__(self, table_id=Table.OFPTT_ALL, out_port=PortNo.OFPP_ANY,
+                 out_group=Group.OFPG_ANY, cookie=0, cookie_mask=0,
+                 match=None):
         """Create a FlowStatsRequest with the optional parameters below.
 
         Args:
             table_id (int): ID of table to read (from pyof_table_stats)
                 0xff for all tables or 0xfe for emergency.
-            out_port (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+            out_port (:class:`int`, :class:`~pyof.v0x04.common.port.PortNo`):
                 Require matching entries to include this as an output port.
-                A value of :attr:`.Port.OFPP_NONE` indicates no restriction.
+                A value of :attr:`.PortNo.OFPP_ANY` indicates no restriction.
             out_group: Require matching entries to include this as an output
                 group. A value of :attr:`Group.OFPG_ANY` indicates no
                 restriction.
@@ -235,7 +241,7 @@ class FlowStatsRequest(GenericStruct):
         self.out_group = out_group
         self.cookie = cookie
         self.cookie_mask = cookie_mask
-        self.match = match
+        self.match = Match() if match is None else match
 
 
 class PortStatsRequest(GenericStruct):
@@ -245,14 +251,14 @@ class PortStatsRequest(GenericStruct):
     #: Align to 64-bits.
     pad = Pad(4)
 
-    def __init__(self, port_no=None):
+    def __init__(self, port_no=PortNo.OFPP_ANY):
         """Create a PortStatsRequest with the optional parameters below.
 
         Args:
-            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
+            port_no (:class:`int`, :class:`~pyof.v0x04.common.port.PortNo`):
                 :attr:`StatsTypes.OFPST_PORT` message must request statistics
                 either for a single port (specified in ``port_no``) or for all
-                ports (if ``port_no`` == :attr:`.Port.OFPP_NONE`).
+                ports (if ``port_no`` == :attr:`.PortNo.OFPP_ANY`).
         """
         super().__init__()
         self.port_no = port_no
@@ -264,7 +270,7 @@ class QueueStatsRequest(GenericStruct):
     port_no = UBInt32()
     queue_id = UBInt32()
 
-    def __init__(self, port_no=None, queue_id=None):
+    def __init__(self, port_no=PortNo.OFPP_ANY, queue_id=0xffffffff):
         """Create a QueueStatsRequest with the optional parameters below.
 
         Args:
@@ -285,7 +291,7 @@ class GroupStatsRequest(GenericStruct):
     #: Align to 64 bits
     pad = Pad(4)
 
-    def __init__(self, group_id=None):
+    def __init__(self, group_id=Group.OFPG_ALL):
         """Create a GroupStatsRequest with the optional parameters below.
 
         Args:
@@ -309,7 +315,7 @@ class MeterMultipartRequest(GenericStruct):
     # Align to 64 bits.
     pad = Pad(4)
 
-    def __init__(self, meter_id=None):
+    def __init__(self, meter_id=Meter.OFPM_ALL):
         """Create a MeterMultipartRequest with the optional parameters below.
 
         Args:

@@ -27,7 +27,7 @@ class TableMod(GenericMessage):
     pad = Pad(3)
     config = UBInt32()
 
-    def __init__(self, xid=None, table_id=None, config=None):
+    def __init__(self, xid=None, table_id=Table.OFPTT_ALL, config=3):
         """Assing parameters to object attributes.
 
         Args:
@@ -38,4 +38,6 @@ class TableMod(GenericMessage):
         """
         super().__init__(xid)
         self.table_id = table_id
+        # This is reserved for future used. The default value is the only valid
+        # one from the Enum.
         self.config = config

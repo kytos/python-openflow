@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, Pad, UBInt16, UBInt32
+from pyof.foundation.constants import UBINT32_MAX_VALUE
 from pyof.foundation.exceptions import PackException, ValidationError
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.common.header import Header, Type
@@ -24,7 +25,7 @@ class PacketOut(GenericMessage):
     #: ID assigned by datapath (OFP_NO_BUFFER if none).
     buffer_id = UBInt32()
     #: Packet’s input port or OFPP_CONTROLLER.
-    in_port = UBInt32(enum_ref=PortNo)
+    in_port = UBInt32()
     #: Size of action array in bytes.
     actions_len = UBInt16()
     #: Padding
@@ -35,13 +36,15 @@ class PacketOut(GenericMessage):
     #:    (Only meaningful if buffer_id == -1.)
     data = BinaryData()
 
-    def __init__(self, xid=None, buffer_id=None, in_port=None, actions=None,
+    def __init__(self, xid=None, buffer_id=UBINT32_MAX_VALUE,
+                 in_port=PortNo.OFPP_CONTROLLER, actions=None,
                  data=b''):
         """Create a PacketOut with the optional parameters below.
 
         Args:
             xid (int): xid of the message header.
-            buffer_id (int): ID assigned by datapath (-1 if none).
+            buffer_id (int): ID assigned by datapath (-1 if none). In this case
+                UBINT32_MAX_VALUE is -1 for the field.
             in_port (:class:`int`, :class:`~pyof.v0x04.common.port.Port`):
                 Packet's input port (:attr:`Port.OFPP_NONE` if none).
                 Virtual ports OFPP_IN_PORT, OFPP_TABLE, OFPP_NORMAL,

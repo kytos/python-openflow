@@ -22,7 +22,7 @@ class EchoRequest(GenericMessage):
     header = Header(message_type=Type.OFPT_ECHO_REQUEST, length=8)
     data = BinaryData()
 
-    def __init__(self, xid=None, data=None):
+    def __init__(self, xid=None, data=b''):
         """Create a EchoRequest with the optional parameters below.
 
         Args:

@@ -6,9 +6,12 @@ from enum import IntEnum
 # Local source tree imports
 from pyof.foundation.base import GenericBitMask, GenericMessage
 from pyof.foundation.basic_types import Pad, UBInt8, UBInt16, UBInt32, UBInt64
+from pyof.v0x04.common.constants import OFP_NO_BUFFER
 from pyof.v0x04.common.flow_instructions import ListOfInstruction
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
+from pyof.v0x04.common.port import PortNo
+from pyof.v0x04.controller2switch.group_mod import Group
 
 __all__ = ('FlowMod', 'FlowModCommand', 'FlowModFlags')
 
@@ -67,10 +70,12 @@ class FlowMod(GenericMessage):
     match = Match()
     instructions = ListOfInstruction()
 
-    def __init__(self, xid=None, cookie=None, cookie_mask=None, table_id=None,
-                 command=None, idle_timeout=None, hard_timeout=None,
-                 priority=None, buffer_id=None, out_port=None, out_group=None,
-                 flags=None, match=None, instructions=None):
+    def __init__(self, xid=None, cookie=0, cookie_mask=0, table_id=0,
+                 command=None, idle_timeout=0, hard_timeout=0,
+                 priority=0, buffer_id=OFP_NO_BUFFER, out_port=PortNo.OFPP_ANY,
+                 out_group=Group.OFPG_ANY,
+                 flags=FlowModFlags.OFPFF_SEND_FLOW_REM,
+                 match=None, instructions=None):
         """Create a FlowMod with the optional parameters below.
 
         Args:
@@ -112,5 +117,5 @@ class FlowMod(GenericMessage):
         self.out_port = out_port
         self.out_group = out_group
         self.flags = flags
-        self.match = match
-        self.instructions = instructions
+        self.match = Match() if match is None else match
+        self.instructions = instructions or ListOfInstruction()
