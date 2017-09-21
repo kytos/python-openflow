@@ -3,14 +3,57 @@
 Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
 """
 
+# System imports
+from enum import IntEnum
+
+# Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
 from pyof.foundation.constants import VLAN_TPID
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('ARP', 'Ethernet', 'GenericTLV', 'IPv4', 'VLAN', 'TLVWithSubType',
-           'LLDP')
+__all__ = ('ARP', 'Ethernet', 'EtherType', 'GenericTLV', 'IPv4', 'VLAN',
+           'TLVWithSubType', 'LLDP')
+
+
+# NETWORK CONSTANTS AND ENUMS
+class EtherType(IntEnum):
+    """Enumeration with IEEE Ethernet types.
+
+    The items are being added as we need.
+    If you need one EtherType that is not listed below, please, send us a Pull
+    Request with the addition.
+
+    Ref: http://standards-oui.ieee.org/ethertype/eth.txt
+
+    """
+
+    #: Internet Protocol version 4 (IPv4)
+    IPV4 = 0x0800
+    #: Address Resolution Protocol (ARP)
+    ARP = 0x0806
+    #: Reverse Address Resolution Protocol
+    RARP = 0x8035
+    #: VLAN-tagged frame (IEEE 802.1Q) and Shortest Path Bridging IEEE 802.1aq
+    #: with NNI compatibility[8]
+    #: IEEE Std 802.1Q - Customer VLAN Tag Type
+    VLAN = 0x8100
+    #: Internet Protocol Version 6 (IPv6)
+    IPV6 = 0x86DD
+    #: Ethernet flow control
+    ETHERNET_FLOW_CONTROL = 0x8808
+    #: MPLS (multiprotocol label switching) label stack - unicast
+    #: reference: RFC 3032 URL: ftp://ftp.rfc-editor.org/in-notes/rfc3032.txt
+    MPLS_UNICAST = 0x8847
+    #: MPLS (multiprotocol label switching) label stack - multicast
+    #: reference: RFC 3032 URL: ftp://ftp.rfc-editor.org/in-notes/rfc3032.txt
+    MPLS_MULTICAST = 0x8848
+    #: Link Layer Discovery Protocol (LLDP)
+    LLDP = 0x88CC
+    #: VLAN-tagged (IEEE 802.1Q) frame with double tagging
+    #: Std 802.1Q Service VLAN tag identifier
+    VLAN_QINQ = 0x88a8
 
 
 class ARP(GenericStruct):
