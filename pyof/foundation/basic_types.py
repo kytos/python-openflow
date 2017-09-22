@@ -244,16 +244,16 @@ class IPAddress(GenericType):
     netmask = UBInt32()
     max_prefix = UBInt32(32)
 
-    def __init__(self, address="0.0.0.0/32"):
+    def __init__(self, address="0.0.0.0/32", netmask=None):
         """Create an IPAddress with the parameters below.
 
         Args:
             address (str): IP Address using ipv4. Defaults to '0.0.0.0/32'
         """
-        if address.find('/') >= 0:
+        if '/' in address:
             address, netmask = address.split('/')
         else:
-            netmask = 32
+            netmask = 32 if netmask is None else netmask
 
         super().__init__(address)
         self.netmask = int(netmask)
