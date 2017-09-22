@@ -200,6 +200,7 @@ class OxmTLV(GenericStruct):
                 the class
             oxm_hasmask (bool): Set if OXM include a bitmask in payload
             oxm_value (bytes): OXM Payload
+
         """
         super().__init__()
         self.oxm_class = oxm_class
@@ -216,6 +217,7 @@ class OxmTLV(GenericStruct):
         Args:
             buff (bytes): The binary data to be unpacked.
             offset (int): If we need to shift the beginning of the data.
+
         """
         super().unpack(buff, offset)
         # Recover field from field_and_hasmask.
@@ -250,6 +252,11 @@ class OxmTLV(GenericStruct):
         return field_int
 
     def _update_length(self):
+        """Update length field.
+
+        Update the oxm_length field with the packed payload length.
+
+        """
         payload = type(self).oxm_value.pack(self.oxm_value)
         self.oxm_length = len(payload)
 
@@ -297,7 +304,8 @@ class OxmTLV(GenericStruct):
 class OxmMatchFields(FixedTypeList):
     """Generic Openflow EXtensible Match header.
 
-    Abstract class that can be instanciated as Match or OxmExperimenterHeader.
+    Abstract class that can be instantiated as Match or OxmExperimenterHeader.
+
     """
 
     def __init__(self, items=None):
@@ -318,6 +326,7 @@ class Match(GenericStruct):
     :attr:`length` field is set to the actual length of match structure
     including all match fields. The payload of the OpenFlow match is a set of
     OXM Flow match fields.
+
     """
 
     #: One of OFPMT_*
@@ -336,6 +345,7 @@ class Match(GenericStruct):
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
             oxm_fields (OxmMatchFields): Sample description.
+
         """
         super().__init__()
         self.match_type = match_type
@@ -344,6 +354,7 @@ class Match(GenericStruct):
         self._update_match_length()
 
     def _update_match_length(self):
+        """Update the match length field."""
         self.length = super().get_size()
 
     def pack(self, value=None):
@@ -399,15 +410,17 @@ class OxmExperimenterHeader(GenericStruct):
         Args:
             experimenter (int): Experimenter ID which takes the same form as
               in struct ofp_experimenter_header
+
         """
         super().__init__()
         self.experimenter = experimenter
 
 
 class ListOfOxmHeader(FixedTypeList):
-    """List of Openflow EXtensible Match header instances.
+    """List of Openflow Extensible Match header instances.
 
     Represented by instances of OxmHeader.
+
     """
 
     def __init__(self, items=None):
@@ -415,5 +428,6 @@ class ListOfOxmHeader(FixedTypeList):
 
         Args:
             items (OxmHeader): Instance or a list of instances.
+
         """
         super().__init__(pyof_class=OxmTLV, items=items)
