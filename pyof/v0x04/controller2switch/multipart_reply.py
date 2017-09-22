@@ -63,7 +63,7 @@ class MultipartReply(GenericMessage):
     #: One of the OFPMP_* constants.
     multipart_type = UBInt16(enum_ref=MultipartTypes)
     #: OFPMPF_REPLY_* flags.
-    flags = UBInt16(enum_ref=MultipartReplyFlags)
+    flags = UBInt16()
     #: Padding
     pad = Pad(4)
     #: Body of the reply
@@ -165,7 +165,7 @@ class MultipartReply(GenericMessage):
 
         array_of_class = array_of_bodies.get(self.multipart_type, None)
         if array_of_class:
-            return FixedTypeList(pyof_class=pyof_class)
+            return FixedTypeList(pyof_class=array_of_class)
 
         return BinaryData(b'')
 
