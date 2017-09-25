@@ -2,6 +2,7 @@
 
 # System imports
 import struct
+from copy import deepcopy
 
 # Local source tree imports
 from pyof.foundation import exceptions
@@ -74,6 +75,10 @@ class Pad(GenericType):
         """
         return b'\x00' * self._length
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return Pad(length=self._length)
+
 
 class UBInt8(GenericType):
     """Format character for an Unsigned Char.
@@ -82,6 +87,10 @@ class UBInt8(GenericType):
     """
 
     _fmt = "!B"
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return UBInt8(value=self._value, enum_ref=self.enum_ref)
 
 
 class UBInt16(GenericType):
@@ -92,6 +101,10 @@ class UBInt16(GenericType):
 
     _fmt = "!H"
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return UBInt16(value=self._value, enum_ref=self.enum_ref)
+
 
 class UBInt32(GenericType):
     """Format character for an Unsigned Int.
@@ -101,6 +114,10 @@ class UBInt32(GenericType):
 
     _fmt = "!I"
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return UBInt32(value=self._value, enum_ref=self.enum_ref)
+
 
 class UBInt64(GenericType):
     """Format character for an Unsigned Long Long.
@@ -109,6 +126,10 @@ class UBInt64(GenericType):
     """
 
     _fmt = "!Q"
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return UBInt64(value=self._value, enum_ref=self.enum_ref)
 
 
 class DPID(GenericType):
@@ -175,6 +196,10 @@ class DPID(GenericType):
             begin += 1
         self._value = ':'.join(hexas)
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return DPID(dpid=self._value)
+
 
 class Char(GenericType):
     """Build a double char type according to the length."""
@@ -236,6 +261,10 @@ class Char(GenericType):
             raise Exception("%s: %s" % (offset, buff))
 
         self._value = unpacked_data.decode('ascii').rstrip('\0')
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return Char(value=self._value, length=self.length)
 
 
 class IPAddress(GenericType):
@@ -325,6 +354,10 @@ class IPAddress(GenericType):
 
         """
         return 4
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return IPAddress(address=self._value, netmask=self.netmask)
 
 
 class HWAddress(GenericType):
@@ -416,6 +449,10 @@ class HWAddress(GenericType):
         """Return true if the value is a broadcast address. False otherwise."""
         return self.value == 'ff:ff:ff:ff:ff:ff'
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return HWAddress(hw_address=self._value)
+
 
 class BinaryData(GenericType):
     """Class to create objects that represent binary data.
@@ -489,6 +526,10 @@ class BinaryData(GenericType):
             return value.get_size()
 
         return len(self.pack(value))
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return BinaryData(value=self._value)
 
 
 class TypeList(list, GenericStruct):
@@ -599,6 +640,11 @@ class TypeList(list, GenericStruct):
         """Human-readable object representantion."""
         return "{}".format([str(item) for item in self])
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        items = [deepcopy(item) for item in self]
+        return TypeList(items=items)
+
 
 class FixedTypeList(TypeList):
     """A list that stores instances of one pyof class."""
@@ -667,6 +713,11 @@ class FixedTypeList(TypeList):
         """
         super().unpack(buff, self._pyof_class, offset)
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        items = [deepcopy(item) for item in self]
+        return FixedTypeList(pyof_class=self._pyof_class, items=items)
+
 
 class ConstantTypeList(TypeList):
     """List that contains only objects of the same type (class).
@@ -730,3 +781,8 @@ class ConstantTypeList(TypeList):
         else:
             raise exceptions.WrongListItemType(item.__class__.__name__,
                                                self[0].__class__.__name__)
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        items = [deepcopy(item) for item in self]
+        return ConstantTypeList(items=items)
