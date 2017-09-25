@@ -393,6 +393,25 @@ class Match(GenericStruct):
         self._unpack_attribute('oxm_match_fields', type(self).oxm_match_fields,
                                buff[:offset+self.length], begin)
 
+    def get_field(self, field_type):
+        """Return the value for the 'field_type' field in oxm_match_fields.
+
+        Args:
+            field_type (~pyof.v0x04.common.flow_match.OxmOfbMatchField,
+                        ~pyof.v0x04.common.flow_match.OxmMatchFields):
+                The type of the OXM field you want the value.
+
+        Returns:
+            The integer number of the 'field_type' if it exists. Otherwise
+            return None.
+
+        """
+        for field in self.oxm_match_fields:
+            if field.oxm_field == field_type:
+                return field.oxm_value
+
+        return None
+
 
 class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""

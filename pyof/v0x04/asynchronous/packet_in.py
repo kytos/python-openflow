@@ -6,7 +6,7 @@ from enum import IntEnum
 from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import (
     BinaryData, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
-from pyof.v0x04.common.flow_match import Match
+from pyof.v0x04.common.flow_match import Match, OxmOfbMatchField
 from pyof.v0x04.common.header import Header, Type
 
 # Third-party imports
@@ -83,3 +83,18 @@ class PacketIn(GenericMessage):
         self.cookie = cookie
         self.match = match
         self.data = data
+
+    @property
+    def in_port(self):
+        """Retrieve the 'in_port' that generated the PacketIn.
+
+        This method will look for the OXM_TLV with type OFPXMT_OFB_IN_PORT on
+        the `oxm_match_fields` field from `match` field and return its value,
+        if the OXM exists.
+
+        Returns:
+            The integer number of the 'in_port' that generated the PacketIn if
+            it exists. Otherwise return None.
+
+        """
+        return self.match.get_field(OxmOfbMatchField.OFPXMT_OFB_IN_PORT)
