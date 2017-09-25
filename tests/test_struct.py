@@ -136,7 +136,7 @@ class TestStruct(unittest.TestCase):
     def _test_pack(self, obj, expected_bytes):
         """Check whether packed objects equals to dump file."""
         actual_bytes = obj.pack()
-        self.assertEqual(expected_bytes, actual_bytes)
+        self.assertSequenceEqual(expected_bytes, actual_bytes)
 
     def test_raw_dump_file(self):
         """Object pack should equal file; file unpack should equal object.
