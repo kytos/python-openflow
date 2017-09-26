@@ -57,6 +57,10 @@ class GenericType:
         self._value = value
         self.enum_ref = enum_ref
 
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return type(self)(value=self._value, enum_ref=self.enum_ref)
+
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self._value)
 
