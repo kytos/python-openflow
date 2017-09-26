@@ -8,6 +8,7 @@ from pyof.foundation.base import GenericBitMask, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, Char, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
 from pyof.foundation.constants import DESC_STR_LEN, SERIAL_NUM_LEN
+from pyof.v0x04.common.flow_instructions import ListOfInstruction
 from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port
@@ -254,11 +255,12 @@ class FlowStats(GenericStruct):
     packet_count = UBInt64()
     byte_count = UBInt64()
     match = Match()
+    instructions = ListOfInstruction()
 
     def __init__(self, length=None, table_id=None, duration_sec=None,
                  duration_nsec=None, priority=None, idle_timeout=None,
                  hard_timeout=None, flags=None, cookie=None, packet_count=None,
-                 byte_count=None, match=None):
+                 byte_count=None, match=None, instructions=None):
         """Create a FlowStats with the optional parameters below.
 
         Args:
@@ -289,6 +291,7 @@ class FlowStats(GenericStruct):
         self.packet_count = packet_count
         self.byte_count = byte_count
         self.match = match
+        self.instructions = instructions or []
 
 
 class PortStats(GenericStruct):
