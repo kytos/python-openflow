@@ -88,10 +88,6 @@ class UBInt8(GenericType):
 
     _fmt = "!B"
 
-    def __deepcopy__(self, memo):
-        """Improve deepcopy speed."""
-        return UBInt8(value=self._value, enum_ref=self.enum_ref)
-
 
 class UBInt16(GenericType):
     """Format character for an Unsigned Short.
@@ -100,10 +96,6 @@ class UBInt16(GenericType):
     """
 
     _fmt = "!H"
-
-    def __deepcopy__(self, memo):
-        """Improve deepcopy speed."""
-        return UBInt16(value=self._value, enum_ref=self.enum_ref)
 
 
 class UBInt32(GenericType):
@@ -114,10 +106,6 @@ class UBInt32(GenericType):
 
     _fmt = "!I"
 
-    def __deepcopy__(self, memo):
-        """Improve deepcopy speed."""
-        return UBInt32(value=self._value, enum_ref=self.enum_ref)
-
 
 class UBInt64(GenericType):
     """Format character for an Unsigned Long Long.
@@ -126,10 +114,6 @@ class UBInt64(GenericType):
     """
 
     _fmt = "!Q"
-
-    def __deepcopy__(self, memo):
-        """Improve deepcopy speed."""
-        return UBInt64(value=self._value, enum_ref=self.enum_ref)
 
 
 class DPID(GenericType):
