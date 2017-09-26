@@ -293,6 +293,19 @@ class FlowStats(GenericStruct):
         self.match = match
         self.instructions = instructions or []
 
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Pass the correct length for list unpacking.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+        """
+        unpack_length = UBInt16()
+        unpack_length.unpack(buff, offset)
+        super().unpack(buff[:offset+unpack_length], offset)
+
 
 class PortStats(GenericStruct):
     """Body of reply to OFPST_PORT request.
