@@ -439,8 +439,9 @@ class ErrorMsg(GenericMessage):
 
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
-        raise exceptions.MethodNotImplemented("'Unpack' method not "
-                                              "implemented on ErrorMsg class")
+        super().unpack(buff, offset)
+        code_class = ErrorType(self.error_type).get_class()
+        self.code = code_class(self.code)
 
 
 class ErrorExperimenterMsg(GenericMessage):

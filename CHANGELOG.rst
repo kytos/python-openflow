@@ -19,6 +19,7 @@ Removed
 
 Fixed
 =====
+ - [v0x04] Implemented ErrorMessage unpack
 
 Security
 ========
