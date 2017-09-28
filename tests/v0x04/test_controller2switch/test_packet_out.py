@@ -28,17 +28,13 @@ class TestPacketOut(TestStruct):
 
     def test_valid_virtual_in_ports(self):
         """Valid virtual ports as defined in 1.3.0 spec."""
-        try:
-            msg = self.get_raw_dump().read()
-        except FileNotFoundError:
-            raise self.skipTest(NO_RAW)
-        else:
-            valid = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER,
-                     PortNo.OFPP_ANY)
-            msg = self.get_raw_object()
-            for in_port in valid:
-                msg.in_port = in_port
-                self.assertTrue(msg.is_valid())
+        virtual_ports = (PortNo.OFPP_LOCAL, PortNo.OFPP_CONTROLLER,
+                         PortNo.OFPP_ANY)
+        for port in virtual_ports:
+            with self.subTest(port=port):
+                msg = PacketOut(in_port=port)
+                self.assertTrue(msg.is_valid(),
+                                f'{port.name} should be a valid in_port')
 
     def test_invalid_virtual_in_ports(self):
         """Invalid virtual ports as defined in 1.3.0 spec."""
