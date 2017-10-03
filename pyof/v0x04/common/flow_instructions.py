@@ -10,6 +10,7 @@ from enum import IntEnum
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, UBInt64)
+from pyof.foundation.exceptions import PackException
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.controller2switch.meter_mod import Meter
 
@@ -72,6 +73,26 @@ class Instruction(GenericStruct):
         super().__init__()
         self.instruction_type = instruction_type
 
+    def pack(self, value=None):
+        """Update the length and pack the massege into binary data.
+
+        Returns:
+            bytes: A binary data that represents the Message.
+
+        Raises:
+            Exception: If there are validation errors.
+
+        """
+        if value is None:
+            self.update_length()
+            return super().pack()
+        elif isinstance(value, type(self)):
+            return value.pack()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+
     def update_length(self):
         """Update length attribute."""
         self.length = self.get_size()
@@ -121,7 +142,6 @@ class InstructionApplyAction(Instruction):
         """
         super().__init__(InstructionType.OFPIT_APPLY_ACTIONS)
         self.actions = actions if actions else []
-        self.update_length()
 
 
 class InstructionClearAction(Instruction):
@@ -144,7 +164,6 @@ class InstructionClearAction(Instruction):
         """
         super().__init__(InstructionType.OFPIT_CLEAR_ACTIONS)
         self.actions = actions if actions else []
-        self.update_length()
 
 
 class InstructionGotoTable(Instruction):
@@ -164,7 +183,6 @@ class InstructionGotoTable(Instruction):
         """
         super().__init__(InstructionType.OFPIT_GOTO_TABLE)
         self.table_id = table_id
-        self.update_length()
 
 
 class InstructionMeter(Instruction):
@@ -207,7 +225,6 @@ class InstructionWriteAction(Instruction):
         """
         super().__init__(InstructionType.OFPIT_WRITE_ACTIONS)
         self.actions = actions if actions else []
-        self.update_length()
 
 
 class InstructionWriteMetadata(Instruction):
@@ -230,7 +247,6 @@ class InstructionWriteMetadata(Instruction):
         super().__init__(InstructionType.OFPIT_WRITE_METADATA)
         self.metadata = metadata
         self.metadata_mask = metadata_mask
-        self.update_length()
 
 
 class ListOfInstruction(FixedTypeList):
