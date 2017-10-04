@@ -1,6 +1,7 @@
 """Defines actions that may be associated with flows packets."""
 # System imports
 from enum import IntEnum
+from math import ceil
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
@@ -106,6 +107,15 @@ class ActionHeader(GenericStruct):
         super().__init__()
         self.action_type = action_type
         self.length = length
+
+    def get_size(self, value=None):
+        """Return the action length including the padding (multiple of 8)."""
+        if isinstance(value, ActionHeader):
+            return value.get_size()
+        elif value is None:
+            current_size = super().get_size()
+            return ceil(current_size / 8) * 8
+        raise ValueError(f'Invalid value "{value}" for Action*.get_size()')
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
