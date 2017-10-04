@@ -356,6 +356,8 @@ class ActionSetField(ActionHeader):
 
     field = OxmTLV()
 
+    _allowed_types = ActionType.OFPAT_SET_FIELD,
+
     def __init__(self, field=None):
         """Create a ActionSetField with the optional parameters below.
 
