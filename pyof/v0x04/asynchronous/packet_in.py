@@ -97,4 +97,5 @@ class PacketIn(GenericMessage):
             it exists. Otherwise return None.
 
         """
-        return self.match.get_field(OxmOfbMatchField.OFPXMT_OFB_IN_PORT)
+        in_port = self.match.get_field(OxmOfbMatchField.OFPXMT_OFB_IN_PORT)
+        return int.from_bytes(in_port, 'big')
