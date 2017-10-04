@@ -19,7 +19,8 @@ Removed
 
 Fixed
 =====
- - [v0x04] Implemented ErrorMessage unpack
+ - [v0x04] Implemented ErrorMessage unpack.
+ - Several bug fixes.
 
 Security
 ========
