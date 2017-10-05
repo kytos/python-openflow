@@ -107,10 +107,10 @@ class MultipartReply(GenericMessage):
 
             self.body = obj.pack()
 
-        multiparty_packed = super().pack()
+        multipart_packed = super().pack()
         self.body = buff
 
-        return multiparty_packed
+        return multipart_packed
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

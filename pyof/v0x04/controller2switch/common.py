@@ -356,7 +356,7 @@ class SwitchConfig(GenericMessage):
         self.miss_send_len = miss_send_len
 
 
-# Multiparty body
+# Multipart body
 
 class ExperimenterMultipartHeader(GenericStruct):
     """Body for ofp_multipart_request/reply of type OFPMP_EXPERIMENTER."""
