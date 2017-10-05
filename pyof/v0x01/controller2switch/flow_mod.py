@@ -64,7 +64,7 @@ class FlowMod(GenericMessage):
     def __init__(self, xid=None, match=None, cookie=0, command=None,
                  idle_timeout=0, hard_timeout=0, priority=0,
                  buffer_id=NO_BUFFER, out_port=Port.OFPP_NONE,
-                 flags=FlowModFlags.OFPFF_CHECK_OVERLAP, actions=None):
+                 flags=FlowModFlags.OFPFF_SEND_FLOW_REM, actions=None):
         """Create a FlowMod with the optional parameters below.
 
         Args:
@@ -89,7 +89,7 @@ class FlowMod(GenericMessage):
                 header.
         """
         super().__init__(xid)
-        self.match = match
+        self.match = match or Match()
         self.cookie = cookie
         self.command = command
         self.idle_timeout = idle_timeout
@@ -98,4 +98,4 @@ class FlowMod(GenericMessage):
         self.buffer_id = buffer_id
         self.out_port = out_port
         self.flags = flags
-        self.actions = [] if actions is None else actions
+        self.actions = actions or []
