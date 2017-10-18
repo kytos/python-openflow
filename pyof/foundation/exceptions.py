@@ -57,5 +57,4 @@ class UnpackException(Exception):
 class PackException(Exception):
     """Error while unpacking."""
 
-    def __str__(self):
-        return "Pack error: " + super().__str__()
+    pass
