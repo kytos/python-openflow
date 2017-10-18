@@ -186,9 +186,10 @@ class GenericType:
         try:
             return struct.pack(self._fmt, value)
         except struct.error:
-            msg = '{} could not pack {} = {}.'.format(type(self).__name__,
-                                                      type(value).__name__,
-                                                      value)
+            expected_type = type(self).__name__
+            actual_type = type(value).__name__
+            msg_args = expected_type, value, actual_type
+            msg = 'Expected {}, found value "{}" of type {}'.format(*msg_args)
             raise PackException(msg)
 
     def unpack(self, buff, offset=0):
@@ -603,6 +604,22 @@ class GenericStruct(object, metaclass=MetaStruct):
                    self._get_instance_attributes(),
                    self.get_class_attributes())
 
+    def _get_named_attributes(self):
+        """Return generator for attribute's name, instance and class values.
+
+        Add attribute name to meth:`_get_attributes` for a better debugging
+        message, so user can find the error easier.
+
+        Returns:
+            generator: Tuple with attribute's name, instance and class values.
+
+        """
+        for cls, instance in zip(self.get_class_attributes(),
+                                 self._get_instance_attributes()):
+            attr_name, cls_value = cls
+            instance_value = instance[1]
+            yield attr_name, instance_value, cls_value
+
     def _unpack_attribute(self, name, obj, buff, begin):
         attribute = deepcopy(obj)
         setattr(self, name, attribute)
@@ -667,8 +684,14 @@ class GenericStruct(object, metaclass=MetaStruct):
             else:
                 message = b''
                 # pylint: disable=no-member
-                for instance_attr, class_attr in self._get_attributes():
-                    message += class_attr.pack(instance_attr)
+                for attr_info in self._get_named_attributes():
+                    name, instance_value, class_value = attr_info
+                    try:
+                        message += class_value.pack(instance_value)
+                    except PackException as pack_exception:
+                        cls = type(self).__name__
+                        msg = f'{cls}.{name} - {pack_exception}'
+                        raise PackException(msg)
                 return message
         elif isinstance(value, type(self)):
             return value.pack()

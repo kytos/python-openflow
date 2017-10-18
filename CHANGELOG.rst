@@ -7,6 +7,7 @@ UNRELEASED - Under development
 ******************************
 Added
 =====
+- Attribute name in PackException message.
 
 Changed
 =======
