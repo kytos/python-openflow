@@ -27,7 +27,7 @@ Security
 ***************************************
 Added
 =====
-- Attribute name in PackException message.
+- Better debugging: attribute name in PackException message.
 
 Fixed
 =====
