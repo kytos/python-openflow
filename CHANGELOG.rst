@@ -31,8 +31,8 @@ Added
 
 Fixed
 =====
- - [v0x04] Implemented ErrorMessage unpack.
- - Several bug fixes.
+- [v0x04] Implemented ErrorMessage unpack.
+- Several bug fixes.
 
 [2017.2b1] - "chico" beta1 - 2017-09-19
 ***************************************
