@@ -7,7 +7,6 @@ UNRELEASED - Under development
 ******************************
 Added
 =====
-- Attribute name in PackException message.
 
 Changed
 =======
@@ -20,12 +19,20 @@ Removed
 
 Fixed
 =====
- - [v0x04] Implemented ErrorMessage unpack.
- - Several bug fixes.
 
 Security
 ========
 
+[2017.2b2] - "chico" beta2 - 2017-10-20
+***************************************
+Added
+=====
+- Attribute name in PackException message.
+
+Fixed
+=====
+ - [v0x04] Implemented ErrorMessage unpack.
+ - Several bug fixes.
 
 [2017.2b1] - "chico" beta1 - 2017-09-19
 ***************************************
