@@ -28,10 +28,29 @@ Security
 Added
 =====
 - Better debugging: attribute name in PackException message.
+- EtherType Enum.
+- [v0x04] get_field method on Match class.
+- [v0x04] in_port property on PacketIn class.
+- [v0x04] instructions field in FlowStats.
+- Attribute name to PackException
+
+Changed
+=======
+- Using EtherType enum items instead of hardcoded values.
+- Default values for many v0x04 classes.
+- Default values for many v0x01 classes.
+- IPAddress class: Added netmask optional attribute on init.
 
 Fixed
 =====
-- [v0x04] Implemented ErrorMessage unpack.
+- Performance issues related to deepcopy operations.
+- Unpacking performance issues.
+- [v0x04] Multipart message name.
+- [v0x04] ErrorMessage unpack.
+- [v0x04] ActionSetField.
+- [v0x04] MultipartReply unpack.
+- [v0x04] FlowStats unpack.
+- [v0x04] get_size method of Actions.
 - Several bug fixes.
 
 [2017.2b1] - "chico" beta1 - 2017-09-19
