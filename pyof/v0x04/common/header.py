@@ -2,12 +2,10 @@
 
 # System imports
 from enum import IntEnum
-from random import randint
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32
-from pyof.foundation.constants import UBINT32_MAX_VALUE as MAXID
 from pyof.v0x04.common.constants import OFP_VERSION
 
 # Third-party imports
@@ -90,7 +88,7 @@ class Header(GenericStruct):
     length = UBInt16()
     xid = UBInt32()
 
-    def __init__(self, message_type=None, length=None, xid=randint(0, MAXID)):
+    def __init__(self, message_type=None, length=None, xid=None):
         """Create a Header with the optional parameters below.
 
         Args:
