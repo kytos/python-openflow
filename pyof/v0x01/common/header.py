@@ -2,12 +2,10 @@
 
 # System imports
 from enum import IntEnum
-from random import randint
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import UBInt8, UBInt16, UBInt32
-from pyof.foundation.constants import UBINT32_MAX_VALUE as MAXID
 from pyof.v0x01.common.constants import OFP_VERSION
 
 # Third-party imports
@@ -84,4 +82,4 @@ class Header(GenericStruct):
         super().__init__()
         self.message_type = message_type
         self.length = length
-        self.xid = randint(0, MAXID) if xid is None else xid
+        self.xid = xid

@@ -22,8 +22,9 @@ import struct
 from collections import OrderedDict
 from copy import deepcopy
 from enum import Enum, IntEnum
+from random import randint
 
-# Local source tree imports
+from pyof.foundation.constants import UBINT32_MAX_VALUE as MAXID
 from pyof.foundation.exceptions import (
     BadValueException, PackException, UnpackException, ValidationError)
 
@@ -747,8 +748,7 @@ class GenericMessage(GenericStruct):
     def __init__(self, xid=None):
         """Initialize header's xid."""
         super().__init__()
-        if xid is not None:
-            self.header.xid = xid
+        self.header.xid = randint(0, MAXID) if xid is None else xid
 
     def __init_subclass__(cls, **kwargs):
         if cls.header is None or cls.header.__class__.__name__ != 'Header':
