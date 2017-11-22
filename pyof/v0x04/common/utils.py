@@ -42,7 +42,69 @@ from pyof.v0x04.symmetric.echo_request import EchoRequest
 from pyof.v0x04.symmetric.experimenter import ExperimenterHeader
 from pyof.v0x04.symmetric.hello import Hello
 
-__all__ = ('new_message_from_header', 'new_message_from_message_type')
+__all__ = ('MESSAGE_TYPES', 'new_message_from_header',
+           'new_message_from_message_type', 'unpack_message')
+
+MESSAGE_TYPES = {
+
+    # Symetric/Immutable messages
+    str(Type.OFPT_HELLO): Hello,
+    str(Type.OFPT_ERROR): ErrorMsg,
+    str(Type.OFPT_ECHO_REQUEST): EchoRequest,
+    str(Type.OFPT_ECHO_REPLY): EchoReply,
+    str(Type.OFPT_EXPERIMENTER): ExperimenterHeader,
+
+    # Switch configuration messages
+    # Controller/Switch messages
+    str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
+    str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
+    str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,
+    str(Type.OFPT_GET_CONFIG_REPLY): GetConfigReply,
+    str(Type.OFPT_SET_CONFIG): SetConfig,
+
+    # Async messages
+    str(Type.OFPT_PACKET_IN): PacketIn,
+    str(Type.OFPT_FLOW_REMOVED): FlowRemoved,
+    str(Type.OFPT_PORT_STATUS): PortStatus,
+
+    # Controller command messages
+    # Controller/Switch message
+    str(Type.OFPT_PACKET_OUT): PacketOut,
+    str(Type.OFPT_FLOW_MOD): FlowMod,
+    str(Type.OFPT_GROUP_MOD): GroupMod,
+    str(Type.OFPT_PORT_MOD): PortMod,
+    str(Type.OFPT_TABLE_MOD): TableMod,
+
+    # Multipart messages.
+    # Controller/Switch message
+    str(Type.OFPT_MULTIPART_REPLY): MultipartReply,
+    str(Type.OFPT_MULTIPART_REQUEST): MultipartRequest,
+
+    # Barrier messages
+    # Controller/Switch message
+    str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
+    str(Type.OFPT_BARRIER_REPLY): BarrierReply,
+
+    # Queue Configuration messages
+    # Controller/Switch message
+    str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
+    str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply,
+
+    # Controller role change request message
+    # Controller/Switch message
+    str(Type.OFPT_ROLE_REQUEST): RoleRequest,
+    str(Type.OFPT_ROLE_REPLY): RoleReply,
+
+    # Asynchronous message configuration
+    # Controller/Switch message
+    str(Type.OFPT_GET_ASYNC_REQUEST): GetAsyncRequest,
+    str(Type.OFPT_GET_ASYNC_REPLY): GetAsyncReply,
+    str(Type.OFPT_SET_ASYNC): SetAsync,
+
+    # Meters and rate limiters configuration messages
+    # Controller/Switch message
+    str(Type.OFPT_METER_MOD): MeterMod,
+}
 
 
 def new_message_from_message_type(message_type):
@@ -60,73 +122,11 @@ def new_message_from_message_type(message_type):
 
     """
     message_type = str(message_type)
-
-    available_classes = {
-
-        # Symetric/Immutable messages
-        str(Type.OFPT_HELLO): Hello,
-        str(Type.OFPT_ERROR): ErrorMsg,
-        str(Type.OFPT_ECHO_REQUEST): EchoRequest,
-        str(Type.OFPT_ECHO_REPLY): EchoReply,
-        str(Type.OFPT_EXPERIMENTER): ExperimenterHeader,
-
-        # Switch configuration messages
-        # Controller/Switch messages
-        str(Type.OFPT_FEATURES_REQUEST): FeaturesRequest,
-        str(Type.OFPT_FEATURES_REPLY): FeaturesReply,
-        str(Type.OFPT_GET_CONFIG_REQUEST): GetConfigRequest,
-        str(Type.OFPT_GET_CONFIG_REPLY): GetConfigReply,
-        str(Type.OFPT_SET_CONFIG): SetConfig,
-
-        # Async messages
-        str(Type.OFPT_PACKET_IN): PacketIn,
-        str(Type.OFPT_FLOW_REMOVED): FlowRemoved,
-        str(Type.OFPT_PORT_STATUS): PortStatus,
-
-        # Controller command messages
-        # Controller/Switch message
-        str(Type.OFPT_PACKET_OUT): PacketOut,
-        str(Type.OFPT_FLOW_MOD): FlowMod,
-        str(Type.OFPT_GROUP_MOD): GroupMod,
-        str(Type.OFPT_PORT_MOD): PortMod,
-        str(Type.OFPT_TABLE_MOD): TableMod,
-
-        # Multipart messages.
-        # Controller/Switch message
-        str(Type.OFPT_MULTIPART_REPLY): MultipartReply,
-        str(Type.OFPT_MULTIPART_REQUEST): MultipartRequest,
-
-        # Barrier messages
-        # Controller/Switch message
-        str(Type.OFPT_BARRIER_REQUEST): BarrierRequest,
-        str(Type.OFPT_BARRIER_REPLY): BarrierReply,
-
-        # Queue Configuration messages
-        # Controller/Switch message
-        str(Type.OFPT_QUEUE_GET_CONFIG_REQUEST): QueueGetConfigRequest,
-        str(Type.OFPT_QUEUE_GET_CONFIG_REPLY): QueueGetConfigReply,
-
-        # Controller role change request message
-        # Controller/Switch message
-        str(Type.OFPT_ROLE_REQUEST): RoleRequest,
-        str(Type.OFPT_ROLE_REPLY): RoleReply,
-
-        # Asynchronous message configuration
-        # Controller/Switch message
-        str(Type.OFPT_GET_ASYNC_REQUEST): GetAsyncRequest,
-        str(Type.OFPT_GET_ASYNC_REPLY): GetAsyncReply,
-        str(Type.OFPT_SET_ASYNC): SetAsync,
-
-        # Meters and rate limiters configuration messages
-        # Controller/Switch message
-        str(Type.OFPT_METER_MOD): MeterMod,
-    }
-
-    if message_type not in available_classes:
+    if message_type not in MESSAGE_TYPES:
         msg = "Define class for {} in {}".format(message_type, __file__)
         raise ValueError(msg)
 
-    message_class = available_classes.get(message_type)
+    message_class = MESSAGE_TYPES.get(message_type)
     message_instance = message_class()
 
     return message_instance
@@ -166,7 +166,15 @@ def new_message_from_header(header):
 
 
 def unpack_message(buffer):
-    """Unpack the whole buffer, including header pack."""
+    """Unpack the whole buffer, including header pack.
+
+    Args:
+        buffer (bytes): Bytes representation of a openflow message.
+
+    Returns:
+        object: Instance of openflow message.
+
+    """
     hdr_size = Header().get_size()
     hdr_buff, msg_buff = buffer[:hdr_size], buffer[hdr_size:]
     header = Header()
