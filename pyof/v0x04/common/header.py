@@ -101,4 +101,4 @@ class Header(GenericStruct):
         super().__init__()
         self.message_type = message_type
         self.length = length
-        self.xid = xid
+        self.xid = randint(0, MAXID) if xid is None else xid
