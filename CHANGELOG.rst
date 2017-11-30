@@ -23,7 +23,7 @@ Fixed
 Security
 ========
 
-[2017.2b2] - "chico" beta2 - 2017-10-20
+[2017.2b2] - "chico" beta2 - 2017-12-01
 ***************************************
 Added
 =====
@@ -33,6 +33,7 @@ Added
 - [v0x04] in_port property on PacketIn class.
 - [v0x04] instructions field in FlowStats.
 - Attribute name to PackException
+- Every message sent by the controller now has its own XID.
 
 Changed
 =======
@@ -40,6 +41,10 @@ Changed
 - Default values for many v0x04 classes.
 - Default values for many v0x01 classes.
 - IPAddress class: Added netmask optional attribute on init.
+
+Removed
+=======
+- Some unused test files.
 
 Fixed
 =====
