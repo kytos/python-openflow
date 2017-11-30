@@ -5,6 +5,8 @@ method to perform package unpack independent of the OpenFlow version.
 """
 from pyof import v0x01, v0x04
 from pyof.foundation.exceptions import UnpackException
+from pyof.v0x01.common import utils as u_v0x01  # pylint: disable=unused-import
+from pyof.v0x04.common import utils as u_v0x04  # pylint: disable=unused-import
 
 PYOF_VERSION_LIBS = {0x01: v0x01,
                      0x04: v0x04}
@@ -25,8 +27,7 @@ def validate_packet(packet):
     if packet_length < 8 or packet_length > 2**16:
         raise UnpackException('invalid packet')
 
-    if packet_length != int.from_bytes(packet[2:4],
-                                       byteorder='big'):
+    if packet_length != int.from_bytes(packet[2:4], byteorder='big'):
         raise UnpackException('invalid packet')
 
     version = packet[0]
@@ -36,6 +37,9 @@ def validate_packet(packet):
 
 def unpack(packet):
     """Unpack the OpenFlow Packet and returns a message.
+
+    Args:
+        packet: buffer with the openflow packet.
 
     Returns:
         GenericMessage: Message unpacked based on openflow packet.
@@ -53,15 +57,7 @@ def unpack(packet):
         raise UnpackException('Version not supported')
 
     try:
-        header = pyof_lib.common.header.Header()
-        header.unpack(packet[:header.get_size()])
-        message = pyof_lib.common.utils.new_message_from_header(header)
-
-        binary_data = packet[header.get_size():]
-        binary_data_size = header.length - header.get_size()
-
-        if binary_data and len(binary_data) == binary_data_size:
-            message.unpack(binary_data)
+        message = pyof_lib.common.utils.unpack_message(packet)
         return message
     except (UnpackException, ValueError) as exception:
         raise UnpackException(exception)
