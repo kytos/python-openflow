@@ -3,25 +3,12 @@ Change log
 ##########
 All notable changes to the python-openflow project are documented in this file.
 
-UNRELEASED - Under development
-******************************
-Added
-=====
-
-Changed
-=======
-
-Deprecated
-==========
-
-Removed
-=======
-
+[2017.2] - "chico" - 2017-12-21
+*******************************
 Fixed
 =====
+- Some bug fixes.
 
-Security
-========
 
 [2017.2b2] - "chico" beta2 - 2017-12-01
 ***************************************
