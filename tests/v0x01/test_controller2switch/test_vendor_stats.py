@@ -1,5 +1,5 @@
 """Test VendorStats message."""
-from pyof.v0x01.controller2switch.common import StatsTypes, VendorStats
+from pyof.v0x01.controller2switch.common import StatsType, VendorStats
 from pyof.v0x01.controller2switch.stats_request import StatsRequest
 from tests.test_struct import TestStruct
 
@@ -16,7 +16,7 @@ class TestVendorStats(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_vendor_stats_reply')
         super().set_raw_dump_object(StatsRequest, xid=4,
-                                    body_type=StatsTypes.OFPST_VENDOR,
+                                    body_type=StatsType.OFPST_VENDOR,
                                     flags=0, body=_get_vendor_stats())
         super().set_minimum_size(12)
 

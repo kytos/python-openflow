@@ -13,7 +13,7 @@ from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port
 from pyof.v0x04.controller2switch.common import (
-    Bucket, BucketCounter, ExperimenterMultipartHeader, MultipartTypes,
+    Bucket, BucketCounter, ExperimenterMultipartHeader, MultipartType,
     TableFeatures)
 from pyof.v0x04.controller2switch.meter_mod import (
     ListOfMeterBandHeader, MeterBandType, MeterFlags)
@@ -62,7 +62,7 @@ class MultipartReply(GenericMessage):
     #: Openflow :class:`~pyof.v0x04.common.header.Header`
     header = Header(message_type=Type.OFPT_MULTIPART_REPLY)
     #: One of the OFPMP_* constants.
-    multipart_type = UBInt16(enum_ref=MultipartTypes)
+    multipart_type = UBInt16(enum_ref=MultipartType)
     #: OFPMPF_REPLY_* flags.
     flags = UBInt16()
     #: Padding
@@ -139,22 +139,22 @@ class MultipartReply(GenericMessage):
     def _get_body_instance(self):
         """Return the body instance."""
         exp_header = ExperimenterMultipartHeader
-        simple_body = {MultipartTypes.OFPMP_DESC: Desc,
-                       MultipartTypes.OFPMP_GROUP_FEATURES: GroupFeatures,
-                       MultipartTypes.OFPMP_METER_FEATURES: MeterFeatures,
-                       MultipartTypes.OFPMP_EXPERIMENTER: exp_header}
+        simple_body = {MultipartType.OFPMP_DESC: Desc,
+                       MultipartType.OFPMP_GROUP_FEATURES: GroupFeatures,
+                       MultipartType.OFPMP_METER_FEATURES: MeterFeatures,
+                       MultipartType.OFPMP_EXPERIMENTER: exp_header}
 
-        array_of_bodies = {MultipartTypes.OFPMP_FLOW: FlowStats,
-                           MultipartTypes.OFPMP_AGGREGATE: AggregateStatsReply,
-                           MultipartTypes.OFPMP_TABLE: TableStats,
-                           MultipartTypes.OFPMP_PORT_STATS: PortStats,
-                           MultipartTypes.OFPMP_QUEUE: QueueStats,
-                           MultipartTypes.OFPMP_GROUP: GroupStats,
-                           MultipartTypes.OFPMP_GROUP_DESC: GroupDescStats,
-                           MultipartTypes.OFPMP_METER: MeterStats,
-                           MultipartTypes.OFPMP_METER_CONFIG: MeterConfig,
-                           MultipartTypes.OFPMP_TABLE_FEATURES: TableFeatures,
-                           MultipartTypes.OFPMP_PORT_DESC: Port}
+        array_of_bodies = {MultipartType.OFPMP_FLOW: FlowStats,
+                           MultipartType.OFPMP_AGGREGATE: AggregateStatsReply,
+                           MultipartType.OFPMP_TABLE: TableStats,
+                           MultipartType.OFPMP_PORT_STATS: PortStats,
+                           MultipartType.OFPMP_QUEUE: QueueStats,
+                           MultipartType.OFPMP_GROUP: GroupStats,
+                           MultipartType.OFPMP_GROUP_DESC: GroupDescStats,
+                           MultipartType.OFPMP_METER: MeterStats,
+                           MultipartType.OFPMP_METER_CONFIG: MeterConfig,
+                           MultipartType.OFPMP_TABLE_FEATURES: TableFeatures,
+                           MultipartType.OFPMP_PORT_DESC: Port}
 
         if isinstance(self.multipart_type, (int, UBInt16)):
             self.multipart_type = self.multipart_type.enum_ref(

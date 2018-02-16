@@ -11,7 +11,7 @@ from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import PortNo
 from pyof.v0x04.controller2switch.common import (
-    ExperimenterMultipartHeader, MultipartTypes, TableFeatures)
+    ExperimenterMultipartHeader, MultipartType, TableFeatures)
 from pyof.v0x04.controller2switch.group_mod import Group
 from pyof.v0x04.controller2switch.meter_mod import Meter
 from pyof.v0x04.controller2switch.table_mod import Table
@@ -46,7 +46,7 @@ class MultipartRequest(GenericMessage):
     #: Openflow :class:`~pyof.v0x04.common.header.Header`
     header = Header(message_type=Type.OFPT_MULTIPART_REQUEST)
     #: One of the OFPMP_* constants.
-    multipart_type = UBInt16(enum_ref=MultipartTypes)
+    multipart_type = UBInt16(enum_ref=MultipartType)
     #: OFPMPF_REQ_* flags.
     flags = UBInt16(enum_ref=MultipartRequestFlags)
     #: Padding
@@ -127,16 +127,16 @@ class MultipartRequest(GenericMessage):
     def _get_body_instance(self):
         """Return the body instance."""
         simple_body = {
-            MultipartTypes.OFPMP_FLOW: FlowStatsRequest,
-            MultipartTypes.OFPMP_AGGREGATE: AggregateStatsRequest,
-            MultipartTypes.OFPMP_PORT_STATS: PortStatsRequest,
-            MultipartTypes.OFPMP_QUEUE: QueueStatsRequest,
-            MultipartTypes.OFPMP_GROUP: GroupStatsRequest,
-            MultipartTypes.OFPMP_METER: MeterMultipartRequest,
-            MultipartTypes.OFPMP_EXPERIMENTER: ExperimenterMultipartHeader
+            MultipartType.OFPMP_FLOW: FlowStatsRequest,
+            MultipartType.OFPMP_AGGREGATE: AggregateStatsRequest,
+            MultipartType.OFPMP_PORT_STATS: PortStatsRequest,
+            MultipartType.OFPMP_QUEUE: QueueStatsRequest,
+            MultipartType.OFPMP_GROUP: GroupStatsRequest,
+            MultipartType.OFPMP_METER: MeterMultipartRequest,
+            MultipartType.OFPMP_EXPERIMENTER: ExperimenterMultipartHeader
         }
 
-        array_of_bodies = {MultipartTypes.OFPMP_TABLE_FEATURES: TableFeatures}
+        array_of_bodies = {MultipartType.OFPMP_TABLE_FEATURES: TableFeatures}
 
         if isinstance(self.multipart_type, UBInt16):
             self.multipart_type = self.multipart_type.enum_ref(
@@ -256,7 +256,7 @@ class PortStatsRequest(GenericStruct):
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.PortNo`):
-                :attr:`StatsTypes.OFPST_PORT` message must request statistics
+                :attr:`StatsType.OFPST_PORT` message must request statistics
                 either for a single port (specified in ``port_no``) or for all
                 ports (if ``port_no`` == :attr:`.PortNo.OFPP_ANY`).
         """
