@@ -19,7 +19,7 @@ from pyof.v0x04.common.header import Header
 from pyof.v0x04.controller2switch.table_mod import Table
 
 __all__ = ('ConfigFlags', 'ControllerRole', 'Bucket', 'BucketCounter',
-           'ExperimenterMultipartHeader', 'MultipartTypes',
+           'ExperimenterMultipartHeader', 'MultipartType',
            'TableFeaturePropType', 'Property', 'InstructionsProperty',
            'NextTablesProperty', 'ActionsProperty', 'OxmProperty',
            'ListOfProperty', 'TableFeatures')
@@ -104,7 +104,7 @@ class TableFeaturePropType(IntEnum):
         return OxmProperty
 
 
-class MultipartTypes(IntEnum):
+class MultipartType(IntEnum):
     """Types of Multipart Messages, both Request and Reply."""
 
     #: Description of this OpenFlow switch.
