@@ -16,7 +16,7 @@ from pyof.v0x01.common.phy_port import Port
 
 # Third-party imports
 
-__all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
+__all__ = ('ConfigFlag', 'StatsTypes', 'AggregateStatsReply',
            'AggregateStatsRequest', 'DescStats', 'FlowStats',
            'FlowStatsRequest', 'PortStats', 'PortStatsRequest', 'QueueStats',
            'QueueStatsRequest', 'TableStats', 'VendorStats',
@@ -25,7 +25,7 @@ __all__ = ('ConfigFlags', 'StatsTypes', 'AggregateStatsReply',
 # Enums
 
 
-class ConfigFlags(IntEnum):
+class ConfigFlag(IntEnum):
     """Configuration Flags. Handling of IP Fragments."""
 
     #: No special handling for fragments
@@ -70,7 +70,7 @@ class SwitchConfig(GenericMessage):
     """Used as base class for SET_CONFIG and GET_CONFIG_REPLY messages."""
 
     header = Header()
-    flags = UBInt16(enum_ref=ConfigFlags)
+    flags = UBInt16(enum_ref=ConfigFlag)
     miss_send_len = UBInt16()
 
     def __init__(self, xid=None, flags=None, miss_send_len=None):
@@ -78,7 +78,7 @@ class SwitchConfig(GenericMessage):
 
         Args:
             xid (int): xid to be used on the message header.
-            flags (ConfigFlags): OFPC_* flags.
+            flags (ConfigFlag): OFPC_* flags.
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
         """

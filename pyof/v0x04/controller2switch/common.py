@@ -18,7 +18,7 @@ from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.common.header import Header
 from pyof.v0x04.controller2switch.table_mod import Table
 
-__all__ = ('ConfigFlags', 'ControllerRole', 'Bucket', 'BucketCounter',
+__all__ = ('ConfigFlag', 'ControllerRole', 'Bucket', 'BucketCounter',
            'ExperimenterMultipartHeader', 'MultipartType',
            'TableFeaturePropType', 'Property', 'InstructionsProperty',
            'NextTablesProperty', 'ActionsProperty', 'OxmProperty',
@@ -27,7 +27,7 @@ __all__ = ('ConfigFlags', 'ControllerRole', 'Bucket', 'BucketCounter',
 # Enum
 
 
-class ConfigFlags(IntEnum):
+class ConfigFlag(IntEnum):
     """Handling of IP fragments."""
 
     #: No special handling for fragments.
@@ -338,16 +338,16 @@ class SwitchConfig(GenericMessage):
 
     #: OpenFlow :class:`~pyof.v0x04.common.header.Header`
     header = Header()
-    flags = UBInt16(enum_ref=ConfigFlags)
+    flags = UBInt16(enum_ref=ConfigFlag)
     miss_send_len = UBInt16()
 
-    def __init__(self, xid=None, flags=ConfigFlags.OFPC_FRAG_NORMAL,
+    def __init__(self, xid=None, flags=ConfigFlag.OFPC_FRAG_NORMAL,
                  miss_send_len=ControllerMaxLen.OFPCML_NO_BUFFER):
         """Create a SwitchConfig with the optional parameters below.
 
         Args:
             xid (int): xid to be used on the message header.
-            flags (ConfigFlags): OFPC_* flags.
+            flags (ConfigFlag): OFPC_* flags.
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
         """
