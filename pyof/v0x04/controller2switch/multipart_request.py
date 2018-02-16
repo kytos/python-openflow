@@ -256,7 +256,7 @@ class PortStatsRequest(GenericStruct):
 
         Args:
             port_no (:class:`int`, :class:`~pyof.v0x04.common.port.PortNo`):
-                :attr:`StatsTypes.OFPST_PORT` message must request statistics
+                :attr:`StatsType.OFPST_PORT` message must request statistics
                 either for a single port (specified in ``port_no``) or for all
                 ports (if ``port_no`` == :attr:`.PortNo.OFPP_ANY`).
         """

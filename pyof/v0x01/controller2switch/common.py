@@ -16,7 +16,7 @@ from pyof.v0x01.common.phy_port import Port
 
 # Third-party imports
 
-__all__ = ('ConfigFlag', 'StatsTypes', 'AggregateStatsReply',
+__all__ = ('ConfigFlag', 'StatsType', 'AggregateStatsReply',
            'AggregateStatsRequest', 'DescStats', 'FlowStats',
            'FlowStatsRequest', 'PortStats', 'PortStatsRequest', 'QueueStats',
            'QueueStatsRequest', 'TableStats', 'VendorStats',
@@ -37,7 +37,7 @@ class ConfigFlag(IntEnum):
     OFPC_FRAG_MASK = 3
 
 
-class StatsTypes(IntEnum):
+class StatsType(IntEnum):
     """Type field to be used both in both request and reply.
 
     It specifies the kind of information being passed and determines how the

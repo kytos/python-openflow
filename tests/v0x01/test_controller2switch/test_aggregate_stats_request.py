@@ -2,7 +2,7 @@
 from pyof.v0x01.common.flow_match import Match
 from pyof.v0x01.common.phy_port import Port
 from pyof.v0x01.controller2switch.common import (
-    AggregateStatsRequest, StatsTypes)
+    AggregateStatsRequest, StatsType)
 from pyof.v0x01.controller2switch.stats_request import StatsRequest
 from tests.test_struct import TestStruct
 
@@ -19,7 +19,7 @@ class TestAggregateStatsRequest(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_aggregate_request')
         super().set_raw_dump_object(StatsRequest, xid=17,
-                                    body_type=StatsTypes.OFPST_AGGREGATE,
+                                    body_type=StatsType.OFPST_AGGREGATE,
                                     flags=0, body=request)
         super().set_minimum_size(12)
 

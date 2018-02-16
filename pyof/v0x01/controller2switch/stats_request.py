@@ -10,7 +10,7 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 # Local imports
 from pyof.v0x01.common.header import Header, Type
-from pyof.v0x01.controller2switch.common import StatsTypes
+from pyof.v0x01.controller2switch.common import StatsType
 
 __all__ = ('StatsRequest',)
 
@@ -20,7 +20,7 @@ class StatsRequest(GenericMessage):
 
     #: OpenFlow :class:`~pyof.v0x01.common.header.Header`
     header = Header(message_type=Type.OFPT_STATS_REQUEST)
-    body_type = UBInt16(enum_ref=StatsTypes)
+    body_type = UBInt16(enum_ref=StatsType)
     flags = UBInt16()
     body = BinaryData()
 
@@ -29,7 +29,7 @@ class StatsRequest(GenericMessage):
 
         Args:
             xid (int): xid to be used on the message header.
-            body_type (StatsTypes): One of the OFPST_* constants.
+            body_type (StatsType): One of the OFPST_* constants.
             flags (int): OFPSF_REQ_* flags (none yet defined).
             body (BinaryData): Body of the request.
         """

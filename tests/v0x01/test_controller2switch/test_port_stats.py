@@ -1,5 +1,5 @@
 """Test for PortStats structure."""
-from pyof.v0x01.controller2switch.common import PortStats, StatsTypes
+from pyof.v0x01.controller2switch.common import PortStats, StatsType
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 from tests.test_struct import TestStruct
 
@@ -13,7 +13,7 @@ class TestPortStats(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_port_stats')
         super().set_raw_dump_object(StatsReply, xid=13,
-                                    body_type=StatsTypes.OFPST_PORT,
+                                    body_type=StatsType.OFPST_PORT,
                                     flags=0, body=_get_port_stats())
         super().set_minimum_size(12)
 

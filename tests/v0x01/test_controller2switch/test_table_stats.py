@@ -1,7 +1,7 @@
 """Test TableStats message."""
 from pyof.foundation.constants import OFP_MAX_TABLE_NAME_LEN
 from pyof.v0x01.common.flow_match import FlowWildCards
-from pyof.v0x01.controller2switch.common import StatsTypes, TableStats
+from pyof.v0x01.controller2switch.common import StatsType, TableStats
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 from tests.test_struct import TestStruct
 
@@ -15,7 +15,7 @@ class TestTableStats(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_table_stats')
         super().set_raw_dump_object(StatsReply, xid=14,
-                                    body_type=StatsTypes.OFPST_TABLE,
+                                    body_type=StatsType.OFPST_TABLE,
                                     flags=0, body=_get_table_stats())
         super().set_minimum_size(12)
 

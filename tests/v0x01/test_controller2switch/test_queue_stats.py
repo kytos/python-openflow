@@ -1,5 +1,5 @@
 """Test for QueueStats."""
-from pyof.v0x01.controller2switch.common import QueueStats, StatsTypes
+from pyof.v0x01.controller2switch.common import QueueStats, StatsType
 from pyof.v0x01.controller2switch.stats_reply import StatsReply
 from tests.test_struct import TestStruct
 
@@ -13,7 +13,7 @@ class TestQueueStats(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_queue_stats_reply')
         super().set_raw_dump_object(StatsReply, xid=7,
-                                    body_type=StatsTypes.OFPST_QUEUE,
+                                    body_type=StatsType.OFPST_QUEUE,
                                     flags=0, body=_get_queue_stats())
         super().set_minimum_size(12)
 

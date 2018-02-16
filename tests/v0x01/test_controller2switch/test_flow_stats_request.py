@@ -1,6 +1,6 @@
 """Test FlowStatsRequest message."""
 from pyof.v0x01.common.flow_match import Match
-from pyof.v0x01.controller2switch.common import FlowStatsRequest, StatsTypes
+from pyof.v0x01.controller2switch.common import FlowStatsRequest, StatsType
 from pyof.v0x01.controller2switch.stats_request import StatsRequest
 from tests.test_struct import TestStruct
 
@@ -14,7 +14,7 @@ class TestFlowStatsRequest(TestStruct):
         super().setUpClass()
         super().set_raw_dump_file('v0x01', 'ofpt_flow_stats_request')
         super().set_raw_dump_object(StatsRequest, xid=12,
-                                    body_type=StatsTypes.OFPST_FLOW,
+                                    body_type=StatsType.OFPST_FLOW,
                                     flags=0, body=_get_flow_stats_request())
         super().set_minimum_size(12)
 
