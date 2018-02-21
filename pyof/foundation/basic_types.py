@@ -575,10 +575,6 @@ class TypeList(list, GenericStruct):
     def unpack(self, buff, item_class, offset=0):
         """Unpack the elements of the list.
 
-        This unpack method considers that all elements have the same size.
-        To use this class with a pyof_class that accepts elements with
-        different sizes, you must reimplement the unpack method.
-
         Args:
             buff (bytes): The binary data to be unpacked.
             item_class (:obj:`type`): Class of the expected items on this list.

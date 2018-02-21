@@ -6,12 +6,12 @@ from enum import IntEnum
 
 from pyof.foundation.base import GenericMessage, GenericStruct
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
+from pyof.foundation.exceptions import PackException
 from pyof.v0x04.common.header import Header, Type
 
 # Third-party imports
 
-__all__ = ('Hello', 'HelloElemHeader', 'HelloElemType',
-           'HelloElemVersionbitmap', 'ListOfHelloElements')
+__all__ = ('Hello', 'HelloElemHeader', 'HelloElemType', 'ListOfHelloElements')
 
 # Enums
 
@@ -29,10 +29,11 @@ class HelloElemType(IntEnum):
 class HelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
-    element_type = UBInt16(enum_ref=HelloElemType)
+    element_type = UBInt16()
     length = UBInt16()
+    content = BinaryData()
 
-    def __init__(self, element_type=None, length=None):
+    def __init__(self, element_type=None, length=None, content=b''):
         """Create a HelloElemHeader with the optional parameters below.
 
         Args:
@@ -43,6 +44,50 @@ class HelloElemHeader(GenericStruct):
         super().__init__()
         self.element_type = element_type
         self.length = length
+        self.content = content
+
+    def pack(self, value=None):
+        """Update the length and pack the massege into binary data.
+
+        Returns:
+            bytes: A binary data that represents the Message.
+
+        Raises:
+            Exception: If there are validation errors.
+
+        """
+        if value is None:
+            self.update_length()
+            return super().pack()
+        elif isinstance(value, type(self)):
+            return value.pack()
+        else:
+            msg = "{} is not an instance of {}".format(value,
+                                                       type(self).__name__)
+            raise PackException(msg)
+
+    def update_length(self):
+        """Update length attribute."""
+        self.length = self.get_size()
+
+    def unpack(self, buff=None, offset=0):
+        """Unpack *buff* into this object.
+
+        This method will convert a binary data into a readable value according
+        to the attribute format.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+
+        """
+        length = UBInt16()
+        length.unpack(buff, offset=offset+2)
+
+        super().unpack(buff[:offset+length.value], offset)
 
 
 class ListOfHelloElements(FixedTypeList):
@@ -82,23 +127,3 @@ class Hello(GenericMessage):
         """
         super().__init__(xid)
         self.elements = elements
-
-
-class HelloElemVersionbitmap(HelloElemHeader):
-    """Version bitmap Hello Element."""
-
-    #: List of bitmaps - supported versions
-    bitmaps = BinaryData()
-
-    def __init__(self, bitmaps=b''):
-        """Create a HelloElemVersionbitmap with the optional parameters below.
-
-        Args:
-            bitmaps(BinaryData): A BinaryData with exactly (length - 4) bytes
-                                 containing the bitmaps, then exactly
-                                 (length + 7)/8*8 - (length) (between 0 and 7)
-                                 bytes of all-zero bytes.
-        """
-        super().__init__(element_type=HelloElemType.OFPHET_VERSIONBITMAP,
-                         length=None)
-        self.bitmaps = bitmaps
