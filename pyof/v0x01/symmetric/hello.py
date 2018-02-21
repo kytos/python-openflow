@@ -5,6 +5,7 @@
 # Third-party imports
 
 from pyof.foundation.base import GenericMessage
+from pyof.foundation.basic_types import BinaryData
 from pyof.v0x01.common.header import Header, Type
 
 __all__ = ('Hello',)
@@ -19,3 +20,4 @@ class Hello(GenericMessage):
     """
 
     header = Header(message_type=Type.OFPT_HELLO, length=8)
+    elements = BinaryData()
