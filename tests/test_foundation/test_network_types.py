@@ -83,7 +83,7 @@ class TestEthernet(unittest.TestCase):
     def test_Tagged_Ethernet_pack(self):
         """Test pack method of Ethernet class including VLAN tag."""
         ethernet = Ethernet(destination='00:1f:3a:3e:9a:cf',
-                            source='00:15:af:d5:38:98', vlan=VLAN(vid=200),
+                            source='00:15:af:d5:38:98', vlans=[VLAN(vid=200)],
                             ether_type=0x800, data=b'testdata')
         packed = ethernet.pack()
         expected = b'\x00\x1f:>\x9a\xcf\x00\x15\xaf\xd58'
@@ -95,8 +95,8 @@ class TestEthernet(unittest.TestCase):
         raw = b'\x00\x15\xaf\xd58\x98\x00\x1f:>'
         raw += b'\x9a\xcf\x81\x00!^\x08\x00testdata'
         expected = Ethernet(destination='00:15:af:d5:38:98',
-                            source='00:1f:3a:3e:9a:cf', vlan=VLAN(pcp=1,
-                                                                  vid=350),
+                            source='00:1f:3a:3e:9a:cf', vlans=[VLAN(pcp=1,
+                                                                  vid=350)],
                             ether_type=0x800, data=b'testdata')
         expected.pack()
         unpacked = Ethernet()
