@@ -4,12 +4,13 @@ Defines and Implements Basic Network packet types , such as Ethertnet and LLDP.
 """
 
 # System imports
+from copy import deepcopy
 from enum import IntEnum
 
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
-    BinaryData, HWAddress, IPAddress, UBInt8, UBInt16)
+    BinaryData, FixedTypeList, HWAddress, IPAddress, UBInt8, UBInt16)
 from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('ARP', 'Ethernet', 'EtherType', 'GenericTLV', 'IPv4', 'VLAN',
@@ -184,8 +185,8 @@ class VLAN(GenericStruct):
         return super().pack()
 
     def _validate(self):
-        """Assure this is a 802.1q VLAN header instance."""
-        if self.tpid.value != EtherType.VLAN:
+        """Assure this is a valid VLAN header instance."""
+        if self.tpid.value not in (EtherType.VLAN, EtherType.VLAN_QINQ):
             raise UnpackException
         return
 
@@ -220,6 +221,22 @@ class VLAN(GenericStruct):
             self.vid = None
 
 
+class ListOfVLAN(FixedTypeList):
+    """List of VLAN tags.
+
+    Represented by instances of VLAN.
+    """
+
+    def __init__(self, items=None):
+        """Create a ListOfVLAN with the optional parameters below.
+
+        Args:
+            items (:class:`~pyof.foundation.network_types.VLAN`):
+                Instance or a list of instances.
+        """
+        super().__init__(pyof_class=VLAN, items=items)
+
+
 class Ethernet(GenericStruct):
     """Ethernet "struct".
 
@@ -239,11 +256,11 @@ class Ethernet(GenericStruct):
 
     destination = HWAddress()
     source = HWAddress()
-    vlan = VLAN()
+    vlans = ListOfVLAN()
     ether_type = UBInt16()
     data = BinaryData()
 
-    def __init__(self, destination=None, source=None, vlan=None,
+    def __init__(self, destination=None, source=None, vlans=None,
                  ether_type=None, data=b''):
         """Create an instance and set its attributes.
 
@@ -260,7 +277,7 @@ class Ethernet(GenericStruct):
         super().__init__()
         self.destination = destination
         self.source = source
-        self.vlan = VLAN() if vlan is None else vlan
+        self.vlans = ListOfVLAN() if vlans is None else vlans
         self.ether_type = ether_type
         self.data = data
 
@@ -272,6 +289,19 @@ class Ethernet(GenericStruct):
 
         """
         return hash(self.pack())
+
+    @staticmethod
+    def _get_vlan_length(buff):
+        """Return the total length of VLAN tags in a given Ethernet buffer."""
+        length = 0
+        begin = 12
+
+        while(buff[begin:begin+2] in (EtherType.VLAN.to_bytes(2, 'big'),
+                                      EtherType.VLAN_QINQ.to_bytes(2, 'big'))):
+            length += 4
+            begin += 4
+
+        return length
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -290,14 +320,18 @@ class Ethernet(GenericStruct):
             UnpackException: If there is a struct unpacking error.
 
         """
-        # Check if the EtherType bytes are actually equal to EtherType.VLAN,
-        # indicating that the packet is tagged. If it is not, we insert the
-        # equivalent to 'NULL VLAN data' (\x00\x00\x00\x00) to enable the
-        # correct unpacking process.
-        if buff[12:14] != EtherType.VLAN.to_bytes(2, 'big'):
-            buff = buff[0:12] + b'\x00\x00\x00\x00' + buff[12:]
+        begin = offset
 
-        super().unpack(buff, offset)
+        vlan_length = self._get_vlan_length(buff)
+
+        for attribute_name, class_attribute in self.get_class_attributes():
+            attribute = deepcopy(class_attribute)
+            if attribute_name == 'vlans':
+                attribute.unpack(buff[begin:begin+vlan_length])
+            else:
+                attribute.unpack(buff, begin)
+            setattr(self, attribute_name, attribute)
+            begin += attribute.get_size()
 
 
 class GenericTLV(GenericStruct):
