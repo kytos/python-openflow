@@ -23,6 +23,18 @@ Fixed
 Security
 ========
 
+[2018.1b1] - "dalva" beta1 - 2018-3-09
+***************************************
+Added
+=====
+- [v0x01] added optional elements in Hello class
+- [v0x04] added pack/unpack methods for Hello Elements
+- Improve Ethernet class to accept a list of VLANs
+
+Changed
+=======
+- Some class names to singular: MultipartTypes, ConfigFlags, StatusTypes
+
 [2017.2b2] - "chico" beta2 - 2017-12-01
 ***************************************
 Added
