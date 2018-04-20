@@ -6,8 +6,8 @@ SPHINXOPTS    = -W
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
-VERSIONS      = master,bethania
-MAIN_REF      = bethania
+VERSIONS      = master,2017.1,2017.2
+MAIN_REF      = master
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
