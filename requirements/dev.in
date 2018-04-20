@@ -1,1 +1,2 @@
 -e .[dev]
+-e git://github.com/kytos/sphinx-theme.git#egg=kytos-sphinx-theme

@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file requirements/dev.txt requirements/dev.in
 #
+-e git+git://github.com/kytos/sphinx-theme.git#egg=kytos-sphinx-theme
 -e .
 alabaster==0.7.10         # via sphinx
 argh==0.26.2              # via sphinx-autobuild, watchdog
@@ -38,7 +39,7 @@ pyflakes==1.5.0           # via flake8
 pygments==2.2.0           # via sphinx
 pylint==1.7.2             # via yala
 pytz==2017.2              # via babel
-pyyaml==3.12              # via sphinx-autobuild, watchdog
+pyyaml==3.12              # via sphinx-autobuild
 radon==2.1.1              # via yala
 requests==2.18.4          # via sphinx
 six==1.11.0               # via astroid, livereload, mando, pip-tools, pydocstyle, pylint, sphinx
