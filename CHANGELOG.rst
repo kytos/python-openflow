@@ -23,6 +23,10 @@ Fixed
 Security
 ========
 
+[2018.1b2] - "dalva" beta2 - 2018-4-20
+***************************************
+No changes since the last release.
+
 [2018.1b1] - "dalva" beta1 - 2018-3-09
 ***************************************
 Added
