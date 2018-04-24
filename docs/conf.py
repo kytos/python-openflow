@@ -135,6 +135,7 @@ html_theme_path = kytos_sphinx_theme.get_html_theme_path()
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
+html_context = {'project_short_name': project_short_name}
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
@@ -175,7 +176,6 @@ html_last_updated_fmt = None
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
-html_sidebars = {'**': ['globaltoc_sidebar.html']}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

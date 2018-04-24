@@ -61,11 +61,14 @@ help:
 versions:
 	rm python-openflow -rf && mkdir python-openflow
 	for version in `echo $(VERSIONS) | sed 's/,/ /g'`; do \
-		git checkout $$version \
+		git stash \
+		&& git checkout $$version \
+		&& git stash pop \
 		&& make SPHINXOPTS="-A versions=\"$(VERSIONS)\" -A current_version=\"$$version\"" \
 		&& mv _build/dirhtml python-openflow/$$version; \
 	done
 	cp python-openflow/$(MAIN_REF)/* python-openflow/ -R
+	git stash && git checkout master && git stash pop
 
 .PHONY: clean
 clean:
