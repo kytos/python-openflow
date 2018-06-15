@@ -23,6 +23,12 @@ Fixed
 Security
 ========
 
+[2018.1b3] - "dalva" beta3 - 2018-6-15
+***************************************
+Added
+=====
+- Improve documentation to use kytos sphinx theme
+
 [2018.1b2] - "dalva" beta2 - 2018-4-20
 ***************************************
 No changes since the last release.
