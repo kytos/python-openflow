@@ -29,6 +29,9 @@ __all__ = ('MultipartRequest', 'MultipartRequestFlags',
 class MultipartRequestFlags(Enum):
     """Flags for MultipartRequest."""
 
+    #: No more requests to follow (This is not part of spec). Thanks @jondef95
+    OFPMPF_REQ_NONE = 0
+
     #: More requests to follow
     OFPMPF_REQ_MORE = 1 << 0
 
