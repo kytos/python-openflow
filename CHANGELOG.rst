@@ -25,7 +25,9 @@ Security
 
 [2018.2b2] - "ernesto" beta2 - 2018-10-15
 ***************************************
-No changes since the last release.
+Added
+=====
+ - [v0x04] Fixed bug when unpacking MultiPart messages (#529). Thanks @jondef95
 
 [2018.2b1] - "ernesto" beta1 - 2018-9-6
 ***************************************
