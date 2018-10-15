@@ -23,6 +23,10 @@ Fixed
 Security
 ========
 
+[2018.2b2] - "ernesto" beta2 - 2018-10-15
+***************************************
+No changes since the last release.
+
 [2018.2b1] - "ernesto" beta1 - 2018-9-6
 ***************************************
 No changes since the last release.
