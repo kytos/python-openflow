@@ -24,4 +24,4 @@ class GetConfigReply(SwitchConfig):
                 datapath should send to the controller.
         """
         super().__init__(xid, flags, miss_send_len)
-        self.header.message_type = Type.OFPT_SET_CONFIG
+        self.header.message_type = Type.OFPT_GET_CONFIG_REPLY
