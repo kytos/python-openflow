@@ -11,7 +11,7 @@ from pyof.v0x01.common.header import Header, Type
 
 __all__ = ('ErrorMsg', 'ErrorType', 'BadActionCode', 'BadRequestCode',
            'FlowModFailedCode', 'HelloFailedCode', 'PortModFailedCode',
-           'QueueOpFailedCode')
+           'QueueOpFailedCode', 'GenericFailedCode')
 
 
 # Enums
@@ -49,7 +49,17 @@ class ErrorType(IntEnum):
                    'OFPET_FLOW_MOD_FAILED': FlowModFailedCode,
                    'OFPET_PORT_MOD_FAILED': PortModFailedCode,
                    'OFPET_QUEUE_OP_FAILED': QueueOpFailedCode}
-        return classes[self.name]
+        return classes.get(self.name, GenericFailedCode)
+
+
+class GenericFailedCode(IntEnum):
+    """Error_msg 'code' values for OFPET_BAD_ACTION.
+
+    'data' contains at least the first 64 bytes of the failed request.
+    """
+
+    #: Unknown error
+    GENERIC_ERROR = 0
 
 
 class HelloFailedCode(IntEnum):

@@ -28,6 +28,8 @@ Security
 Added
 =====
  - [v0x04] Fixed bug when unpacking MultiPart messages (#529). Thanks @jondef95
+ - [v0x04] Added support for for OpenFlow 1.3 OFP_ERROR codes with the get_class method
+ - [v0x01 | v0x04] Added GenericFailedCode error PR #533
 
 [2018.2b1] - "ernesto" beta1 - 2018-9-6
 ***************************************
