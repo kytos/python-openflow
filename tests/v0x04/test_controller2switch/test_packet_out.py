@@ -33,8 +33,8 @@ class TestPacketOut(TestStruct):
         for port in virtual_ports:
             with self.subTest(port=port):
                 msg = PacketOut(in_port=port)
-                self.assertTrue(msg.is_valid(),
-                                f'{port.name} should be a valid in_port')
+                error = '{} should be a valid in_port'.format(port.name)
+                self.assertTrue(msg.is_valid(), error)
 
     def test_invalid_virtual_in_ports(self):
         """Invalid virtual ports as defined in 1.3.0 spec."""

@@ -365,7 +365,7 @@ class Match(GenericStruct):
             self._update_match_length()
             packet = super().pack()
             return self._complete_last_byte(packet)
-        raise PackException(f'Match can\'t unpack "{value}".')
+        raise PackException('Match can\'t unpack "{}".'.format(value))
 
     def _complete_last_byte(self, packet):
         """Pad until the packet length is a multiple of 8 (bytes)."""
@@ -382,7 +382,8 @@ class Match(GenericStruct):
         elif value is None:
             current_size = super().get_size()
             return ceil(current_size / 8) * 8
-        raise ValueError(f'Invalid value "{value}" for Match.get_size()')
+        msg = 'Invalid value "{}" for Match.get_size()'.format(value)
+        raise ValueError(msg)
 
     def unpack(self, buff, offset=0):
         """Discard padding bytes using the unpacked length attribute."""

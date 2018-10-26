@@ -477,7 +477,8 @@ class BinaryData(GenericType):
         elif value is None:
             return b''
         else:
-            raise ValueError(f"BinaryData can't be {type(value)} = '{value}'")
+            msg = "BinaryData can't be {} = '{}'".format(type(value), value)
+            raise ValueError(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

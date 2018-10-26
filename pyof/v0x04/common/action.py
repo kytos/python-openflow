@@ -115,7 +115,8 @@ class ActionHeader(GenericStruct):
         elif value is None:
             current_size = super().get_size()
             return ceil(current_size / 8) * 8
-        raise ValueError(f'Invalid value "{value}" for Action*.get_size()')
+        msg = 'Invalid value "{}" for Action*.get_size()'.format(value)
+        raise ValueError(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

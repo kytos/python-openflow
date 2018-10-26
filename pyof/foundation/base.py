@@ -691,7 +691,7 @@ class GenericStruct(object, metaclass=MetaStruct):
                         message += class_value.pack(instance_value)
                     except PackException as pack_exception:
                         cls = type(self).__name__
-                        msg = f'{cls}.{name} - {pack_exception}'
+                        msg = '{}.{} - {}'.format(cls, name, pack_exception)
                         raise PackException(msg)
                 return message
         elif isinstance(value, type(self)):

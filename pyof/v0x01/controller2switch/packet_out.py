@@ -128,4 +128,5 @@ class PacketOut(GenericMessage):
         is_valid_virtual_in_ports = self.in_port in _VIRT_IN_PORTS
 
         if (is_valid_range or is_valid_virtual_in_ports) is False:
-            raise ValidationError(f'{self.in_port} is not a valid input port.')
+            msg = '{} is not a valid input port.'.format(self.in_port)
+            raise ValidationError(msg)
