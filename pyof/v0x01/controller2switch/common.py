@@ -86,6 +86,12 @@ class SwitchConfig(GenericMessage):
         self.flags = flags
         self.miss_send_len = miss_send_len
 
+    def __repr__(self):
+        """Show a full representation of the object."""
+        return "%s(xid=%r, flags=%s, miss_send_len=%r)" \
+               % (self.__class__.__name__, self.header.xid, self.flags,
+                  self.miss_send_len)
+
 
 class AggregateStatsReply(GenericStruct):
     """Body of reply to OFPST_AGGREGATE request."""
