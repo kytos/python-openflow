@@ -197,6 +197,29 @@ class ErrorType(IntEnum):
     #: Experimenter error messages.
     OFPET_EXPERIMENTER = 0xffff
 
+    def get_class(self):
+        """Return a Code class based on current ErrorType value.
+
+        Returns:
+            enum.IntEnum: class referenced by current error type.
+
+        """
+        classes = {'OFPET_HELLO_FAILED': HelloFailedCode,
+                   'OFPET_BAD_REQUEST': BadRequestCode,
+                   'OFPET_BAD_ACTION': BadActionCode,
+                   'OFPET_BAD_INSTRUCTION': BadInstructionCode,
+                   'OFPET_BAD_MATCH': BadMatchCode,
+                   'OFPET_FLOW_MOD_FAILED': FlowModFailedCode,
+                   'OFPET_GROUP_MOD_FAILED': GroupModFailedCode,
+                   'OFPET_PORT_MOD_FAILED': PortModFailedCode,
+                   'OFPET_QUEUE_OP_FAILED': QueueOpFailedCode,
+                   'OFPET_SWITCH_CONFIG_FAILED': SwitchConfigFailedCode,
+                   'OFPET_ROLE_REQUEST_FAILED': RoleRequestFailedCode,
+                   'OFPET_METER_MOD_FAILED': MeterModFailedCode,
+                   'OFPET_TABLE_MOD_FAILED': TableModFailedCode,
+                   'OFPET_TABLE_FEATURES_FAILED': TableFeaturesFailedCode}
+        return classes[self.name]
+
 
 class FlowModFailedCode(IntEnum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
