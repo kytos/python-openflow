@@ -22,6 +22,12 @@ class RawDump:
         """
         self._path = 'raw/{}/{}.dat'.format(version, basename)
 
+    def __repr__(self):
+        return repr(self.unpack())
+
+    def __bytes__(self):
+        return self.read()
+
     def read(self):
         """Read the raw file.
 
@@ -35,8 +41,8 @@ class RawDump:
         """Unpack header and message from a byte sequence.
 
         Returns:
-            The object type specified in the header with the coresponding
-                header.
+            The object type specified in the header with the corresponding
+            header.
         """
         content = self.read()
         raw_header = content[:self._HEADER_BYTES]

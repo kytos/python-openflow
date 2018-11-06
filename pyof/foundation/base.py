@@ -750,6 +750,11 @@ class GenericMessage(GenericStruct):
         super().__init__()
         self.header.xid = randint(0, MAXID) if xid is None else xid
 
+    def __repr__(self):
+        """Show a full representation of the object."""
+        return "%s(xid=%r)" % (self.__class__.__name__,
+                               self.header.xid if self.header else None)
+
     def __init_subclass__(cls, **kwargs):
         if cls.header is None or cls.header.__class__.__name__ != 'Header':
             msg = "The header attribute must be implemented on the class "
