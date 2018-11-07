@@ -15,9 +15,20 @@ __all__ = ('BadActionCode', 'BadInstructionCode', 'BadMatchCode', 'ErrorType',
            'FlowModFailedCode', 'GroupModFailedCode', 'HelloFailedCode',
            'MeterModFailedCode', 'PortModFailedCode', 'QueueOpFailedCode',
            'RoleRequestFailedCode', 'SwitchConfigFailedCode',
-           'TableFeaturesFailedCode', 'TableModFailedCode')
+           'TableFeaturesFailedCode', 'TableModFailedCode',
+           'GenericFailedCode')
 
 # Enums
+
+
+class GenericFailedCode(IntEnum):
+    """Error_msg 'code' values for OFPET_BAD_ACTION.
+
+    'data' contains at least the first 64 bytes of the failed request.
+    """
+
+    #: Unknown error
+    GENERIC_ERROR = 0
 
 
 class BadActionCode(IntEnum):
@@ -218,7 +229,7 @@ class ErrorType(IntEnum):
                    'OFPET_METER_MOD_FAILED': MeterModFailedCode,
                    'OFPET_TABLE_MOD_FAILED': TableModFailedCode,
                    'OFPET_TABLE_FEATURES_FAILED': TableFeaturesFailedCode}
-        return classes[self.name]
+        return classes.get(self.name, GenericFailedCode)
 
 
 class FlowModFailedCode(IntEnum):
