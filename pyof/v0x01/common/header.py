@@ -83,3 +83,13 @@ class Header(GenericStruct):
         self.message_type = message_type
         self.length = length
         self.xid = xid
+
+    def __str__(self):
+        """Get just the header type. Eg.: 'OFPT_SET_CONFIG'."""
+        return self.message_type.name
+
+    def __repr__(self):
+        """Show a full representation of the Header, including version."""
+        return "%s(message_type=%s, length=%r, xid=%r, version=%r)" \
+            % (self.__class__.__name__, self.message_type, self.length,
+               self.xid, self.version)
