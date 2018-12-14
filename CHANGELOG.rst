@@ -23,6 +23,19 @@ Fixed
 Security
 ========
 
+[2018.2b3] - "ernesto" beta3 - 2018-11-14
+***************************************
+
+Added
+=====
+ - [v0x04] Added support for OFP_ERROR codes with the get_class method
+ - Better debugging: added repr's for GenericMessage, Header and SwitchConfig
+
+Fixed
+=====
+ - [v0x01] Fixed OFPT_GET_CONFIG_REPLY message type
+
+
 [2018.2b2] - "ernesto" beta2 - 2018-10-15
 ***************************************
 Added
