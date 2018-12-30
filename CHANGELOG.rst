@@ -3,6 +3,11 @@ Change log
 ##########
 All notable changes to the python-openflow project are documented in this file.
 
+[2018.2] - "ernesto" - 2018-12-30
+*********************************
+
+ - This the "ernesto" stable release, based on our last pre-releases.
+
 [2018.2rc1] - "ernesto" release candidade 1 - 2018-12-20
 ********************************************************
 
