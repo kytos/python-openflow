@@ -3,6 +3,17 @@ Change log
 ##########
 All notable changes to the python-openflow project are documented in this file.
 
+[2019.1b1] - "fafa" beta1 - 2019-03-15
+**************************************
+
+ - No changes since last pre-release
+
+[2018.2] - "ernesto" stable version - 2018-12-30
+************************************************
+
+ - This is the stable version of the last beta pre-releases.
+   No changes since the last rc1.
+
 [2018.2rc1] - "ernesto" release candidade 1 - 2018-12-20
 ********************************************************
 
