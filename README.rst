@@ -57,7 +57,7 @@ Alternatively, if you are a developer and want to install in develop mode:
 .. code-block:: shell
 
    $ cd python-openflow
-   $ pip3.6 install -e .[dev] -e git://github.com/kytos/sphinx-theme.git#egg=kytos-sphinx-theme
+   $ pip3.6 install -r requirements/dev.txt
 
 
 Basic Usage Example
