@@ -2,9 +2,9 @@
 
 # System imports
 
-from enum import IntEnum
 
-from pyof.foundation.base import GenericMessage, GenericStruct
+
+from pyof.foundation.base import GenericMessage, GenericStruct, IntEnum
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16, UBInt32, TypeList
 from pyof.foundation.exceptions import PackException
 from pyof.v0x05.common.header import Header, Type
