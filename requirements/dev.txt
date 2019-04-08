@@ -39,9 +39,9 @@ pyflakes==1.5.0           # via flake8
 pygments==2.2.0           # via sphinx
 pylint==1.7.2             # via yala
 pytz==2017.2              # via babel
-pyyaml==3.12              # via sphinx-autobuild
+pyyaml==5.1               # via sphinx-autobuild, watchdog
 radon==2.1.1              # via yala
-requests==2.18.4          # via sphinx
+requests==2.21.0          # via sphinx
 six==1.11.0               # via astroid, livereload, mando, pip-tools, pydocstyle, pylint, sphinx
 snowballstemmer==1.2.1    # via pydocstyle, sphinx
 sphinx-autobuild==0.7.1
@@ -50,7 +50,7 @@ sphinx-rtd-theme==0.2.4
 sphinx==1.5.6
 tornado==4.5.2            # via livereload, sphinx-autobuild
 tox==2.8.2
-urllib3==1.22             # via requests
+urllib3==1.24             # via requests
 virtualenv==15.1.0        # via tox
 watchdog==0.8.3           # via sphinx-autobuild
 wrapt==1.10.11            # via astroid
