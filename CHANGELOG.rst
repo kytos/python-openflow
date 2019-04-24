@@ -3,6 +3,14 @@ Change log
 ##########
 All notable changes to the python-openflow project are documented in this file.
 
+
+[2019.1b2] - "fafa" beta2 - 2019-04-26
+**************************************
+Updated
+=======
+- Updated Read-Me.
+- Updated the version of the dependencies on requeriments.
+
 [2019.1b1] - "fafa" beta1 - 2019-03-15
 **************************************
 
