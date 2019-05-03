@@ -60,9 +60,8 @@ class Type(IntEnum):
     # Queue Configuration messages
     # Controller/Switch message
 
-    #OFPT_QUEUE_GET_CONFIG_REQUEST = 22
-    #OFPT_QUEUE_GET_CONFIG_REPLY = 23
-
+    # OFPT_QUEUE_GET_CONFIG_REQUEST = 22
+    # OFPT_QUEUE_GET_CONFIG_REPLY = 23
 
     # Controller role change request message
     # Controller/Switch message
@@ -79,21 +78,20 @@ class Type(IntEnum):
     # Controller/Switch message
     OFPT_METER_MOD = 29
 
-
-    #Controller role change event messages
-    #Async message
+    # Controller role change event messages
+    # Async message
     OFPT_ROLE_STATUS = 30
 
-    #Asynchronous message
-    #Async message
+    # Asynchronous message
+    # Async message
     OFPT_TABLE_STATUS = 31
 
-    #Request forwarding by switch
-    #Async message
+    # Request forwarding by switch
+    # Async message
     OFPT_REQUESTFORWARD = 32
 
-    #Bundle operations (Multiple messages as a single operation)
-    #Controller/Switch message
+    # Bundle operations (Multiple messages as a single operation)
+    # Controller/Switch message
     OFPT_BUNDLE_CONTROL = 33
     OFPT_BUNDLE_ADD_MESSAGE = 34
 
@@ -107,7 +105,6 @@ class Header(GenericStruct):
     message_type = UBInt8(enum_ref=Type)
     length = UBInt16()
     xid = UBInt32()
-
 
     def __init__(self, message_type=None, length=None, xid=None):
         """Create a Header with the optional parameters below.

@@ -2,19 +2,21 @@
 
 # System imports
 
-from pyof.foundation.base import GenericMessage, GenericStruct, IntEnum
-from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16, UBInt32, TypeList
+from pyof.foundation.base import Enum, GenericMessage, GenericStruct
+from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.foundation.exceptions import PackException
 from pyof.v0x05.common.header import Header, Type
 
 # Third-party imports
 
-__all__ = ('Hello', 'HelloElemHeader', 'HelloElemType', 'ListOfHelloElements', 'HelloElemVersionBitmap')
+__all__ = ('Hello', 'HelloElemType',
+           'HelloElemVersionBitmap', 'ListOfHelloElements',
+           'OPFHelloElemHeader')
 
 # Enums
 
 
-class HelloElemType(IntEnum):
+class HelloElemType(Enum):
     """Hello element types."""
 
     #: Bitmap of version supported.
@@ -23,29 +25,26 @@ class HelloElemType(IntEnum):
 
 # Classes
 
-
-class HelloElemHeader(GenericStruct):
+class OPFHelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
-    # One of OFPHET_*.
-    type = UBInt16()
+    hello_element_type = UBInt16()
     # Length in bytes of element, including this header, excluding padding.
     length = UBInt16()
     # This variable does NOT appear in 1.4 specification
     # content = BinaryData()
 
-    def __init__(self, element_type=None, length=None, content=b''):
+    def __init__(self, hello_element_type=None, length=None):
         """Create a HelloElemHeader with the optional parameters below.
 
         Args:
-            element_type: One of OFPHET_*.
+            hello_element_type: One of OFPHET_*.
             length: Length in bytes of the element, including this header,
                 excluding padding.
         """
         super().__init__()
-        self.type = element_type
+        self.hello_element_type = hello_element_type
         self.length = length
-        # self.content = content
 
     def pack(self, value=None):
         """Update the length and pack the message into binary data.
@@ -104,10 +103,7 @@ class ListOfHelloElements(FixedTypeList):
         Args:
             items (HelloElemHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=HelloElemHeader, items=items)
-        # if (items != None and isinstance(HelloElemHeader,items)):
-        #     super().append(items)
-
+        super().__init__(pyof_class=OPFHelloElemHeader, items=items)
 
 
 class Hello(GenericMessage):
@@ -121,7 +117,6 @@ class Hello(GenericMessage):
     header = Header(Type.OFPT_HELLO)
 
     #: Hello element list
-    #: List of elements - 0 or more
     elements = ListOfHelloElements()
 
     def __init__(self, xid=None, elements=None):
@@ -135,27 +130,26 @@ class Hello(GenericMessage):
         self.elements = elements
 
 
-class HelloElemVersionBitmap(HelloElemHeader):
-    """ Version bitmap Hello Element
-    There is not need to enter the Version bitmap because is entered automatically as the type of message
+class HelloElemVersionBitmap(OPFHelloElemHeader):
+    """Version bitmap Hello Element.
+
+    The bitmaps field indicates the set of versions
+    of the OpenFlow switch protocol a device supports,
+    and may be used during version negotiation.
     """
-    # List of bitmaps - supported versions
+
     bitmaps = BinaryData()
 
-    # Under Review
     def __init__(self, length=None, bitmaps=None):
-        """
-        Create the HelloElemVersionBitmap.
-        :param length:
-         Followed by:
-        - Exactly (length - 4) bytes containing the bitmaps, then
-        - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
-        bytes of all-zero bytes.
-        :param bitmaps: List of bitmaps - supported versions
+        """Initialize the class with the needed values.
+
+        Args:
+            length(int): Followed by:
+            - Exactly (length - 4) bytes containing the bitmaps, then
+            - Exactly (length + 7) / 8 * 8 - (length) (Between 0 and 7)
+            bytes of all-zero bytes.
+
+            bitmaps(binary): List of bitmaps - supported versions.
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
-
-
-
-
