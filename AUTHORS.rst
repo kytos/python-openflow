@@ -16,3 +16,4 @@ Contributors
 - Artur Baruchi <abaruchi AT ncc DOT unesp DOT br>
 - Erick Vermot <erick.vermot AT gmail DOT com>
 - Humberto Diógenes <hdiogenes AT gmail DOT com>
+- Lucas Felix <lucasgsfelix AT gmail DOT com>
