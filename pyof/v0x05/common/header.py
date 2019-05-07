@@ -108,7 +108,6 @@ class Header(GenericStruct):
     length = UBInt16()
     xid = UBInt32()
 
-
     def __init__(self, message_type=None, length=None, xid=None):
         """Create a Header with the optional parameters below.
 
