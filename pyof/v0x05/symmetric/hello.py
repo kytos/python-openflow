@@ -138,10 +138,6 @@ class Hello(GenericMessage):
 class HelloElemVersionBitmap(HelloElemHeader):
     """ Version bitmap Hello Element
     There is not need to enter the Version bitmap because is entered automatically as the type of message
-    Followed by:
-        - Exactly (length - 4) bytes containing the bitmaps, then
-        - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
-        bytes of all-zero bytes.
     """
     # List of bitmaps - supported versions
     bitmaps = BinaryData()
