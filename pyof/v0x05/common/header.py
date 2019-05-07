@@ -103,11 +103,11 @@ class Type(IntEnum):
 class Header(GenericStruct):
     """Representation of an OpenFlow message Header."""
 
-    version = UBInt8(OFP_VERSION)               # OFP_VERSION
-    message_type = UBInt8(enum_ref=Type)        # One of the OFPT_ constants
-    length = UBInt16()                          # Length including this ofp_header
-    xid = UBInt32()                             # Transaction id associated with this packet.
-                                                # Replies use the same id as was in the request to faciliate pairing.
+    version = UBInt8(OFP_VERSION)
+    message_type = UBInt8(enum_ref=Type)
+    length = UBInt16()
+    xid = UBInt32()
+
 
     def __init__(self, message_type=None, length=None, xid=None):
         """Create a Header with the optional parameters below.
