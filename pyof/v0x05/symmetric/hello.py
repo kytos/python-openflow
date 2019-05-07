@@ -134,8 +134,7 @@ class Hello(GenericMessage):
 class HelloElemVersionBitmap(HelloElemHeader):
     """ Version bitmap Hello Element
     There is not need to enter the Version bitmap because is entered automatically as the type of message
-    This method is under review
-    """
+    This method is under review.  """
     # List of bitmaps - supported versions
     bitmaps = BinaryData()
 
