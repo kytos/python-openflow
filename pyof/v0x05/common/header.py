@@ -78,7 +78,6 @@ class Type(IntEnum):
     # Controller/Switch message
     OFPT_METER_MOD = 29
 
-
     # Controller role change event messages
     # Async message
     OFPT_ROLE_STATUS = 30
