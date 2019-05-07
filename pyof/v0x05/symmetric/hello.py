@@ -2,8 +2,8 @@
 
 # System imports
 
-from pyof.foundation.base import GenericMessage, GenericStruct, IntEnum
-from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16, UBInt32, TypeList
+from pyof.foundation.base import GenericMessage, GenericStruct, Enum
+from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.foundation.exceptions import PackException
 from pyof.v0x05.common.header import Header, Type
 
@@ -14,7 +14,7 @@ __all__ = ('Hello', 'HelloElemHeader', 'HelloElemType', 'ListOfHelloElements', '
 # Enums
 
 
-class HelloElemType(IntEnum):
+class HelloElemType(Enum):
     """Hello element types."""
 
     #: Bitmap of version supported.
@@ -23,18 +23,16 @@ class HelloElemType(IntEnum):
 
 # Classes
 
-
 class HelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
-    # One of OFPHET_*.
     type = UBInt16()
     # Length in bytes of element, including this header, excluding padding.
     length = UBInt16()
     # This variable does NOT appear in 1.4 specification
     # content = BinaryData()
 
-    def __init__(self, element_type=None, length=None, content=b''):
+    def __init__(self, element_type=None, length=None):
         """Create a HelloElemHeader with the optional parameters below.
 
         Args:
@@ -109,7 +107,6 @@ class ListOfHelloElements(FixedTypeList):
         #     super().append(items)
 
 
-
 class Hello(GenericMessage):
     """OpenFlow Hello Message OFPT_HELLO.
 
@@ -121,7 +118,6 @@ class Hello(GenericMessage):
     header = Header(Type.OFPT_HELLO)
 
     #: Hello element list
-    #: List of elements - 0 or more
     elements = ListOfHelloElements()
 
     def __init__(self, xid=None, elements=None):
@@ -155,7 +151,3 @@ class HelloElemVersionBitmap(HelloElemHeader):
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
-
-
-
-
