@@ -154,5 +154,3 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
-
-
