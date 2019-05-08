@@ -132,10 +132,9 @@ class Hello(GenericMessage):
 class HelloElemVersionBitmap(OPFHelloElemHeader):
     """ Version bitmap Hello Element.
 
-     The bitmaps field indicates the set of versions
+    The bitmaps field indicates the set of versions
     of the OpenFlow switch protocol a device supports,
     and may be used during version negotiation.
-
     """
 
     bitmaps = BinaryData()
@@ -152,7 +151,6 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
             bytes of all-zero bytes.
 
             bitmaps(binary): List of bitmaps - supported versions.
-
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
