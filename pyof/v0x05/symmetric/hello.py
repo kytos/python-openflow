@@ -26,7 +26,7 @@ class HelloElemType(Enum):
 class HelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
-    type = UBInt16()
+    element_type = UBInt16()
     # Length in bytes of element, including this header, excluding padding.
     length = UBInt16()
     # This variable does NOT appear in 1.4 specification
@@ -41,7 +41,7 @@ class HelloElemHeader(GenericStruct):
                 excluding padding.
         """
         super().__init__()
-        self.type = element_type
+        self.element_type = element_type
         self.length = length
         # self.content = content
 
@@ -148,13 +148,13 @@ class HelloElemVersionBitmap(HelloElemHeader):
          Args:
             length(int): Followed by:
             - Exactly (length - 4) bytes containing the bitmaps, then
-            - Exactly (length + 7) / 8 * * - (length) (Between 0 and 7)
+            - Exactly (length + 7) / 8 * 8 - (length) (Between 0 and 7)
             bytes of all-zero bytes.
 
             bitmaps(binary): List of bitmaps - supported versions
 
         """
-        super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
+        super().__init__(HelloElemType.OFPHET_VERSIONBITMAP,length)
         self.bitmaps = bitmaps
 
 
