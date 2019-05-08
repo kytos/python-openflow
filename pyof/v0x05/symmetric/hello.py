@@ -133,7 +133,7 @@ class Hello(GenericMessage):
 
 class HelloElemVersionBitmap(HelloElemHeader):
     """ Version bitmap Hello Element
-    The bitmaps field indicates the set of versions of the OpenFlow
+     The bitmaps field indicates the set of versions of the OpenFlow
      switch protocol a device supports, and may be used during version negotiation.
     """
 
