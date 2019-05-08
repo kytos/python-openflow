@@ -141,7 +141,6 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
     bitmaps = BinaryData()
 
     def __init__(self, length=None, bitmaps=None):
-
         """
          Initialize the class with the needed values.
 
