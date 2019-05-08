@@ -406,7 +406,7 @@ class ActionSetField(ActionHeader):
 
     _allowed_types = (ActionType.OFPAT_SET_FIELD, )
 
-    def __init__(self,length=None, field=None):
+    def __init__(self, length=None, field=None):
         """Create a ActionSetField with the optional parameters below.
 
         Args:
