@@ -13,9 +13,9 @@ from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'OPFMatchType',
-           'OPFOxmClass', 'OxmExperimenterHeader', 'OPFOxmMatchFields',
-           'OPFOxmOfbMatchField', 'OPFOxmTLV', 'VlanId')
+__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'MatchType',
+           'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
+           'OxmOfbMatchField', 'OxmTLV', 'VlanId')
 
 
 class Ipv6ExtHdrFlags(GenericBitMask):
@@ -41,7 +41,7 @@ class Ipv6ExtHdrFlags(GenericBitMask):
     OFPIEH_UNSEQ = 1 << 8
 
 
-class OPFOxmOfbMatchField(IntEnum):
+class OxmOfbMatchField(IntEnum):
     """OXM Flow match field types for OpenFlow basic class.
 
     A switch is not required to support all match field types, just those
@@ -135,7 +135,7 @@ class OPFOxmOfbMatchField(IntEnum):
     OFPXMT_OFB_PBB_UCA = 41
 
 
-class OPFMatchType(IntEnum):
+class MatchType(IntEnum):
     """Indicates the match structure in use.
 
     The match type is placed in the type field at the beginning of all match
@@ -151,7 +151,7 @@ class OPFMatchType(IntEnum):
     OFPMT_OXM = 1
 
 
-class OPFOxmClass(IntEnum):
+class OxmClass(IntEnum):
     """OpenFlow Extensible Match (OXM) Class IDs.
 
     The high order bit differentiate reserved classes from member classes.
@@ -185,24 +185,26 @@ class VlanId(IntEnum):
 
 # Classes
 
-class OPFOxmTLV(GenericStruct):
+class OxmTLV(GenericStruct):
     """Oxm (OpenFlow Extensible Match) TLV."""
 
-    oxm_class = UBInt16(enum_ref=OPFOxmClass)
+    oxm_class = UBInt16(enum_ref=OxmClass)
     oxm_field_and_mask = UBInt8()
     oxm_length = UBInt8()
     oxm_value = BinaryData()
 
-    def __init__(self, oxm_class=OPFOxmClass.OFPXMC_OPENFLOW_BASIC,
+    def __init__(self, oxm_class=OxmClass.OFPXMC_OPENFLOW_BASIC,
                  oxm_field=None, oxm_hasmask=False, oxm_value=None):
         """Create an OXM TLV struct with the optional parameters below.
 
         Args:
-            oxm_class (OxmClass): Match class: member class or reserved class
-            oxm_field (OxmMatchFields, OxmOfbMatchField): Match field within
-                the class
-            oxm_hasmask (bool): Set if OXM include a bitmask in payload
-            oxm_value (bytes): OXM Payload
+            oxm_class(:class:`~pyof.v0x05.common.flow_match.OxmClass`):
+             Match class: member class or reserved class
+            oxm_field((:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`),
+             (:class:`~pyof.v0x05.common.flow_match.OxmOfbMatchField`)):
+             Match field within the class.
+            oxm_hasmask (bool): Set if OXM include a bitmask in payload.
+            oxm_value (bytes): OXM Payload.
 
         """
         super().__init__()
@@ -250,8 +252,8 @@ class OPFOxmTLV(GenericStruct):
         """
         field_int = self.oxm_field_and_mask >> 1
         # We know that the class below requires a subset of the ofb enum
-        if self.oxm_class == OPFOxmClass.OFPXMC_OPENFLOW_BASIC:
-            return OPFOxmOfbMatchField(field_int)
+        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OxmOfbMatchField(field_int)
         return field_int
 
     def _update_length(self):
@@ -297,14 +299,14 @@ class OPFOxmTLV(GenericStruct):
                 value.
 
         """
-        if self.oxm_class == OPFOxmClass.OFPXMC_OPENFLOW_BASIC:
-            return OPFOxmOfbMatchField(self.oxm_field).value
+        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OxmOfbMatchField(self.oxm_field).value
         elif not isinstance(self.oxm_field, int) or self.oxm_field > 127:
             raise ValueError('oxm_field above 127: "{self.oxm_field}".')
         return self.oxm_field
 
 
-class OPFOxmMatchFields(FixedTypeList):
+class OxmMatchFields(FixedTypeList):
     """Generic Openflow EXtensible Match header.
 
     Abstract class that can be instantiated as Match or OxmExperimenterHeader.
@@ -317,7 +319,7 @@ class OPFOxmMatchFields(FixedTypeList):
         Args:
             items (OxmHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=OPFOxmTLV, items=items)
+        super().__init__(pyof_class=OxmTLV, items=items)
 
 
 class OPFMatch(GenericStruct):
@@ -334,31 +336,34 @@ class OPFMatch(GenericStruct):
     """
 
     # One of OFPMT_*
-    match_type = UBInt16(enum_ref=OPFMatchType)
+    match_type = UBInt16(enum_ref=MatchType)
     # Length of Match (excluding padding)
     length = UBInt16()
     # 0 or more OXM match fields.
-    oxm_match_fields = OPFOxmMatchFields()
+    oxm_match_fields = OxmMatchFields()
     # Zero bytes - see above for sizing
     pad = Pad(4)
 
-    def __init__(self, match_type=OPFMatchType.OFPMT_OXM,
+    def __init__(self, match_type=MatchType.OFPMT_OXM,
                  length=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
-            match_type (MatchType): One of OFPMT_* (MatchType) items.
+            match_type(:class:`~pyof.v0x05.common.flow_match.MatchType`):
+             One of OFPMT_* items.
             length (int): Length of Match (excluding padding) followed by
                           Exactly (length - 4) (possibly 0) bytes containing
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
-            oxm_match_fields (OxmMatchFields): Sample description.
+            oxm_match_fields
+             (:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`):
+             Sample description.
 
         """
         super().__init__()
         self.match_type = match_type
         self.length = length
-        self.oxm_match_fields = oxm_match_fields or OPFOxmMatchFields()
+        self.oxm_match_fields = oxm_match_fields or OxmMatchFields()
         self._update_match_length()
 
     def _update_match_length(self):
@@ -429,9 +434,10 @@ class OPFMatch(GenericStruct):
 class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
 
-    #: oxm_class = OFPXMC_EXPERIMENTER
-    oxm_header = UBInt32(OPFOxmClass.OFPXMC_EXPERIMENTER,
-                         enum_ref=OPFOxmClass)
+    #: oxm_class = (:class:`~pyof.v0x05.common.flow_match.OxmClass`)
+    # OFPXMC_EXPERIMENTER
+    oxm_header = UBInt32(OxmClass.OFPXMC_EXPERIMENTER,
+                         enum_ref=OxmClass)
     #: Experimenter ID which takes the same form as in struct
     #:     ofp_experimenter_header
     experimenter = UBInt32()
@@ -462,4 +468,4 @@ class ListOfOxmHeader(FixedTypeList):
             items (OxmHeader): Instance or a list of instances.
 
         """
-        super().__init__(pyof_class=OPFOxmTLV, items=items)
+        super().__init__(pyof_class=OxmTLV, items=items)

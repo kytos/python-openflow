@@ -7,22 +7,22 @@ from math import ceil
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
     FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
-from pyof.v0x05.common.flow_match import OPFOxmTLV
+from pyof.v0x05.common.flow_match import OxmTLV
 
 # Third-party imports
 
-__all__ = ('OPFActionExperimenterHeader', 'OPFActionGroup', 'OPFActionHeader',
-           'OPFActionCopyTTLIn', 'OPFActionCopyTTLOut', 'OPFActionDecMPLSTTL',
-           'OPFActionSetMPLSTTL', 'OPFActionDecNWTTL', 'OPFActionSetNWTTL',
-           'OPFActionOutput', 'OPFActionPopMPLS', 'OPFActionPopPBB',
-           'OPFActionPopVLAN', 'OPFActionPush', 'OPFActionSetField',
-           'OPFActionSetQueue', 'OPFActionType', 'ControllerMaxLen',
+__all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
+           'ActionCopyTTLIn', 'ActionCopyTTLOut', 'ActionDecMPLSTTL',
+           'ActionSetMPLSTTL', 'ActionDecNWTTL', 'ActionSetNWTTL',
+           'ActionOutput', 'ActionPopMPLS', 'ActionPopPBB',
+           'ActionPopVLAN', 'ActionPush', 'ActionSetField',
+           'ActionSetQueue', 'ActionType', 'ControllerMaxLen',
            'ListOfActions')
 
 # Enums
 
 
-class OPFActionType(IntEnum):
+class ActionType(IntEnum):
     """Actions associated with flows and packets."""
 
     #: Output to switch port.
@@ -78,7 +78,7 @@ class ControllerMaxLen(IntEnum):
 # Classes
 
 
-class OPFActionHeader(GenericStruct):
+class ActionHeader(GenericStruct):
     """Action header that is common to all actions.
 
     The length includes the header and any padding used to make the action
@@ -88,7 +88,7 @@ class OPFActionHeader(GenericStruct):
 
     #: One of OFPAT_*.
 
-    action_type = UBInt16(enum_ref=OPFActionType)
+    action_type = UBInt16(enum_ref=ActionType)
     #: Length of action, including this header. This is the length of actions,
     #: including any padding to make it 64-bit aligned.
     length = UBInt16()
@@ -99,7 +99,7 @@ class OPFActionHeader(GenericStruct):
         """Create an ActionHeader with the optional parameters below.
 
         Args:
-            action_type (~pyof.v0x05.common.action.ActionType):
+            action_type(:class:`~ActionType`):
                 The type of the action.
             length (int): Length of action, including this header.
         """
@@ -109,7 +109,7 @@ class OPFActionHeader(GenericStruct):
 
     def get_size(self, value=None):
         """Return the action length including the padding (multiple of 8)."""
-        if isinstance(value, OPFActionHeader):
+        if isinstance(value, ActionHeader):
             return value.get_size()
         elif value is None:
             current_size = super().get_size()
@@ -130,10 +130,10 @@ class OPFActionHeader(GenericStruct):
             Exception: If there is a struct unpacking error.
 
         """
-        self.action_type = UBInt16(enum_ref=OPFActionType)
+        self.action_type = UBInt16(enum_ref=ActionType)
         self.action_type.unpack(buff, offset)
 
-        for cls in OPFActionHeader.__subclasses__():
+        for cls in ActionHeader.__subclasses__():
             if self.action_type.value in cls.get_allowed_types():
                 self.__class__ = cls
                 break
@@ -146,27 +146,29 @@ class OPFActionHeader(GenericStruct):
         return cls._allowed_types
 
 
-class OPFActionExperimenterHeader(OPFActionHeader):
+class ActionExperimenterHeader(ActionHeader):
     """Action structure for OFPAT_EXPERIMENTER."""
 
     # Experimenter ID
     experimenter = UBInt32()
 
-    _allowed_types = (OPFActionType.OFPAT_EXPERIMENTER, )
+    _allowed_types = (ActionType.OFPAT_EXPERIMENTER, )
 
     def __init__(self, length=None, experimenter=None):
         """Create ActionExperimenterHeader with the optional parameters below.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
 
         Args:
             experimenter (int): The experimenter field is the Experimenter ID,
             which takes the same form as in struct ofp_experimenter.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_EXPERIMENTER)
+        super().__init__(action_type=ActionType.OFPAT_EXPERIMENTER)
         self.length = length
         self.experimenter = experimenter
 
 
-class OPFExperimenterStruct(GenericStruct):
+class ExperimenterStruct(GenericStruct):
     """Typical Experimenter structure."""
 
     # Experimenter ID:
@@ -179,43 +181,48 @@ class OPFExperimenterStruct(GenericStruct):
     experimenter_data = UBInt8()
 
 
-class OPFActionGroup(OPFActionHeader):
+class ActionGroup(ActionHeader):
     """Action structure for OFPAT_GROUP."""
 
     # Group identifier.
 
     group_id = UBInt32()
 
-    _allowed_types = (OPFActionType.OFPAT_GROUP, )
+    _allowed_types = (ActionType.OFPAT_GROUP, )
 
     def __init__(self, group_id=None):
         """Create an ActionGroup with the optional parameters below.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
 
         Args:
             group_id (int): The group_id indicates the group used to process
                 this packet. The set of buckets to apply depends on the group
                 type.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_GROUP, length=8)
+        super().__init__(action_type=ActionType.OFPAT_GROUP, length=8)
         self.group_id = group_id
 
 
-class OPFActionDecMPLSTTL(OPFActionHeader):
+class ActionDecMPLSTTL(ActionHeader):
     """Action structure for OFPAT_DEC_MPLS_TTL."""
 
     # Pad to 64 bits
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_DEC_MPLS_TTL, )
+    _allowed_types = (ActionType.OFPAT_DEC_MPLS_TTL, )
 
     def __init__(self):
-        """Create an ActionDecMPLSTTL."""
-        super().__init__(action_type=OPFActionType.OFPAT_DEC_MPLS_TTL,
+        """Create an ActionDecMPLSTTL.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+        """
+        super().__init__(action_type=ActionType.OFPAT_DEC_MPLS_TTL,
                          length=8)
 
 
-class OPFActionSetMPLSTTL(OPFActionHeader):
+class ActionSetMPLSTTL(ActionHeader):
     """Action structure for OFPAT_SET_MPLS_TTL."""
 
     # MPLS TTL
@@ -223,82 +230,93 @@ class OPFActionSetMPLSTTL(OPFActionHeader):
 
     pad = Pad(3)
 
-    _allowed_types = (OPFActionType.OFPAT_SET_MPLS_TTL, )
+    _allowed_types = (ActionType.OFPAT_SET_MPLS_TTL, )
 
     def __init__(self, mpls_ttl=None):
         """Create an ActionSetMPLSTTL with the optional parameters below.
 
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+
         Args:
             mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_MPLS_TTL,
+        super().__init__(action_type=ActionType.OFPAT_SET_MPLS_TTL,
                          length=8)
         self.mpls_ttl = mpls_ttl
 
 
-class OPFActionCopyTTLIn(OPFActionHeader):
+class ActionCopyTTLIn(ActionHeader):
     """Action structure for OFPAT_COPY_TTL_IN."""
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_COPY_TTL_IN, )
+    _allowed_types = (ActionType.OFPAT_COPY_TTL_IN, )
 
     def __init__(self):
         """Create an ActionCopyTTLIn."""
-        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_IN,
+        super().__init__(action_type=ActionType.OFPAT_COPY_TTL_IN,
                          length=8)
 
 
-class OPFActionCopyTTLOut(OPFActionHeader):
+class ActionCopyTTLOut(ActionHeader):
     """Action structure for OFPAT_COPY_TTL_OUT."""
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_COPY_TTL_OUT, )
+    _allowed_types = (ActionType.OFPAT_COPY_TTL_OUT, )
 
     def __init__(self):
-        """Create an ActionCopyTTLOut."""
-        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_OUT,
+        """Create an ActionCopyTTLOut.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+        """
+        super().__init__(action_type=ActionType.OFPAT_COPY_TTL_OUT,
                          length=8)
 
 
-class OPFActionPopVLAN(OPFActionHeader):
+class ActionPopVLAN(ActionHeader):
     """Action structure for OFPAT_POP_VLAN."""
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_POP_VLAN, )
+    _allowed_types = (ActionType.OFPAT_POP_VLAN, )
 
     def __init__(self):
         """Create an ActionPopVLAN."""
-        super().__init__(action_type=OPFActionType.OFPAT_POP_VLAN, length=8)
+        super().__init__(action_type=ActionType.OFPAT_POP_VLAN, length=8)
 
 
-class OPFActionPopPBB(OPFActionHeader):
+class ActionPopPBB(ActionHeader):
     """Action structure for OFPAT_POP_PBB."""
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_POP_PBB, )
+    _allowed_types = (ActionType.OFPAT_POP_PBB, )
 
     def __init__(self):
-        """Create an ActionPopPBB."""
-        super().__init__(action_type=OPFActionType.OFPAT_POP_PBB, length=8)
+        """Create an ActionPopPBB.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+        """
+        super().__init__(action_type=ActionType.OFPAT_POP_PBB, length=8)
 
 
-class OPFActionDecNWTTL(OPFActionHeader):
+class ActionDecNWTTL(ActionHeader):
     """Action structure for OFPAT_DEC_NW_TTL."""
 
     pad = Pad(4)
 
-    _allowed_types = (OPFActionType.OFPAT_DEC_NW_TTL, )
+    _allowed_types = (ActionType.OFPAT_DEC_NW_TTL, )
 
     def __init__(self):
-        """Create a ActionDecNWTTL."""
-        super().__init__(action_type=OPFActionType.OFPAT_DEC_NW_TTL, length=8)
+        """Create a ActionDecNWTTL.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+        """
+        super().__init__(action_type=ActionType.OFPAT_DEC_NW_TTL, length=8)
 
 
-class OPFActionSetNWTTL(OPFActionHeader):
+class ActionSetNWTTL(ActionHeader):
     """Action structure for OFPAT_SET_NW_TTL."""
 
     # IP TTL
@@ -306,20 +324,22 @@ class OPFActionSetNWTTL(OPFActionHeader):
 
     pad = Pad(3)
 
-    _allowed_types = (OPFActionType.OFPAT_SET_NW_TTL, )
+    _allowed_types = (ActionType.OFPAT_SET_NW_TTL, )
 
     def __init__(self, nw_ttl=None):
         """Create an ActionSetNWTTL with the optional parameters below.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
 
         Args:
             nw_ttl (int): the TTL address to set in the IP header.
 
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_NW_TTL, length=8)
+        super().__init__(action_type=ActionType.OFPAT_SET_NW_TTL, length=8)
         self.nw_ttl = nw_ttl
 
 
-class OPFActionOutput(OPFActionHeader):
+class ActionOutput(ActionHeader):
     """Action structure for OFPAT_OUTPUT.
 
     When the ’port’ is the OFPP_CONTROLLER, ’max_len’ indicates the max
@@ -339,22 +359,24 @@ class OPFActionOutput(OPFActionHeader):
 
     pad = Pad(6)
 
-    _allowed_types = (OPFActionType.OFPAT_OUTPUT, )
+    _allowed_types = (ActionType.OFPAT_OUTPUT, )
 
     def __init__(self, port=None,
                  max_length=ControllerMaxLen.OFPCML_NO_BUFFER):
         """Create a ActionOutput with the optional parameters below.
 
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+
         Args:
             port (:class:`Port` or :class:`int`): Output port.
             max_length (int): Max length to send to controller.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_OUTPUT, length=16)
+        super().__init__(action_type=ActionType.OFPAT_OUTPUT, length=16)
         self.port = port
         self.max_length = max_length
 
 
-class OPFActionPopMPLS(OPFActionHeader):
+class ActionPopMPLS(ActionHeader):
     """Action structure for OFPAT_POP_MPLS."""
 
     # Ethertype
@@ -362,19 +384,21 @@ class OPFActionPopMPLS(OPFActionHeader):
 
     pad = Pad(2)
 
-    _allowed_types = (OPFActionType.OFPAT_POP_MPLS, )
+    _allowed_types = (ActionType.OFPAT_POP_MPLS, )
 
     def __init__(self, ethertype=None):
         """Create an ActionPopMPLS with the optional parameters below.
 
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+
         Args:
             ethertype (int): indicates the Ethertype of the payload.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_POP_MPLS)
+        super().__init__(action_type=ActionType.OFPAT_POP_MPLS)
         self.ethertype = ethertype
 
 
-class OPFActionPush(OPFActionHeader):
+class ActionPush(ActionHeader):
     """Action structure for OFPAT_PUSH_[VLAN/MPLS/PBB]."""
 
     # Ethertype
@@ -382,12 +406,14 @@ class OPFActionPush(OPFActionHeader):
 
     pad = Pad(2)
 
-    _allowed_types = (OPFActionType. OFPAT_PUSH_VLAN,
-                      OPFActionType.OFPAT_PUSH_MPLS,
-                      OPFActionType.OFPAT_PUSH_PBB, )
+    _allowed_types = (ActionType. OFPAT_PUSH_VLAN,
+                      ActionType.OFPAT_PUSH_MPLS,
+                      ActionType.OFPAT_PUSH_PBB, )
 
     def __init__(self, action_type=None, ethertype=None):
         """Create a ActionPush with the optional parameters below.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
 
         Args:
             action_type (:class:`ActionType`): indicates which tag will be
@@ -398,7 +424,7 @@ class OPFActionPush(OPFActionHeader):
         self.ethertype = ethertype
 
 
-class OPFActionSetField(OPFActionHeader):
+class ActionSetField(ActionHeader):
     """Action structure for OFPAT_SET_FIELD."""
 
     # <editor-fold desc="Description">
@@ -406,12 +432,14 @@ class OPFActionSetField(OPFActionHeader):
 
     # OXM TLV - Make compiler happy
 
-    field = OPFOxmTLV()
+    field = OxmTLV()
 
-    _allowed_types = (OPFActionType.OFPAT_SET_FIELD, )
+    _allowed_types = (ActionType.OFPAT_SET_FIELD, )
 
     def __init__(self, length=None, field=None):
         """Create a ActionSetField with the optional parameters below.
+
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
 
         Args:
             length (int): length padded to 64 bits, followed by exactly
@@ -420,9 +448,9 @@ class OPFActionSetField(OPFActionHeader):
                           (between 0 and 7) bytes of all-zero bytes
             field (:class:`OxmTLV`): OXM field and value.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_FIELD,
+        super().__init__(action_type=ActionType.OFPAT_SET_FIELD,
                          length=length)
-        self.field = OPFOxmTLV() if field is None else field
+        self.field = OxmTLV() if field is None else field
 
     def pack(self, value=None):
         """Pack this structure updating the length and padding it."""
@@ -447,22 +475,24 @@ class OPFActionSetField(OPFActionHeader):
         return packet
 
 
-class OPFActionSetQueue(OPFActionHeader):
+class ActionSetQueue(ActionHeader):
     """Action structure for OFPAT_SET_QUEUE."""
 
     # Queue id for packets.
 
     queue_id = UBInt32()
 
-    _allowed_types = (OPFActionType.OFPAT_SET_QUEUE, )
+    _allowed_types = (ActionType.OFPAT_SET_QUEUE, )
 
     def __init__(self, queue_id=None):
         """Create an ActionSetQueue with the optional parameters below.
 
+        Using (:class:`~pyof.v0x05.common.action.ActionHeader`).
+
         Args:
             queue_id (int): The queue_id send packets to given queue on port.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_QUEUE, length=8)
+        super().__init__(action_type=ActionType.OFPAT_SET_QUEUE, length=8)
         self.queue_id = queue_id
 
 
@@ -479,4 +509,4 @@ class ListOfActions(FixedTypeList):
             items (~pyof.v0x05.common.action.ActionHeader):
                 Instance or a list of instances.
         """
-        super().__init__(pyof_class=OPFActionHeader, items=items)
+        super().__init__(pyof_class=ActionHeader, items=items)

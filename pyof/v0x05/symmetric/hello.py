@@ -11,7 +11,7 @@ from pyof.v0x05.common.header import Header, Type
 
 __all__ = ('Hello', 'HelloElemType',
            'HelloElemVersionBitmap', 'ListOfHelloElements',
-           'OPFHelloElemHeader')
+           'HelloElemHeader')
 
 # Enums
 
@@ -25,7 +25,7 @@ class HelloElemType(Enum):
 
 # Classes
 
-class OPFHelloElemHeader(GenericStruct):
+class HelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
     hello_element_type = UBInt16()
@@ -35,10 +35,11 @@ class OPFHelloElemHeader(GenericStruct):
     # content = BinaryData()
 
     def __init__(self, hello_element_type=None, length=None):
-        """Create a HelloElemHeader with the optional parameters below.
+        """Create a (:class:`~pyof.v0x05.hello.HelloElemType`).
 
         Args:
-            hello_element_type: One of OFPHET_*.
+            hello_element_type(:class:`~pyof.v0x05.hello.HelloElemType`):
+             One of OFPHET_*.
             length: Length in bytes of the element, including this header,
                 excluding padding.
         """
@@ -101,9 +102,10 @@ class ListOfHelloElements(FixedTypeList):
         """Create a ListOfHelloElements with the optional parameters below.
 
         Args:
-            items (HelloElemHeader): Instance or a list of instances.
+            items(:class:`~pyof.v0x05.hello.HelloElemHeader`): Instance
+            or a list of instances.
         """
-        super().__init__(pyof_class=OPFHelloElemHeader, items=items)
+        super().__init__(pyof_class=HelloElemHeader, items=items)
 
 
 class Hello(GenericMessage):
@@ -130,8 +132,8 @@ class Hello(GenericMessage):
         self.elements = elements
 
 
-class HelloElemVersionBitmap(OPFHelloElemHeader):
-    """Version bitmap Hello Element.
+class HelloElemVersionBitmap(HelloElemHeader):
+    """Version bitmap :class:`~pyof.v0x05.hello.HelloElemHeader`.
 
     The bitmaps field indicates the set of versions
     of the OpenFlow switch protocol a device supports,

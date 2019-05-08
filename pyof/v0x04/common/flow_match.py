@@ -195,9 +195,11 @@ class OxmTLV(GenericStruct):
         """Create an OXM TLV struct with the optional parameters below.
 
         Args:
-            oxm_class (OxmClass): Match class: member class or reserved class
-            oxm_field (OxmMatchFields, OxmOfbMatchField): Match field within
-                the class
+            oxm_class (:class:`~pyof.v0x04.common.flow_match.OxmClass`):
+             Match class: member class or reserved class
+            oxm_field ((:class:`~pyof.v0x04.common.flow_match.OxmMatchFields`),
+             (:class:`~pyof.v0x04.common.flow_match.OxmOfbMatchField`)):
+              Match field within the class
             oxm_hasmask (bool): Set if OXM include a bitmask in payload
             oxm_value (bytes): OXM Payload
 
@@ -339,12 +341,14 @@ class Match(GenericStruct):
         """Describe the flow match header structure.
 
         Args:
-            match_type (MatchType): One of OFPMT_* (MatchType) items.
+            match_type ((:class:`~pyof.v0x05.common.flow_match.MatchType`):
+             One of OFPMT_* items.
             length (int): Length of Match (excluding padding) followed by
                           Exactly (length - 4) (possibly 0) bytes containing
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
-            oxm_fields (OxmMatchFields): Sample description.
+            oxm_fields(:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`):
+             Sample description.
 
         """
         super().__init__()
@@ -416,7 +420,8 @@ class Match(GenericStruct):
 class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
 
-    #: oxm_class = OFPXMC_EXPERIMENTER
+    #: oxm_class = (:class:`~pyof.v0x05.common.flow_match.OxmClass`)
+    # OFPXMC_EXPERIMENTER
     oxm_header = UBInt32(OxmClass.OFPXMC_EXPERIMENTER,
                          enum_ref=OxmClass)
     #: Experimenter ID which takes the same form as in struct
