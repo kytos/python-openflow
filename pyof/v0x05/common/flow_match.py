@@ -4,21 +4,21 @@ An OpenFlow match is composed of a flow match header and a sequence of zero or
 more flow match fields.
 """
 # System imports
-from enum import Enum, IntEnum
+from enum import IntEnum
 from math import ceil
 
 # Local source tree imports
-from pyof.foundation.base import GenericStruct
+from pyof.foundation.base import GenericBitMask, GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'Match', 'MatchType',
+__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'MatchType',
            'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
            'OxmOfbMatchField', 'OxmTLV', 'VlanId')
 
 
-class Ipv6ExtHdrFlags(Enum):
+class Ipv6ExtHdrFlags(GenericBitMask):
     """Bit definitions for IPv6 Extension Header pseudo-field."""
 
     #: "No next header" encountered.
@@ -131,6 +131,9 @@ class OxmOfbMatchField(IntEnum):
     #: IPv6 Extension Header pseudo-field
     OFPXMT_OFB_IPV6_EXTHDR = 39
 
+    #: PBB UCA header field.
+    OFPXMT_OFB_PBB_UCA = 41
+
 
 class MatchType(IntEnum):
     """Indicates the match structure in use.
@@ -195,13 +198,13 @@ class OxmTLV(GenericStruct):
         """Create an OXM TLV struct with the optional parameters below.
 
         Args:
-            oxm_class (:class:`~pyof.v0x04.common.flow_match.OxmClass`):
+            oxm_class(:class:`~pyof.v0x05.common.flow_match.OxmClass`):
              Match class: member class or reserved class
-            oxm_field ((:class:`~pyof.v0x04.common.flow_match.OxmMatchFields`),
-             (:class:`~pyof.v0x04.common.flow_match.OxmOfbMatchField`)):
-              Match field within the class
-            oxm_hasmask (bool): Set if OXM include a bitmask in payload
-            oxm_value (bytes): OXM Payload
+            oxm_field((:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`),
+             (:class:`~pyof.v0x05.common.flow_match.OxmOfbMatchField`)):
+             Match field within the class.
+            oxm_hasmask (bool): Set if OXM include a bitmask in payload.
+            oxm_value (bytes): OXM Payload.
 
         """
         super().__init__()
@@ -319,42 +322,48 @@ class OxmMatchFields(FixedTypeList):
         super().__init__(pyof_class=OxmTLV, items=items)
 
 
-class Match(GenericStruct):
+class OPFMatch(GenericStruct):
     """Describes the flow match header structure.
 
     These are the fields to match against flows.
 
-    The :attr:`~match_type` field is set to :attr:`~MatchType.OFPMT_OXM` and
+    The :attr:`~type` field is set to :attr:`~MatchType.OFPMT_OXM` and
+
     :attr:`length` field is set to the actual length of match structure
     including all match fields. The payload of the OpenFlow match is a set of
     OXM Flow match fields.
 
     """
 
-    #: One of OFPMT_*
+    # One of OFPMT_*
     match_type = UBInt16(enum_ref=MatchType)
-    #: Length of Match (excluding padding)
+    # Length of Match (excluding padding)
     length = UBInt16()
+    # 0 or more OXM match fields.
     oxm_match_fields = OxmMatchFields()
+    # Zero bytes - see above for sizing
+    pad = Pad(4)
 
-    def __init__(self, match_type=MatchType.OFPMT_OXM, oxm_match_fields=None):
+    def __init__(self, match_type=MatchType.OFPMT_OXM,
+                 length=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
-            match_type ((:class:`~pyof.v0x05.common.flow_match.MatchType`):
+            match_type(:class:`~pyof.v0x05.common.flow_match.MatchType`):
              One of OFPMT_* items.
             length (int): Length of Match (excluding padding) followed by
                           Exactly (length - 4) (possibly 0) bytes containing
                           OXM TLVs, then exactly ((length + 7)/8*8 - length)
                           (between 0 and 7) bytes of all-zero bytes.
-            oxm_fields(:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`):
+            oxm_match_fields
+             (:class:`~pyof.v0x05.common.flow_match.OxmMatchFields`):
              Sample description.
 
         """
         super().__init__()
         self.match_type = match_type
+        self.length = length
         self.oxm_match_fields = oxm_match_fields or OxmMatchFields()
-
         self._update_match_length()
 
     def _update_match_length(self):
@@ -363,7 +372,7 @@ class Match(GenericStruct):
 
     def pack(self, value=None):
         """Pack and complete the last byte by padding."""
-        if isinstance(value, Match):
+        if isinstance(value, OPFMatch):
             return value.pack()
         elif value is None:
             self._update_match_length()
@@ -381,7 +390,7 @@ class Match(GenericStruct):
 
     def get_size(self, value=None):
         """Return the packet length including the padding (multiple of 8)."""
-        if isinstance(value, Match):
+        if isinstance(value, OPFMatch):
             return value.get_size()
         elif value is None:
             current_size = super().get_size()
@@ -391,18 +400,23 @@ class Match(GenericStruct):
     def unpack(self, buff, offset=0):
         """Discard padding bytes using the unpacked length attribute."""
         begin = offset
+        size = 0
         for name, value in list(self.get_class_attributes())[:-1]:
             size = self._unpack_attribute(name, value, buff, begin)
             begin += size
-        self._unpack_attribute('oxm_match_fields', type(self).oxm_match_fields,
-                               buff[:offset+self.length], begin)
+        self._unpack_attribute('oxm_match_fields',
+                               type(self).oxm_match_fields,
+                               buff[:offset+self.length - len(Pad(4))],
+                               begin - size)
 
     def get_field(self, field_type):
         """Return the value for the 'field_type' field in oxm_match_fields.
 
         Args:
-            field_type (~pyof.v0x04.common.flow_match.OxmOfbMatchField,
-                        ~pyof.v0x04.common.flow_match.OxmMatchFields):
+
+            field_type (~pyof.v0x05.common.flow_match.OxmOfbMatchField,
+                        ~pyof.v0x05.common.flow_match.OxmMatchFields):
+
                 The type of the OXM field you want the value.
 
         Returns:

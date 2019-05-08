@@ -34,7 +34,7 @@ class HelloElemHeader(GenericStruct):
     content = BinaryData()
 
     def __init__(self, element_type=None, length=None, content=b''):
-        """Create a HelloElemHeader with the optional parameters below.
+        """Create a (:class:`~pyof.v0x04.hello.HelloElemHeader`).
 
         Args:
             element_type: One of OFPHET_*.
@@ -101,7 +101,8 @@ class ListOfHelloElements(FixedTypeList):
         """Create a ListOfHelloElements with the optional parameters below.
 
         Args:
-            items (HelloElemHeader): Instance or a list of instances.
+            items (:class:`~pyof.v0x05.hello.HelloElemHeader`):
+             Instance or a list of instances.
         """
         super().__init__(pyof_class=HelloElemHeader, items=items)
 
