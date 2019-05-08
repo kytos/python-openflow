@@ -145,12 +145,13 @@ class HelloElemVersionBitmap(HelloElemHeader):
         """
          It will initialize the class with the needed values.
 
-        :param length: Followed by:
-        - Exactly (length - 4) bytes containing the bitmaps, then
-        - Exactly (length + 7) / 8 * * - (length) (Between 0 and 7)
-        bytes of all-zero bytes.
+         Args:
+            length(int): Followed by:
+            - Exactly (length - 4) bytes containing the bitmaps, then
+            - Exactly (length + 7) / 8 * * - (length) (Between 0 and 7)
+            bytes of all-zero bytes.
 
-        :param bitmaps: List of bitmaps - supported versions
+            bitmaps(binary): List of bitmaps - supported versions
 
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
