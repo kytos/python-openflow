@@ -26,22 +26,22 @@ class HelloElemType(Enum):
 class HelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
-    element_type = UBInt16()
+    hello_element_type = UBInt16()
     # Length in bytes of element, including this header, excluding padding.
     length = UBInt16()
     # This variable does NOT appear in 1.4 specification
     # content = BinaryData()
 
-    def __init__(self, element_type=None, length=None):
+    def __init__(self, hello_element_type=None, length=None):
         """Create a HelloElemHeader with the optional parameters below.
 
         Args:
-            element_type: One of OFPHET_*.
+            hello_element_type: One of OFPHET_*.
             length: Length in bytes of the element, including this header,
                 excluding padding.
         """
         super().__init__()
-        self.element_type = element_type
+        self.hello_element_type = hello_element_type
         self.length = length
         # self.content = content
 
