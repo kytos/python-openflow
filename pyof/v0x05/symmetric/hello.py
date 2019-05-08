@@ -10,7 +10,8 @@ from pyof.v0x05.common.header import Header, Type
 # Third-party imports
 
 __all__ = ('Hello', 'HelloElemType',
-           'HelloElemVersionBitmap', 'ListOfHelloElements', 'OPFHelloElemHeader')
+           'HelloElemVersionBitmap', 'ListOfHelloElements',
+           'OPFHelloElemHeader')
 
 # Enums
 
@@ -142,7 +143,7 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
     def __init__(self, length=None, bitmaps=None):
 
         """
-         It will initialize the class with the needed values.
+         Initialize the class with the needed values.
 
          Args:
             length(int): Followed by:
@@ -154,6 +155,5 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
-
 
 
