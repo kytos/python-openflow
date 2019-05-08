@@ -133,20 +133,21 @@ class Hello(GenericMessage):
 
 class HelloElemVersionBitmap(HelloElemHeader):
     """ Version bitmap Hello Element
-    There is not need to enter the Version bitmap because is entered automatically as the type of message
-    This method is under review.  """
+    The bitmaps field indicates the set of versions of the OpenFlow
+     switch protocol a device supports, and may be used during version negotiation.
+    """
 
-    # List of bitmaps - supported versions
     bitmaps = BinaryData()
 
     def __init__(self, length=None, bitmaps=None):
         """
-        Create the HelloElemVersionBitmap.
-        :param length:
-         Followed by:
+        It will initialize the class with the needed values.
+
+        :param length: Followed by:
         - Exactly (length - 4) bytes containing the bitmaps, then
-        - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
+        - Exactly (length + 7) / 8 * * - (length) (Between 0 and 7)
         bytes of all-zero bytes.
+
         :param bitmaps: List of bitmaps - supported versions
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
