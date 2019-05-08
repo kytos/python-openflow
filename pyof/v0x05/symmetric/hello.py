@@ -134,6 +134,7 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
      The bitmaps field indicates the set of versions
     of the OpenFlow switch protocol a device supports,
     and may be used during version negotiation.
+
     """
 
     bitmaps = BinaryData()
