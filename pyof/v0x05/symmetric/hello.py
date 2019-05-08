@@ -9,7 +9,8 @@ from pyof.v0x05.common.header import Header, Type
 
 # Third-party imports
 
-__all__ = ('Hello', 'OPFHelloElemHeader', 'HelloElemType', 'ListOfHelloElements', 'HelloElemVersionBitmap')
+__all__ = ('Hello', 'HelloElemType',
+           'HelloElemVersionBitmap', 'ListOfHelloElements', 'OPFHelloElemHeader')
 
 # Enums
 
@@ -129,10 +130,10 @@ class Hello(GenericMessage):
 
 
 class HelloElemVersionBitmap(OPFHelloElemHeader):
-    """ Version bitmap Hello Element
-     The bitmaps field indicates the set of versions of the OpenFlow
-     switch protocol a device supports, and may be used during version negotiation.
-
+    """ Version bitmap Hello Element.
+     The bitmaps field indicates the set of versions
+      of the OpenFlow switch protocol a device supports,
+       and may be used during version negotiation.
     """
 
     bitmaps = BinaryData()
@@ -148,10 +149,10 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
             - Exactly (length + 7) / 8 * 8 - (length) (Between 0 and 7)
             bytes of all-zero bytes.
 
-            bitmaps(binary): List of bitmaps - supported versions
+            bitmaps(binary): List of bitmaps - supported versions.
 
         """
-        super().__init__(HelloElemType.OFPHET_VERSIONBITMAP,length)
+        super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
 
 
