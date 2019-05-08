@@ -149,6 +149,9 @@ class HelloElemVersionBitmap(HelloElemHeader):
         bytes of all-zero bytes.
 
         :param bitmaps: List of bitmaps - supported versions
+
         """
         super().__init__(HelloElemType.OFPHET_VERSIONBITMAP, length)
         self.bitmaps = bitmaps
+
+
