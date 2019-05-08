@@ -2,7 +2,7 @@
 
 # System imports
 
-from pyof.foundation.base import GenericMessage, GenericStruct, Enum
+from pyof.foundation.base import Enum, GenericMessage, GenericStruct
 from pyof.foundation.basic_types import BinaryData, FixedTypeList, UBInt16
 from pyof.foundation.exceptions import PackException
 from pyof.v0x05.common.header import Header, Type
@@ -131,7 +131,7 @@ class Hello(GenericMessage):
 
 
 class HelloElemVersionBitmap(OPFHelloElemHeader):
-    """ Version bitmap Hello Element.
+    """Version bitmap Hello Element.
 
     The bitmaps field indicates the set of versions
     of the OpenFlow switch protocol a device supports,
@@ -141,8 +141,7 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
     bitmaps = BinaryData()
 
     def __init__(self, length=None, bitmaps=None):
-        """
-         Initialize the class with the needed values.
+        """Initialize the class with the needed values.
 
          Args:
             length(int): Followed by:
