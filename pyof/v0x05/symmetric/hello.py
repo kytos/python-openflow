@@ -143,7 +143,7 @@ class HelloElemVersionBitmap(OPFHelloElemHeader):
     def __init__(self, length=None, bitmaps=None):
         """Initialize the class with the needed values.
 
-         Args:
+        Args:
             length(int): Followed by:
             - Exactly (length - 4) bytes containing the bitmaps, then
             - Exactly (length + 7) / 8 * 8 - (length) (Between 0 and 7)
