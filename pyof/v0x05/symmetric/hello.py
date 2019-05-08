@@ -141,8 +141,9 @@ class HelloElemVersionBitmap(HelloElemHeader):
     bitmaps = BinaryData()
 
     def __init__(self, length=None, bitmaps=None):
+
         """
-        It will initialize the class with the needed values.
+         It will initialize the class with the needed values.
 
         :param length: Followed by:
         - Exactly (length - 4) bytes containing the bitmaps, then
