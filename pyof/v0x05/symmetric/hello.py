@@ -9,7 +9,7 @@ from pyof.v0x05.common.header import Header, Type
 
 # Third-party imports
 
-__all__ = ('Hello', 'HelloElemHeader', 'HelloElemType', 'ListOfHelloElements', 'HelloElemVersionBitmap')
+__all__ = ('Hello', 'OPFHelloElemHeader', 'HelloElemType', 'ListOfHelloElements', 'HelloElemVersionBitmap')
 
 # Enums
 
