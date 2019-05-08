@@ -23,7 +23,7 @@ class HelloElemType(Enum):
 
 # Classes
 
-class HelloElemHeader(GenericStruct):
+class OPFHelloElemHeader(GenericStruct):
     """Common header for all Hello Elements."""
 
     hello_element_type = UBInt16()
@@ -43,7 +43,6 @@ class HelloElemHeader(GenericStruct):
         super().__init__()
         self.hello_element_type = hello_element_type
         self.length = length
-        # self.content = content
 
     def pack(self, value=None):
         """Update the length and pack the message into binary data.
@@ -102,9 +101,7 @@ class ListOfHelloElements(FixedTypeList):
         Args:
             items (HelloElemHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=HelloElemHeader, items=items)
-        # if (items != None and isinstance(HelloElemHeader,items)):
-        #     super().append(items)
+        super().__init__(pyof_class=OPFHelloElemHeader, items=items)
 
 
 class Hello(GenericMessage):
@@ -131,7 +128,7 @@ class Hello(GenericMessage):
         self.elements = elements
 
 
-class HelloElemVersionBitmap(HelloElemHeader):
+class HelloElemVersionBitmap(OPFHelloElemHeader):
     """ Version bitmap Hello Element
      The bitmaps field indicates the set of versions of the OpenFlow
      switch protocol a device supports, and may be used during version negotiation.
