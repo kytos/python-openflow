@@ -199,11 +199,11 @@ class OPFPortDescPropHeader(GenericStruct):
     length = UBInt16()
 
     def __init__(self, port_desc_type=None, length=None):
-        """Create the Header for Port Description properties.
+        """Create the Header for Port Description Properties.
 
             Args:
-                port_desc_type (int): The Port Description property.
-                length (int): The length of the message.
+                port_desc_type (int): The Port Description property type.
+                length (int): The property's length
         """
         super().__init__()
         self.port_desc_type = port_desc_type
