@@ -12,11 +12,11 @@ from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 
 # Third-party imports
 
-__all__ = ('ListOfPorts', 'ListOfPortDescProperties', 'Port', 'PortConfig',
-           'PortFeatures', 'PortNo', 'PortState')
+__all__ = ('ListOfPorts', 'ListOfPortDescProperties', 'OPFPort', 'OPFPortConfig',
+           'OPFPortFeatures', 'OPFPortNo', 'OPFPortState')
 
 
-class PortNo(IntEnum):
+class OPFPortNo(IntEnum):
     """Port numbering.
 
     Ports are numbered starting from 1.
@@ -48,7 +48,7 @@ class PortNo(IntEnum):
     OFPP_ANY = 0xffffffff
 
 
-class PortDescPropType(IntEnum):
+class OPFPortDescPropType(IntEnum):
     """Port description property types."""
 
     # Ethernet property
@@ -59,7 +59,7 @@ class PortDescPropType(IntEnum):
     OFPPDPT_EXPERIMENTER = 0xfff
 
 
-class OpticalPortFeatures(GenericBitMask):
+class OPFOpticalPortFeatures(GenericBitMask):
     """Features of optical ports available in switch."""
 
     # Receiver is tunable.
@@ -72,7 +72,7 @@ class OpticalPortFeatures(GenericBitMask):
     OFPOPF_USE_FREQ = 1 << 3
 
 
-class PortConfig(GenericBitMask):
+class OPFPortConfig(GenericBitMask):
     """Flags to indicate behavior of the physical port.
 
     These flags are used in :class:`Port` to describe the current
@@ -105,7 +105,7 @@ class PortConfig(GenericBitMask):
     OFPPC_NO_PACKET_IN = 1 << 6
 
 
-class PortFeatures(GenericBitMask):
+class OPFPortFeatures(GenericBitMask):
     """Physical ports features.
 
     The curr, advertised, supported, and peer fields indicate link modes
@@ -163,7 +163,7 @@ class PortFeatures(GenericBitMask):
     OFPPF_PAUSE_ASYM = 1 << 15
 
 
-class PortState(GenericBitMask):
+class OPFPortState(GenericBitMask):
     """Current state of the physical port.
 
     These are not configurable from the controller.
@@ -190,7 +190,7 @@ class PortState(GenericBitMask):
 
 
 # Classes
-class PortDescPropHeader(GenericStruct):
+class OPFPortDescPropHeader(GenericStruct):
     """Common header for all port description properties."""
 
     # One of OFPPDPT_*
@@ -223,10 +223,10 @@ class ListOfPortDescProperties(FixedTypeList):
             items (~pyof.v0x05.common.action.ActionHeader):
                 Instance or a list of instances.
         """
-        super().__init__(pyof_class=PortDescPropHeader, items=items)
+        super().__init__(pyof_class=OPFPortDescPropHeader, items=items)
 
 
-class Port(GenericStruct):
+class OPFPort(GenericStruct):
     """Description of a port.
 
     The port_no field uniquely identifies a port within a switch. The hw_addr
@@ -250,8 +250,8 @@ class Port(GenericStruct):
     hw_addr = HWAddress()
     pad2 = Pad(2)                               # Align to 64 bits
     name = Char(length=OFP_MAX_PORT_NAME_LEN)   # Null terminated
-    config = UBInt32(enum_ref=PortConfig)       # Bitmap of OFPPC_* flags
-    state = UBInt32(enum_ref=PortState)         # Bitmap of OFPPS_* flags
+    config = UBInt32(enum_ref=OPFPortConfig)       # Bitmap of OFPPC_* flags
+    state = UBInt32(enum_ref=OPFPortState)         # Bitmap of OFPPS_* flags
 
     properties = ListOfPortDescProperties()
 
@@ -278,29 +278,29 @@ class Port(GenericStruct):
         self.config = config
         self.state = state
         self.properties = properties
-        self.length = self.__sizeof__()
+        self.length = UBInt16(self.__sizeof__())
 
 
-class PortDescPropEthernet(PortDescPropHeader):
+class OPFPortDescPropEthernet(OPFPortDescPropHeader):
     """Ethernet port description property"""
 
     # Align to 64 bits
     pad4 = Pad(4)
     # Current features.
-    curr = UBInt32(enum_ref=PortFeatures)
+    curr = UBInt32(enum_ref=OPFPortFeatures)
     # Feature being advertised by port.
-    advertised = UBInt32(enum_ref=PortFeatures)
+    advertised = UBInt32(enum_ref=OPFPortFeatures)
     # Features supported by the port.
-    supported = UBInt32(enum_ref=PortFeatures)
+    supported = UBInt32(enum_ref=OPFPortFeatures)
     # Features advertised by peer.
-    peer = UBInt32(enum_ref=PortFeatures)
+    peer = UBInt32(enum_ref=OPFPortFeatures)
     # Current port bitrate in kbps.
     curr_speed = UBInt32()
     # Max port bitrate in kbps.
     max_speed = UBInt32()
 
-    def __init__(self, curr=PortFeatures, advertised=PortFeatures,
-                 supported=PortFeatures, peer=PortFeatures, curr_speed=None,
+    def __init__(self, curr=OPFPortFeatures, advertised=OPFPortFeatures,
+                 supported=OPFPortFeatures, peer=OPFPortFeatures, curr_speed=None,
                  max_speed=None):
         """Create the Port Description Property for Ethernet.
 
@@ -312,17 +312,17 @@ class PortDescPropEthernet(PortDescPropHeader):
                 curr_speed (int): Current port bitrate in kbps.
                 max_speed (int): Max port bitrate in kbps.
         """
-        super().__init__(port_desc_type=PortDescPropType.OFPPDPT_ETHERNET)
+        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_ETHERNET)
         self.curr = curr
         self.advertised = advertised
         self.supported = supported
         self.peer = peer
         self.curr_speed = curr_speed
         self.max_speed = max_speed
-        self.length = self.__sizeof__()
+        self.length = UBInt16(self.__sizeof__())
 
 
-class PortDescPropOptical(PortDescPropHeader):
+class PortDescPropOptical(OPFPortDescPropHeader):
     """Optical port description property."""
 
     # Align to 64 bits.
@@ -363,7 +363,7 @@ class PortDescPropOptical(PortDescPropHeader):
                 tx_pwr_min (int): Minimum TX power.
                 tx_pwr_max (int): Maximun TX power.
         """
-        super().__init__(port_desc_type=PortDescPropType.OFPPDPT_OPTICAL)
+        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_OPTICAL)
         self.supported = supported
         self.tx_min_freq_lmda = tx_min_freq_lmda
         self.tx_max_freq_lmda = tx_max_freq_lmda
@@ -373,10 +373,10 @@ class PortDescPropOptical(PortDescPropHeader):
         self.rx_max_freq_lmda = rx_max_freq_lmda
         self.tx_pwr_min = tx_pwr_min
         self.tx_pwr_max = tx_pwr_max
-        self.length = self.__sizeof__()
+        self.length = UBInt16(self.__sizeof__())
 
 
-class PortDescPropExperimenter(PortDescPropHeader):
+class PortDescPropExperimenter(OPFPortDescPropHeader):
     """Experimenter port description property."""
 
     # Experimenter ID which takes the same form as in ExperimenterHeader.
@@ -397,7 +397,7 @@ class PortDescPropExperimenter(PortDescPropHeader):
                 - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7) bytes
                 of all-zero bytes.
         """
-        super().__init__(port_desc_type=PortDescPropType.OFPPDPT_EXPERIMENTER)
+        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_EXPERIMENTER)
         self.experimenter = experimenter
         self.exp_type = exp_type
         self.experimenterData = experimenter_data
@@ -422,5 +422,5 @@ class ListOfPorts(FixedTypeList):
                 One :class:`~pyof.v0x04.common.port.Port` instance or list.
 
         """
-        super().__init__(pyof_class=Port,
+        super().__init__(pyof_class=OPFPort,
                          items=items)
