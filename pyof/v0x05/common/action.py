@@ -167,7 +167,7 @@ class OPFActionExperimenterHeader(OPFActionHeader):
 
 
 class OPFExperimenterStruct(GenericStruct):
-    """ Typical Experimenter structure. """
+    """Typical Experimenter structure. """
 
     # Experimenter ID:
     # - MSB 0: low-order bytes are IEEE OUI
@@ -211,7 +211,8 @@ class OPFActionDecMPLSTTL(OPFActionHeader):
 
     def __init__(self):
         """Create an ActionDecMPLSTTL."""
-        super().__init__(action_type=OPFActionType.OFPAT_DEC_MPLS_TTL, length=8)
+        super().__init__(action_type=OPFActionType.OFPAT_DEC_MPLS_TTL,
+                         length=8)
 
 
 class OPFActionSetMPLSTTL(OPFActionHeader):
@@ -230,7 +231,8 @@ class OPFActionSetMPLSTTL(OPFActionHeader):
         Args:
             mpls_ttl (int): The mpls_ttl field is the MPLS TTL to set.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_MPLS_TTL, length=8)
+        super().__init__(action_type=OPFActionType.OFPAT_SET_MPLS_TTL,
+                         length=8)
         self.mpls_ttl = mpls_ttl
 
 
@@ -243,7 +245,8 @@ class OPFActionCopyTTLIn(OPFActionHeader):
 
     def __init__(self):
         """Create an ActionCopyTTLIn."""
-        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_IN, length=8)
+        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_IN,
+                         length=8)
 
 
 class OPFActionCopyTTLOut(OPFActionHeader):
@@ -255,7 +258,8 @@ class OPFActionCopyTTLOut(OPFActionHeader):
 
     def __init__(self):
         """Create an ActionCopyTTLOut."""
-        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_OUT, length=8)
+        super().__init__(action_type=OPFActionType.OFPAT_COPY_TTL_OUT,
+                         length=8)
 
 
 class OPFActionPopVLAN(OPFActionHeader):
@@ -309,6 +313,7 @@ class OPFActionSetNWTTL(OPFActionHeader):
 
         Args:
             nw_ttl (int): the TTL address to set in the IP header.
+
         """
         super().__init__(action_type=OPFActionType.OFPAT_SET_NW_TTL, length=8)
         self.nw_ttl = nw_ttl
@@ -413,7 +418,8 @@ class OPFActionSetField(OPFActionHeader):
                           (between 0 and 7) bytes of all-zero bytes
             field (:class:`OxmTLV`): OXM field and value.
         """
-        super().__init__(action_type=OPFActionType.OFPAT_SET_FIELD, length=length)
+        super().__init__(action_type=OPFActionType.OFPAT_SET_FIELD,
+                         length=length)
         self.field = OPFOxmTLV() if field is None else field
 
     def pack(self, value=None):
