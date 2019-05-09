@@ -13,7 +13,7 @@ from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'MatchType',
+__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'OPFMatchType',
            'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
            'OxmOfbMatchField', 'OxmTLV', 'VlanId')
 
@@ -135,7 +135,7 @@ class OxmOfbMatchField(IntEnum):
     OFPXMT_OFB_PBB_UCA = 41
 
 
-class MatchType(IntEnum):
+class OPFMatchType(IntEnum):
     """Indicates the match structure in use.
 
     The match type is placed in the type field at the beginning of all match
@@ -334,7 +334,7 @@ class OPFMatch(GenericStruct):
     """
 
     # One of OFPMT_*
-    match_type = UBInt16(enum_ref=MatchType)
+    match_type = UBInt16(enum_ref=OPFMatchType)
     # Length of Match (excluding padding)
     length = UBInt16()
     # 0 or more OXM match fields.
@@ -342,7 +342,7 @@ class OPFMatch(GenericStruct):
     # Zero bytes - see above for sizing
     pad = Pad(4)
 
-    def __init__(self, match_type=MatchType.OFPMT_OXM, length=None, oxm_match_fields=None):
+    def __init__(self, match_type=OPFMatchType.OFPMT_OXM, length=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
