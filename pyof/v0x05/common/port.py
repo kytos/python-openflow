@@ -1,10 +1,9 @@
 """Defines physical port classes and related items."""
 
 # System imports
-from enum import IntEnum
 
 # Local source tree imports
-from pyof.foundation.base import GenericBitMask, GenericStruct
+from pyof.foundation.base import Enum, GenericBitMask, GenericStruct
 from pyof.foundation.basic_types import (Char, FixedTypeList, HWAddress,
                                          Pad, UBInt16, UBInt32)
 from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
@@ -17,7 +16,7 @@ __all__ = ('ListOfPortDescProperties', 'ListOfPorts', 'OPFPort',
            'OPFPortState')
 
 
-class OPFPortNo(IntEnum):
+class OPFPortNo(Enum):
     """Port numbering.
 
     Ports are numbered starting from 1.
@@ -49,7 +48,7 @@ class OPFPortNo(IntEnum):
     OFPP_ANY = 0xffffffff
 
 
-class OPFPortDescPropType(IntEnum):
+class OPFPortDescPropType(Enum):
     """Port description property types."""
 
     # Ethernet property
@@ -313,7 +312,7 @@ class OPFPortDescPropEthernet(OPFPortDescPropHeader):
                 curr_speed (int): Current port bitrate in kbps.
                 max_speed (int): Max port bitrate in kbps.
         """
-        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_ETHERNET)
+        super().__init__(OPFPortDescPropType.OFPPDPT_ETHERNET)
         self.curr = curr
         self.advertised = advertised
         self.supported = supported
@@ -365,7 +364,7 @@ class PortDescPropOptical(OPFPortDescPropHeader):
                 tx_pwr_min (int): Minimum TX power.
                 tx_pwr_max (int): Maximun TX power.
         """
-        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_OPTICAL)
+        super().__init__(OPFPortDescPropType.OFPPDPT_OPTICAL)
         self.supported = supported
         self.tx_min_freq_lmda = tx_min_freq_lmda
         self.tx_max_freq_lmda = tx_max_freq_lmda
@@ -385,7 +384,7 @@ class PortDescPropExperimenter(OPFPortDescPropHeader):
     experimenter = UBInt16()
     # Experimenter defined.
     exp_type = UBInt16()
-    experimenterData = UBInt32()
+    experimenter_data = UBInt32()
 
     def __init__(self, experimenter=None, exp_type=None,
                  experimenter_data=None):
@@ -402,10 +401,10 @@ class PortDescPropExperimenter(OPFPortDescPropHeader):
                 - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
                  bytes of all-zero bytes.
         """
-        super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_EXPERIMENTER)
+        super().__init__(OPFPortDescPropType.OFPPDPT_EXPERIMENTER)
         self.experimenter = experimenter
         self.exp_type = exp_type
-        self.experimenterData = experimenter_data
+        self.experimenter_data = experimenter_data
 
 
 class ListOfPorts(FixedTypeList):
