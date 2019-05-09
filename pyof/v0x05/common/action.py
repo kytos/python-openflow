@@ -67,11 +67,11 @@ class ControllerMaxLen(IntEnum):
     The packet should be sent.
     """
 
-    #: maximum max_len value which can be used to request a specific byte
-    #:     length.
+    #: Maximum max_len value which can be used to request a specific byte
+    #: length.
     OFPCML_MAX = 0xffe5
-    #: indicates that no buffering should be applied and the whole packet is to
-    #:     be sent to the controller.
+    #: indicates that no buffering should be applied and the whole packet is
+    #: to be sent to the controller.
     OFPCML_NO_BUFFER = 0xffff
 
 
@@ -90,7 +90,7 @@ class OPFActionHeader(GenericStruct):
 
     action_type = UBInt16(enum_ref=OPFActionType)
     #: Length of action, including this header. This is the length of actions,
-    #:    including any padding to make it 64-bit aligned.
+    #: including any padding to make it 64-bit aligned.
     length = UBInt16()
 
     _allowed_types = ()
@@ -159,7 +159,7 @@ class OPFActionExperimenterHeader(OPFActionHeader):
 
         Args:
             experimenter (int): The experimenter field is the Experimenter ID,
-                which takes the same form as in struct ofp_experimenter.
+            which takes the same form as in struct ofp_experimenter.
         """
         super().__init__(action_type=OPFActionType.OFPAT_EXPERIMENTER)
         self.length = length
@@ -372,11 +372,11 @@ class OPFActionPush(OPFActionHeader):
 
     # Ethertype
     ethertype = UBInt16()
-    #
 
     pad = Pad(2)
 
-    _allowed_types = (OPFActionType. OFPAT_PUSH_VLAN, OPFActionType.OFPAT_PUSH_MPLS,
+    _allowed_types = (OPFActionType. OFPAT_PUSH_VLAN,
+                      OPFActionType.OFPAT_PUSH_MPLS,
                       OPFActionType.OFPAT_PUSH_PBB, )
 
     def __init__(self, action_type=None, ethertype=None):
