@@ -14,8 +14,8 @@ from pyof.foundation.basic_types import (
 from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'OPFMatchType',
-           'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
-           'OxmOfbMatchField', 'OxmTLV', 'VlanId')
+           'OPFOxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
+           'OPFOxmOfbMatchField', 'OxmTLV', 'VlanId')
 
 
 class Ipv6ExtHdrFlags(GenericBitMask):
@@ -41,7 +41,7 @@ class Ipv6ExtHdrFlags(GenericBitMask):
     OFPIEH_UNSEQ = 1 << 8
 
 
-class OxmOfbMatchField(IntEnum):
+class OPFOxmOfbMatchField(IntEnum):
     """OXM Flow match field types for OpenFlow basic class.
 
     A switch is not required to support all match field types, just those
@@ -151,7 +151,7 @@ class OPFMatchType(IntEnum):
     OFPMT_OXM = 1
 
 
-class OxmClass(IntEnum):
+class OPFOxmClass(IntEnum):
     """OpenFlow Extensible Match (OXM) Class IDs.
 
     The high order bit differentiate reserved classes from member classes.
@@ -188,12 +188,12 @@ class VlanId(IntEnum):
 class OxmTLV(GenericStruct):
     """Oxm (OpenFlow Extensible Match) TLV."""
 
-    oxm_class = UBInt16(enum_ref=OxmClass)
+    oxm_class = UBInt16(enum_ref=OPFOxmClass)
     oxm_field_and_mask = UBInt8()
     oxm_length = UBInt8()
     oxm_value = BinaryData()
 
-    def __init__(self, oxm_class=OxmClass.OFPXMC_OPENFLOW_BASIC,
+    def __init__(self, oxm_class=OPFOxmClass.OFPXMC_OPENFLOW_BASIC,
                  oxm_field=None, oxm_hasmask=False, oxm_value=None):
         """Create an OXM TLV struct with the optional parameters below.
 
@@ -250,8 +250,8 @@ class OxmTLV(GenericStruct):
         """
         field_int = self.oxm_field_and_mask >> 1
         # We know that the class below requires a subset of the ofb enum
-        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
-            return OxmOfbMatchField(field_int)
+        if self.oxm_class == OPFOxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OPFOxmOfbMatchField(field_int)
         return field_int
 
     def _update_length(self):
@@ -297,8 +297,8 @@ class OxmTLV(GenericStruct):
                 value.
 
         """
-        if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
-            return OxmOfbMatchField(self.oxm_field).value
+        if self.oxm_class == OPFOxmClass.OFPXMC_OPENFLOW_BASIC:
+            return OPFOxmOfbMatchField(self.oxm_field).value
         elif not isinstance(self.oxm_field, int) or self.oxm_field > 127:
             raise ValueError('oxm_field above 127: "{self.oxm_field}".')
         return self.oxm_field
@@ -427,8 +427,8 @@ class OxmExperimenterHeader(GenericStruct):
     """Header for OXM experimenter match fields."""
 
     #: oxm_class = OFPXMC_EXPERIMENTER
-    oxm_header = UBInt32(OxmClass.OFPXMC_EXPERIMENTER,
-                         enum_ref=OxmClass)
+    oxm_header = UBInt32(OPFOxmClass.OFPXMC_EXPERIMENTER,
+                         enum_ref=OPFOxmClass)
     #: Experimenter ID which takes the same form as in struct
     #:     ofp_experimenter_header
     experimenter = UBInt32()
