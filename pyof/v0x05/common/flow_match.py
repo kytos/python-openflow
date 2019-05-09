@@ -13,7 +13,7 @@ from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
-__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'Match', 'MatchType',
+__all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'MatchType',
            'OxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
            'OxmOfbMatchField', 'OxmTLV', 'VlanId')
 
@@ -320,7 +320,7 @@ class OxmMatchFields(FixedTypeList):
         super().__init__(pyof_class=OxmTLV, items=items)
 
 
-class Match(GenericStruct):
+class OPFMatch(GenericStruct):
     """Describes the flow match header structure.
 
     These are the fields to match against flows.
@@ -366,7 +366,7 @@ class Match(GenericStruct):
 
     def pack(self, value=None):
         """Pack and complete the last byte by padding."""
-        if isinstance(value, Match):
+        if isinstance(value, OPFMatch):
             return value.pack()
         elif value is None:
             self._update_match_length()
@@ -384,7 +384,7 @@ class Match(GenericStruct):
 
     def get_size(self, value=None):
         """Return the packet length including the padding (multiple of 8)."""
-        if isinstance(value, Match):
+        if isinstance(value, OPFMatch):
             return value.get_size()
         elif value is None:
             current_size = super().get_size()
