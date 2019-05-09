@@ -14,8 +14,8 @@ from pyof.foundation.basic_types import (
 from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('Ipv6ExtHdrFlags', 'ListOfOxmHeader', 'OPFMatch', 'OPFMatchType',
-           'OPFOxmClass', 'OxmExperimenterHeader', 'OxmMatchFields',
-           'OPFOxmOfbMatchField', 'OxmTLV', 'VlanId')
+           'OPFOxmClass', 'OxmExperimenterHeader', 'OPFOxmMatchFields',
+           'OPFOxmOfbMatchField', 'OPFOxmTLV', 'VlanId')
 
 
 class Ipv6ExtHdrFlags(GenericBitMask):
@@ -185,7 +185,7 @@ class VlanId(IntEnum):
 
 # Classes
 
-class OxmTLV(GenericStruct):
+class OPFOxmTLV(GenericStruct):
     """Oxm (OpenFlow Extensible Match) TLV."""
 
     oxm_class = UBInt16(enum_ref=OPFOxmClass)
@@ -304,7 +304,7 @@ class OxmTLV(GenericStruct):
         return self.oxm_field
 
 
-class OxmMatchFields(FixedTypeList):
+class OPFOxmMatchFields(FixedTypeList):
     """Generic Openflow EXtensible Match header.
 
     Abstract class that can be instantiated as Match or OxmExperimenterHeader.
@@ -317,7 +317,7 @@ class OxmMatchFields(FixedTypeList):
         Args:
             items (OxmHeader): Instance or a list of instances.
         """
-        super().__init__(pyof_class=OxmTLV, items=items)
+        super().__init__(pyof_class=OPFOxmTLV, items=items)
 
 
 class OPFMatch(GenericStruct):
@@ -338,7 +338,7 @@ class OPFMatch(GenericStruct):
     # Length of Match (excluding padding)
     length = UBInt16()
     # 0 or more OXM match fields.
-    oxm_match_fields = OxmMatchFields()
+    oxm_match_fields = OPFOxmMatchFields()
     # Zero bytes - see above for sizing
     pad = Pad(4)
 
@@ -357,7 +357,7 @@ class OPFMatch(GenericStruct):
         super().__init__()
         self.match_type = match_type
         self.length = length
-        self.oxm_match_fields = oxm_match_fields or OxmMatchFields()
+        self.oxm_match_fields = oxm_match_fields or OPFOxmMatchFields()
         self._update_match_length()
 
     def _update_match_length(self):
@@ -459,4 +459,4 @@ class ListOfOxmHeader(FixedTypeList):
             items (OxmHeader): Instance or a list of instances.
 
         """
-        super().__init__(pyof_class=OxmTLV, items=items)
+        super().__init__(pyof_class=OPFOxmTLV, items=items)
