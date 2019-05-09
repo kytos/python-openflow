@@ -167,7 +167,8 @@ class OPFActionExperimenterHeader(OPFActionHeader):
 
 
 class OPFExperimenterStruct(GenericStruct):
-    """Typical Experimenter structure. """
+    """Typical Experimenter structure.
+    """
 
     # Experimenter ID:
     # - MSB 0: low-order bytes are IEEE OUI
