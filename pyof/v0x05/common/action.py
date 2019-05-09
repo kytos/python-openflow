@@ -167,8 +167,7 @@ class OPFActionExperimenterHeader(OPFActionHeader):
 
 
 class OPFExperimenterStruct(GenericStruct):
-    """Typical Experimenter structure.
-    """
+    """Typical Experimenter structure."""
 
     # Experimenter ID:
     # - MSB 0: low-order bytes are IEEE OUI
@@ -328,7 +327,9 @@ class OPFActionOutput(OPFActionHeader):
     packet should be sent. A ’max_len’ of OFPCML_NO_BUFFER means that
     the packet is not buffered and the complete packet is to be sent to
     the controller.
+
     """
+
     # Extend the ActionHeader.
     # Output port.
     port = UBInt32()
