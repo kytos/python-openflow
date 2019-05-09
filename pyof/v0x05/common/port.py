@@ -4,10 +4,11 @@
 
 # Local source tree imports
 from pyof.foundation.base import Enum, GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (Char, FixedTypeList,
-                                         HWAddress, Pad, UBInt16, UBInt32)
+from pyof.foundation.basic_types import (
+    Char, FixedTypeList, HWAddress, Pad, UBInt16, UBInt32)
 from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 
+# Third-party imports
 
 __all__ = ('ListOfPortDescProperties', 'ListOfPorts', 'OPFPort',
            'OPFPortConfig', 'OPFPortFeatures', 'OPFPortNo',
