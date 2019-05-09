@@ -342,7 +342,8 @@ class OPFMatch(GenericStruct):
     # Zero bytes - see above for sizing
     pad = Pad(4)
 
-    def __init__(self, match_type=OPFMatchType.OFPMT_OXM, length=None, oxm_match_fields=None):
+    def __init__(self, match_type=OPFMatchType.OFPMT_OXM,
+                 length=None, oxm_match_fields=None):
         """Describe the flow match header structure.
 
         Args:
@@ -398,8 +399,10 @@ class OPFMatch(GenericStruct):
         for name, value in list(self.get_class_attributes())[:-1]:
             size = self._unpack_attribute(name, value, buff, begin)
             begin += size
-        self._unpack_attribute('oxm_match_fields', type(self).oxm_match_fields,
-                               buff[:offset+self.length - len(Pad(4))], begin - size)
+        self._unpack_attribute('oxm_match_fields',
+                               type(self).oxm_match_fields,
+                               buff[:offset+self.length - len(Pad(4))],
+                               begin - size)
 
     def get_field(self, field_type):
         """Return the value for the 'field_type' field in oxm_match_fields.
