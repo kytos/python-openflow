@@ -12,8 +12,9 @@ from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 
 # Third-party imports
 
-__all__ = ('ListOfPorts', 'ListOfPortDescProperties', 'OPFPort', 'OPFPortConfig',
-           'OPFPortFeatures', 'OPFPortNo', 'OPFPortState')
+__all__ = ('ListOfPortDescProperties', 'ListOfPorts', 'OPFPort',
+           'OPFPortConfig', 'OPFPortFeatures', 'OPFPortNo',
+           'OPFPortState')
 
 
 class OPFPortNo(IntEnum):
@@ -267,8 +268,8 @@ class OPFPort(GenericStruct):
             config (~pyof.v0x05.common.port.PortConfig):
                 Bitmap of OFPPC* flags.
             state (~pyof.v0x05.common.port.PortState): Bitmap of OFPPS* flags.
-            properties (ListOfPortDescProperties): Port description property list
-            - 0 or more properties.
+            properties (ListOfPortDescProperties): Port description property
+             list - 0 or more properties.
 
         """
         super().__init__()
@@ -282,7 +283,7 @@ class OPFPort(GenericStruct):
 
 
 class OPFPortDescPropEthernet(OPFPortDescPropHeader):
-    """Ethernet port description property"""
+    """Ethernet port description property."""
 
     # Align to 64 bits
     pad4 = Pad(4)
@@ -300,8 +301,8 @@ class OPFPortDescPropEthernet(OPFPortDescPropHeader):
     max_speed = UBInt32()
 
     def __init__(self, curr=OPFPortFeatures, advertised=OPFPortFeatures,
-                 supported=OPFPortFeatures, peer=OPFPortFeatures, curr_speed=None,
-                 max_speed=None):
+                 supported=OPFPortFeatures, peer=OPFPortFeatures,
+                 curr_speed=None, max_speed=None):
         """Create the Port Description Property for Ethernet.
 
             Args:
@@ -352,6 +353,7 @@ class PortDescPropOptical(OPFPortDescPropHeader):
                  rx_min_freq_lmda=None, rx_max_freq_lmda=None,
                  rx_grid_freq_lmda=None, tx_pwr_min=None,  tx_pwr_max=None):
         """Create the Port Description Property for Optical.
+
             Args:
                 supported (int): Features supported by the port.
                 tx_min_freq_lmda (int): Minimum TX Frequency/Wavelength.
@@ -383,19 +385,22 @@ class PortDescPropExperimenter(OPFPortDescPropHeader):
     experimenter = UBInt16()
     # Experimenter defined.
     exp_type = UBInt16()
-    experimenterData = UBInt32(0)
+    experimenterData = UBInt32()
 
-    def __init__(self, experimenter=None, exp_type=None, experimenter_data=None):
+    def __init__(self, experimenter=None, exp_type=None,
+                 experimenter_data=None):
         """Create the Port Description Property for Experimenter.
+
             Args:
-                experimenter (int): Experimenter ID which takes the same form as
-                 in ExperimenterHeader.
+                experimenter (int): Experimenter ID which takes the same
+                 form as in ExperimenterHeader.
                 exp_type (int): Experimenter defined.
                 experimenter_data (int): Experimenter Data.
                 Followed by:
-                - Exactly (length - 12) bytes containing the experimenter data, then
-                - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7) bytes
-                of all-zero bytes.
+                - Exactly (length - 12) bytes containing the experimenter
+                 data, then
+                - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
+                 bytes of all-zero bytes.
         """
         super().__init__(port_desc_type=OPFPortDescPropType.OFPPDPT_EXPERIMENTER)
         self.experimenter = experimenter
