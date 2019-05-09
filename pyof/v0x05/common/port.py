@@ -4,8 +4,7 @@
 
 # Local source tree imports
 from pyof.foundation.base import Enum, GenericBitMask, GenericStruct
-from pyof.foundation.basic_types import (Char, FixedTypeList, HWAddress,
-                                         Pad, UBInt16, UBInt32)
+from pyof.foundation.basic_types import (Char, FixedTypeList, HWAddress, Pad, UBInt16, UBInt32)
 from pyof.foundation.constants import OFP_MAX_PORT_NAME_LEN
 
 
@@ -201,9 +200,9 @@ class OPFPortDescPropHeader(GenericStruct):
     def __init__(self, port_desc_type=None, length=None):
         """Create the Header for Port Description Properties.
 
-            Args:
-                port_desc_type (int): The Port Description property type.
-                length (int): The property's length
+        Args:
+            port_desc_type (int): The Port Description property type.
+            length (int): The property's length.
         """
         super().__init__()
         self.port_desc_type = port_desc_type
@@ -304,13 +303,13 @@ class OPFPortDescPropEthernet(OPFPortDescPropHeader):
                  curr_speed=None, max_speed=None):
         """Create the Port Description Property for Ethernet.
 
-            Args:
-                curr (int): Current features.
-                advertised (int): Feature being advertised by port.
-                supported (int): Features supported by the port.
-                peer (int): Features advertised by peer.
-                curr_speed (int): Current port bitrate in kbps.
-                max_speed (int): Max port bitrate in kbps.
+        Args:
+            curr (int): Current features.
+            advertised (int): Feature being advertised by port.
+            supported (int): Features supported by the port.
+            peer (int): Features advertised by peer.
+            curr_speed (int): Current port bitrate in kbps.
+            max_speed (int): Max port bitrate in kbps.
         """
         super().__init__(OPFPortDescPropType.OFPPDPT_ETHERNET)
         self.curr = curr
@@ -353,16 +352,16 @@ class PortDescPropOptical(OPFPortDescPropHeader):
                  rx_grid_freq_lmda=None, tx_pwr_min=None,  tx_pwr_max=None):
         """Create the Port Description Property for Optical.
 
-            Args:
-                supported (int): Features supported by the port.
-                tx_min_freq_lmda (int): Minimum TX Frequency/Wavelength.
-                tx_max_freq_lmda (int): Maximum TX Frequency/Wavelength.
-                tx_grid_freq_lmda (int): TX Grid Spacing Frequency/Wavelength.
-                rx_min_freq_lmda (int): Minimum RX Frequency/Wavelength.
-                rx_max_freq_lmda (int): Maximum RX Frequency/Wavelength.
-                rx_grid_freq_lmda (int): RX Grid Spacing Frequency/Wavelength.
-                tx_pwr_min (int): Minimum TX power.
-                tx_pwr_max (int): Maximun TX power.
+        Args:
+            supported (int): Features supported by the port.
+            tx_min_freq_lmda (int): Minimum TX Frequency/Wavelength.
+            tx_max_freq_lmda (int): Maximum TX Frequency/Wavelength.
+            tx_grid_freq_lmda (int): TX Grid Spacing Frequency/Wavelength.
+            rx_min_freq_lmda (int): Minimum RX Frequency/Wavelength.
+            rx_max_freq_lmda (int): Maximum RX Frequency/Wavelength.
+            rx_grid_freq_lmda (int): RX Grid Spacing Frequency/Wavelength.
+            tx_pwr_min (int): Minimum TX power.
+            tx_pwr_max (int): Maximun TX power.
         """
         super().__init__(OPFPortDescPropType.OFPPDPT_OPTICAL)
         self.supported = supported
@@ -390,16 +389,16 @@ class PortDescPropExperimenter(OPFPortDescPropHeader):
                  experimenter_data=None):
         """Create the Port Description Property for Experimenter.
 
-            Args:
-                experimenter (int): Experimenter ID which takes the same
-                 form as in ExperimenterHeader.
-                exp_type (int): Experimenter defined.
-                experimenter_data (int): Experimenter Data.
-                Followed by:
-                - Exactly (length - 12) bytes containing the experimenter
-                 data, then
-                - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
-                 bytes of all-zero bytes.
+        Args:
+            experimenter (int): Experimenter ID which takes the same
+             form as in ExperimenterHeader.
+            exp_type (int): Experimenter defined.
+            experimenter_data (int): Experimenter Data.
+            Followed by:
+            - Exactly (length - 12) bytes containing the experimenter
+             data, then
+            - Exactly (length + 7) / 8 * 8 - (length) (between 0 and 7)
+             bytes of all-zero bytes.
         """
         super().__init__(OPFPortDescPropType.OFPPDPT_EXPERIMENTER)
         self.experimenter = experimenter
