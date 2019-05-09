@@ -8,7 +8,7 @@ from enum import IntEnum
 from math import ceil
 
 # Local source tree imports
-from pyof.foundation.base import GenericStruct, GenericBitMask
+from pyof.foundation.base import GenericBitMask, GenericStruct
 from pyof.foundation.basic_types import (
     BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
