@@ -2,9 +2,7 @@
 
 # System imports
 
-
 from pyof.foundation.base import Enum, GenericStruct
-
 from pyof.v0x05.common.header import Header, Type
 
 # Third-party imports
