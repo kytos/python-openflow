@@ -573,7 +573,7 @@ class OPFErrorMsg(GenericMessage):
     #: :class:`~.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_ERROR)
     #: ErrorType enum item
-    error_type = UBInt16(enum_ref=ErrorType)
+    error_type = UBInt16(enum_ref=OPFErrorType)
     #: Error code associated with ErrorType
     code = UBInt16()
     #: Variable-length data interpreted based on the type and code.
@@ -601,7 +601,7 @@ class OPFErrorMsg(GenericMessage):
     def unpack(self, buff, offset=0):
         """Unpack binary data into python object."""
         super().unpack(buff, offset)
-        code_class = ErrorType(self.error_type).get_class()
+        code_class = OPFErrorType(self.error_type).get_class()
         self.code = code_class(self.code)
 
 
@@ -615,7 +615,7 @@ class OPFErrorExperimenterMsg(GenericMessage):
     # :class:`~.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_ERROR)
     #: OFPET_EXPERIMENTER.
-    error_type = UBInt16(ErrorType.OFPET_EXPERIMENTER, enum_ref=ErrorType)
+    error_type = UBInt16(OPFErrorType.OFPET_EXPERIMENTER, enum_ref=OPFErrorType)
     #: Experimenter Defined
     exp_type = UBInt16()
     #: Experimenter ID which takes the same form as in
