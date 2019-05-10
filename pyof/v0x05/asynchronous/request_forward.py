@@ -26,6 +26,7 @@ class RequestForwardHeader(GenericStruct):
     """Group/Meter request forwarding."""
 
     # :class:`~.header.Header`: OpenFlow Header
+    # :class:`~.header.Type`: OpenFlow Type
     header = Header(Type.OFPT_REQUESTFORWARD)
     # :class:`~.header.Header`: OpenFlow Header
     request = Header()
@@ -36,7 +37,7 @@ class RequestForwardHeader(GenericStruct):
 
             Args:
                 header (:class: `~pyof.v0x05.common.header.Header`):
-                Type OFPT_REQUESTFORWARD.
+                :class: `~pyof.v0x05.common.header.Type` OFPT_REQUESTFORWARD.
                 request (:class: `~pyof.v0x05.common.header.Header`):
                 Request being forwarded.
         """
