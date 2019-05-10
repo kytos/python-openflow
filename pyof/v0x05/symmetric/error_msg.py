@@ -10,18 +10,20 @@ from pyof.v0x05.common.header import Header, Type
 # Third-party imports
 
 
-__all__ = ('BadActionCode', 'BadInstructionCode', 'BadMatchCode', 'ErrorType',
-           'FlowModFailedCode', 'GroupModFailedCode', 'HelloFailedCode',
-           'MeterModFailedCode', 'PortModFailedCode', 'QueueOpFailedCode',
-           'RoleRequestFailedCode', 'SwitchConfigFailedCode',
-           'TableFeaturesFailedCode', 'TableModFailedCode',
-           'GenericFailedCode', 'BadPropertyCode', 'AsyncConfigFailedCode',
-           'FlowMonitorFailedCode', 'BundleFailedCode')
+__all__ = ('OPFBadActionCode', 'OPFBadInstructionCode', 'OPFBadMatchCode',
+           'OPFErrorType', 'OPFFlowModFailedCode', 'OPFGroupModFailedCode',
+           'OPFHelloFailedCode', 'OPFMeterModFailedCode',
+           'OPFPortModFailedCode', 'OPFQueueOpFailedCode',
+           'OPFRoleRequestFailedCode', 'OPFSwitchConfigFailedCode',
+           'OPFTableFeaturesFailedCode', 'OPFTableModFailedCode',
+           'OPFGenericFailedCode', 'OPFBadPropertyCode',
+           'OPFAsyncConfigFailedCode', 'OPFFlowMonitorFailedCode',
+           'OPFBundleFailedCode')
 
 # Enums
 
 
-class GenericFailedCode(Enum):
+class OPFGenericFailedCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -31,7 +33,7 @@ class GenericFailedCode(Enum):
     GENERIC_ERROR = 0
 
 
-class BadActionCode(Enum):
+class OPFBadActionCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_ACTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -72,7 +74,7 @@ class BadActionCode(Enum):
     OFPBAC_BAD_SET_ARGUMENT = 15
 
 
-class BadInstructionCode(Enum):
+class OPFBadInstructionCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_INSTRUCTION.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -100,7 +102,7 @@ class BadInstructionCode(Enum):
     OFPBIC_DUP_INST = 9
 
 
-class BadMatchCode(Enum):
+class OPFBadMatchCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_MATCH.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -135,7 +137,7 @@ class BadMatchCode(Enum):
     OFPBMC_EPERM = 11
 
 
-class BadRequestCode(Enum):
+class OPFBadRequestCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_REQUEST.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -176,7 +178,7 @@ class BadRequestCode(Enum):
     OFPBRC_MULTIPART_REPLY_TIMEOUT = 15
 
 
-class ErrorType(Enum):
+class OPFErrorType(Enum):
     """Values for ’type’ in ofp_error_message.
 
     These values are immutable: they will not change in future versions of the
@@ -229,28 +231,28 @@ class ErrorType(Enum):
             enum.IntEnum: class referenced by current error type.
 
         """
-        classes = {'OFPET_HELLO_FAILED': HelloFailedCode,
-                   'OFPET_BAD_REQUEST': BadRequestCode,
-                   'OFPET_BAD_ACTION': BadActionCode,
-                   'OFPET_BAD_INSTRUCTION': BadInstructionCode,
-                   'OFPET_BAD_MATCH': BadMatchCode,
-                   'OFPET_FLOW_MOD_FAILED': FlowModFailedCode,
-                   'OFPET_GROUP_MOD_FAILED': GroupModFailedCode,
-                   'OFPET_PORT_MOD_FAILED': PortModFailedCode,
-                   'OFPET_QUEUE_OP_FAILED': QueueOpFailedCode,
-                   'OFPET_SWITCH_CONFIG_FAILED': SwitchConfigFailedCode,
-                   'OFPET_ROLE_REQUEST_FAILED': RoleRequestFailedCode,
-                   'OFPET_METER_MOD_FAILED': MeterModFailedCode,
-                   'OFPET_TABLE_MOD_FAILED': TableModFailedCode,
-                   'OFPET_TABLE_FEATURES_FAILED': TableFeaturesFailedCode,
-                   'OFPET_BAD_PROPERTY': BadPropertyCode,
-                   'OFPET_ASYNC_CONFIG_FAILED': AsyncConfigFailedCode,
-                   'OFPET_FLOW_MONITOR_FAILED': FlowMonitorFailedCode,
-                   'OFPET_BUNDLE_FAILED': BundleFailedCode}
-        return classes.get(self.name, GenericFailedCode)
+        classes = {'OFPET_HELLO_FAILED': OPFHelloFailedCode,
+                   'OFPET_BAD_REQUEST': OPFBadRequestCode,
+                   'OFPET_BAD_ACTION': OPFBadActionCode,
+                   'OFPET_BAD_INSTRUCTION': OPFBadInstructionCode,
+                   'OFPET_BAD_MATCH': OPFBadMatchCode,
+                   'OFPET_FLOW_MOD_FAILED': OPFFlowModFailedCode,
+                   'OFPET_GROUP_MOD_FAILED': OPFGroupModFailedCode,
+                   'OFPET_PORT_MOD_FAILED': OPFPortModFailedCode,
+                   'OFPET_QUEUE_OP_FAILED': OPFQueueOpFailedCode,
+                   'OFPET_SWITCH_CONFIG_FAILED': OPFSwitchConfigFailedCode,
+                   'OFPET_ROLE_REQUEST_FAILED': OPFRoleRequestFailedCode,
+                   'OFPET_METER_MOD_FAILED': OPFMeterModFailedCode,
+                   'OFPET_TABLE_MOD_FAILED': OPFTableModFailedCode,
+                   'OFPET_TABLE_FEATURES_FAILED': OPFTableFeaturesFailedCode,
+                   'OFPET_BAD_PROPERTY': OPFBadPropertyCode,
+                   'OFPET_ASYNC_CONFIG_FAILED': OPFAsyncConfigFailedCode,
+                   'OFPET_FLOW_MONITOR_FAILED': OPFFlowMonitorFailedCode,
+                   'OFPET_BUNDLE_FAILED': OPFBundleFailedCode}
+        return classes.get(self.name, OPFGenericFailedCode)
 
 
-class FlowModFailedCode(Enum):
+class OPFFlowModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_FLOW_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -280,7 +282,7 @@ class FlowModFailedCode(Enum):
     OFPFMFC_IS_SYNC = 10
 
 
-class GroupModFailedCode(Enum):
+class OPFGroupModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_GROUP_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -320,7 +322,7 @@ class GroupModFailedCode(Enum):
     OFPGMFC_EPERM = 14
 
 
-class HelloFailedCode(Enum):
+class OPFHelloFailedCode(Enum):
     """Error_msg 'code' values for OFPET_HELLO_FAILED.
 
     'data' contains an ASCII text string that may give failure details.
@@ -332,7 +334,7 @@ class HelloFailedCode(Enum):
     OFPHFC_EPERM = 1
 
 
-class MeterModFailedCode(Enum):
+class OPFMeterModFailedCode(Enum):
     """Error msg 'code' values for OFPET_METER_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -366,7 +368,7 @@ class MeterModFailedCode(Enum):
     OFPMMFC_OUT_OF_BANDS = 11
 
 
-class PortModFailedCode(Enum):
+class OPFPortModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_PORT_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -384,7 +386,7 @@ class PortModFailedCode(Enum):
     OFPPMFC_EPERM = 4
 
 
-class QueueOpFailedCode(Enum):
+class OPFQueueOpFailedCode(Enum):
     """Error msg 'code' values for OFPET_QUEUE_OP_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -398,7 +400,7 @@ class QueueOpFailedCode(Enum):
     OFPQOFC_EPERM = 2
 
 
-class RoleRequestFailedCode(Enum):
+class OPFRoleRequestFailedCode(Enum):
     """Error msg 'code' values for OFPET_ROLE_REQUEST_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -412,7 +414,7 @@ class RoleRequestFailedCode(Enum):
     OFPRRFC_BAD_ROLE = 2
 
 
-class SwitchConfigFailedCode(Enum):
+class OPFSwitchConfigFailedCode(Enum):
     """Error msg 'code' values for OFPET_SWITCH_CONFIG_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -426,7 +428,7 @@ class SwitchConfigFailedCode(Enum):
     OFPQCFC_EPERM = 2
 
 
-class TableFeaturesFailedCode(Enum):
+class OPFTableFeaturesFailedCode(Enum):
     """Error msg 'code' values for OFPET_TABLE_FEATURES_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -440,7 +442,7 @@ class TableFeaturesFailedCode(Enum):
     OFPTFFC_EPERM = 5
 
 
-class TableModFailedCode(Enum):
+class OPFTableModFailedCode(Enum):
     """Error_msg 'code' values for OFPET_TABLE_MOD_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -454,11 +456,12 @@ class TableModFailedCode(Enum):
     OFPTMFC_EPERM = 2
 
 
-class BadPropertyCode(Enum):
+class OPFBadPropertyCode(Enum):
     """Error_msg 'code' values for OFPET_BAD_PROPERTY.
 
     'data' contains at least the first 64 bytes of the failed request.
     """
+
     #: Unknown property type.
     OFPBPC_BAD_TYPE = 0
     #: Length problem in property.
@@ -479,7 +482,7 @@ class BadPropertyCode(Enum):
     OFPBPC_EPERM = 8
 
 
-class AsyncConfigFailedCode(Enum):
+class OPFAsyncConfigFailedCode(Enum):
     """Error_msg 'code' values for OFPET_ASYNC_CONFIG_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -493,7 +496,7 @@ class AsyncConfigFailedCode(Enum):
     OFPACFC_EPERM = 2
 
 
-class FlowMonitorFailedCode(Enum):
+class OPFFlowMonitorFailedCode(Enum):
     """Error_msg 'code' values for OFPET_FLOW_MONITOR_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -519,7 +522,7 @@ class FlowMonitorFailedCode(Enum):
     OFPMOFC_BAD_OUT = 7
 
 
-class BundleFailedCode(Enum):
+class OPFBundleFailedCode(Enum):
     """Error_msg 'code' values for OFPET_BUNDLE_FAILED.
 
     'data' contains at least the first 64 bytes of the failed request.
@@ -561,7 +564,7 @@ class BundleFailedCode(Enum):
 
 # Classes
 
-class ErrorMsg(GenericMessage):
+class OPFErrorMsg(GenericMessage):
     """OpenFlow Error Message.
 
     This message does not contain a body in addition to the OpenFlow Header.
@@ -602,7 +605,7 @@ class ErrorMsg(GenericMessage):
         self.code = code_class(self.code)
 
 
-class ErrorExperimenterMsg(GenericMessage):
+class OPFErrorExperimenterMsg(GenericMessage):
     """OFPET_EXPERIMENTER: Error message (datapath -> controller).
 
     The experimenter field is the Experimenter ID, which takes the same form
@@ -642,5 +645,3 @@ class ErrorExperimenterMsg(GenericMessage):
         """Unpack binary data into python object."""
         raise exceptions.MethodNotImplemented("'Unpack' method not "
                                               "implemented on ErrorMsg class")
-
-
