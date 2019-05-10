@@ -5,7 +5,6 @@
 from pyof.foundation.base import Enum, GenericStruct
 from pyof.v0x05.common.header import Header, Type
 
-
 # Third-party imports
 
 
@@ -36,11 +35,11 @@ class RequestForwardHeader(GenericStruct):
                  request=Header):
         """Create an instance of the header.
 
-            Args:
-                header (:class: `~pyof.v0x05.common.header.Header`):
-                :class: `~pyof.v0x05.common.header.Type` OFPT_REQUESTFORWARD.
-                request (:class: `~pyof.v0x05.common.header.Header`):
-                Request being forwarded.
+        Args:
+            header (:class: `~pyof.v0x05.common.header.Header`):
+            :class: `~pyof.v0x05.common.header.Type` OFPT_REQUESTFORWARD.
+            request (:class: `~pyof.v0x05.common.header.Header`):
+            Request being forwarded.
         """
         super().__init__()
         self.header = header
