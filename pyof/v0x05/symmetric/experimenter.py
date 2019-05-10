@@ -8,12 +8,12 @@ from pyof.foundation.base import GenericMessage
 from pyof.foundation.basic_types import BinaryData, UBInt32
 from pyof.v0x05.common.header import Header, Type
 
-__all__ = ('ExperimenterHeader',)
+__all__ = ('OPFExperimenterHeader',)
 
 # Classes
 
 
-class ExperimenterHeader(GenericMessage):
+class OPFExperimenterHeader(GenericMessage):
     """OpenFlow Experimenter message.
 
     The experimenter field is a 32-bit value that uniquely identifies the
