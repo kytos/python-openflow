@@ -25,7 +25,9 @@ class RequestForwardReason(Enum):
 class RequestForwardHeader(GenericStruct):
     """Group/Meter request forwarding."""
 
+    # :class:`~.header.Header`: OpenFlow Header
     header = Header(Type.OFPT_REQUESTFORWARD)
+    # :class:`~.header.Header`: OpenFlow Header
     request = Header()
 
     def __init__(self, header=Header(Type.OFPT_REQUESTFORWARD),
@@ -33,8 +35,10 @@ class RequestForwardHeader(GenericStruct):
         """Create an instance of the header.
 
             Args:
-                header (Header): Type OFPT_REQUESTFORWARD.
-                request (Header): Request being forwarded.
+                header (:class: `~pyof.v0x05.common.header.Header`):
+                Type OFPT_REQUESTFORWARD.
+                request (:class: `~pyof.v0x05.common.header.Header`):
+                Request being forwarded.
         """
         super().__init__()
         self.header = header
