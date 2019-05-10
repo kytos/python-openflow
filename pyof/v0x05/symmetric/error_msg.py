@@ -171,11 +171,11 @@ class OPFBadRequestCode(Enum):
     #: Invalid packet in packet-out.
     OFPBRC_BAD_PACKET = 12
     #: ofp_multipart_request overflowed the assigned buffer.
-    OFPBRC_MULTIPART_BUFFER_OVERFLOW = 13
+    OFPBRC_MULTIPART_BUFFER_OVERFLOW = 13   # pylint: disable=invalid-name
     #: Timeout during multipart request.
-    OFPBRC_MULTIPART_REQUEST_TIMEOUT = 14 # pylint: disable=invalid-name
+    OFPBRC_MULTIPART_REQUEST_TIMEOUT = 14   # pylint: disable=invalid-name
     #: Timeout during multipart reply
-    OFPBRC_MULTIPART_REPLY_TIMEOUT = 15 # pylint: disable=invalid-name
+    OFPBRC_MULTIPART_REPLY_TIMEOUT = 15     # pylint: disable=invalid-name
 
 
 class OPFErrorType(Enum):
