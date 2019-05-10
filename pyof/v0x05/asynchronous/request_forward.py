@@ -2,8 +2,6 @@
 
 # System imports
 
-# Local source tree imports
-
 from pyof.foundation.base import Enum, GenericStruct
 from pyof.v0x05.common.header import Header, Type
 
