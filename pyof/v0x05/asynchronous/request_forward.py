@@ -7,6 +7,7 @@ from pyof.v0x05.common.header import Header, Type
 
 # Third-party imports
 
+
 __all__ = ('RequestForwardHeader', 'RequestForwardReason')
 
 
