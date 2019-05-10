@@ -615,7 +615,8 @@ class OPFErrorExperimenterMsg(GenericMessage):
     # :class:`~.header.Header`: OpenFlow Header
     header = Header(message_type=Type.OFPT_ERROR)
     #: OFPET_EXPERIMENTER.
-    error_type = UBInt16(OPFErrorType.OFPET_EXPERIMENTER, enum_ref=OPFErrorType)
+    error_type = UBInt16(OPFErrorType.OFPET_EXPERIMENTER,
+                         enum_ref=OPFErrorType)
     #: Experimenter Defined
     exp_type = UBInt16()
     #: Experimenter ID which takes the same form as in
