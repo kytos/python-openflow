@@ -3,6 +3,28 @@ Change log
 ##########
 All notable changes to the python-openflow project are documented in this file.
 
+[UNRELEASED] - Under development
+********************************
+Added
+=====
+
+Changed
+=======
+- Updated python-openflow port.
+
+Deprecated
+==========
+
+Removed
+=======
+
+Fixed
+=====
+
+Security
+========
+- Updated dependencies versions on requirements.
+
 
 [2019.1b2] - "fafa" beta2 - 2019-05-03
 **************************************
