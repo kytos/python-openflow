@@ -5,21 +5,13 @@ All notable changes to the python-openflow project are documented in this file.
 
 [UNRELEASED] - Under development
 ********************************
-Added
-=====
 
+
+[2019.1b3] - "fafa" beta3 - 2019-06-17
+**************************************
 Changed
 =======
 - Updated Openflow default port documentation to 6653.
-
-Deprecated
-==========
-
-Removed
-=======
-
-Fixed
-=====
 
 Security
 ========
