@@ -12,8 +12,11 @@ Authors
 Contributors
 ------------
 
-- Raphael Cobe <rmcobe AT ncc DOT unesp DOT br>
 - Artur Baruchi <abaruchi AT ncc DOT unesp DOT br>
+- Carlos Magno <cmagnobarbosa AT gmail DOT com>
 - Erick Vermot <erick.vermot AT gmail DOT com>
+- Gleyberson Andrade <gleybersonandrade AT gmail DOT com>
 - Humberto Diógenes <hdiogenes AT gmail DOT com>
+- Jose Mauro <zemauror AT gmail DOT com>
 - Lucas Felix <lucasgsfelix AT gmail DOT com>
+- Raphael Cobe <rmcobe AT ncc DOT unesp DOT br>
