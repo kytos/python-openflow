@@ -10,7 +10,7 @@ Added
 
 Changed
 =======
-- Updated python-openflow port.
+- Updated Openflow default port documentation to 6653.
 
 Deprecated
 ==========
@@ -23,7 +23,7 @@ Fixed
 
 Security
 ========
-- Updated dependencies versions on requirements.
+- Updated dependencies versions in order to fix security bugs.
 
 
 [2019.1b2] - "fafa" beta2 - 2019-05-03
