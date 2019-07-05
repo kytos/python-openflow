@@ -6,6 +6,10 @@ All notable changes to the python-openflow project are documented in this file.
 [UNRELEASED] - Under development
 ********************************
 
+[2019.1rc1] - "fafa" release candidade 1 - 2019-07-05
+*****************************************************
+
+ - No changes since last pre-release
 
 [2019.1b3] - "fafa" beta3 - 2019-06-17
 **************************************
