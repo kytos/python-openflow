@@ -50,7 +50,7 @@ class TestStruct(unittest.TestCase):
         # Override the run method, so it does nothing instead of running the
         # tests (again).
         if self.__class__ == TestStruct:
-            self.run = lambda self, *args, **kwargs: None
+            self.run = lambda *args, **kwargs: None
 
     _msg_cls = None
     _msg_params = None
