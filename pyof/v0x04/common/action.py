@@ -6,7 +6,7 @@ from math import ceil
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
-    FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
+    FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, BinaryData)
 from pyof.v0x04.common.flow_match import OxmTLV
 
 # Third-party imports
@@ -150,23 +150,27 @@ class ActionHeader(GenericStruct):
         return cls._allowed_types
 
 
-class ActionExperimenterHeader(ActionHeader):
+class ActionExperimenter(ActionHeader):
     """Action structure for OFPAT_EXPERIMENTER."""
 
     experimenter = UBInt32()
+    body = BinaryData()
 
     _allowed_types = ActionType.OFPAT_EXPERIMENTER,
 
-    def __init__(self, length=None, experimenter=None):
+    def __init__(self, length=None, experimenter=None, body=None):
         """Create ActionExperimenterHeader with the optional parameters below.
 
         Args:
             experimenter (int): The experimenter field is the Experimenter ID,
                 which takes the same form as in struct ofp_experimenter.
+            body(bytes): The body of the experimenter. It is vendor-defined,
+                so it is left as it is.
         """
         super().__init__(action_type=ActionType.OFPAT_EXPERIMENTER)
         self.length = length
         self.experimenter = experimenter
+        self.body = body
 
 
 class ActionGroup(ActionHeader):
