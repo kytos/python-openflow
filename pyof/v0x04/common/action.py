@@ -11,7 +11,7 @@ from pyof.v0x04.common.flow_match import OxmTLV
 
 # Third-party imports
 
-__all__ = ('ActionExperimenterHeader', 'ActionGroup', 'ActionHeader',
+__all__ = ('ActionExperimenter', 'ActionGroup', 'ActionHeader',
            'ActionCopyTTLIn', 'ActionCopyTTLOut', 'ActionDecMPLSTTL',
            'ActionSetMPLSTTL', 'ActionDecNWTTL', 'ActionSetNWTTL',
            'ActionOutput', 'ActionPopMPLS', 'ActionPopPBB', 'ActionPopVLAN',
