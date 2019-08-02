@@ -6,7 +6,7 @@ from math import ceil
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
-    FixedTypeList, Pad, UBInt8, UBInt16, UBInt32, BinaryData)
+    BinaryData, FixedTypeList, Pad, UBInt8, UBInt16, UBInt32)
 from pyof.v0x04.common.flow_match import OxmTLV
 
 # Third-party imports
