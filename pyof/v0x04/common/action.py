@@ -134,12 +134,15 @@ class ActionHeader(GenericStruct):
         self.action_type = UBInt16(enum_ref=ActionType)
         self.action_type.unpack(buff, offset)
 
+        self.length = UBInt16()
+        self.length.unpack(buff, offset=offset+2)
+
         for cls in ActionHeader.__subclasses__():
             if self.action_type.value in cls.get_allowed_types():
                 self.__class__ = cls
                 break
 
-        super().unpack(buff, offset)
+        super().unpack(buff[:offset+self.length], offset)
 
     @classmethod
     def get_allowed_types(cls):
