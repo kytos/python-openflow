@@ -118,14 +118,9 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      extras_require={
-          'dev': [
-              'coverage',
-              'tox',
-              'pip-tools',
-              'yala',
-          ],
-      },
+      setup_requires=['pytest-runner'],
+      tests_require=['coverage', 'pytest', 'yala', 'tox'],
+      extras_require={'dev': ['pip-tools >= 2.0']},
       packages=find_packages(exclude=['tests']),
       cmdclass={
           'ci': CITest,
