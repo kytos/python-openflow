@@ -11,7 +11,7 @@ class TestQueueStats(TestStruct):
     def setUpClass(cls):
         """[Controller2Switch/QueueStats] - size 32."""
         super().setUpClass()
-        super().set_raw_dump_file('v0x01', 'ofpt_queue_stats_reply')
+        super().set_raw_dump_file('v0x01', 'ofpt_queue_stats')
         super().set_raw_dump_object(StatsReply, xid=7,
                                     body_type=StatsType.OFPST_QUEUE,
                                     flags=0, body=_get_queue_stats())
