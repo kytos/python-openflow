@@ -7,7 +7,7 @@ from pyof.foundation.constants import UBINT32_MAX_VALUE
 from pyof.foundation.exceptions import PackException, ValidationError
 from pyof.v0x04.common.action import ListOfActions
 from pyof.v0x04.common.header import Header, Type
-from pyof.v0x04.common.port import Port, PortNo
+from pyof.v0x04.common.port import PortNo
 
 __all__ = ('PacketOut',)
 
@@ -122,17 +122,8 @@ class PacketOut(GenericMessage):
             self.actions_len = ListOfActions(self.actions).get_size()
 
     def _validate_in_port(self):
-        port = self.in_port
+        is_valid_range = self.in_port > 0 and self.in_port <= PortNo.OFPP_MAX
+        is_valid_virtual_in_ports = self.in_port in _VIRT_IN_PORTS
 
-        if isinstance(port, PortNo):
-            valid = port in _VIRT_IN_PORTS
-        elif isinstance(port, int):
-            # Must use "else" because PortNo is an IntEnum and (int instance)
-            valid = port >= 1 and port < PortNo.OFPP_MAX.value
-        elif isinstance(port, Port):
-            valid = port.is_valid()
-        else:  # unknown value
-            valid = False
-
-        if not valid:
-            raise ValidationError('{} is not a valid input port.'.format(port))
+        if (is_valid_range or is_valid_virtual_in_ports) is False:
+            raise ValidationError(f'{self.in_port} is not a valid input port.')
