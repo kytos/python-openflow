@@ -6,6 +6,31 @@ All notable changes to the python-openflow project are documented in this file.
 [UNRELEASED] - Under development
 ********************************
 
+[2019.2b1] - "" beta1 - 2019-08-30
+**************************************
+
+Added
+=====
+- Now, is possible to unpack a body with arbitrary length
+- Added a body to ActionExperimenter
+- Added of 1.3 raw dump instructions to README
+- Added some raw tests to openflow 1.0
+- Added some raw files and tests to openflow 1.3
+
+Changed
+=======
+- Set pytest as the default unit test tool
+- Enabled Scrutinizer coverage stats 
+
+Removed
+=======
+- Remove kytos docs mapping when build tests
+
+Fixed
+=====
+- Fixed some linter issues
+- Fixed tab in the wrong place that break newer versions of `make`
+
 [2019.1] - "fafa" stable version - 2019-07-12
 *********************************************
 
