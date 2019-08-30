@@ -6,30 +6,46 @@ All notable changes to the python-openflow project are documented in this file.
 [UNRELEASED] - Under development
 ********************************
 
-[2019.2b1] - "" beta1 - 2019-08-30
+Added
+=====
+
+Changed
+=======
+
+Removed
+=======
+
+Fixed
+=====
+
+Security
+========
+
+
+[2019.2b1] - "gil" beta1 - 2019-08-30
 **************************************
 
 Added
 =====
-- Now, is possible to unpack a body with arbitrary length
-- Added a body to ActionExperimenter
-- Added of 1.3 raw dump instructions to README
-- Added some raw tests to openflow 1.0
-- Added some raw files and tests to openflow 1.3
+- [v0x04] Added support for ActionExperimenter's body (thanks, @dgarc330!)
+- [v0x01 | v0x04] Added some raw test files to OpenFlow 1.0 and 1.3
+- [v0x04] Added unit tests to OpenFlow 1.3: FlowRemoved, PacketIn, PortStatus,
+  FeaturesRequest and FeaturesReply.
 
 Changed
 =======
-- Set pytest as the default unit test tool
-- Enabled Scrutinizer coverage stats 
+- [v0x04] Improved OpenFlow 1.3 raw dump instructions in README
+- Set pytest as the default unit test framework
 
 Removed
 =======
-- Remove kytos docs mapping when build tests
+- Removed dependency from online Kytos docs when running tests
 
 Fixed
 =====
-- Fixed some linter issues
-- Fixed tab in the wrong place that break newer versions of `make`
+- [v0x04] Fixed OpenFlow 1.3 PacketOut validation before `pack()`
+- Fixed dependencies for developer-mode install
+
 
 [2019.1] - "fafa" stable version - 2019-07-12
 *********************************************
