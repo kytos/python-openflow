@@ -156,7 +156,7 @@ class MultipartReply(GenericMessage):
                            MultipartType.OFPMP_TABLE_FEATURES: TableFeatures,
                            MultipartType.OFPMP_PORT_DESC: Port}
 
-        if isinstance(self.multipart_type, (int, UBInt16)):
+        if isinstance(self.multipart_type, UBInt16):
             self.multipart_type = self.multipart_type.enum_ref(
                 self.multipart_type.value)
 
