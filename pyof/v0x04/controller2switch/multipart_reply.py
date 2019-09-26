@@ -13,7 +13,7 @@ from pyof.v0x04.common.flow_match import Match
 from pyof.v0x04.common.header import Header, Type
 from pyof.v0x04.common.port import Port
 from pyof.v0x04.controller2switch.common import (
-    Bucket, BucketCounter, ExperimenterMultipartHeader, MultipartType,
+    Bucket, ExperimenterMultipartHeader, ListOfBucketCounter, MultipartType,
     TableFeatures)
 from pyof.v0x04.controller2switch.meter_mod import (
     ListOfMeterBandHeader, MeterBandType, MeterFlags)
@@ -78,6 +78,7 @@ class MultipartReply(GenericMessage):
             multipart_type (int): One of the OFPMP_* constants.
             flags (int): OFPMPF_REPLY_* flags.
             body (bytes): Body of the reply.
+
         """
         super().__init__(xid)
         self.multipart_type = multipart_type
@@ -126,6 +127,7 @@ class MultipartReply(GenericMessage):
         Args:
             buff (bytes): Binary data package to be unpacked, without the
                 header.
+
         """
         super().unpack(buff[offset:])
         self._unpack_body()
@@ -192,6 +194,7 @@ class AggregateStatsReply(GenericStruct):
             packet_count (int): Number of packets in flows
             byte_count (int):   Number of bytes in flows
             flow_count (int):   Number of flows
+
         """
         super().__init__()
         self.packet_count = packet_count
@@ -227,6 +230,7 @@ class Desc(GenericStruct):
             sw_desc (str): Software description
             serial_num (str): Serial number
             dp_desc (str): Datapath description
+
         """
         super().__init__()
         self.mfr_desc = mfr_desc
@@ -277,6 +281,7 @@ class FlowStats(GenericStruct):
             packet_count (int): Number of packets in flow.
             byte_count (int): Number of bytes in flow.
             match (~pyof.v0x04.common.flow_match.Match): Description of fields.
+
         """
         super().__init__()
         self.length = length
@@ -301,6 +306,7 @@ class FlowStats(GenericStruct):
         Args:
             buff (bytes): Binary data package to be unpacked.
             offset (int): Where to begin unpacking.
+
         """
         unpack_length = UBInt16()
         unpack_length.unpack(buff, offset)
@@ -362,6 +368,7 @@ class PortStats(GenericStruct):
             duration_sec (int): Time port has been alive in seconds
             duration_nsec (int): Time port has been alive in nanoseconds beyond
                 duration_sec
+
         """
         super().__init__()
         self.port_no = port_no
@@ -407,6 +414,7 @@ class QueueStats(GenericStruct):
             duration_sec (int): Time queue has been alive in seconds.
             duration_nsec (int): Time queue has been alive in nanoseconds
                 beyond duration_sec.
+
         """
         super().__init__()
         self.port_no = port_no
@@ -437,6 +445,7 @@ class GroupDescStats(GenericStruct):
             group_type (|GroupType_v0x04|): One of OFPGT_*.
             group_id (int): Group identifier.
             buckets (|ListOfBuckets_v0x04|): List of buckets in group.
+
         """
         super().__init__()
         self.length = length
@@ -470,6 +479,7 @@ class GroupFeatures(GenericStruct):
             max_groups: 4-position array; Maximum number of groups for each
                 type.
             actions: 4-position array; Bitmaps of OFPAT_* that are supported.
+
         """
         super().__init__()
         self.types = types
@@ -498,7 +508,7 @@ class GroupStats(GenericStruct):
     byte_count = UBInt64()
     duration_sec = UBInt32()
     duration_nsec = UBInt32()
-    bucket_stats = FixedTypeList(BucketCounter)
+    bucket_stats = ListOfBucketCounter()
 
     def __init__(self, length=None, group_id=None, ref_count=None,
                  packet_count=None, byte_count=None, duration_sec=None,
@@ -515,6 +525,7 @@ class GroupStats(GenericStruct):
             duration_sec: Time group has been alive in seconds
             duration_nsec: Time group has been alive in nanoseconds
             bucket_stats: List of stats of group buckets
+
         """
         super().__init__()
         self.length = length
@@ -554,6 +565,7 @@ class MeterConfig(GenericStruct):
                 Meter Indentify.The value Meter.OFPM_ALL is used to
                 refer to all Meters on the switch.
             bands(list): List of MeterBandHeader instances.
+
         """
         super().__init__()
         self.flags = flags
@@ -582,6 +594,7 @@ class MeterFeatures(GenericStruct):
             capabilities (|MeterFlags_v0x04|): Bitmaps of "ofp_meter_flags".
             max_bands(int): Maximum bands per meters
             max_color(int): Maximum color value
+
         """
         super().__init__()
         self.max_meter = max_meter
@@ -606,6 +619,7 @@ class BandStats(GenericStruct):
         Args:
             packet_band_count(int): Number of packets in band.
             byte_band_count(int):   Number of bytes in band.
+
         """
         super().__init__()
         self.packet_band_count = packet_band_count
@@ -623,6 +637,7 @@ class ListOfBandStats(FixedTypeList):
 
         Args:
             items (|BandStats_v0x04|): Instance or a list of instances.
+
         """
         super().__init__(pyof_class=BandStats, items=items)
 
@@ -657,6 +672,7 @@ class MeterStats(GenericStruct):
             duration_nsec(int):   Time meter has been alive in
                                   nanoseconds beyond duration_sec.
             band_stats(list):     Instances of BandStats
+
         """
         super().__init__()
         self.meter_id = meter_id
@@ -677,6 +693,7 @@ class MeterStats(GenericStruct):
 
         Args:
             value: Structure to be packed.
+
         """
         self.update_length()
         return super().pack(value)
@@ -722,6 +739,7 @@ class TableStats(GenericStruct):
             active_count (int): Number of active entries.
             lookup_count (int): Number of packets looked up in table.
             matched_count (int): Number of packets that hit table.
+
         """
         super().__init__()
         self.table_id = table_id

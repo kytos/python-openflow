@@ -355,6 +355,9 @@ rst_epilog = """
 .. |MeterBandType_v0x04| replace::
    :class:`~pyof.v0x04.controller2switch.meter_mod.MeterBandType`
 
+.. |BucketCounter_v0x04| replace::
+   :class:`~pyof.v0x04.controller2switch.common.BucketCounter`
+
 .. |BandStats_v0x04| replace::
    :class:`~.v0x04.controller2switch.multipart_reply.BandStats`
 

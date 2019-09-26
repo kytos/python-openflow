@@ -18,9 +18,9 @@ from pyof.v0x04.common.flow_match import ListOfOxmHeader
 from pyof.v0x04.common.header import Header
 from pyof.v0x04.controller2switch.table_mod import Table
 
-__all__ = ('ConfigFlag', 'ControllerRole', 'Bucket', 'BucketCounter',
-           'ExperimenterMultipartHeader', 'MultipartType',
-           'TableFeaturePropType', 'Property', 'InstructionsProperty',
+__all__ = ('ConfigFlag', 'ControllerRole', 'TableFeaturePropType',
+           'MultipartType', 'Bucket', 'BucketCounter', 'ListOfBucketCounter',
+           'ExperimenterMultipartHeader', 'Property', 'InstructionsProperty',
            'NextTablesProperty', 'ActionsProperty', 'OxmProperty',
            'ListOfProperty', 'TableFeatures')
 
@@ -214,6 +214,7 @@ class Bucket(GenericStruct):
                 live. Only required for fast failover groups.
             actions (~pyof.v0x04.common.action.ListOfActions): The action
                 length is inferred from the length field in the header.
+
         """
         super().__init__()
         self.length = length
@@ -237,10 +238,27 @@ class BucketCounter(GenericStruct):
         Args:
             packet_count (int): Number of packets processed by bucket.
             byte_count (int): Number of bytes processed by bucket.
+
         """
         super().__init__()
         self.packet_count = packet_count
         self.byte_count = byte_count
+
+
+class ListOfBucketCounter(FixedTypeList):
+    """List of BucketCounter.
+
+    Represented by instances of BucketCounter.
+    """
+
+    def __init__(self, items=None):
+        """Create a ListOfBucketCounter with the optional parameters below.
+
+        Args:
+            items (|BucketCounter_v0x04|): Instance or a list of instances.
+
+        """
+        super().__init__(pyof_class=BucketCounter, items=items)
 
 
 # Base Classes for other messages - not meant to be directly used, so, because
@@ -297,6 +315,7 @@ class AsyncConfig(GenericMessage):
             flow_removed_mask2
                 (~pyof.v0x04.asynchronous.flow_removed.FlowRemoved):
                     A instance of FlowRemoved.
+
         """
         super().__init__(xid)
         self.packet_in_mask1 = packet_in_mask1
@@ -327,6 +346,7 @@ class RoleBaseMessage(GenericMessage):
             xid (int): OpenFlow xid to the header.
             role (:class:`~.controller2switch.common.ControllerRole`): .
             generation_id (int): Master Election Generation Id.
+
         """
         super().__init__(xid)
         self.role = role
@@ -350,6 +370,7 @@ class SwitchConfig(GenericMessage):
             flags (ConfigFlag): OFPC_* flags.
             miss_send_len (int): UBInt16 max bytes of new flow that the
                 datapath should send to the controller.
+
         """
         super().__init__(xid)
         self.flags = flags
@@ -373,6 +394,7 @@ class ExperimenterMultipartHeader(GenericStruct):
                 struct ofp_experimenter_header (
                 :class:`~pyof.v0x04.symmetric.experimenter.ExperimenterHeader`)
             exp_type: Experimenter defined.
+
         """
         super().__init__()
         self.experimenter = experimenter
@@ -394,6 +416,7 @@ class Property(GenericStruct):
         Args:
             type(|TableFeaturePropType_v0x04|):
                 Property Type value of this instance.
+
         """
         super().__init__()
         self.property_type = property_type
@@ -403,6 +426,7 @@ class Property(GenericStruct):
 
         Args:
             value: Structure to be packed.
+
         """
         self.update_length()
         return super().pack(value)
@@ -453,6 +477,7 @@ class InstructionsProperty(Property):
                 Property Type value of this instance.
             next_table_ids(|ListOfInstruction_v0x04|):
                 List of InstructionGotoTable instances.
+
         """
         super().__init__(property_type=property_type)
         self.instruction_ids = instruction_ids if instruction_ids else []
@@ -478,6 +503,7 @@ class NextTablesProperty(Property):
                 Property Type value of this instance.
             next_table_ids (|ListOfInstruction_v0x04|):
                 List of InstructionGotoTable instances.
+
         """
         super().__init__(property_type)
         self.next_table_ids = (ListOfInstruction() if next_table_ids is None
@@ -507,6 +533,7 @@ class ActionsProperty(Property):
                 Property Type value of this instance.
             action_ids(|ListOfActions_v0x04|):
                 List of Action instances.
+
         """
         super().__init__(property_type)
         self.action_ids = action_ids if action_ids else ListOfActions()
@@ -536,6 +563,7 @@ class OxmProperty(Property):
                 Property Type value of this instance.
             oxm_ids(|ListOfOxmHeader_v0x04|):
                 List of OxmHeader instances.
+
         """
         super().__init__(property_type)
         self.oxm_ids = ListOfOxmHeader() if oxm_ids is None else oxm_ids
@@ -553,6 +581,7 @@ class ListOfProperty(FixedTypeList):
 
         Args:
             items (|Property_v0x04|): Instance or a list of instances.
+
         """
         super().__init__(pyof_class=Property, items=items)
 
@@ -606,6 +635,7 @@ class TableFeatures(GenericStruct):
                 can be inserted into that table.
             properties(~pyof.v0x04.controller2switch.common.ListOfProperty):
                 List of Property intances.
+
         """
         super().__init__()
         self.table_id = table_id
@@ -623,6 +653,7 @@ class TableFeatures(GenericStruct):
 
         Args:
             value: Structure to be packed.
+
         """
         self.update_length()
         return super().pack(value)
