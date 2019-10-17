@@ -22,6 +22,18 @@ Security
 ========
 
 
+[2019.2b2] - "gil" beta2 - 2019-10-18
+**************************************
+
+Added
+=====
+- [v0x04] Created ListOfBucketCounter class to represent a list of
+  BucketCounter instances.
+
+Fixed
+=====
+- [v0x04] Fixed MultipartReply error when multipart_type is an integer.
+
 [2019.2b1] - "gil" beta1 - 2019-08-30
 **************************************
 
