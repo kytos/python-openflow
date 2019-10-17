@@ -223,6 +223,27 @@ class Bucket(GenericStruct):
         self.watch_group = watch_group
         self.actions = actions
 
+    def unpack(self, buff, offset=0):
+        """Unpack bucket.
+
+        Bucket has a dynamic content with length as first field.
+        The length is needed to compute the total buffer offset.
+        """
+        length = UBInt16()
+        length.unpack(buff, offset=offset)
+        super().unpack(buff[:offset + length.value], offset=offset)
+
+    def get_size(self, value=None):
+        """
+        Return the Bucket length.
+
+        If the object length is None, returns the minimum size.
+        """
+        if self.length is None:
+            return super().get_size()
+
+        return self.length
+
 
 class BucketCounter(GenericStruct):
     """Used in group stats replies."""
