@@ -1,54 +1,10 @@
 """Packet in message tests."""
-from unittest import TestCase
-
 from pyof.v0x04.asynchronous.packet_in import PacketIn, PacketInReason
 from pyof.v0x04.common.constants import OFP_NO_BUFFER
 from pyof.v0x04.common.flow_match import (
     Match, MatchType, OxmClass, OxmOfbMatchField, OxmTLV)
-from pyof.v0x04.common.header import Header
+from pyof.v0x04.common.port import PortNo
 from tests.test_struct import TestStruct
-
-OXMTLV = OxmTLV(oxm_class=32768,
-                oxm_field=0,
-                oxm_hasmask=0,
-                oxm_value=b'\x00\x00\x00\x16')
-
-MATCH = Match(match_type=1,
-              oxm_match_fields=[OXMTLV])
-
-PACKETIN = PacketIn(xid=0,
-                    buffer_id=257,
-                    total_len=81,
-                    reason=1,
-                    table_id=0,
-                    cookie=18446744073709551615,
-                    match=MATCH,
-                    data=81 * b'\x00')
-
-DUMP = b'\x04\n\x00{\x00\x00\x00\x00\x00\x00\x01\x01\x00Q\x01\x00\xff\xff'
-DUMP += b'\xff\xff\xff\xff\xff\xff\x00\x01\x00\x0c\x80\x00\x00\x04\x00\x00'
-DUMP += b'\x00\x16\x00\x00\x00\x00\x00\x00'
-DUMP += 81 * b'\x00'
-
-
-class TestPacketIn(TestCase):
-    """Test PacketIn class."""
-
-    def test_pack(self):
-        """Assert pack method returns a known dump."""
-        self.assertEqual(DUMP, PACKETIN.pack())
-
-    def test_unpack(self):
-        """Assert the known dump is unpacked correctly."""
-        unpacked_header = Header()
-        unpacked_header.unpack(DUMP[:8])
-        PACKETIN.update_header_length()
-        self.assertEqual(PACKETIN.header, unpacked_header)
-
-        unpacked_packetin = PacketIn()
-        unpacked_packetin.unpack(DUMP[8:])
-        unpacked_packetin.header = unpacked_header
-        self.assertEqual(PACKETIN, unpacked_packetin)
 
 
 class TestPacketInRaw(TestStruct):
@@ -65,6 +21,18 @@ class TestPacketInRaw(TestStruct):
                                     table_id=0, cookie=0x0000000000000000,
                                     match=_new_match(), data=_get_data())
         super().set_minimum_size(34)
+
+    def test_valid_physical_in_port(self):
+        """Physical port limits from 1.3.0 spec."""
+        try:
+            msg = self.get_raw_dump().read()
+        except FileNotFoundError:
+            raise self.skipTest('No raw dump file found.')
+        else:
+            max_valid = int(PortNo.OFPP_MAX.value) - 1
+            msg = self.get_raw_object()
+            if msg.in_port in (1, max_valid):
+                self.assertTrue(msg.is_valid())
 
 
 def _new_match():
