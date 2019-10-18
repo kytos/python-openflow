@@ -29,10 +29,15 @@ Added
 =====
 - [v0x04] Created ListOfBucketCounter class to represent a list of
   BucketCounter instances.
+- [v0x04] Improved unit tests for: Hello, PacketOut, FlowMod,
+  SetConfig, FlowStats, AggregateStats, PortDesc, GroupStats,
+  Error, MeterMultipartRequest and PacketIn messages.
 
 Fixed
 =====
 - [v0x04] Fixed MultipartReply error when multipart_type is an integer.
+- [v0x04] Fixed Unpack method for the Bucket class to support
+  variable length.
 
 [2019.2b1] - "gil" beta1 - 2019-08-30
 **************************************
