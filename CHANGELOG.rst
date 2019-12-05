@@ -21,6 +21,12 @@ Fixed
 Security
 ========
 
+[2019.2b3] - "gil" beta3 - 2019-12-06
+*************************************
+
+Fixed
+=====
+- Improved code quality fixing tox information code issues.
 
 [2019.2b2] - "gil" beta2 - 2019-10-18
 **************************************
