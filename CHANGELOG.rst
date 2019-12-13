@@ -1,7 +1,7 @@
 ##########
 Change log
 ##########
-All notable changes to the python-openflow project are documented in this file.
+All notable changes to the `python-openflow` project are documented in this file.
 
 [UNRELEASED] - Under development
 ********************************
@@ -22,8 +22,8 @@ Security
 ========
 
 
-[2019.2rc1] - "gil" rc1 - 2019-12-13
-************************************
+[2019.2rc1] - "gil" release candidate 1 - 2019-12-13
+****************************************************
 
 No major changes since the last pre-release.
 
@@ -83,7 +83,7 @@ Fixed
  - This is the stable version of the last beta pre-releases.
    No changes since the last rc1.
 
-[2019.1rc1] - "fafa" release candidade 1 - 2019-07-05
+[2019.1rc1] - "fafa" release candidate 1 - 2019-07-05
 *****************************************************
 
  - No changes since last pre-release
@@ -121,7 +121,7 @@ Updated
  - This is the stable version of the last beta pre-releases.
    No changes since the last rc1.
 
-[2018.2rc1] - "ernesto" release candidade 1 - 2018-12-20
+[2018.2rc1] - "ernesto" release candidate 1 - 2018-12-20
 ********************************************************
 
  - No changes since last pre-release
