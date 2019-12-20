@@ -21,6 +21,11 @@ Fixed
 Security
 ========
 
+[2019.2] - "gil" stable version - 2019-12-20
+*********************************************
+
+- This is the stable version of the last beta pre-releases.
+  No changes since the last rc1.
 
 [2019.2rc1] - "gil" release candidate 1 - 2019-12-13
 ****************************************************
