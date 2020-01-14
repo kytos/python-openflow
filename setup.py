@@ -112,6 +112,7 @@ class Linter(SimpleCommand):
 setup(name='python-openflow',
       version=__version__,
       description='Library to parse and generate OpenFlow messages',
+      long_description=open("README.rst", "r").read(),
       url='http://github.com/kytos/python-openflow',
       author='Kytos Team',
       author_email='devel@lists.kytos.io',
