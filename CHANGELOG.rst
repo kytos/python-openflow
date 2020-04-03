@@ -22,10 +22,16 @@ Security
 ========
 
 
-[2020.1b2] - "helena" beta2 - 2020-04-03
+[2020.1b2] - "helena" beta2 - UNRELEASED
 ****************************************
 
-No major changes since last release.
+Changed
+=======
+- Upgraded requirements for `dev` install mode
+
+Fixed
+=====
+- Fixed installation with setuptools 40.6+
 
 
 [2020.1b1] - "helena" beta1 - 2020-03-09
