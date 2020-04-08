@@ -22,7 +22,7 @@ Security
 ========
 
 
-[2020.1b2] - "helena" beta2 - UNRELEASED
+[2020.1b2] - "helena" beta2 - 2020-04-08
 ****************************************
 
 Changed
