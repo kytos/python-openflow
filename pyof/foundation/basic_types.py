@@ -59,7 +59,6 @@ class Pad(GenericType):
             buff: Buffer where data is located.
             offset (int): Where data stream begins.
         """
-        pass
 
     def pack(self, value=None):
         """Pack the object.
@@ -472,12 +471,11 @@ class BinaryData(GenericType):
 
         if hasattr(value, 'pack') and callable(value.pack):
             return value.pack()
-        elif isinstance(value, bytes):
+        if isinstance(value, bytes):
             return value
-        elif value is None:
+        if value is None:
             return b''
-        else:
-            raise ValueError(f"BinaryData can't be {type(value)} = '{value}'")
+        raise ValueError(f"BinaryData can't be {type(value)} = '{value}'")
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -606,7 +604,7 @@ class TypeList(list, GenericStruct):
             if not self:
                 # If this is a empty list, then returns zero
                 return 0
-            elif issubclass(type(self[0]), GenericType):
+            if issubclass(type(self[0]), GenericType):
                 # If the type of the elements is GenericType, then returns the
                 # length of the list multiplied by the size of the GenericType.
                 return len(self) * self[0].get_size()

@@ -92,13 +92,14 @@ class TableFeaturePropType(IntEnum):
     # Experimenter for table-miss.
     OFPTFPT_EXPERIMENTER_MISS = 0xFFFF
 
+    # pylint: disable=comparison-with-callable
     def find_class(self):
         """Return a class related with this type."""
         if self.value <= 1:
             return InstructionsProperty
-        elif self.value <= 3:
+        if self.value <= 3:
             return NextTablesProperty
-        elif self.value <= 7:
+        if self.value <= 7:
             return ActionsProperty
 
         return OxmProperty

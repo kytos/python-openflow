@@ -86,12 +86,10 @@ class Instruction(GenericStruct):
         if value is None:
             self.update_length()
             return super().pack()
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def update_length(self):
         """Update length attribute."""

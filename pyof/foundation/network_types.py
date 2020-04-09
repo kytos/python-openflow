@@ -188,7 +188,6 @@ class VLAN(GenericStruct):
         """Assure this is a valid VLAN header instance."""
         if self.tpid.value not in (EtherType.VLAN, EtherType.VLAN_QINQ):
             raise UnpackException
-        return
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -409,13 +408,10 @@ class GenericTLV(GenericStruct):
             output = self.header.pack()
             output += self.value.pack()
             return output
-
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

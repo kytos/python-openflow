@@ -3,6 +3,7 @@
 Run "python3 setup --help-commands" to list all available commands and their
 descriptions.
 """
+import sys
 from abc import abstractmethod
 # Disabling checks due to https://github.com/PyCQA/pylint/issues/73
 # pylint: disable=import-error,no-name-in-module
@@ -32,19 +33,16 @@ class SimpleCommand(Command):
 
         Use *call* instead of *check_call* to ignore failures.
         """
-        pass
 
     def run_command(self, command_class):
         """Run another command with same __init__ arguments."""
         command_class(*self.__args, **self.__kwargs).run()
 
     def initialize_options(self):
-        """Set defa ult values for options."""
-        pass
+        """Set default values for options."""
 
     def finalize_options(self):
         """Post-process options."""
-        pass
 
 
 class Cleaner(clean):
@@ -106,8 +104,7 @@ class Linter(SimpleCommand):
             print('No linter error found.')
         except CalledProcessError:
             print('Linter check failed. Fix the error(s) above and try again.')
-            # disable error exit: 50+ new warnings after pylint upgrade
-            #exit(-1)
+            sys.exit(-1)
 
 
 setup(name='python-openflow',

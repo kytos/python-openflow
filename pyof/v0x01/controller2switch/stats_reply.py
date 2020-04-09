@@ -83,7 +83,7 @@ class StatsReply(GenericMessage):
 
         if pyof_class is None:
             return BinaryData(b'')
-        elif pyof_class is DescStats:
+        if pyof_class is DescStats:
             return pyof_class()
 
         return FixedTypeList(pyof_class=pyof_class)

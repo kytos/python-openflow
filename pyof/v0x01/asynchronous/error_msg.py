@@ -223,12 +223,10 @@ class ErrorMsg(GenericMessage):
             if data_backup is not None:
                 self.data = data_backup
             return packed
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack *buff* into this object.
