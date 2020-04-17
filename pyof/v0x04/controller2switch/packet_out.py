@@ -79,12 +79,10 @@ class PacketOut(GenericMessage):
         if value is None:
             self._update_actions_len()
             return super().pack()
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.

@@ -71,7 +71,7 @@ class GenericType:
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return self.pack() == other.pack()
-        elif hasattr(other, 'value'):
+        if hasattr(other, 'value'):
             return self.value == other.value
         return self.value == other
 
@@ -141,10 +141,9 @@ class GenericType:
             if isinstance(self._value, self.enum_ref):
                 return self._value.value
             return self._value
-        elif self.is_bitmask():
+        if self.is_bitmask():
             return self._value.bitmask
-        else:
-            return self._value
+        return self._value
 
     def pack(self, value=None):
         r"""Pack the value as a binary representation.
@@ -272,10 +271,10 @@ class MetaStruct(type):
 
     # pylint: disable=unused-argument
     @classmethod
-    def __prepare__(mcs, name, bases, **kwargs):
+    def __prepare__(cls, name, bases, **kwargs):
         return OrderedDict()
 
-    def __new__(mcs, name, bases, classdict, **kwargs):
+    def __new__(cls, name, bases, classdict, **kwargs):
         """Inherit attributes from parent class and update their versions.
 
         Here is the moment that the new class is going to be created. During
@@ -321,7 +320,7 @@ class MetaStruct(type):
                                                                curr_version)
 
                     if attr_name == 'header':
-                        attr = mcs._header_message_type_update(obj, attr)
+                        attr = cls._header_message_type_update(obj, attr)
 
                     inherited_attributes.update([attr])
                 #: We are going to inherit just from the 'closest parent'
@@ -341,7 +340,7 @@ class MetaStruct(type):
             inherited_attributes.update(classdict)
             classdict = inherited_attributes
 
-        return super().__new__(mcs, name, bases, classdict, **kwargs)
+        return super().__new__(cls, name, bases, classdict, **kwargs)
 
     @staticmethod
     def _header_message_type_update(obj, attr):
@@ -478,7 +477,7 @@ class MetaStruct(type):
         return (name, obj)
 
 
-class GenericStruct(object, metaclass=MetaStruct):
+class GenericStruct(metaclass=MetaStruct):
     """Class inherited by all OpenFlow structs.
 
     If you need to insert a method that will be used by all structs, this is
@@ -536,7 +535,7 @@ class GenericStruct(object, metaclass=MetaStruct):
         for _attr, _class in self._get_attributes():
             if isinstance(_attr, _class):
                 return True
-            elif issubclass(_class, GenericType):
+            if issubclass(_class, GenericType):
                 if GenericStruct._attr_fits_into_class(_attr, _class):
                     return True
             elif not isinstance(_attr, _class):
@@ -656,12 +655,10 @@ class GenericStruct(object, metaclass=MetaStruct):
         if value is None:
             return sum(cls_val.get_size(obj_val) for obj_val, cls_val in
                        self._get_attributes())
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.get_size()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def pack(self, value=None):
         """Pack the struct in a binary representation.
@@ -682,24 +679,21 @@ class GenericStruct(object, metaclass=MetaStruct):
                 error_msg = "Error on validation prior to pack() on class "
                 error_msg += "{}.".format(type(self).__name__)
                 raise ValidationError(error_msg)
-            else:
-                message = b''
-                # pylint: disable=no-member
-                for attr_info in self._get_named_attributes():
-                    name, instance_value, class_value = attr_info
-                    try:
-                        message += class_value.pack(instance_value)
-                    except PackException as pack_exception:
-                        cls = type(self).__name__
-                        msg = f'{cls}.{name} - {pack_exception}'
-                        raise PackException(msg)
-                return message
-        elif isinstance(value, type(self)):
+            message = b''
+            # pylint: disable=no-member
+            for attr_info in self._get_named_attributes():
+                name, instance_value, class_value = attr_info
+                try:
+                    message += class_value.pack(instance_value)
+                except PackException as pack_exception:
+                    cls = type(self).__name__
+                    msg = f'{cls}.{name} - {pack_exception}'
+                    raise PackException(msg)
+            return message
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary struct into this object's attributes.
@@ -804,12 +798,10 @@ class GenericMessage(GenericStruct):
         if value is None:
             self.update_header_length()
             return super().pack()
-        elif isinstance(value, type(self)):
+        if isinstance(value, type(self)):
             return value.pack()
-        else:
-            msg = "{} is not an instance of {}".format(value,
-                                                       type(self).__name__)
-            raise PackException(msg)
+        msg = "{} is not an instance of {}".format(value, type(self).__name__)
+        raise PackException(msg)
 
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
@@ -850,7 +842,7 @@ class MetaBitMask(type):
     access object.ELEMENT and recover either values or names).
     """
 
-    def __new__(mcs, name, bases, classdict):
+    def __new__(cls, name, bases, classdict):
         """Convert class attributes into enum elements."""
         _enum = OrderedDict([(key, value) for key, value in classdict.items()
                              if key[0] != '_' and not
@@ -861,7 +853,7 @@ class MetaBitMask(type):
                          if key[0] == '_' or hasattr(value, '__call__') or
                          isinstance(value, property)}
             classdict['_enum'] = _enum
-        return type.__new__(mcs, name, bases, classdict)
+        return type.__new__(cls, name, bases, classdict)
 
     def __getattr__(cls, name):
         return cls._enum[name]
@@ -873,7 +865,7 @@ class MetaBitMask(type):
         return res
 
 
-class GenericBitMask(object, metaclass=MetaBitMask):
+class GenericBitMask(metaclass=MetaBitMask):
     """Base class for enums that use bitmask values."""
 
     def __init__(self, bitmask=None):

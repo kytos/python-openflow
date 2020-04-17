@@ -119,7 +119,7 @@ class ActionOutput(ActionHeader):
     port = UBInt16()
     max_length = UBInt16()
 
-    _allowed_types = ActionType.OFPAT_OUTPUT,
+    _allowed_types = (ActionType.OFPAT_OUTPUT,)
 
     def __init__(self, port=None, max_length=UBINT16_MAX_VALUE):
         """Create an ActionOutput with the optional parameters below.
@@ -143,7 +143,7 @@ class ActionStripVlan(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_STRIP_VLAN,
+    _allowed_types = (ActionType.OFPAT_STRIP_VLAN,)
 
     def __init__(self):
         """Construct the ActionHeader with the appropriate ActionType.
@@ -168,7 +168,7 @@ class ActionEnqueue(ActionHeader):
     pad = Pad(6)
     queue_id = UBInt32()
 
-    _allowed_types = ActionType.OFPAT_ENQUEUE,
+    _allowed_types = (ActionType.OFPAT_ENQUEUE,)
 
     def __init__(self, port=None, queue_id=None):
         """Create an ActionEnqueue with the optional parameters below.
@@ -194,7 +194,7 @@ class ActionVlanVid(ActionHeader):
     #: Pad for bit alignment.
     pad2 = Pad(2)
 
-    _allowed_types = ActionType.OFPAT_SET_VLAN_VID,
+    _allowed_types = (ActionType.OFPAT_SET_VLAN_VID,)
 
     def __init__(self, vlan_id=None):
         """Create an ActionVlanVid with the optional parameters below.
@@ -213,7 +213,7 @@ class ActionVlanPCP(ActionHeader):
     #: Pad for bit alignment.
     pad = Pad(3)
 
-    _allowed_types = ActionType.OFPAT_SET_VLAN_PCP,
+    _allowed_types = (ActionType.OFPAT_SET_VLAN_PCP,)
 
     def __init__(self, vlan_pcp=None):
         """Create an ActionVlanPCP with the optional parameters below.
@@ -282,7 +282,7 @@ class ActionNWTos(ActionHeader):
     #: Pad for bit alignment.
     pad = Pad(3)
 
-    _allowed_types = ActionType.OFPAT_SET_NW_TOS,
+    _allowed_types = (ActionType.OFPAT_SET_NW_TOS,)
 
     def __init__(self, action_type=None, nw_tos=None):
         """Create an ActionNWTos with the optional parameters below.
@@ -327,7 +327,7 @@ class ActionVendorHeader(ActionHeader):
 
     vendor = UBInt32()
 
-    _allowed_types = ActionType.OFPAT_VENDOR,
+    _allowed_types = (ActionType.OFPAT_VENDOR,)
 
     def __init__(self, length=None, vendor=None):
         """Create an ActionVendorHeader with the optional parameters below.

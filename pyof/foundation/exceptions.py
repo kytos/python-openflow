@@ -51,10 +51,6 @@ class WrongListItemType(Exception):
 class UnpackException(Exception):
     """Error while unpacking."""
 
-    pass
-
 
 class PackException(Exception):
     """Error while unpacking."""
-
-    pass

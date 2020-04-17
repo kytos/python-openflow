@@ -112,7 +112,7 @@ class ActionHeader(GenericStruct):
         """Return the action length including the padding (multiple of 8)."""
         if isinstance(value, ActionHeader):
             return value.get_size()
-        elif value is None:
+        if value is None:
             current_size = super().get_size()
             return ceil(current_size / 8) * 8
         raise ValueError(f'Invalid value "{value}" for Action*.get_size()')
@@ -156,7 +156,7 @@ class ActionExperimenter(ActionHeader):
     experimenter = UBInt32()
     body = BinaryData()
 
-    _allowed_types = ActionType.OFPAT_EXPERIMENTER,
+    _allowed_types = (ActionType.OFPAT_EXPERIMENTER,)
 
     def __init__(self, length=None, experimenter=None, body=None):
         """Create ActionExperimenterHeader with the optional parameters below.
@@ -178,7 +178,7 @@ class ActionGroup(ActionHeader):
 
     group_id = UBInt32()
 
-    _allowed_types = ActionType.OFPAT_GROUP,
+    _allowed_types = (ActionType.OFPAT_GROUP,)
 
     def __init__(self, group_id=None):
         """Create an ActionGroup with the optional parameters below.
@@ -197,7 +197,7 @@ class ActionDecMPLSTTL(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_DEC_MPLS_TTL,
+    _allowed_types = (ActionType.OFPAT_DEC_MPLS_TTL,)
 
     def __init__(self):
         """Create an ActionDecMPLSTTL."""
@@ -210,7 +210,7 @@ class ActionSetMPLSTTL(ActionHeader):
     mpls_ttl = UBInt8()
     pad = Pad(3)
 
-    _allowed_types = ActionType.OFPAT_SET_MPLS_TTL,
+    _allowed_types = (ActionType.OFPAT_SET_MPLS_TTL,)
 
     def __init__(self, mpls_ttl=None):
         """Create an ActionSetMPLSTTL with the optional parameters below.
@@ -227,7 +227,7 @@ class ActionCopyTTLIn(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_COPY_TTL_IN,
+    _allowed_types = (ActionType.OFPAT_COPY_TTL_IN,)
 
     def __init__(self):
         """Create an ActionCopyTTLIn."""
@@ -239,7 +239,7 @@ class ActionCopyTTLOut(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_COPY_TTL_OUT,
+    _allowed_types = (ActionType.OFPAT_COPY_TTL_OUT,)
 
     def __init__(self):
         """Create an ActionCopyTTLOut."""
@@ -251,7 +251,7 @@ class ActionPopVLAN(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_POP_VLAN,
+    _allowed_types = (ActionType.OFPAT_POP_VLAN,)
 
     def __init__(self):
         """Create an ActionPopVLAN."""
@@ -263,7 +263,7 @@ class ActionPopPBB(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_POP_PBB,
+    _allowed_types = (ActionType.OFPAT_POP_PBB,)
 
     def __init__(self):
         """Create an ActionPopPBB."""
@@ -275,7 +275,7 @@ class ActionDecNWTTL(ActionHeader):
 
     pad = Pad(4)
 
-    _allowed_types = ActionType.OFPAT_DEC_NW_TTL,
+    _allowed_types = (ActionType.OFPAT_DEC_NW_TTL,)
 
     def __init__(self):
         """Create a ActionDecNWTTL."""
@@ -288,7 +288,7 @@ class ActionSetNWTTL(ActionHeader):
     nw_ttl = UBInt8()
     pad = Pad(3)
 
-    _allowed_types = ActionType.OFPAT_SET_NW_TTL,
+    _allowed_types = (ActionType.OFPAT_SET_NW_TTL,)
 
     def __init__(self, nw_ttl=None):
         """Create an ActionSetNWTTL with the optional parameters below.
@@ -314,7 +314,7 @@ class ActionOutput(ActionHeader):
     max_length = UBInt16()
     pad = Pad(6)
 
-    _allowed_types = ActionType.OFPAT_OUTPUT,
+    _allowed_types = (ActionType.OFPAT_OUTPUT,)
 
     def __init__(self, port=None,
                  max_length=ControllerMaxLen.OFPCML_NO_BUFFER):
@@ -335,7 +335,7 @@ class ActionPopMPLS(ActionHeader):
     ethertype = UBInt16()
     pad = Pad(2)
 
-    _allowed_types = ActionType.OFPAT_POP_MPLS,
+    _allowed_types = (ActionType.OFPAT_POP_MPLS,)
 
     def __init__(self, ethertype=None):
         """Create an ActionPopMPLS with the optional parameters below.
@@ -373,7 +373,7 @@ class ActionSetField(ActionHeader):
 
     field = OxmTLV()
 
-    _allowed_types = ActionType.OFPAT_SET_FIELD,
+    _allowed_types = (ActionType.OFPAT_SET_FIELD,)
 
     def __init__(self, field=None):
         """Create a ActionSetField with the optional parameters below.
@@ -416,7 +416,7 @@ class ActionSetQueue(ActionHeader):
 
     queue_id = UBInt32()
 
-    _allowed_types = ActionType.OFPAT_SET_QUEUE,
+    _allowed_types = (ActionType.OFPAT_SET_QUEUE,)
 
     def __init__(self, queue_id=None):
         """Create an ActionSetQueue with the optional parameters below.

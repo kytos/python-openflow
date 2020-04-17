@@ -296,7 +296,7 @@ class OxmTLV(GenericStruct):
         """
         if self.oxm_class == OxmClass.OFPXMC_OPENFLOW_BASIC:
             return OxmOfbMatchField(self.oxm_field).value
-        elif not isinstance(self.oxm_field, int) or self.oxm_field > 127:
+        if not isinstance(self.oxm_field, int) or self.oxm_field > 127:
             raise ValueError('oxm_field above 127: "{self.oxm_field}".')
         return self.oxm_field
 
@@ -361,7 +361,7 @@ class Match(GenericStruct):
         """Pack and complete the last byte by padding."""
         if isinstance(value, Match):
             return value.pack()
-        elif value is None:
+        if value is None:
             self._update_match_length()
             packet = super().pack()
             return self._complete_last_byte(packet)
@@ -379,7 +379,7 @@ class Match(GenericStruct):
         """Return the packet length including the padding (multiple of 8)."""
         if isinstance(value, Match):
             return value.get_size()
-        elif value is None:
+        if value is None:
             current_size = super().get_size()
             return ceil(current_size / 8) * 8
         raise ValueError(f'Invalid value "{value}" for Match.get_size()')
