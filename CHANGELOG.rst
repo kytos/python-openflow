@@ -21,6 +21,16 @@ Fixed
 Security
 ========
 
+[2020.1b3] - "helena" beta3 - 2020-05-19
+****************************************
+
+Added
+=====
+- Enabled Travis CI.
+
+Fixed
+=====
+- Fixed some linter issues.
 
 [2020.1b2] - "helena" beta2 - 2020-04-08
 ****************************************
