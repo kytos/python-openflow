@@ -176,7 +176,9 @@ class TestStruct(unittest.TestCase):
 
     def test_minimum_size(self):
         """Test struct minimum size."""
-        obj = TestStruct._msg_cls()
+        """Temporary solution to solve issue of minimum size test skipping in
+	some test cases"""
+	obj = TestStruct._msg_cls()
         if self._min_size is None:
             self._min_size = obj.get_size()
         self.assertEqual(obj.get_size(), self._min_size)
