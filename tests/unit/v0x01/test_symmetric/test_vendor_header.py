@@ -6,6 +6,10 @@ from tests.unit.test_struct import TestStruct
 class TestVendorHeader(TestStruct):
     """Vendor message tests (also those in :class:`.TestDump`)."""
 
+    @classmethod
+    def setUpClass(cls):
+        super().set_minimum_size(8)
+
     def test_unpack(self):
         """Test unpack VendorHeader message."""
         message = b'My custom vendor extra data.'

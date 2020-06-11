@@ -178,5 +178,5 @@ class TestStruct(unittest.TestCase):
         """Test struct minimum size."""
         obj = TestStruct._msg_cls()
         if self._min_size is None:
-            self._min_size = obj.get_size()
+            raise Exception(f'{self.__class__.__name__}._min_size is not set')
         self.assertEqual(obj.get_size(), self._min_size)
