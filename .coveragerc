@@ -1,2 +1,3 @@
 [run]
 source = pyof
+omit = .eggs/*,.tox/*,*tests*,setup.py
