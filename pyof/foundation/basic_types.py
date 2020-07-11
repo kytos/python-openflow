@@ -412,7 +412,7 @@ class IPV6Address(GenericType):
 
         Raises:
             struct.error: If the value does not fit the binary format.
-            
+
         """
         if isinstance(value, type(self)):
             return value.pack()
@@ -431,7 +431,7 @@ class IPV6Address(GenericType):
             msg += "Class: {}, struct error: {} ".format(type(value).__name__,
                                                          err)
             raise exceptions.PackException(msg)
-    
+
     def unpack(self, buff, offset=0):
         """Unpack a binary message into this object's attributes.
 
@@ -448,16 +448,16 @@ class IPV6Address(GenericType):
         """
         def _int2hex(number):
             return "{0:0{1}x}".format(number, 4)
-        
+
         try:
             unpacked_data = struct.unpack('!8H', buff[offset:offset+16])
         except struct.error as exception:
             raise exceptions.UnpackException('%s; %s: %s' % (exception,
                                                              offset, buff))
-        
+
         transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
         self._value = transformed_data
-    
+
     def get_size(self, value=None):
         """Return the ipv6 address size in bytes.
 
@@ -471,7 +471,7 @@ class IPV6Address(GenericType):
 
         """
         return 16
-    
+
     def __deepcopy__(self, memo):
         """Improve deepcopy speed."""
         return IPV6Address(address=self._value, netmask=self.netmask)
