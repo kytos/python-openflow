@@ -377,6 +377,7 @@ class IPV6Address(GenericType):
             index = temp.index('')
             temp = [x for x in temp if x != '']
             address = temp[:index] + ['0'] * (8 - len(temp)) + temp[index:]
+            address = ':'.join(address)
 
         super().__init__(address)
         self.netmask = int(netmask)
