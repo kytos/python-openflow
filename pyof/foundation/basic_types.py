@@ -118,7 +118,7 @@ class UBInt64(GenericType):
 class UBInt128(GenericType):
     """Format character for an Unsigned Long Long.
 
-    Class for an 64-bit (8-byte) Unsigned Integer.
+    Class for an 128-bit (16-byte) Unsigned Integer.
     """
 
     _fmt = "!8H"
