@@ -362,7 +362,7 @@ class IPv6Address(GenericType):
         """Create an IPv6Address with the parameters below.
 
         Args:
-            address (str): IP Address using ipv6.
+            address (str): IP Address using IPv6.
             Defaults to '0000:0000:0000:0000:0000:0000:0000:0000/128'
         """
         if '/' in address:
