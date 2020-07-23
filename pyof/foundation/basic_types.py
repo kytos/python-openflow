@@ -388,7 +388,7 @@ class IPv6Address(GenericType):
         If the value is None the self._value will be used to pack.
 
         Args:
-            value (str): IP Address with ipv6 format.
+            value (str): IP Address with IPv6 format.
 
         Returns:
             bytes: The binary representation.
@@ -410,7 +410,7 @@ class IPv6Address(GenericType):
             value = value.split(':')
             return struct.pack('!8H', *[int(x, 16) for x in value])
         except struct.error as err:
-            msg = "IPV6Address error. "
+            msg = "IPv6Address error. "
             msg += "Class: {}, struct error: {} ".format(type(value).__name__,
                                                          err)
             raise exceptions.PackException(msg)
@@ -442,7 +442,7 @@ class IPv6Address(GenericType):
         self._value = transformed_data
 
     def get_size(self, value=None):
-        """Return the ipv6 address size in bytes.
+        """Return the IPv6 address size in bytes.
 
         Args:
             value: In structs, the user can assign other value instead of
@@ -457,7 +457,7 @@ class IPv6Address(GenericType):
 
     def __deepcopy__(self, memo):
         """Improve deepcopy speed."""
-        return IPV6Address(address=self._value, netmask=self.netmask)
+        return IPv6Address(address=self._value, netmask=self.netmask)
 
 
 class HWAddress(GenericType):
