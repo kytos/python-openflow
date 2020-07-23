@@ -359,7 +359,7 @@ class IPv6Address(GenericType):
 
     def __init__(self, address="0000:0000:0000:0000:0000:0000:0000:0000/128",
                  netmask=None):
-        """Create an IPV6Address with the parameters below.
+        """Create an IPv6Address with the parameters below.
 
         Args:
             address (str): IP Address using ipv6.
