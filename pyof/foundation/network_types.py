@@ -10,7 +10,7 @@ from enum import IntEnum
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
-    BinaryData, FixedTypeList, HWAddress, IPAddress, IPV6Address, UBInt8,
+    BinaryData, FixedTypeList, HWAddress, IPAddress, IPv6Address, UBInt8,
     UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
@@ -632,10 +632,10 @@ class IPv6(GenericStruct):
     next_header = UBInt8()
     #: hop_limit (:class:`UBInt8`): Hop limit
     hop_limit = UBInt8()
-    #: source (:class:`IPV6Address`): Source IPv6 address
-    source = IPV6Address()
-    #: destination (:class:`IPV6Address`): Destination IPv6 address
-    destination = IPV6Address()
+    #: source (:class:`IPv6Address`): Source IPv6 address
+    source = IPv6Address()
+    #: destination (:class:`IPv6Address`): Destination IPv6 address
+    destination = IPv6Address()
     #: data (:class:`BinaryData`): Packet data
     data = BinaryData()
 
@@ -664,8 +664,8 @@ class IPv6(GenericStruct):
         self.length = length
         self.next_header = next_header
         self.hop_limit = hop_limit
-        self.source = IPV6Address(source)
-        self.destination = IPV6Address(destination)
+        self.source = IPv6Address(source)
+        self.destination = IPv6Address(destination)
         self.data = data
 
     def pack(self, value=None):
