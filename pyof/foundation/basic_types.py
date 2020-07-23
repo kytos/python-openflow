@@ -352,8 +352,8 @@ class IPAddress(GenericType):
         return IPAddress(address=self._value, netmask=self.netmask)
 
 
-class IPV6Address(GenericType):
-    """Defines a IPV6 address."""
+class IPv6Address(GenericType):
+    """Defines a IPv6 address."""
 
     netmask = UBInt128()
 
