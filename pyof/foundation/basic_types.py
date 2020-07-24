@@ -115,6 +115,15 @@ class UBInt64(GenericType):
     _fmt = "!Q"
 
 
+class UBInt128(GenericType):
+    """Format character for an Unsigned Long Long.
+
+    Class for an 128-bit (16-byte) Unsigned Integer.
+    """
+
+    _fmt = "!8H"
+
+
 class DPID(GenericType):
     """DataPath ID. Identifies a switch."""
 
@@ -341,6 +350,114 @@ class IPAddress(GenericType):
     def __deepcopy__(self, memo):
         """Improve deepcopy speed."""
         return IPAddress(address=self._value, netmask=self.netmask)
+
+
+class IPv6Address(GenericType):
+    """Defines a IPv6 address."""
+
+    netmask = UBInt128()
+
+    def __init__(self, address="0000:0000:0000:0000:0000:0000:0000:0000/128",
+                 netmask=None):
+        """Create an IPv6Address with the parameters below.
+
+        Args:
+            address (str): IP Address using IPv6.
+            Defaults to '0000:0000:0000:0000:0000:0000:0000:0000/128'
+        """
+        if '/' in address:
+            address, netmask = address.split('/')
+        else:
+            netmask = 128 if netmask is None else netmask
+
+        if address == '::':
+            address = '0:0:0:0:0:0:0:0'
+        elif '::' in address:
+            temp = address.split(':')
+            index = temp.index('')
+            temp = [x for x in temp if x != '']
+            address = temp[:index] + ['0'] * (8 - len(temp)) + temp[index:]
+            address = ':'.join(address)
+
+        super().__init__(address)
+        self.netmask = int(netmask)
+
+    def pack(self, value=None):
+        """Pack the value as a binary representation.
+
+        If the value is None the self._value will be used to pack.
+
+        Args:
+            value (str): IP Address with IPv6 format.
+
+        Returns:
+            bytes: The binary representation.
+
+        Raises:
+            struct.error: If the value does not fit the binary format.
+
+        """
+        if isinstance(value, type(self)):
+            return value.pack()
+
+        if value is None:
+            value = self._value
+
+        if value.find('/') >= 0:
+            value = value.split('/')[0]
+
+        try:
+            value = value.split(':')
+            return struct.pack('!8H', *[int(x, 16) for x in value])
+        except struct.error as err:
+            msg = "IPv6Address error. "
+            msg += "Class: {}, struct error: {} ".format(type(value).__name__,
+                                                         err)
+            raise exceptions.PackException(msg)
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary message into this object's attributes.
+
+        Unpack the binary value *buff* and update this object attributes based
+        on the results.
+
+        Args:
+            buff (bytes): Binary data package to be unpacked.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            Exception: If there is a struct unpacking error.
+
+        """
+        def _int2hex(number):
+            return "{0:0{1}x}".format(number, 4)
+
+        try:
+            unpacked_data = struct.unpack('!8H', buff[offset:offset+16])
+        except struct.error as exception:
+            raise exceptions.UnpackException('%s; %s: %s' % (exception,
+                                                             offset, buff))
+
+        transformed_data = ':'.join([_int2hex(x) for x in unpacked_data])
+        self._value = transformed_data
+
+    def get_size(self, value=None):
+        """Return the IPv6 address size in bytes.
+
+        Args:
+            value: In structs, the user can assign other value instead of
+                this class' instance. Here, in such cases, ``self`` is a class
+                attribute of the struct.
+
+        Returns:
+            int: The address size in bytes.
+
+        """
+        return 16
+
+    def __deepcopy__(self, memo):
+        """Improve deepcopy speed."""
+        return IPv6Address(address=self._value, netmask=self.netmask)
 
 
 class HWAddress(GenericType):
