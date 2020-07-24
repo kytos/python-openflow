@@ -10,7 +10,8 @@ from enum import IntEnum
 # Local source tree imports
 from pyof.foundation.base import GenericStruct
 from pyof.foundation.basic_types import (
-    BinaryData, FixedTypeList, HWAddress, IPAddress, UBInt8, UBInt16)
+    BinaryData, FixedTypeList, HWAddress, IPAddress, IPv6Address, UBInt8,
+    UBInt16, UBInt32)
 from pyof.foundation.exceptions import PackException, UnpackException
 
 __all__ = ('ARP', 'Ethernet', 'EtherType', 'GenericTLV', 'IPv4', 'VLAN',
@@ -609,6 +610,105 @@ class IPv4(GenericStruct):
         else:
             self.data = self.options.value
             self.options = b''
+
+
+class IPv6(GenericStruct):
+    """IPv6 packet "struct".
+
+    Contains all fields of an IP version 6 packet header, plus the upper layer
+    content as binary data.
+    Some of the fields were merged together because of their size being
+    inferior to 8 bits. They are represented as a single class attribute, but
+    pack/unpack methods will take into account the values in individual
+    instance attributes.
+    """
+
+    #: _version_tclass_flabel (:class:`UBInt32`): IP protocol version +
+    #: Traffic Class + Flow Label
+    _version_tclass_flabel = UBInt32()
+    #: length (:class:`UBInt16`): Payload length (bytes)
+    length = UBInt16()
+    #: next_header (:class:`UBInt8`): Next header
+    next_header = UBInt8()
+    #: hop_limit (:class:`UBInt8`): Hop limit
+    hop_limit = UBInt8()
+    #: source (:class:`IPv6Address`): Source IPv6 address
+    source = IPv6Address()
+    #: destination (:class:`IPv6Address`): Destination IPv6 address
+    destination = IPv6Address()
+    #: data (:class:`BinaryData`): Packet data
+    data = BinaryData()
+
+    def __init__(self, version=6, tclass=0, flabel=0, length=0,
+                 next_header=0, hop_limit=255, source="0:0:0:0:0:0:0:0",
+                 destination="0:0:0:0:0:0:0:0", data=b''):
+        """Create an IPv6 with the parameters below.
+        Args:
+            version (int): IP protocol version. Defaults to 6.
+            tclass (int): DS (6 bits) + ECN (2 bits). Default is 0.
+            flabel (int): Flow label. Defaults to 0.
+            length (int): Payload length in bytes. Defaults to 0.
+            next_header (int): Type of next header or protocol field.
+                               Defaults to 0.
+            hop_limit (int): Packet hop limit. Defaults to 255.
+            source (str): Source IPv6 address.
+                          Defaults to "0:0:0:0:0:0:0:0".
+            destination (str): Destination IPv6 address.
+                               Defaults to "0:0:0:0:0:0:0:0".
+            data (bytes): Packet data. Defaults to empty bytes.
+        """
+        super().__init__()
+        self.version = version
+        self.tclass = tclass
+        self.flabel = flabel
+        self.length = length
+        self.next_header = next_header
+        self.hop_limit = hop_limit
+        self.source = IPv6Address(source)
+        self.destination = IPv6Address(destination)
+        self.data = data
+
+    def pack(self, value=None):
+        """Pack the struct in a binary representation.
+
+        Merge some fields to ensure correct packing.
+
+        Returns:
+            bytes: Binary representation of this instance.
+
+        """
+        # Set the correct packet length based on header length and data
+        self.length = len(self.data)
+
+        _version_tclass = (self.version << 28) | (self.tclass << 20)
+        self._version_tclass_flabel = _version_tclass | self.flabel
+
+        return super().pack()
+
+    def unpack(self, buff, offset=0):
+        """Unpack a binary struct into this object's attributes.
+
+        Return the values instead of the lib's basic types.
+
+        Args:
+            buff (bytes): Binary buffer.
+            offset (int): Where to begin unpacking.
+
+        Raises:
+            :exc:`~.exceptions.UnpackException`: If unpack fails.
+
+        """
+        super().unpack(buff, offset)
+
+        self.version = self._version_tclass_flabel.value >> 28
+        self.tclass = (self._version_tclass_flabel.value >> 20) & 255
+        self.flabel = self._version_tclass_flabel.value & 1048575
+        self.length = self.length.value
+        self.next_header = self.next_header.value
+        self.hop_limit = self.hop_limit.value
+        self.source = self.source.value
+        self.destination = self.destination.value
+        self.data = self.data.value
 
 
 class TLVWithSubType(GenericTLV):

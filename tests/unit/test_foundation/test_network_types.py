@@ -3,7 +3,8 @@ import unittest
 
 from pyof.foundation.basic_types import BinaryData
 from pyof.foundation.exceptions import UnpackException
-from pyof.foundation.network_types import ARP, VLAN, Ethernet, GenericTLV, IPv4
+from pyof.foundation.network_types import (
+    ARP, VLAN, Ethernet, GenericTLV, IPv4, IPv6)
 
 
 class TestARP(unittest.TestCase):
@@ -170,3 +171,31 @@ class TestIPv4(unittest.TestCase):
                       data=b'testdata')
         packet.pack()
         self.assertEqual(packet.checksum, 709)
+
+
+class TestIPv6(unittest.TestCase):
+    """Test IPv6 packets."""
+
+    def test_IPv6_pack(self):
+        """Test pack/unpack of IPv6 class."""
+        packet = IPv6(next_header=6, hop_limit=64, source="::1",
+                      destination="::2", data=b'testdata')
+        packed = packet.pack()
+        expected = b'`\x00\x00\x00\x00\x08\x06@\x00\x00'
+        expected += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        expected += b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        expected += b'\x00\x00\x00\x02testdata'
+        self.assertEqual(packed, expected)
+
+    def test_IPv6_unpack(self):
+        """Test unpack of IPv6 binary packet."""
+        raw = b'`\x00\x00\x00\x00\x0c\x06@\x00\x00'
+        raw += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        raw += b'\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        raw += b'\x00\x00\x00\x01somemoredata'
+        expected = IPv6(next_header=6, hop_limit=64, source="::2",
+                        destination="::1", data=b'somemoredata')
+        expected.pack()
+        unpacked = IPv6()
+        unpacked.unpack(raw)
+        self.assertEqual(unpacked, expected)
