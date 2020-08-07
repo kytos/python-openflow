@@ -19,4 +19,5 @@ Contributors
 - Erick Vermot <erick.vermot AT gmail DOT com>
 - Humberto Diógenes <hdiogenes AT gmail DOT com>
 - Jose Mauro <zemauror AT gmail DOT com>
+- Kenia Chang He <keniachang1997 AT gmail DOT com>
 - Raphael Cobe <rmcobe AT ncc DOT unesp DOT br>
