@@ -8,6 +8,9 @@ All notable changes to the `python-openflow` project are documented in this file
 
 Added
 =====
+- Added IPv6 address class.
+- Added IPv6 packet structure.
+- Added tag decorators for small/medium/large tests.
 
 Changed
 =======
