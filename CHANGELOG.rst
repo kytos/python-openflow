@@ -22,6 +22,16 @@ Security
 ========
 
 
+[2020.1] - "helena" stable release - 2020-08-07
+***********************************************
+
+Added
+=====
+- [v0x04] Added support for IPv6 packets and addresses (source and destination
+  match fields).
+- Added the ``@tags`` decorator for small/medium/large tests.
+
+
 [2020.1rc1] - "helena" rc1 - 2020-06-17
 ***************************************
 
