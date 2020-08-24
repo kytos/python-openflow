@@ -20,7 +20,7 @@ use this simple and intuitive library in other projects.
 
 A quick start follows for you to check whether this project fits your needs.
 For a more detailed documentation, please check the `python-openflow API
-Reference Manual <http://docs.kytos.io/python-openflow/pyof/>`_.
+Reference Manual <http://docs.kytos.io/developer/pyof/>`_.
 
 Quick Start
 ***********
@@ -106,7 +106,7 @@ Contributing
 ************
 
 If you want to contribute to this project, please read `Kytos Documentation
-<https://docs.kytos.io/kytos/contributing/>`__ website.
+<https://docs.kytos.io/developer/how_to_contribute/>`__ website.
 
 License
 *******
