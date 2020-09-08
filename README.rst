@@ -83,13 +83,15 @@ its binary representation to be sent through the network:
     b"\x01\x05\x00\x08\x14\xad'\x8d"
     >>> # Use a controller (e.g. Kytos SDN controller) to send "binary_msg"
 
-To parse a message, use ``unpack_message()``:
+To parse a message, use the ``unpack()`` function:
 
 .. code:: python
 
-   >>> from pyof.v0x01.common.utils import unpack_message
+   >>> from pyof.utils import unpack
    >>> binary_msg = b"\x01\x05\x00\x08\x14\xad'\x8d"
-   >>> msg = unpack_message(binary_msg)
+   >>> msg = unpack(binary_msg)
+   >>> print(msg.header.version)
+   UBInt8(1) # OpenFlow 1.0
    >>> print(msg.header.message_type)
    Type.OFPT_FEATURES_REQUEST
 
