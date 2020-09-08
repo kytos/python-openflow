@@ -26,8 +26,9 @@ Security
 ****************************************
 Changed
 =======
-- Changed setup.py to alert when a test fail on Travis.
+- Changed setup.py to alert when a test fails on Travis.
 - Updated broken links and unpack example on README.rst.
+
 
 [2020.1] - "helena" stable release - 2020-08-07
 ***********************************************
