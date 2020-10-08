@@ -61,3 +61,21 @@ def unpack(packet):
         return message
     except (UnpackException, ValueError) as exception:
         raise UnpackException(exception)
+
+
+def is_ofbac_bad_out_port(code):
+    """Check if the code is a OFPBAC_BAD_OUT_PORT error."""
+    errors = (v0x01.asynchronous.error_msg.BadActionCode.OFPBAC_BAD_OUT_PORT,
+              v0x04.asynchronous.error_msg.BadActionCode.OFPBAC_BAD_OUT_PORT)
+    return code in errors
+
+
+def get_port_config_for_version(version):
+    """Return port_config object to a specific version of python-openflow."""
+    port_config = None
+
+    if version == 0x01:
+        port_config = v0x01.common.phy_port.PortConfig.OFPPC_NO_FWD
+    elif version == 0x04:
+        port_config = v0x04.common.port.PortConfig.OFPPC_NO_FWD
+    return port_config
