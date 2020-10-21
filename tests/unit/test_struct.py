@@ -176,7 +176,7 @@ class TestStruct(unittest.TestCase):
 
     def test_minimum_size(self):
         """Test struct minimum size."""
-        if self._min_size is None:
-            raise self.skipTest('minimum size was not set.')
         obj = TestStruct._msg_cls()
+        if self._min_size is None:
+            raise Exception(f'{self.__class__.__name__}._min_size is not set')
         self.assertEqual(obj.get_size(), self._min_size)

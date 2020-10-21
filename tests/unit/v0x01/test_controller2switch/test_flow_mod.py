@@ -29,7 +29,7 @@ class TestFlowDelete(TestStruct):
         super().set_raw_dump_file('v0x01', 'ofpt_flow_delete')
         kwargs = _get_flowmod_kwargs(FlowModCommand.OFPFC_DELETE)
         super().set_raw_dump_object(FlowMod, **kwargs)
-        # No need to test minimum size again.
+        super().set_minimum_size(72)
 
 
 def _get_flowmod_kwargs(command):
