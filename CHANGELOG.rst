@@ -22,6 +22,18 @@ Security
 ========
 
 
+[2020.2b2] - "itamar" beta2 - 2020-10-23
+****************************************
+
+Added
+=====
+- Added minimum_size tests to FlowMod and VendorHeader
+
+Changed
+=======
+- Fail test instead of skipping if no minimum_size is defined
+
+
 [2020.2b1] - "itamar" beta1 - 2020-09-08
 ****************************************
 Changed
