@@ -21,3 +21,4 @@ Contributors
 - Jose Mauro <zemauror AT gmail DOT com>
 - Kenia Chang He <keniachang1997 AT gmail DOT com>
 - Raphael Cobe <rmcobe AT ncc DOT unesp DOT br>
+- Daniel Bruce <dbruc009 AT fiu DOT edu>
