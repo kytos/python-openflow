@@ -424,7 +424,6 @@ class MetaStruct(type):
         an instance of the new version of the 'obj'.
 
         Example:
-
         >>> from pyof.foundation.base import MetaStruct as ms
         >>> from pyof.v0x01.common.header import Header
         >>> name = 'header'
