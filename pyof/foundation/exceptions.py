@@ -54,3 +54,10 @@ class UnpackException(Exception):
 
 class PackException(Exception):
     """Error while unpacking."""
+
+
+class UnsupportedVersionException(Exception):
+    """Exception raised when an unsupported OpenFlow version is specified."""
+
+    def __str__(self):
+        return "Version not supported: " + super().__str__()

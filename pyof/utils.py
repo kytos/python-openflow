@@ -4,7 +4,8 @@ This package was moved from kytos/of_core for the purpose of creating a generic
 method to perform package unpack independent of the OpenFlow version.
 """
 from pyof import v0x01, v0x04
-from pyof.foundation.exceptions import UnpackException
+from pyof.foundation.exceptions import (
+    UnpackException, UnsupportedVersionException)
 from pyof.v0x01.common import utils as u_v0x01  # pylint: disable=unused-import
 from pyof.v0x04.common import utils as u_v0x04  # pylint: disable=unused-import
 
@@ -78,4 +79,7 @@ def get_port_config_for_version(version):
         port_config = v0x01.common.phy_port.PortConfig.OFPPC_NO_FWD
     elif version == 0x04:
         port_config = v0x04.common.port.PortConfig.OFPPC_NO_FWD
+    else:
+        raise UnsupportedVersionException(version)
+
     return port_config
