@@ -22,15 +22,16 @@ Security
 ========
 
 [2020.2b3] - "itamar" beta3 - 2020-11-20
-********************************
+****************************************
 
 Added
 =====
-- Added references to python3.[789] in setup.py
+- Added Python 3.[789] classifiers to ``setup.py``
 
 Removed
 =======
-- Removed python 3.6 references from README.rst and makefile
+- Removed Python 3.6 references from ``README.rst`` and ``Makefile``
+
 
 [2020.2b2] - "itamar" beta2 - 2020-10-23
 ****************************************
