@@ -8,8 +8,6 @@ from copy import deepcopy
 from pyof.foundation import exceptions
 from pyof.foundation.base import GenericStruct, GenericType
 
-# Third-party imports
-
 __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
            'UBInt32', 'UBInt64')

@@ -100,7 +100,7 @@ class TestChar(unittest.TestCase):
         self.assertEqual(char2.value, 'foo')
 
 
-class TestHWaddress(unittest.TestCase):
+class TestHWAddress(unittest.TestCase):
     """Test of HWAddress BasicType."""
 
     def test_unpack_packed(self):
@@ -199,5 +199,5 @@ class TestBinaryData(unittest.TestCase):
 
     def test_unexpected_value_as_parameter(self):
         """Should raise ValueError if pack value is not bytes."""
-        data= BinaryData('Some string')
-        self.assertRaises(ValueError, data.pack, "can't be string")
+        data = BinaryData('Some string')
+        self.assertRaises(ValueError, data.pack, "can't be a string")

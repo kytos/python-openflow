@@ -260,7 +260,7 @@ class GenericType:
 
 
 class MetaStruct(type):
-    """MetaClass that dinamically handles openflow version of class attributes.
+    """MetaClass that dynamically handles openflow version of class attributes.
 
     See more about it at:
         https://github.com/kytos/python-openflow/wiki/Version-Inheritance
@@ -424,7 +424,6 @@ class MetaStruct(type):
         an instance of the new version of the 'obj'.
 
         Example:
-
         >>> from pyof.foundation.base import MetaStruct as ms
         >>> from pyof.v0x01.common.header import Header
         >>> name = 'header'
@@ -503,7 +502,7 @@ class GenericStruct(metaclass=MetaStruct):
             other (GenericStruct): The struct to be compared with.
 
         Returns:
-            bool: Returns the result of comparation.
+            bool: Returns the comparison result.
 
         """
         return self.pack() == other.pack()
@@ -519,13 +518,13 @@ class GenericStruct(metaclass=MetaStruct):
 
     @staticmethod
     def _is_pyof_attribute(obj):
-        """Return True if the object is a kytos attribute.
+        """Return True if the object is a pyof attribute.
 
-        To be a kytos attribute the item must be an instance of either
+        To be a pyof attribute the item must be an instance of either
         GenericType or GenericStruct.
 
         Returns:
-            bool: Returns TRUE if the obj is a kytos attribute, otherwise False
+            bool: Returns True if the obj is a pyof attribute, otherwise False
 
         """
         return isinstance(obj, (GenericType, GenericStruct))
