@@ -44,16 +44,6 @@ class TestUBInt16(unittest.TestCase):
         """[Foundation/BasicTypes/UBInt16] - size 2."""
         self.assertEqual(self.ubint16.get_size(), 2)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Foundation/BasicTypes/UBInt16] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Foundation/BasicTypes/UBInt16] - unpacking."""
-        pass
-
 
 class TestUBInt32(unittest.TestCase):
     """Test of UBInt32 BasicType."""
@@ -65,16 +55,6 @@ class TestUBInt32(unittest.TestCase):
     def test_get_size(self):
         """[Foundation/BasicTypes/UBInt32] - size 4."""
         self.assertEqual(self.ubint32.get_size(), 4)
-
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Foundation/BasicTypes/UBInt32] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Foundation/BasicTypes/UBInt32] - unpacking."""
-        pass
 
 
 class TestChar(unittest.TestCase):
