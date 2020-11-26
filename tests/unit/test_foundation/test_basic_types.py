@@ -32,6 +32,9 @@ class TestUBInt8(unittest.TestCase):
         u = basic_types.UBInt8(256)
         self.assertRaises(PackException, u.pack)
 
+    def test_cast_to_int(self):
+        self.assertEqual(255, int(self.ubint8))
+
 
 class TestUBInt16(unittest.TestCase):
     """Test of UBInt16 BasicType."""
