@@ -2,6 +2,7 @@
 import unittest
 
 from pyof.foundation import basic_types
+from pyof.foundation.exceptions import PackException
 from pyof.foundation.basic_types import BinaryData
 
 
@@ -10,21 +11,26 @@ class TestUBInt8(unittest.TestCase):
 
     def setUp(self):
         """Basic test setup."""
-        self.ubint8 = basic_types.UBInt8()
+        self.ubint8 = basic_types.UBInt8(255)
 
     def test_get_size(self):
         """[Foundation/BasicTypes/UBInt8] - size 1."""
         self.assertEqual(self.ubint8.get_size(), 1)
 
-    @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Foundation/BasicTypes/UBInt8] - packing."""
-        pass
+        self.assertEqual(self.ubint8.pack(), b'\xff')
 
-    @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Foundation/BasicTypes/UBInt8] - unpacking."""
-        pass
+        u = basic_types.UBInt8()
+        u.unpack(b'\xfe')
+        self.assertEqual(u.value, 254)
+
+    def test_pack_error(self):
+        """[Foundation/BasicTypes/UBInt8] - packing exception."""
+        u = basic_types.UBInt8(256)
+        self.assertRaises(PackException, u.pack)
 
 
 class TestUBInt16(unittest.TestCase):
