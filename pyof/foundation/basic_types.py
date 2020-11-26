@@ -10,7 +10,7 @@ from pyof.foundation.base import GenericStruct, GenericType
 
 __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
-           'UBInt32', 'UBInt64')
+           'UBInt32', 'UBInt64', 'UBInt128')
 
 
 class Pad(GenericType):

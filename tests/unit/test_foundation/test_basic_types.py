@@ -57,6 +57,30 @@ class TestUBInt32(unittest.TestCase):
         self.assertEqual(self.ubint32.get_size(), 4)
 
 
+class TestUBInt64(unittest.TestCase):
+    """Test of UBInt64 BasicType."""
+
+    def setUp(self):
+        """Basic test setup."""
+        self.ubint64 = basic_types.UBInt64()
+
+    def test_get_size(self):
+        """[Foundation/BasicTypes/UBInt64] - size 8."""
+        self.assertEqual(self.ubint64.get_size(), 8)
+
+
+class TestUBInt128(unittest.TestCase):
+    """Test of UBInt128 BasicType."""
+
+    def setUp(self):
+        """Basic test setup."""
+        self.ubint128 = basic_types.UBInt128()
+
+    def test_get_size(self):
+        """[Foundation/BasicTypes/UBInt128] - size 16."""
+        self.assertEqual(self.ubint128.get_size(), 16)
+
+
 class TestChar(unittest.TestCase):
     """Test of Char BasicType."""
 
