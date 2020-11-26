@@ -137,7 +137,7 @@ class GenericType:
             object: The value of an enum, bitmask, etc.
 
         """
-        if self.isenum():
+        if self.is_enum():
             if isinstance(self._value, self.enum_ref):
                 return self._value.value
             return self._value
@@ -240,7 +240,7 @@ class GenericType:
         except BadValueException:
             return False
 
-    def isenum(self):
+    def is_enum(self):
         """Test whether it is an :class:`~enum.Enum`.
 
         Returns:
