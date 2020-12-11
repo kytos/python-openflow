@@ -6,13 +6,11 @@ from copy import deepcopy
 
 # Local source tree imports
 from pyof.foundation import exceptions
-from pyof.foundation.base import GenericStruct, GenericType
-
-# Third-party imports
+from pyof.foundation.base import GenericStruct, GenericType, UBIntBase
 
 __all__ = ('BinaryData', 'Char', 'ConstantTypeList', 'FixedTypeList',
            'IPAddress', 'DPID', 'HWAddress', 'Pad', 'UBInt8', 'UBInt16',
-           'UBInt32', 'UBInt64')
+           'UBInt32', 'UBInt64', 'UBInt128')
 
 
 class Pad(GenericType):
@@ -79,7 +77,7 @@ class Pad(GenericType):
         return Pad(length=self._length)
 
 
-class UBInt8(GenericType):
+class UBInt8(UBIntBase):
     """Format character for an Unsigned Char.
 
     Class for an 8-bit (1-byte) Unsigned Integer.
@@ -88,7 +86,7 @@ class UBInt8(GenericType):
     _fmt = "!B"
 
 
-class UBInt16(GenericType):
+class UBInt16(UBIntBase):
     """Format character for an Unsigned Short.
 
     Class for an 16-bit (2-byte) Unsigned Integer.
@@ -97,7 +95,7 @@ class UBInt16(GenericType):
     _fmt = "!H"
 
 
-class UBInt32(GenericType):
+class UBInt32(UBIntBase):
     """Format character for an Unsigned Int.
 
     Class for an 32-bit (4-byte) Unsigned Integer.
@@ -106,7 +104,7 @@ class UBInt32(GenericType):
     _fmt = "!I"
 
 
-class UBInt64(GenericType):
+class UBInt64(UBIntBase):
     """Format character for an Unsigned Long Long.
 
     Class for an 64-bit (8-byte) Unsigned Integer.
@@ -115,7 +113,7 @@ class UBInt64(GenericType):
     _fmt = "!Q"
 
 
-class UBInt128(GenericType):
+class UBInt128(UBIntBase):
     """Format character for an Unsigned Long Long.
 
     Class for an 128-bit (16-byte) Unsigned Integer.

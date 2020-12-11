@@ -643,6 +643,7 @@ class IPv6(GenericStruct):
                  next_header=0, hop_limit=255, source="0:0:0:0:0:0:0:0",
                  destination="0:0:0:0:0:0:0:0", data=b''):
         """Create an IPv6 with the parameters below.
+
         Args:
             version (int): IP protocol version. Defaults to 6.
             tclass (int): DS (6 bits) + ECN (2 bits). Default is 0.

@@ -2,6 +2,7 @@
 import unittest
 
 from pyof.foundation import basic_types
+from pyof.foundation.exceptions import PackException
 from pyof.foundation.basic_types import BinaryData
 
 
@@ -10,21 +11,29 @@ class TestUBInt8(unittest.TestCase):
 
     def setUp(self):
         """Basic test setup."""
-        self.ubint8 = basic_types.UBInt8()
+        self.ubint8 = basic_types.UBInt8(255)
 
     def test_get_size(self):
         """[Foundation/BasicTypes/UBInt8] - size 1."""
         self.assertEqual(self.ubint8.get_size(), 1)
 
-    @unittest.skip('Not yet implemented')
     def test_pack(self):
         """[Foundation/BasicTypes/UBInt8] - packing."""
-        pass
+        self.assertEqual(self.ubint8.pack(), b'\xff')
 
-    @unittest.skip('Not yet implemented')
     def test_unpack(self):
         """[Foundation/BasicTypes/UBInt8] - unpacking."""
-        pass
+        u = basic_types.UBInt8()
+        u.unpack(b'\xfe')
+        self.assertEqual(u.value, 254)
+
+    def test_pack_error(self):
+        """[Foundation/BasicTypes/UBInt8] - packing exception."""
+        u = basic_types.UBInt8(256)
+        self.assertRaises(PackException, u.pack)
+
+    def test_cast_to_int(self):
+        self.assertEqual(255, int(self.ubint8))
 
 
 class TestUBInt16(unittest.TestCase):
@@ -38,16 +47,6 @@ class TestUBInt16(unittest.TestCase):
         """[Foundation/BasicTypes/UBInt16] - size 2."""
         self.assertEqual(self.ubint16.get_size(), 2)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Foundation/BasicTypes/UBInt16] - packing."""
-        pass
-
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Foundation/BasicTypes/UBInt16] - unpacking."""
-        pass
-
 
 class TestUBInt32(unittest.TestCase):
     """Test of UBInt32 BasicType."""
@@ -60,15 +59,29 @@ class TestUBInt32(unittest.TestCase):
         """[Foundation/BasicTypes/UBInt32] - size 4."""
         self.assertEqual(self.ubint32.get_size(), 4)
 
-    @unittest.skip('Not yet implemented')
-    def test_pack(self):
-        """[Foundation/BasicTypes/UBInt32] - packing."""
-        pass
 
-    @unittest.skip('Not yet implemented')
-    def test_unpack(self):
-        """[Foundation/BasicTypes/UBInt32] - unpacking."""
-        pass
+class TestUBInt64(unittest.TestCase):
+    """Test of UBInt64 BasicType."""
+
+    def setUp(self):
+        """Basic test setup."""
+        self.ubint64 = basic_types.UBInt64()
+
+    def test_get_size(self):
+        """[Foundation/BasicTypes/UBInt64] - size 8."""
+        self.assertEqual(self.ubint64.get_size(), 8)
+
+
+class TestUBInt128(unittest.TestCase):
+    """Test of UBInt128 BasicType."""
+
+    def setUp(self):
+        """Basic test setup."""
+        self.ubint128 = basic_types.UBInt128()
+
+    def test_get_size(self):
+        """[Foundation/BasicTypes/UBInt128] - size 16."""
+        self.assertEqual(self.ubint128.get_size(), 16)
 
 
 class TestChar(unittest.TestCase):
@@ -100,7 +113,7 @@ class TestChar(unittest.TestCase):
         self.assertEqual(char2.value, 'foo')
 
 
-class TestHWaddress(unittest.TestCase):
+class TestHWAddress(unittest.TestCase):
     """Test of HWAddress BasicType."""
 
     def test_unpack_packed(self):
@@ -199,5 +212,5 @@ class TestBinaryData(unittest.TestCase):
 
     def test_unexpected_value_as_parameter(self):
         """Should raise ValueError if pack value is not bytes."""
-        data= BinaryData('Some string')
-        self.assertRaises(ValueError, data.pack, "can't be string")
+        data = BinaryData('Some string')
+        self.assertRaises(ValueError, data.pack, "can't be a string")
