@@ -21,6 +21,23 @@ Fixed
 Security
 ========
 
+[2020.2rc1] - "itamar" release candidate 1 - 2020-12-23
+*******************************************************
+
+Added
+=====
+- Added support to native method int() in UBInt() class
+- Added unit tests for UBInt8, UBInt64 and UBInt128 class
+
+Changed
+=======
+- Standardize ``isenum`` to ``is_enum``
+
+Fixed
+=====
+- Fixed "Recursion error" when building documentation with Sphinx >= 2.1
+
+
 [2020.2b3] - "itamar" beta3 - 2020-11-20
 ****************************************
 
