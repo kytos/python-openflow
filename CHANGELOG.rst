@@ -31,7 +31,7 @@ Added
 
 Changed
 =======
-- Standardize `isenum` to `is_enum`
+- Standardize ``isenum`` to ``is_enum``
 
 Fixed
 =====
