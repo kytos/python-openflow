@@ -35,7 +35,7 @@ Changed
 
 Fixed
 =====
-- Fixed Recursion error" when building documentation with Sphinx >= 2.1
+- Fixed "Recursion error" when building documentation with Sphinx >= 2.1
 
 
 [2020.2b3] - "itamar" beta3 - 2020-11-20
