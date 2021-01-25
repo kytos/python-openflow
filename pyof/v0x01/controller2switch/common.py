@@ -346,7 +346,7 @@ class PortStatsRequest(GenericStruct):
     #: Align to 64-bits.
     pad = Pad(6)
 
-    def __init__(self, port_no=None):
+    def __init__(self, port_no=Port.OFPP_NONE):
         """Create a PortStatsRequest with the optional parameters below.
 
         Args:
