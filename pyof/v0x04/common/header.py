@@ -102,3 +102,7 @@ class Header(GenericStruct):
         self.message_type = message_type
         self.length = length
         self.xid = xid
+
+    def __repr__(self):
+        return (f"{type(self).__name__}(version={self.version}, "
+                f"xid={self.xid}, {self.message_type!s})")

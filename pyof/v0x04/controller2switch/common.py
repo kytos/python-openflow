@@ -224,6 +224,9 @@ class Bucket(GenericStruct):
         self.watch_group = watch_group
         self.actions = actions
 
+    def __repr__(self):
+        return f"{type(self).__name__}(actions={self.actions!r})"
+
     def unpack(self, buff, offset=0):
         """Unpack bucket.
 
