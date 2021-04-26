@@ -609,7 +609,7 @@ class ListOfProperty(FixedTypeList):
 
 
 class TableFeatures(GenericStruct):
-    """Abstration of common class Table Features.
+    """Abstraction of common class Table Features.
 
     Body for MultipartRequest of type OFPMP_TABLE_FEATURES.
     Body of reply to OFPMP_TABLE_FEATURES request.

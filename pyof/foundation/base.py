@@ -261,6 +261,7 @@ class GenericType:
 
 class UBIntBase(GenericType):
     """Base class for UBInt{8,16,32,64,128}."""
+
     def __int__(self):
         """Allow converting an UBInt() back to an int()."""
         # Skip GenericType's checking if this is an Enum ou BitMask
@@ -497,7 +498,7 @@ class GenericStruct(metaclass=MetaStruct):
     """
 
     def __init__(self):
-        """Contructor takes no argument and stores attributes' deep copies."""
+        """Store attributes' deep copies."""
         for name, value in self.get_class_attributes():
             setattr(self, name, deepcopy(value))
 
@@ -556,7 +557,7 @@ class GenericStruct(metaclass=MetaStruct):
 
         This method strict relies on the PEP 520 (Preserving Class Attribute
         Definition Order), implemented on Python 3.6. So, if this behaviour
-        changes this whole lib can loose its functionality (since the
+        changes this whole lib can lose its functionality (since the
         attributes order are a strong requirement.) For the same reason, this
         lib will not work on python versions earlier than 3.6.
 
@@ -573,7 +574,7 @@ class GenericStruct(metaclass=MetaStruct):
         #: see this method docstring for a important notice about the use of
         #: cls.__dict__
         for name, value in cls.__dict__.items():
-            # gets only our (kytos) attributes. this ignores methods, dunder
+            # gets only our (pyof) attributes. this ignores methods, dunder
             # methods and attributes, and common python type attributes.
             if GenericStruct._is_pyof_attribute(value):
                 yield (name, value)
