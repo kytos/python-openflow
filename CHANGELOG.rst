@@ -21,6 +21,24 @@ Fixed
 Security
 ========
 
+[2021.1] - "final" stable release - 2021-04-30
+**********************************************
+
+Added
+=====
+- New representation method to ``GroupMod``, ``Header Bucket``,
+  ``ActionSetField`` and ``ActionOutput``.
+
+Changed
+=======
+- Set default Python version to 3.6 in Scrutinizer CI.
+- Changed ``setup.py`` to run ``pytest-runner`` only during the unit tests.
+
+Fixed
+=====
+
+- Fixed ``PackException`` error when running Kytos with OpenFlow 1.0 (#631).
+- Fixed docstrings in UBIntBase and TableFeatures class.
 
 [2020.2] - "itamar" stable release - 2020-12-30
 ***********************************************
