@@ -173,6 +173,9 @@ class CITest(TestCommand):
         check_call(cmd, shell=True)
 
 
+NEEDS_PYTEST = {'pytest', 'test', 'coverage'}.intersection(sys.argv)
+PYTEST_RUNNER = ['pytest-runner'] if NEEDS_PYTEST else []
+
 setup(name='python-openflow',
       version=__version__,
       description='Library to parse and generate OpenFlow messages',
@@ -183,7 +186,7 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      setup_requires=['pytest-runner'],
+      setup_requires=PYTEST_RUNNER,
       tests_require=['pytest'],
       extras_require={'dev': ['pip-tools >= 2.0',
                               'coverage', 'pytest', 'yala', 'tox']},
