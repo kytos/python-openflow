@@ -328,6 +328,9 @@ class ActionOutput(ActionHeader):
         self.port = port
         self.max_length = max_length
 
+    def __repr__(self):
+        return f"{type(self).__name__}(port={self.port})"
+
 
 class ActionPopMPLS(ActionHeader):
     """Action structure for OFPAT_POP_MPLS."""
@@ -387,6 +390,10 @@ class ActionSetField(ActionHeader):
         """
         super().__init__(action_type=ActionType.OFPAT_SET_FIELD)
         self.field = OxmTLV() if field is None else field
+
+    def __repr__(self):
+        return (f"{type(self).__name__}({self.field.oxm_field!s}, "
+                f"{self.field.oxm_value})")
 
     def pack(self, value=None):
         """Pack this structure updating the length and padding it."""

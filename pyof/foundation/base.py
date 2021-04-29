@@ -63,7 +63,7 @@ class GenericType:
         return type(self)(value=self._value, enum_ref=self.enum_ref)
 
     def __repr__(self):
-        return "{}({})".format(type(self).__name__, self._value)
+        return "{}({})".format(type(self).__name__, repr(self._value))
 
     def __str__(self):
         return '{}'.format(str(self._value))
@@ -516,6 +516,19 @@ class GenericStruct(metaclass=MetaStruct):
 
         """
         return self.pack() == other.pack()
+
+    # def __repr__(self):
+    #     """Generic fallback for __repr__ using the built-in introspection.
+    #
+    #     For debugging purposes. Disabled to avoid infinite recursion in
+    #     the case that objects reference each other.
+    #
+    #     """
+    #     # from pprint import pformat
+    #     # attributes = pformat(dict(self._get_instance_attributes()))
+    #     attributes = ', '.join(f'{k}={v!r}' for (k, v)
+    #                            in self._get_instance_attributes())
+    #     return f'{type(self).__name__}({attributes})'
 
     @staticmethod
     def _attr_fits_into_class(attr, cls):

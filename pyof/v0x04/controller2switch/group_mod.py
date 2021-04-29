@@ -91,3 +91,8 @@ class GroupMod(GenericMessage):
         self.group_type = group_type
         self.group_id = group_id
         self.buckets = buckets
+
+    def __repr__(self):
+        return (f"{type(self).__name__}(xid={self.header.xid}, {self.command},"
+                f" group_type={self.group_type}, group_id={self.group_id},"
+                f" buckets={self.buckets!r})")
