@@ -172,6 +172,8 @@ class CITest(TestCommand):
         cmd = '%s && %s && %s' % (coverage_cmd, doctest_cmd, lint_cmd)
         check_call(cmd, shell=True)
 
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 setup(name='python-openflow',
       version=__version__,
@@ -183,7 +185,7 @@ setup(name='python-openflow',
       license='MIT',
       test_suite='tests',
       include_package_data=True,
-      setup_requires=['pytest-runner'],
+      setup_requires=pytest_runner,
       tests_require=['pytest'],
       extras_require={'dev': ['pip-tools >= 2.0',
                               'coverage', 'pytest', 'yala', 'tox']},
