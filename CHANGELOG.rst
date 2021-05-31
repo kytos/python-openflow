@@ -25,9 +25,7 @@ Security
 [2021.1] - "final" - 2021-05-31
 *******************************
 
-Added
-=====
-- Update file 'denpendabot.yml'.
+No major changes since last release.
 
 
 [2021.1rc1] - "final" release candidate 1 - 2021-04-30
