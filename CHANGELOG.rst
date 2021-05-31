@@ -25,7 +25,7 @@ Security
 [2021.1] - "final" - 2021-05-31
 *******************************
 
-No major changes since last release.
+No major changes since the last pre-release.
 
 
 [2021.1rc1] - "final" release candidate 1 - 2021-04-30
